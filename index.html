@@ -94,7 +94,7 @@
                 <!-- Right: Actions and Universal Timer Badge -->
                 <div class="flex items-center gap-3">
                     <div class="hidden lg:flex items-center bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-full text-center">
-                        <span class="text-[8px] text-rose-400 font-bold uppercase tracking-wider mr-1.5">Countdown:</span>
+                        <span id="countdown-label" class="text-[8px] text-rose-400 font-bold uppercase tracking-wider mr-1.5">Countdown:</span>
                         <span id="countdown-timer" class="font-mono text-xs font-bold text-white">40d : 00h : 00m</span>
                     </div>
 
@@ -264,6 +264,40 @@
                         <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider mb-4"><i class="fa-solid fa-chart-pie mr-1 text-accentPurple"></i> Preparation Readiness</h3>
                         <div id="subject-progress-dashboard-container" class="space-y-3.5">
                             <!-- JS Inject -->
+                        </div>
+                    </div>
+
+                    <!-- Exam Target Settings & Countdown Card -->
+                    <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg space-y-4">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider">
+                                <i class="fa-solid fa-gear mr-1 text-accentRose"></i> Countdown Target
+                            </h3>
+                            <button id="btn-toggle-exam-edit" class="text-xs text-accentRose hover:text-rose-400 font-bold uppercase transition">Edit</button>
+                        </div>
+                        
+                        <!-- View Mode -->
+                        <div id="exam-target-view" class="space-y-1">
+                            <span class="block text-[10px] text-gray-500 font-bold uppercase">Active Target</span>
+                            <h4 id="display-exam-name" class="text-xs font-extrabold text-white uppercase tracking-wider">SSC CGL Tier-1</h4>
+                            <span class="block text-[10px] text-gray-500 font-bold uppercase mt-2">Exam Date</span>
+                            <span id="display-exam-date" class="font-mono text-xs text-gray-300">August 15, 2026</span>
+                        </div>
+                        
+                        <!-- Edit Form Mode (Hidden by default) -->
+                        <div id="exam-target-edit" class="space-y-3 hidden border-t border-white/5 pt-3">
+                            <div class="space-y-1">
+                                <label class="block text-[9px] text-gray-400 font-bold uppercase">Exam Title</label>
+                                <input type="text" id="input-exam-name" class="w-full bg-white/5 border border-white/10 rounded px-2.5 py-1 text-xs text-white outline-none focus:border-accentRose" placeholder="e.g. SSC CGL Tier-1">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-[9px] text-gray-400 font-bold uppercase">Exam Date</label>
+                                <input type="date" id="input-exam-date" class="w-full bg-white/5 border border-white/10 rounded px-2.5 py-1 text-xs text-white outline-none focus:border-accentRose">
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button id="btn-save-exam-target" class="flex-grow bg-accentRose hover:bg-rose-500 text-white font-bold py-1.5 rounded text-[10px] uppercase tracking-wide transition">Save Settings</button>
+                                <button id="btn-cancel-exam-target" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-2.5 py-1.5 rounded text-[10px] uppercase transition">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>

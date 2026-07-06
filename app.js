@@ -636,12 +636,88 @@ function initHeaderScroll() {
     });
 }
 
+function initExamTargetEditor() {
+    const btnToggle = document.getElementById("btn-toggle-exam-edit");
+    const viewPanel = document.getElementById("exam-target-view");
+    const editPanel = document.getElementById("exam-target-edit");
+    const inputName = document.getElementById("input-exam-name");
+    const inputDate = document.getElementById("input-exam-date");
+    const btnSave = document.getElementById("btn-save-exam-target");
+    const btnCancel = document.getElementById("btn-cancel-exam-target");
+
+    function updateDisplay() {
+        const displayName = document.getElementById("display-exam-name");
+        const displayDate = document.getElementById("display-exam-date");
+        const headerLabel = document.getElementById("countdown-label");
+
+        if (displayName) displayName.innerText = appState.examName;
+        if (displayDate) {
+            const dateObj = new Date(appState.examDate);
+            if (!isNaN(dateObj)) {
+                displayDate.innerText = dateObj.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+            } else {
+                displayDate.innerText = appState.examDate;
+            }
+        }
+        if (headerLabel) headerLabel.innerText = `${appState.examName}:`;
+    }
+
+    if (btnToggle) {
+        btnToggle.onclick = () => {
+            const isEditing = !editPanel.classList.contains("hidden");
+            if (isEditing) {
+                editPanel.classList.add("hidden");
+                viewPanel.classList.remove("hidden");
+                btnToggle.innerText = "Edit";
+            } else {
+                inputName.value = appState.examName;
+                inputDate.value = appState.examDate.split("T")[0];
+                editPanel.classList.remove("hidden");
+                viewPanel.classList.add("hidden");
+                btnToggle.innerText = "Close";
+            }
+        };
+    }
+
+    if (btnCancel) {
+        btnCancel.onclick = () => {
+            editPanel.classList.add("hidden");
+            viewPanel.classList.remove("hidden");
+            if (btnToggle) btnToggle.innerText = "Edit";
+        };
+    }
+
+    if (btnSave) {
+        btnSave.onclick = () => {
+            const nameVal = inputName.value.trim();
+            const dateVal = inputDate.value;
+
+            if (!nameVal || !dateVal) {
+                alert("Please enter both target exam name and date.");
+                return;
+            }
+
+            appState.examName = nameVal;
+            appState.examDate = dateVal;
+            saveStateToStorage();
+            updateDisplay();
+
+            editPanel.classList.add("hidden");
+            viewPanel.classList.remove("hidden");
+            if (btnToggle) btnToggle.innerText = "Edit";
+        };
+    }
+
+    updateDisplay();
+}
+
 // Initialize Application
 document.addEventListener("DOMContentLoaded", () => {
     loadStateFromStorage();
     initTheme();
     initNavigation();
     initHeaderScroll();
+    initExamTargetEditor();
     initSessionTimer();
     initPomoTimer();
     initSearchAndFilters();
@@ -665,6 +741,8 @@ function loadStateFromStorage() {
         try {
             appState = { ...appState, ...JSON.parse(saved) };
             if (!appState.weakAlerts) appState.weakAlerts = {};
+            if (!appState.examName) appState.examName = "SSC CGL Tier-1";
+            if (!appState.examDate) appState.examDate = "2026-08-15";
         } catch (e) {
             console.error("Error loading localStorage state:", e);
         }
@@ -676,6 +754,8 @@ function loadStateFromStorage() {
             });
         });
         appState.weakAlerts = {};
+        appState.examName = "SSC CGL Tier-1";
+        appState.examDate = "2026-08-15";
         saveStateToStorage();
     }
 }
@@ -1140,15 +1220,31 @@ function renderSubjectProgressBars() {
 
 // 40-day countdown timer (Count from July 6, 2026 midnight - target August 15, 2026)
 function startExamCountdown() {
-    const targetDate = new Date("2026-08-15T00:00:00+05:30").getTime();
+    function getTargetTime() {
+        const dateStr = appState.examDate || "2026-08-15";
+        const parts = dateStr.split("T")[0].split("-");
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const day = parseInt(parts[2]);
+        return new Date(year, month, day).getTime();
+    }
     
     function updateCountdown() {
+        const targetDate = getTargetTime();
         const now = new Date().getTime();
         const distance = targetDate - now;
         
+        const labelEl = document.getElementById("countdown-label");
+        if (labelEl) {
+            labelEl.innerText = `${appState.examName || "Countdown"}:`;
+        }
+
         if (distance < 0) {
-            const labelStr = "CONQUEST COMPLETED!";
-            document.getElementById("countdown-timer").innerText = labelStr;
+            const labelStr = "TARGET REACHED!";
+            const timerEl = document.getElementById("countdown-timer");
+            if (timerEl) timerEl.innerText = labelStr;
+            const mobTimer = document.getElementById("countdown-timer-mobile");
+            if (mobTimer) mobTimer.innerText = labelStr;
             return;
         }
         
@@ -1158,9 +1254,9 @@ function startExamCountdown() {
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
         const formatStr = `${days}d : ${hours.toString().padStart(2, "0")}h : ${minutes.toString().padStart(2, "0")}m`;
-        document.getElementById("countdown-timer").innerText = formatStr;
+        const timerEl = document.getElementById("countdown-timer");
+        if (timerEl) timerEl.innerText = formatStr;
         
-        // Mobile version helper if exists
         const mobTimer = document.getElementById("countdown-timer-mobile");
         if (mobTimer) {
             mobTimer.innerText = `${formatStr} : ${seconds.toString().padStart(2, "0")}s`;
@@ -1168,7 +1264,8 @@ function startExamCountdown() {
     }
     
     updateCountdown();
-    setInterval(updateCountdown, 1000);
+    if (window.countdownInterval) clearInterval(window.countdownInterval);
+    window.countdownInterval = setInterval(updateCountdown, 1000);
 }
 
 // 7. SYLLABUS VIEWS AND RENDERING
