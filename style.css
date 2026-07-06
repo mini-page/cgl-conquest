@@ -1,0 +1,356 @@
+/* ==========================================================================
+   SSC CGL Rank-Maker Dashboard - Premium Custom Overrides (XPensa Edition)
+   ========================================================================== */
+
+/* Theme Variables */
+:root {
+    --bg-app: #09090f;
+    --bg-card: #121221;
+    --text-main: #f8fafc;
+    --text-sub: #94a3b8;
+    --border-main: rgba(255, 255, 255, 0.04);
+}
+
+body.light-theme {
+    --bg-app: #f1f5f9; /* Slate 100 - clean high-contrast base */
+    --bg-card: #ffffff;
+    --text-main: #0f172a; /* Slate 900 */
+    --text-sub: #475569; /* Slate 600 */
+    --border-main: rgba(99, 102, 241, 0.1); /* Soft indigo tint border */
+}
+
+/* Custom Base Styles */
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom global element rounded token overrides */
+.rounded-xl {
+    border-radius: 1rem !important; /* 16px */
+}
+.rounded-2xl {
+    border-radius: 1.5rem !important; /* 24px */
+}
+.rounded-3xl {
+    border-radius: 2rem !important; /* 32px */
+}
+
+/* Light Theme Card Shadows and Borders to stand out from background */
+body.light-theme .bg-bgCard {
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(99, 102, 241, 0.03) !important;
+    border: 1px solid rgba(99, 102, 241, 0.06) !important;
+}
+
+/* Modal States */
+.modal {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal.active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+.modal.active > div {
+    transform: scale(1) !important;
+}
+
+/* XPensa Floating Pill Navigation Active States */
+.nav-item.active-nav {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.light-theme .nav-item.active-nav {
+    background-color: #ffffff !important;
+    color: #6d28d9 !important;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.12) !important;
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+}
+
+.mobile-nav-item.active-nav {
+    background-color: rgba(139, 92, 246, 0.12) !important;
+    color: #a78bfa !important;
+    border-left: 3px solid #8b5cf6;
+}
+
+body.light-theme .mobile-nav-item.active-nav {
+    background-color: rgba(109, 40, 217, 0.06) !important;
+    color: #6d28d9 !important;
+    border-left: 3px solid #6d28d9;
+}
+
+/* Toolkit Active Subtabs */
+.active-nav-tab {
+    background-color: rgba(139, 92, 246, 0.15) !important;
+    color: #c084fc !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+body.light-theme .active-nav-tab {
+    background-color: rgba(109, 40, 217, 0.08) !important;
+    color: #6d28d9 !important;
+    border: 1px solid rgba(109, 40, 217, 0.2) !important;
+}
+
+/* Custom Dropdown vector arrow alignment overrides */
+select {
+    appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E") !important;
+    background-position: right 0.75rem center !important;
+    background-size: 1.15rem !important;
+    background-repeat: no-repeat !important;
+    padding-right: 2.5rem !important;
+    cursor: pointer;
+}
+
+body.light-theme select {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E") !important;
+}
+
+/* Rounded inputs and elements focusing values */
+input, select, textarea {
+    border-radius: 0.75rem !important; /* 12px default */
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease-in-out;
+}
+
+body.light-theme input, body.light-theme select, body.light-theme textarea {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
+    color: #0f172a !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #8b5cf6 !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15) !important;
+}
+
+body.light-theme input:focus, body.light-theme select:focus, body.light-theme textarea:focus {
+    border-color: #6d28d9 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1) !important;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(12, 12, 22, 0.2);
+}
+body.light-theme ::-webkit-scrollbar-track {
+    background: #e2e8f0;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.4);
+}
+
+/* SVG Mind Map styles */
+.mm-link {
+    fill: none;
+    stroke: rgba(139, 92, 246, 0.15);
+    stroke-width: 2px;
+}
+.mm-link.completed-branch {
+    stroke: rgba(16, 185, 129, 0.35);
+    stroke-width: 2.5px;
+}
+.mm-node circle {
+    fill: var(--bg-card);
+    stroke: #8b5cf6;
+    stroke-width: 2px;
+    transition: all 0.2s ease;
+}
+.mm-node text {
+    font-family: 'Outfit', sans-serif;
+    fill: var(--text-main);
+    font-size: 11px;
+}
+body.light-theme .mm-node text {
+    fill: #0f172a;
+}
+.mm-node.subject circle {
+    fill: rgba(26, 26, 58, 0.4);
+    stroke-width: 3px;
+    r: 15px;
+}
+.mm-node.topic circle {
+    fill: rgba(19, 19, 34, 0.6);
+    r: 11px;
+}
+.mm-node.completed-node circle {
+    stroke: #10b981;
+    fill: rgba(16, 185, 129, 0.1);
+}
+.mm-node.mastered-node circle {
+    stroke: #10b981;
+    fill: #10b981;
+}
+.mm-node.practiced-node circle {
+    stroke: #8b5cf6;
+    fill: #8b5cf6;
+}
+.mm-node.learned-node circle {
+    stroke: #3b82f6;
+    fill: #3b82f6;
+}
+
+/* Light Theme overrides for Tailwind classes to keep the HTML clean */
+body.light-theme .text-gray-100 { color: #0f172a !important; }
+body.light-theme .text-gray-200 { color: #1e293b !important; }
+body.light-theme .text-gray-300 { color: #334155 !important; }
+body.light-theme .text-gray-400 { color: #475569 !important; }
+body.light-theme .text-gray-500 { color: #64748b !important; }
+body.light-theme .text-white { color: #0f172a !important; }
+
+body.light-theme .border-white\/5 { border-color: rgba(0, 0, 0, 0.08) !important; }
+body.light-theme .border-white\/10 { border-color: rgba(0, 0, 0, 0.12) !important; }
+body.light-theme .bg-white\/2px { background-color: rgba(0, 0, 0, 0.02) !important; }
+body.light-theme .bg-white\/5 { background-color: rgba(0, 0, 0, 0.03) !important; }
+body.light-theme .bg-bgCard\/60 { background-color: rgba(255, 255, 255, 0.6) !important; }
+
+/* Light Theme Mind Map nodes styling overrides */
+body.light-theme .mm-node.subject circle { fill: rgba(99, 102, 241, 0.12); }
+body.light-theme .mm-node.topic circle { fill: rgba(241, 245, 249, 0.9); }
+
+/* Floating Island Header Style */
+header {
+    position: sticky !important;
+    top: 1rem !important;
+    z-index: 100 !important; /* Ensure it floats above chart nodes & interactive cards */
+    margin: 1rem auto 1.5rem auto !important;
+    width: 95% !important;
+    max-width: 1200px !important;
+    border-radius: 1.5rem !important; /* rounded-2xl */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(18, 18, 33, 0.8) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+body.light-theme header {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(99, 102, 241, 0.12) !important;
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Shrink state (Dissolves outer frame smoothly, leaving only the inner floating island) */
+header.header-shrink {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important; /* Disable full-width blurry band */
+    pointer-events: none !important; /* Allow clicking through transparent header regions */
+}
+
+header.header-shrink nav {
+    background-color: rgba(18, 18, 33, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(10px) !important;
+    pointer-events: auto !important; /* Keep navbar buttons clickable */
+    transition: all 0.3s ease;
+}
+
+body.light-theme header.header-shrink nav {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.18) !important;
+}
+
+/* Transitions for sub-elements in header */
+header #header-page-title,
+header span.text-accentCyan,
+header .fa-circle-nodes,
+header .hidden.lg\:flex,
+header .text-\[8px\] {
+    transition: all 0.2s ease-in-out !important;
+}
+
+header.header-shrink #header-page-title,
+header.header-shrink span.text-accentCyan,
+header.header-shrink .fa-circle-nodes,
+header.header-shrink .hidden.lg\:flex,
+header.header-shrink .text-\[8px\] {
+    opacity: 0 !important;
+    max-width: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Shrink adjustments for inner layout alignment */
+header.header-shrink .max-w-7xl > div {
+    justify-content: center !important;
+    gap: 0.75rem !important;
+}
+header.header-shrink .w-9.h-9.rounded-xl {
+    display: none !important;
+}
+
+/* Card Flip 3D Perspective Rules */
+.perspective {
+    perspective: 1000px;
+}
+.transform-style {
+    transform-style: preserve-3d;
+}
+.backface-hidden {
+    backface-visibility: hidden;
+}
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+.vocab-card-inner {
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+}
+.flipped .vocab-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Weak Area Red Alerts */
+.red-alert-flag {
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.4) !important;
+    border-color: rgba(244, 63, 94, 0.5) !important;
+    background-color: rgba(244, 63, 94, 0.1) !important;
+    color: #f43f5e !important;
+    animation: pulse-red-alert 2s infinite ease-in-out;
+}
+
+@keyframes pulse-red-alert {
+    0%, 100% { border-color: rgba(244, 63, 94, 0.3); }
+    50% { border-color: rgba(244, 63, 94, 0.9); }
+}
+
+/* Mind Map alert node overrides */
+.mm-node.alert-node circle {
+    stroke: #f43f5e !important;
+    fill: rgba(244, 63, 94, 0.15) !important;
+    animation: pulse-red-shadow 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-red-shadow {
+    0%, 100% { stroke-width: 2px; }
+    50% { stroke-width: 4px; }
+}
+
+/* Speed Drills Bottom Centering Layout */
+#page-speed {
+    padding-bottom: 25vh !important;
+}
