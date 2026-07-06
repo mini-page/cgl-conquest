@@ -3,7 +3,66 @@
    ========================================================================== */
 
 // 1. SYLLABUS DATABASE
-const SYLLABUS_DATA = [
+
+// Live Placeholders for Decoupled JSON Data
+let SYLLABUS_DATA = [];
+let PLAN_DATA = [];
+let FLASHCARDS = [];
+let ENGLISH_QUESTIONS = [];
+let REASONING_QUESTIONS = [];
+let COMP_QUESTIONS = [];
+let GK_QUESTIONS = [];
+
+async function loadApplicationData() {
+    const isLocalFilesystem = (window.location.protocol === "file:");
+    
+    if (isLocalFilesystem) {
+        console.warn("Direct filesystem access detected (CORS restrictions apply). Falling back to embedded core datasets.");
+        loadEmbeddedFallbackData();
+        return;
+    }
+
+    try {
+        const [syllabusRes, planRes, vocabRes, quizzesRes] = await Promise.all([
+            fetch("data/syllabus.json"),
+            fetch("data/plan.json"),
+            fetch("data/vocab.json"),
+            fetch("data/quizzes.json")
+        ]);
+
+        if (!syllabusRes.ok || !planRes.ok || !vocabRes.ok || !quizzesRes.ok) {
+            throw new Error("HTTP response status not OK");
+        }
+
+        SYLLABUS_DATA = await syllabusRes.json();
+        PLAN_DATA = await planRes.json();
+        FLASHCARDS = await vocabRes.json();
+        
+        const quizzes = await quizzesRes.json();
+        ENGLISH_QUESTIONS = quizzes.english;
+        REASONING_QUESTIONS = quizzes.reasoning;
+        COMP_QUESTIONS = quizzes.computer;
+        GK_QUESTIONS = quizzes.gk;
+
+        console.log("Successfully loaded decoupled databases from external JSON files!");
+    } catch (err) {
+        console.error("Failed to fetch external JSON databases. Reverting to embedded core fallbacks:", err);
+        loadEmbeddedFallbackData();
+    }
+}
+
+function loadEmbeddedFallbackData() {
+    SYLLABUS_DATA = EMBEDDED_SYLLABUS_DATA;
+    PLAN_DATA = EMBEDDED_PLAN_DATA;
+    FLASHCARDS = EMBEDDED_FLASHCARDS;
+    ENGLISH_QUESTIONS = EMBEDDED_ENGLISH_QUESTIONS;
+    REASONING_QUESTIONS = EMBEDDED_REASONING_QUESTIONS;
+    COMP_QUESTIONS = EMBEDDED_COMP_QUESTIONS;
+    GK_QUESTIONS = EMBEDDED_GK_QUESTIONS;
+}
+
+
+const EMBEDDED_SYLLABUS_DATA = [
     // 1. QUANTITATIVE APTITUDE
     {
         id: "q-1",
@@ -522,7 +581,7 @@ const SYLLABUS_DATA = [
 
 // 2. 40-DAY STUDY ROADMAP MAPPING
 // Targets strictly focus on the four core subjects. Computer prep is delegated to daily drills in the background.
-const PLAN_DATA = [
+const EMBEDDED_PLAN_DATA = [
     // PHASE 1: Foundations & Easy Topics (Days 1-10)
     { day: 1, dayType: "study", phase: 1, name: "Shortcuts & Verbals Foundation", desc: "Set up speed tables, Noun rules, basic physics equations, and Coding-Decoding.", targets: ["q-10-6", "r-1-1", "e-1-1", "a-2-1"], test: "Vocabulary Drill 1", time: "4.5h" },
     { day: 2, dayType: "study", phase: 1, name: "Percentage & Analogy Basics", desc: "Build base for fractions percentage conversions. Practice letter analogy rules.", targets: ["q-1-1", "r-1-2", "r-2-1", "e-1-2"], test: "Reasoning Sectional 1", time: "4.5h" },
@@ -712,7 +771,8 @@ function initExamTargetEditor() {
 }
 
 // Initialize Application
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadApplicationData();
     loadStateFromStorage();
     initTheme();
     initNavigation();
@@ -2656,7 +2716,7 @@ function openDayDetailModal(dayNum) {
 // 14. SPEED DRILLS ("MAKE IT FAST"), FLASHCARDS & COMPUTER QUIZ ENGINES
 // ==========================================================================
 
-const FLASHCARDS = [
+const EMBEDDED_FLASHCARDS = [
     { word: "Pernicious", def: "Having a harmful effect, especially in a gradual or subtle way.", ex: "\"The pernicious influence of negative company.\"" },
     { word: "Supercilious", def: "Behaving or looking as though one thinks one is superior to others.", ex: "\"A supercilious lady who looked down on servants.\"" },
     { word: "Ephemeral", def: "Lasting for a very short time; transient.", ex: "\"Fame is ephemeral, but knowledge stays.\"" },
@@ -2674,7 +2734,7 @@ const FLASHCARDS = [
     { word: "Frugal", def: "Sparing or economical with regard to money or food; simple.", ex: "\"Living a frugal life to save time and resources.\"" }
 ];
 
-const ENGLISH_QUESTIONS = [
+const EMBEDDED_ENGLISH_QUESTIONS = [
     { q: "Synonym of 'ABATE':", o: ["Diminish", "Increase", "Prolong", "Intensify"], a: 0 },
     { q: "Antonym of 'ALACRITY':", o: ["Enthusiasm", "Apathy", "Swiftness", "Zeal"], a: 1 },
     { q: "Find the correctly spelled word:", o: ["Committee", "Comitee", "Committe", "Comitte"], a: 0 },
@@ -2685,7 +2745,7 @@ const ENGLISH_QUESTIONS = [
     { q: "Identify the part of speech of the underlined word: 'She runs fast.'", o: ["Noun", "Adjective", "Adverb", "Verb"], a: 2 }
 ];
 
-const REASONING_QUESTIONS = [
+const EMBEDDED_REASONING_QUESTIONS = [
     { q: "Complete the series: 3, 7, 15, 31, 63, ?", o: ["127", "95", "128", "125"], a: 0 },
     { q: "If 'MONKEY' is coded as 'XDJMNL', how is 'TIGER' coded?", o: ["SDFHS", "QDFHS", "QDYTR", "SDFTR"], a: 1 },
     { q: "In a family, A is B's brother, C is A's father, D is C's mother. How is B related to D?", o: ["Grandson", "Granddaughter", "Grandchild", "Daughter-in-law"], a: 2 },
@@ -2698,7 +2758,7 @@ const REASONING_QUESTIONS = [
     { q: "Which number replaces the question mark? 12 : 144 :: 13 : ?", o: ["169", "156", "182", "196"], a: 0, d: "medium" }
 ];
 
-const COMP_QUESTIONS = [
+const EMBEDDED_COMP_QUESTIONS = [
     { q: "Which of the following keyboard shortcut is used to close the active application window in MS Windows OS?", o: ["Alt + F4", "Ctrl + C", "Win + L", "Alt + Tab"], a: 0, d: "easy" },
     { q: "What is the default port number used by HTTPS (Secure Hypertext Protocol)?", o: ["Port 80", "Port 21", "Port 443", "Port 22"], a: 2, d: "easy" },
     { q: "Which keyboard command opens the 'Run' utility dialog box in Windows OS?", o: ["Win + R", "Win + E", "Win + D", "Ctrl + Shift + Esc"], a: 0, d: "easy" },
@@ -2709,6 +2769,20 @@ const COMP_QUESTIONS = [
     { q: "What malware encrypts the user's hard drive files and demands payment to decrypt them?", o: ["Ransomware", "Trojan", "Adware", "Rootkit"], a: 0, d: "hard" },
     { q: "A firewall is primarily used in networking systems to protect against which of the following?", o: ["Virus transmission in flash drives", "Unauthorized incoming/outgoing network access", "Power supply fluctuations", "Physical theft of hard disks"], a: 1, d: "hard" },
     { q: "Which type of malware replicates itself across computer networks without needing to attach to a host file?", o: ["Trojan Horse", "Ransomware", "Worm", "Spyware"], a: 2, d: "hard" }
+];
+
+const EMBEDDED_GK_QUESTIONS = [
+    { q: "River Ganga originates from which of the following glaciers?", o: ["Yamunotri", "Gangotri", "Alkapuri", "Milam"], a: 1, d: "easy" },
+    { q: "Which river is also known as 'Dakshin Ganga' due to its length and size?", o: ["Krishna", "Cauvery", "Godavari", "Mahanadi"], a: 2, d: "easy" },
+    { q: "On which river is the Sardar Sarovar Dam constructed?", o: ["Narmada", "Tapi", "Sabarmati", "Mahi"], a: 0, d: "easy" },
+    { q: "Which of the following is the highest peak in the Western Ghats of India?", o: ["Doda Betta", "Anamudi", "Mahendragiri", "Kalsubai"], a: 1, d: "medium" },
+    { q: "The Kanchenjunga peak, the third highest mountain in the world, is located in which Indian state?", o: ["Uttarakhand", "Himachal Pradesh", "Sikkim", "Arunachal Pradesh"], a: 2, d: "medium" },
+    { q: "Which is the longest dam in India, built across the Mahanadi river in Odisha?", o: ["Tehri Dam", "Bhakra Dam", "Hirakud Dam", "Nagarjuna Sagar Dam"], a: 2, d: "medium" },
+    { q: "Which boundary line separates the territories of India and China?", o: ["Radcliffe Line", "McMahon Line", "Durand Line", "Line of Control"], a: 1, d: "medium" },
+    { q: "In which year did the famous Battle of Haldighati take place between Akbar and Maharana Pratap?", o: ["1556", "1576", "1526", "1586"], a: 1, d: "hard" },
+    { q: "Who was the founder of the ancient Maurya Dynasty in India?", o: ["Ashoka", "Chandragupta Maurya", "Bindusara", "Chandragupta I"], a: 1, d: "hard" },
+    { q: "The historic First Battle of Panipat was fought in which year?", o: ["1526", "1556", "1761", "1530"], a: 0, d: "hard" },
+    { q: "In which year did Mahatma Gandhi lead the Dandi Salt March?", o: ["1920", "1930", "1942", "1919"], a: 1, d: "hard" }
 ];
 
 // Calculation Drills & Sectional Challenge States
@@ -3053,6 +3127,76 @@ function initSpeedDrillsPage() {
     renderEnglishQuestion();
     renderReasoningQuestion();
     renderComputerQuestion();
+
+    // 6. GK Quiz Initializer
+    let currentGkQIndex = 0;
+    let gkAttempts = 0;
+    let gkCorrect = 0;
+
+    const renderGkQuestion = () => {
+        if (isChallengeActive) return; 
+        if (!GK_QUESTIONS || GK_QUESTIONS.length === 0) return;
+        const item = GK_QUESTIONS[currentGkQIndex];
+        const qNum = document.getElementById("gk-q-num");
+        const qText = document.getElementById("gk-q-text");
+
+        if (qNum) qNum.innerText = currentGkQIndex + 1;
+        if (qText) qText.innerText = item.q;
+
+        const optionsContainer = document.getElementById("gk-options");
+        if (!optionsContainer) return;
+        
+        optionsContainer.innerHTML = "";
+
+        item.o.forEach((option, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "gk-opt-btn w-full text-left p-3 rounded-xl border border-white/5 hover:border-accentGreen bg-white/2px hover:bg-white/5 transition text-xs font-semibold text-gray-300";
+            btn.innerText = option;
+            btn.onclick = () => {
+                gkAttempts++;
+                const buttons = optionsContainer.querySelectorAll(".gk-opt-btn");
+                buttons.forEach((b, bIdx) => {
+                    b.disabled = true;
+                    if (bIdx === item.a) {
+                        b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
+                    } else if (bIdx === idx) {
+                        b.className = b.className.replace("border-white/5", "border-accentRose bg-accentRose/15 text-accentRose");
+                    }
+                });
+
+                if (idx === item.a) {
+                    gkCorrect++;
+                    speakText("Correct answer");
+                } else {
+                    speakText("Incorrect answer");
+                }
+
+                const scoreEl = document.getElementById("gk-quiz-score");
+                if (scoreEl) scoreEl.innerText = `Score: ${gkCorrect}/${gkAttempts}`;
+
+                setTimeout(() => {
+                    currentGkQIndex = (currentGkQIndex + 1) % GK_QUESTIONS.length;
+                    renderGkQuestion();
+                }, 1800);
+            };
+            optionsContainer.appendChild(btn);
+        });
+    };
+
+    const resetGkBtn = document.getElementById("btn-gk-reset");
+    if (resetGkBtn) {
+        resetGkBtn.onclick = () => {
+            if (isChallengeActive) return;
+            currentGkQIndex = 0;
+            gkAttempts = 0;
+            gkCorrect = 0;
+            const scoreEl = document.getElementById("gk-quiz-score");
+            if (scoreEl) scoreEl.innerText = "Score: 0/0";
+            renderGkQuestion();
+        };
+    }
+
+    renderGkQuestion();
 }
 
 function flipVocabCard() {
@@ -3062,12 +3206,44 @@ function flipVocabCard() {
 
 function generateMathOptions(correct) {
     const options = new Set([correct]);
-    while (options.size < 4) {
-        const offsets = [-3, -2, -1, 1, 2, 3, -10, 10, -5, 5, -20, 20];
-        const offset = offsets[Math.floor(Math.random() * offsets.length)];
-        const distractor = correct + offset;
-        if (distractor > 0 && distractor !== correct) {
-            options.add(distractor);
+    
+    if (typeof correct === "string") {
+        if (correct.length === 1 && correct >= "A" && correct <= "Z") {
+            // Letter mapping
+            while (options.size < 4) {
+                const charCode = correct.charCodeAt(0);
+                const offset = Math.floor(Math.random() * 9) - 4; // -4 to +4
+                const distractorCode = charCode + offset;
+                if (distractorCode >= 65 && distractorCode <= 90 && distractorCode !== charCode) {
+                    options.add(String.fromCharCode(distractorCode));
+                }
+            }
+        } else if (correct.includes("/") || correct.includes("√") || correct === "Not Defined" || correct.includes("θ") || correct.includes("sec") || correct.includes("cosec") || correct.includes("sin") || correct.includes("cos")) {
+            // Fraction & Trig mapping
+            const allFracs = ["1/2", "1/3", "2/3", "1/4", "3/4", "1/5", "2/5", "3/5", "4/5", "1/6", "5/6", "1/8", "3/8", "5/8", "7/8", "1/12", "1/15", "1/16", "1/10", "1/√2", "√3/2", "1/1.414", "1/√3", "√3", "Not Defined", "sec²θ", "cosec²θ", "cot θ", "cos θ", "sin θ"];
+            while (options.size < 4) {
+                const rand = allFracs[Math.floor(Math.random() * allFracs.length)];
+                if (rand !== correct) options.add(rand);
+            }
+        } else if (correct.includes("%")) {
+            // Percentage mapping
+            const allPercs = ["50%", "33.33%", "66.67%", "25%", "75%", "20%", "40%", "60%", "80%", "16.67%", "83.33%", "12.5%", "37.5%", "62.5%", "87.5%", "8.33%", "6.67%", "6.25%", "10%"];
+            while (options.size < 4) {
+                const rand = allPercs[Math.floor(Math.random() * allPercs.length)];
+                if (rand !== correct) options.add(rand);
+            }
+        } else if (correct.includes(":")) {
+            // Centroid ratio or similar ratio string
+            return [correct, "1:2", "3:1", "1:1"].sort(() => Math.random() - 0.5);
+        }
+    } else {
+        while (options.size < 4) {
+            const offsets = [-3, -2, -1, 1, 2, 3, -10, 10, -5, 5, -20, 20];
+            const offset = offsets[Math.floor(Math.random() * offsets.length)];
+            const distractor = correct + offset;
+            if (distractor > 0 && distractor !== correct) {
+                options.add(distractor);
+            }
         }
     }
     return Array.from(options).sort(() => Math.random() - 0.5);
@@ -3131,43 +3307,155 @@ function generateDrillQuestion() {
         const type = Math.floor(Math.random() * 6); 
 
         if (type === 0) {
-            questionText = `If a = ${a}, b = ${b}, find value of a + b`;
+            questionText = `If a = 	ext{a}, b = 	ext{b}, find value of a + b`.replace('a', a).replace('b', b);
             answer = a + b;
         } else if (type === 1) {
-            questionText = `If a = ${a}, b = ${b}, find value of a - b`;
+            questionText = `If a = 	ext{a}, b = 	ext{b}, find value of a - b`.replace('a', a).replace('b', b);
             answer = a - b;
         } else if (type === 2) {
-            questionText = `If a = ${a}, b = ${b}, find value of ab`;
+            questionText = `If a = 	ext{a}, b = 	ext{b}, find value of ab`.replace('a', a).replace('b', b);
             answer = a * b;
         } else if (type === 3) {
-            questionText = `If a = ${a}, b = ${b}, find value of a² - b²`;
+            questionText = `If a = 	ext{a}, b = 	ext{b}, find value of a² - b²`.replace('a', a).replace('b', b);
             answer = (a * a) - (b * b);
         } else if (type === 4) {
-            questionText = `If a = ${a}, b = ${b}, find value of a² + b²`;
+            questionText = `If a = 	ext{a}, b = 	ext{b}, find value of a² + b²`.replace('a', a).replace('b', b);
             answer = (a * a) + (b * b);
-        } else if (drillMode === "lcm") {
+        } else {
+            questionText = `If a = 	ext{a}, b = 	ext{b}, find value of (a-b)²`.replace('a', a).replace('b', b);
+            answer = (a - b) * (a - b);
+        }
+    } else if (drillMode === "lcm") {
+        const list = [
+            { n: [2, 3, 4], a: 12 }, { n: [3, 4, 6], a: 12 }, { n: [4, 6, 8], a: 24 },
+            { n: [6, 8, 12], a: 24 }, { n: [5, 10, 15], a: 30 }, { n: [6, 9, 12], a: 36 },
+            { n: [8, 12, 16], a: 48 }, { n: [10, 12, 15], a: 60 }, { n: [12, 15, 20], a: 60 },
+            { n: [8, 12, 15], a: 120 }, { n: [12, 16, 24], a: 48 }, { n: [15, 20, 30], a: 60 },
+            { n: [9, 12, 18], a: 36 }
+        ];
+        const item = list[Math.floor(Math.random() * list.length)];
+        const shuffled = [...item.n].sort(() => Math.random() - 0.5);
+        questionText = `LCM of (${shuffled.join(", ")}) = ?`;
+        answer = item.a;
+    } else if (drillMode === "hcf") {
+        const f = Math.floor(Math.random() * 12) + 2; // HCF factor 2 to 14
+        const multipliers = [
+            [2, 3, 5], [2, 5, 7], [3, 4, 5], [3, 5, 7], [2, 3, 7], [4, 5, 7]
+        ];
+        const mults = multipliers[Math.floor(Math.random() * multipliers.length)];
+        questionText = `HCF of (${f * mults[0]}, ${f * mults[1]}, ${f * mults[2]}) = ?`;
+        answer = f;
+    } else if (drillMode === "alphabets") {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const chosenChar = letters[Math.floor(Math.random() * letters.length)];
+        const type = Math.floor(Math.random() * 3); // 0 = forward, 1 = backward, 2 = opposite
+        
+        if (type === 0) {
+            questionText = `Position of Letter '${chosenChar}' = ?`;
+            answer = chosenChar.charCodeAt(0) - 64; // A=1
+        } else if (type === 1) {
+            questionText = `Reverse Position of '${chosenChar}' (A=26) = ?`;
+            answer = 27 - (chosenChar.charCodeAt(0) - 64); // A=26
+        } else {
+            questionText = `Opposite Letter of '${chosenChar}' = ?`;
+            answer = String.fromCharCode(155 - chosenChar.charCodeAt(0)); // A <-> Z
+        }
+    } else if (drillMode === "fracPerc") {
+        const fracPercPairs = [
+            { f: "1/2", p: "50%" }, { f: "1/3", p: "33.33%" }, { f: "2/3", p: "66.67%" },
+            { f: "1/4", p: "25%" }, { f: "3/4", p: "75%" }, { f: "1/5", p: "20%" },
+            { f: "2/5", p: "40%" }, { f: "3/5", p: "60%" }, { f: "4/5", p: "80%" },
+            { f: "1/6", p: "16.67%" }, { f: "5/6", p: "83.33%" }, { f: "1/7", p: "14.28%" },
+            { f: "1/8", p: "12.5%" }, { f: "3/8", p: "37.5%" }, { f: "5/8", p: "62.5%" },
+            { f: "7/8", p: "87.5%" }, { f: "1/9", p: "11.11%" }, { f: "1/11", p: "9.09%" },
+            { f: "1/12", p: "8.33%" }, { f: "1/15", p: "6.67%" }, { f: "1/16", p: "6.25%" }
+        ];
+        const item = fracPercPairs[Math.floor(Math.random() * fracPercPairs.length)];
+        const type = Math.floor(Math.random() * 2); // 0 = fraction to percent, 1 = percent to fraction
+        if (type === 0) {
+            questionText = `Percentage value of fraction '${item.f}' = ?`;
+            answer = item.p;
+        } else {
+            questionText = `Fraction value of percentage '${item.p}' = ?`;
+            answer = item.f;
+        }
+    } else if (drillMode === "geomCenters") {
+        const type = Math.floor(Math.random() * 6);
+        if (type === 0) {
+            // Incenter angle: 90 + A/2
+            const a = (Math.floor(Math.random() * 9) + 4) * 10; // 40, 50, ..., 120
+            questionText = `In △ABC, I is Incenter. If ∠A = 	ext{a}°, find ∠BIC.`.replace('a', a);
+            answer = 90 + (a / 2);
+        } else if (type === 1) {
+            // Orthocenter angle: 180 - A
+            const a = (Math.floor(Math.random() * 10) + 4) * 10; // 40, 50, ..., 130
+            questionText = `In △ABC, O is Orthocenter. If ∠A = 	ext{a}°, find ∠BOC.`.replace('a', a);
+            answer = 180 - a;
+        } else if (type === 2) {
+            // Circumcenter angle: 2A
+            const a = (Math.floor(Math.random() * 6) + 3) * 10; // 30, 40, ..., 80
+            questionText = `In △ABC, C is Circumcenter. If ∠A = 	ext{a}°, find ∠BOC.`.replace('a', a);
+            answer = 2 * a;
+        } else if (type === 3) {
+            // Inradius of right triangle: (a+b-c)/2
+            const triplets = [
+                [3, 4, 5], [5, 12, 13], [8, 15, 17], [6, 8, 10], [9, 12, 15]
+            ];
+            const rip = triplets[Math.floor(Math.random() * triplets.length)];
+            questionText = `In right △ABC (sides ${rip[0]}, ${rip[1]}, ${rip[2]}), find Inradius.`;
+            answer = (rip[0] + rip[1] - rip[2]) / 2;
+        } else if (type === 4) {
+            // Circumradius of right triangle: c/2
+            const triplets = [
+                [3, 4, 5], [5, 12, 13], [8, 15, 17], [6, 8, 10], [10, 24, 26]
+            ];
+            const rip = triplets[Math.floor(Math.random() * triplets.length)];
+            questionText = `In right △ABC (hypotenuse ${rip[2]}), find Circumradius.`;
+            answer = rip[2] / 2;
+        } else {
+            // Centroid median segment ratio
+            questionText = `Centroid G divides median AD from vertex (AG:GD) in ratio = ?`;
+            answer = "2:1";
+        }
+    } else if (drillMode === "trigReflex") {
+        const type = Math.floor(Math.random() * 4);
+        if (type === 0) {
+            // Standard Sine values
             const list = [
-                { n: [2, 3, 4], a: 12 }, { n: [3, 4, 6], a: 12 }, { n: [4, 6, 8], a: 24 },
-                { n: [6, 8, 12], a: 24 }, { n: [5, 10, 15], a: 30 }, { n: [6, 9, 12], a: 36 },
-                { n: [8, 12, 16], a: 48 }, { n: [10, 12, 15], a: 60 }, { n: [12, 15, 20], a: 60 },
-                { n: [8, 12, 15], a: 120 }, { n: [12, 16, 24], a: 48 }, { n: [15, 20, 30], a: 60 },
-                { n: [9, 12, 18], a: 36 }
+                { q: "sin(0°)", a: "0" }, { q: "sin(30°)", a: "1/2" },
+                { q: "sin(45°)", a: "1/√2" }, { q: "sin(60°)", a: "√3/2" }, { q: "sin(90°)", a: "1" }
             ];
             const item = list[Math.floor(Math.random() * list.length)];
-            const shuffled = [...item.n].sort(() => Math.random() - 0.5);
-            questionText = `LCM of (${shuffled.join(", ")}) = ?`;
+            questionText = `Evaluate: ${item.q} = ?`;
             answer = item.a;
-        } else if (drillMode === "hcf") {
-            const f = Math.floor(Math.random() * 12) + 2; // HCF factor 2 to 14
-            const multipliers = [
-                [2, 3, 5], [2, 5, 7], [3, 4, 5], [3, 5, 7], [2, 3, 7], [4, 5, 7]
+        } else if (type === 1) {
+            // Standard Cosine values
+            const list = [
+                { q: "cos(0°)", a: "1" }, { q: "cos(30°)", a: "√3/2" },
+                { q: "cos(45°)", a: "1/√2" }, { q: "cos(60°)", a: "1/2" }, { q: "cos(90°)", a: "0" }
             ];
-            const mults = multipliers[Math.floor(Math.random() * multipliers.length)];
-            questionText = `HCF of (${f * mults[0]}, ${f * mults[1]}, ${f * mults[2]}) = ?`;
-            answer = f;
+            const item = list[Math.floor(Math.random() * list.length)];
+            questionText = `Evaluate: ${item.q} = ?`;
+            answer = item.a;
+        } else if (type === 2) {
+            // Standard Tangent values
+            const list = [
+                { q: "tan(0°)", a: "0" }, { q: "tan(30°)", a: "1/√3" },
+                { q: "tan(45°)", a: "1" }, { q: "tan(60°)", a: "√3" }, { q: "tan(90°)", a: "Not Defined" }
+            ];
+            const item = list[Math.floor(Math.random() * list.length)];
+            questionText = `Evaluate: ${item.q} = ?`;
+            answer = item.a;
         } else {
-            questionText = `If a = ${a}, b = ${b}, find value of (a-b)²`;
-            answer = (a - b) * (a - b);
+            // Trigonometric Identities
+            const list = [
+                { q: "sin²θ + cos²θ", a: "1" }, { q: "1 + tan²θ", a: "sec²θ" },
+                { q: "1 + cot²θ", a: "cosec²θ" }, { q: "sin(90° - θ)", a: "cos θ" },
+                { q: "cos(90° - θ)", a: "sin θ" }, { q: "tan(90° - θ)", a: "cot θ" }
+            ];
+            const item = list[Math.floor(Math.random() * list.length)];
+            questionText = `Identity: ${item.q} = ?`;
+            answer = item.a;
         }
     }
 
@@ -3210,12 +3498,12 @@ function generateDrillQuestion() {
                 feedback.innerText = "Timeout! Answer was " + drillAnswerVal + " ❌";
                 feedback.className = "text-xs font-semibold text-accentRose";
             }
-            if (scoreEl) scoreEl.innerText = `Score: ${drillCorrect}/${drillAttempts}`;
+            if (scoreEl) scoreEl.innerText = `Score: &apos;${drillCorrect}/${drillAttempts}&apos;`.replace(/&apos;/g, "'");
             
             const buttons = document.querySelectorAll(".math-opt-btn");
             buttons.forEach(b => {
                 b.disabled = true;
-                if (parseInt(b.innerText) === drillAnswerVal) {
+                if (b.innerText === String(drillAnswerVal)) {
                     b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
                 }
             });
@@ -3236,15 +3524,15 @@ function checkDrillAnswer(chosenVal) {
 
     buttons.forEach(b => {
         b.disabled = true;
-        const val = parseInt(b.innerText);
-        if (val === drillAnswerVal) {
+        const val = b.innerText;
+        if (val === String(drillAnswerVal)) {
             b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
-        } else if (val === chosenVal) {
+        } else if (val === String(chosenVal)) {
             b.className = b.className.replace("border-white/5", "border-accentRose bg-accentRose/15 text-accentRose");
         }
     });
 
-    if (chosenVal === drillAnswerVal) {
+    if (String(chosenVal) === String(drillAnswerVal)) {
         drillCorrect++;
         drillStreak++;
         if (feedback) {
@@ -3370,7 +3658,7 @@ function getChallengeQuestion(subject, difficulty) {
 function generateProceduralMathQuestion(difficulty) {
     let questionText = "";
     let answer = 0;
-    const modes = ["squares", "cubes", "tables", "fractions", "triplets", "algebra", "lcm", "hcf"];
+    const modes = ["squares", "cubes", "tables", "fracPerc", "triplets", "algebra", "lcm", "hcf", "geomCenters"];
     const mode = modes[Math.floor(Math.random() * modes.length)];
     
     if (difficulty === "easy") {
@@ -3387,11 +3675,20 @@ function generateProceduralMathQuestion(difficulty) {
             const n2 = Math.floor(Math.random() * 10) + 1; 
             questionText = `${n1} × ${n2} = ?`;
             answer = n1 * n2;
-        } else if (mode === "fractions") {
-            const list = [{ f: "1/2", a: 50 }, { f: "1/3", a: 33 }, { f: "1/4", a: 25 }, { f: "1/5", a: 20 }];
+        } else if (mode === "fracPerc") {
+            const list = [
+                { f: "1/2", p: "50%" }, { f: "1/3", p: "33.33%" }, { f: "1/4", p: "25%" },
+                { f: "1/5", p: "20%" }, { f: "1/10", p: "10%" }
+            ];
             const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `${item.f} as % (approx) = ?`;
-            answer = item.a;
+            const type = Math.floor(Math.random() * 2);
+            if (type === 0) {
+                questionText = `Percentage value of fraction '${item.f}' = ?`;
+                answer = item.p;
+            } else {
+                questionText = `Fraction value of percentage '${item.p}' = ?`;
+                answer = item.f;
+            }
         } else if (mode === "triplets") {
             const base = [[3, 4, 5], [5, 12, 13]];
             const trip = base[Math.floor(Math.random() * base.length)];
@@ -3414,6 +3711,15 @@ function generateProceduralMathQuestion(difficulty) {
             const mults = multipliers[Math.floor(Math.random() * multipliers.length)];
             questionText = `HCF of (${f * mults[0]}, ${f * mults[1]}, ${f * mults[2]}) = ?`;
             answer = f;
+        } else if (mode === "geomCenters") {
+            const type = Math.floor(Math.random() * 2);
+            if (type === 0) {
+                questionText = `Centroid G divides median AD from vertex (AG:GD) in ratio = ?`;
+                answer = "2:1";
+            } else {
+                questionText = `Circumradius of right △ABC with sides 6, 8, 10 (hypotenuse 10) = ?`;
+                answer = 5;
+            }
         } else {
             const a = Math.floor(Math.random() * 4) + 2; 
             const b = Math.floor(Math.random() * 2) + 1; 
@@ -3443,11 +3749,21 @@ function generateProceduralMathQuestion(difficulty) {
             const n2 = Math.floor(Math.random() * 10) + 1; 
             questionText = `${n1} × ${n2} = ?`;
             answer = n1 * n2;
-        } else if (mode === "fractions") {
-            const list = [{ f: "1/6", a: 16 }, { f: "1/8", a: 12 }, { f: "1/10", a: 10 }];
+        } else if (mode === "fracPerc") {
+            const list = [
+                { f: "2/3", p: "66.67%" }, { f: "3/4", p: "75%" }, { f: "2/5", p: "40%" },
+                { f: "3/5", p: "60%" }, { f: "4/5", p: "80%" }, { f: "1/6", p: "16.67%" },
+                { f: "1/8", p: "12.5%" }
+            ];
             const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `${item.f} as % (approx) = ?`;
-            answer = item.a;
+            const type = Math.floor(Math.random() * 2);
+            if (type === 0) {
+                questionText = `Percentage value of fraction '${item.f}' = ?`;
+                answer = item.p;
+            } else {
+                questionText = `Fraction value of percentage '${item.p}' = ?`;
+                answer = item.f;
+            }
         } else if (mode === "triplets") {
             const base = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [20, 21, 29]];
             const selected = base[Math.floor(Math.random() * base.length)];
@@ -3471,6 +3787,16 @@ function generateProceduralMathQuestion(difficulty) {
             const mults = multipliers[Math.floor(Math.random() * multipliers.length)];
             questionText = `HCF of (${f * mults[0]}, ${f * mults[1]}, ${f * mults[2]}) = ?`;
             answer = f;
+        } else if (mode === "geomCenters") {
+            const type = Math.floor(Math.random() * 2);
+            const a = (Math.floor(Math.random() * 5) + 4) * 10; // 40 to 80
+            if (type === 0) {
+                questionText = `In △ABC, I is Incenter. If ∠A = ${a}°, find ∠BIC.`;
+                answer = 90 + (a / 2);
+            } else {
+                questionText = `In △ABC, C is Circumcenter. If ∠A = ${a}°, find ∠BOC.`;
+                answer = 2 * a;
+            }
         } else {
             const a = Math.floor(Math.random() * 5) + 5; 
             const b = Math.floor(Math.random() * 3) + 2; 
@@ -3500,15 +3826,22 @@ function generateProceduralMathQuestion(difficulty) {
             const n2 = Math.floor(Math.random() * 10) + 1; 
             questionText = `${n1} × ${n2} = ?`;
             answer = n1 * n2;
-        } else if (mode === "fractions") {
+        } else if (mode === "fracPerc") {
             const list = [
-                { f: "1/7", a: 14 }, { f: "1/9", a: 11 }, { f: "1/11", a: 9 },
-                { f: "1/12", a: 8 }, { f: "1/15", a: 6 }, { f: "1/16", a: 6 },
-                { f: "3/8", a: 37 }, { f: "5/8", a: 62 }
+                { f: "5/6", p: "83.33%" }, { f: "1/7", p: "14.28%" }, { f: "3/8", p: "37.5%" },
+                { f: "5/8", p: "62.5%" }, { f: "7/8", p: "87.5%" }, { f: "1/9", p: "11.11%" },
+                { f: "1/11", p: "9.09%" }, { f: "1/12", p: "8.33%" }, { f: "1/15", p: "6.67%" },
+                { f: "1/16", p: "6.25%" }
             ];
             const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `${item.f} as % (approx) = ?`;
-            answer = item.a;
+            const type = Math.floor(Math.random() * 2);
+            if (type === 0) {
+                questionText = `Percentage value of fraction '${item.f}' = ?`;
+                answer = item.p;
+            } else {
+                questionText = `Fraction value of percentage '${item.p}' = ?`;
+                answer = item.f;
+            }
         } else if (mode === "triplets") {
             const base = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25], [20, 21, 29]];
             const selected = base[Math.floor(Math.random() * base.length)];
@@ -3532,6 +3865,18 @@ function generateProceduralMathQuestion(difficulty) {
             const mults = multipliers[Math.floor(Math.random() * multipliers.length)];
             questionText = `HCF of (${f * mults[0]}, ${f * mults[1]}, ${f * mults[2]}) = ?`;
             answer = f;
+        } else if (mode === "geomCenters") {
+            const type = Math.floor(Math.random() * 2);
+            if (type === 0) {
+                const a = (Math.floor(Math.random() * 6) + 5) * 10; // 50 to 100
+                questionText = `In △ABC, O is Orthocenter. If ∠A = ${a}°, find ∠BOC.`;
+                answer = 180 - a;
+            } else {
+                const triplets = [[3, 4, 5], [5, 12, 13], [8, 15, 17], [6, 8, 10]];
+                const rip = triplets[Math.floor(Math.random() * triplets.length)];
+                questionText = `Find Inradius of right △ABC with sides 	ext{sides}.`.replace('sides', rip.join(', '));
+                answer = (rip[0] + rip[1] - rip[2]) / 2;
+            }
         } else {
             const finalA = Math.floor(Math.random() * 6) + 4; 
             const finalB = Math.floor(Math.random() * 3) + 1; 
@@ -3539,12 +3884,12 @@ function generateProceduralMathQuestion(difficulty) {
             if (type === 0) {
                 const sum = finalA + finalB;
                 const prod = finalA * finalB;
-                questionText = `If a+b = ${sum}, ab = ${prod}, find a² + b²`;
+                questionText = `If a+b = 	ext{sum}, ab = 	ext{prod}, find a² + b²`.replace(/\text{sum}/, sum).replace(/\text{prod}/, prod);
                 answer = (finalA * finalA) + (finalB * finalB);
             } else {
                 const diff = finalA - finalB;
                 const prod = finalA * finalB;
-                questionText = `If a-b = ${diff}, ab = ${prod}, find a² + b²`;
+                questionText = `If a-b = 	ext{diff}, ab = 	ext{prod}, find a² + b²`.replace(/\text{diff}/, diff).replace(/\text{prod}/, prod);
                 answer = (finalA * finalA) + (finalB * finalB);
             }
         }
