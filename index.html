@@ -39,6 +39,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom Overrides Stylesheet -->
     <link rel="stylesheet" href="style.css">
+    <!-- PWA Manifest & Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d0e12">
+    <link rel="apple-touch-icon" href="icon.svg">
     <!-- KaTeX Math Rendering CDNs -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -581,6 +585,7 @@
                         <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-cyan-300 bg-cyan-950/20 border border-cyan-800/30" data-target="tk-computer">💻 Computer Tier-2</button>
                         <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-purple-300" data-target="tk-custom">✏️ Custom Notes</button>
                         <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-rose-300 bg-rose-950/20 border border-rose-800/30" data-target="tk-laws">⚖️ Fixed vs. Conditional</button>
+                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-accentAmber bg-amber-950/20 border border-amber-800/30" data-target="tk-patterns">📊 SSC CGL Weightage</button>
                     </div>
 
                     <!-- Tab panels -->
@@ -1137,6 +1142,106 @@
                             </div>
                         </div>
 
+                        <!-- TAB: WEIGHTAGE PATTERNS -->
+                        <div id="tk-patterns" class="toolkit-panel hidden space-y-4">
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">📊 SSC CGL Weightage Patterns &amp; Core Obsession Topics (Last 5 Years)</h3>
+                            <p class="text-xs text-gray-400 border-l-2 border-accentAmber pl-3">A structural breakdown of the high-weight topics that SSC repeatedly tests, analyzed from historical PYQs. Study these checklists before practicing.</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Card 1: Quantitative Aptitude -->
+                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
+                                        <h4 class="text-xs font-bold text-accentCyan uppercase"><i class="fa-solid fa-calculator mr-1"></i> Quantitative Aptitude Core Strategy</h4>
+                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
+                                    </div>
+                                    <div class="space-y-2 text-xs text-gray-300">
+                                        <p><strong>Arithmetic (40-50%):</strong> Percentage (Direct &amp; successive), Profit &amp; Loss (CP/MP ratio, faulty weights), Average, SI &amp; CI (2/3 yr difference), and Mixture &amp; Alligation.</p>
+                                        <p><strong>Algebra:</strong> Linear equations (2 variables), Quadratic roots/coefficients, Algebraic identities (like $x+1/x=k$), and Surds/Indices.</p>
+                                        <p><strong>Geometry:</strong> Master triangle properties (centers, circumradius, inradius equations) instead of spending days on complex proofs.</p>
+                                        <p><strong>Mensuration:</strong> Rotating shapes (Cube, Cuboid, Cone, Sphere, Hemisphere). Learn formulas cold.</p>
+                                    </div>
+                                    <div class="border-t border-white/5 pt-2">
+                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
+                                        <div class="flex flex-wrap gap-2">
+                                            <a href="ssc_patterns/quant_topic_pyramid.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Topic Pyramid</a>
+                                            <a href="ssc_patterns/quant_arithmetic_core_pillars.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Arithmetic Pillars</a>
+                                            <a href="ssc_patterns/quant_algebra_core_targets.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Algebra Targets</a>
+                                            <a href="ssc_patterns/quant_geometry_properties_strategy.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Geometry Properties</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: General Intelligence & Reasoning -->
+                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
+                                        <h4 class="text-xs font-bold text-accentPurple uppercase"><i class="fa-solid fa-brain mr-1"></i> General Intelligence &amp; Reasoning</h4>
+                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
+                                    </div>
+                                    <div class="space-y-2 text-xs text-gray-300">
+                                        <p><strong>Series (Number &amp; Alphabet):</strong> Requires pattern recognition practice (do 200 questions). Jumps, alternations, prime numbers, etc.</p>
+                                        <p><strong>Coding-Decoding:</strong> Letter shifts, alphabetical position, and number coding rules. Looks complex but is highly logical.</p>
+                                        <p><strong>Direction &amp; Blood Relations:</strong> Always draw tree diagrams and paths. Solve in under 2 minutes combined.</p>
+                                        <p><strong>Non-Verbal Reasoning:</strong> Mirror image (left-right flip), Water image (top-bottom flip), Paper folding, Embedded figures. Zero memorization, only spatial thinking.</p>
+                                    </div>
+                                    <div class="border-t border-white/5 pt-2">
+                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
+                                        <div class="flex flex-wrap gap-2">
+                                            <a href="ssc_patterns/reasoning_series_patterns.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Series Patterns</a>
+                                            <a href="ssc_patterns/reasoning_coding_decoding.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Coding-Decoding</a>
+                                            <a href="ssc_patterns/reasoning_direction_blood_relations.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Direction &amp; Family</a>
+                                            <a href="ssc_patterns/reasoning_floor_box_puzzles.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Floor/Box Puzzles</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: English Language & Comprehension -->
+                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
+                                        <h4 class="text-xs font-bold text-accentRose uppercase"><i class="fa-solid fa-language mr-1"></i> English Language &amp; Comprehension</h4>
+                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
+                                    </div>
+                                    <div class="space-y-2 text-xs text-gray-300">
+                                        <p><strong>The Grammar Test:</strong> English score is heavily dependent on learning 8 core pillars (Subject-Verb agreement, Tenses, Pronouns, Voice, Narration, Prepositions, Articles, Conjunctions).</p>
+                                        <p><strong>Error Detection:</strong> Mechanical. SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, and Subject-Verb agreement.</p>
+                                        <p><strong>Cloze Test &amp; Passages:</strong> Cloze test is 80% grammar context. Passages are straightforward (not literary masterpieces)—read slowly, mark details, answer directly.</p>
+                                        <p><strong>Vocabulary:</strong> Master the PYQ bullseye first (clear preferences and repeating patterns). Do not blindly memorize random words.</p>
+                                    </div>
+                                    <div class="border-t border-white/5 pt-2">
+                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
+                                        <div class="flex flex-wrap gap-2">
+                                            <a href="ssc_patterns/english_biggest_shortcut.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Grammar Weight</a>
+                                            <a href="ssc_patterns/english_score_8_pillars.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Score Pillars</a>
+                                            <a href="ssc_patterns/english_error_detection_mechanical.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Error Detection</a>
+                                            <a href="ssc_patterns/english_cloze_comprehension.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Cloze Test</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card 4: General Awareness & History/Polity -->
+                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
+                                        <h4 class="text-xs font-bold text-accentAmber uppercase"><i class="fa-solid fa-globe mr-1"></i> General Awareness (GK/GS)</h4>
+                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
+                                    </div>
+                                    <div class="space-y-2 text-xs text-gray-300">
+                                        <p><strong>Ancient &amp; Medieval History:</strong> Buddhism &amp; Jainism (councils, teachings), Mauryan Empire (Ashoka, edicts, Kautilya), Gupta Empire (literature, science), and Mughals (Akbar's Mansabdari/Din-i-Ilahi, Jizya tax rules). Ignore obscure regional dates.</p>
+                                        <p><strong>Modern History:</strong> INC Swadeshi, Quit India movements, important personalities (Gandhi, Bose, Tilak, Bhagat), Acts (1773-1935), and Revolt of 1857 (causes, leaders).</p>
+                                        <p><strong>Polity:</strong> Fundamental Rights, Parliament (bills, sessions, committees), DPSP, and Amendments (42nd, 44th, 73rd, 74th, 86th).</p>
+                                        <p><strong>Economics &amp; Current Affairs:</strong> GDP vs GNP, RBI rate mechanics (Repo, Reverse Repo, CRR, SLR). Current affairs focus strictly on 5 areas: Awards, Govt Schemes, Sports, Days, and Int. Orgs.</p>
+                                    </div>
+                                    <div class="border-t border-white/5 pt-2">
+                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
+                                        <div class="flex flex-wrap gap-2">
+                                            <a href="ssc_patterns/history_ancient_medieval_clusters.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> History Core</a>
+                                            <a href="ssc_patterns/history_modern_big_6_checklist.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> Modern History</a>
+                                            <a href="ssc_patterns/polity_predictable_goldmine.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> Polity Goldmine</a>
+                                            <a href="ssc_patterns/current_affairs_key_categories.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> Current Affairs</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- TAB: CUSTOM NOTES WRITER -->
                         <div id="tk-custom" class="toolkit-panel hidden space-y-5">
                             <div class="bg-white/2px border border-white/5 rounded-xl p-4">
@@ -1512,6 +1617,28 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Floating Navigation Island -->
+    <nav id="mobile-floating-nav" class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-bgCard/90 backdrop-blur-lg border border-white/10 rounded-full p-1.5 flex gap-2 items-center shadow-2xl z-50 transition-all duration-300 transform translate-y-28 opacity-0">
+        <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" title="Dashboard">
+            <i class="fa-solid fa-chart-line text-sm"></i>
+        </a>
+        <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" title="Speed Drills">
+            <i class="fa-solid fa-bolt text-sm"></i>
+        </a>
+        <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" title="Study Toolkit">
+            <i class="fa-solid fa-toolbox text-sm"></i>
+        </a>
+        <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" title="40-Day Plan">
+            <i class="fa-solid fa-calendar-days text-sm"></i>
+        </a>
+        <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" title="Syllabus Tracker">
+            <i class="fa-solid fa-list-check text-sm"></i>
+        </a>
+        <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" title="Mock Analytics">
+            <i class="fa-solid fa-square-poll-vertical text-sm"></i>
+        </a>
+    </nav>
 
     <!-- Script Application -->
     <script src="app.js"></script>

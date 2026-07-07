@@ -1,0 +1,17 @@
+{
+  "name": "SSC CGL 40-Day Rank-Maker Dashboard",
+  "short_name": "CGL Conquest",
+  "description": "Rank-Maker Dashboard and study planner for SSC CGL 2026 preparation.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0e12",
+  "theme_color": "#0d0e12",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

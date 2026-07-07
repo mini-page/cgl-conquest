@@ -2,6 +2,15 @@
    SSC CGL Rank-Maker Dashboard - Application Logic (Tailwind Core Edition)
    ========================================================================== */
 
+// PWA Service Worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then((reg) => console.log('Service Worker registered successfully!', reg.scope))
+            .catch((err) => console.warn('Service Worker registration failed:', err));
+    });
+}
+
 // 1. SYLLABUS DATABASE
 
 // Live Placeholders for Decoupled JSON Data
@@ -670,24 +679,43 @@ function triggerMathTypesetting() {
 function initHeaderScroll() {
     let lastScrollY = window.scrollY;
     const header = document.querySelector("header");
+    const mobileFloatingNav = document.getElementById("mobile-floating-nav");
     
     if (!header) return;
     
     window.addEventListener("scroll", () => {
-        // Stop scroll-shrinking on mobile layout to avoid header jumpiness and navigation glitches
+        const currentScrollY = window.scrollY;
+        
         if (window.innerWidth < 768) {
-            header.classList.remove("header-shrink");
+            // Mobile layout scroll mechanics
+            if (currentScrollY > 60 && currentScrollY > lastScrollY) {
+                // Scrolling down: hide header, reveal floating bottom nav
+                header.style.transform = "translateY(-100%)";
+                header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+                if (mobileFloatingNav) {
+                    mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
+                    mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
+                }
+            } else if (currentScrollY < lastScrollY || currentScrollY <= 60) {
+                // Scrolling up or near top: reveal header, hide bottom floating nav
+                header.style.transform = "translateY(0)";
+                header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+                if (mobileFloatingNav) {
+                    mobileFloatingNav.classList.add("translate-y-28", "opacity-0");
+                    mobileFloatingNav.classList.remove("translate-y-0", "opacity-100");
+                }
+            }
+            lastScrollY = currentScrollY;
             return;
         }
 
-        const currentScrollY = window.scrollY;
+        // Desktop default state reset
+        header.style.transform = "";
+        header.style.transition = "";
         
-        // Scroll down past 80px: shrink header
         if (currentScrollY > 80 && currentScrollY > lastScrollY) {
             header.classList.add("header-shrink");
-        }
-        // Scroll up (even a little): expand header
-        else if (currentScrollY < lastScrollY) {
+        } else if (currentScrollY < lastScrollY) {
             header.classList.remove("header-shrink");
         }
         
@@ -1502,7 +1530,7 @@ function renderTreeHierarchy(filteredData) {
                         <div class="tree-topic-header flex items-center justify-between p-2.5 cursor-pointer hover:bg-white/2px select-none bg-white/2px">
                             <div class="flex items-center gap-2 text-xs font-semibold text-gray-200">
                                 <i class="fa-solid fa-folder text-accentCyan"></i>
-                                <span>${topicItem.topic}</span>
+                                <span>${isHighWeightTopic(topicItem.topic) ? '<i class="fa-solid fa-star text-accentAmber mr-1.5 animate-pulse" title="High-Weight Core Topic (SSC Obsession)"></i>' : ''}${topicItem.topic}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded">${topicDone}/${topicItem.subtopics.length} Done</span>
@@ -1638,7 +1666,7 @@ function renderTableLayout(filteredData) {
                         <strong class="${subClass} font-heading text-[10px] tracking-wide block">${topic.subject}</strong>
                         <span class="text-gray-500 text-[9px] uppercase font-bold">${topic.category || 'Core'}</span>
                     </td>
-                    <td class="px-4 py-2.5 font-semibold text-gray-200">${topic.topic}</td>
+                    <td class="px-4 py-2.5 font-semibold text-gray-200">${isHighWeightTopic(topic.topic) ? '<i class="fa-solid fa-star text-accentAmber mr-1.5" title="High-Weight Core Topic (SSC Obsession)"></i>' : ''}${topic.topic}</td>
                     <td class="px-4 py-2.5 text-gray-300">
                         <span class="flex items-center gap-1.5">
                             ${sub.name}
@@ -1744,7 +1772,7 @@ function renderCardsLayout(filteredData) {
                 <div class="flex justify-between items-start">
                     <div>
                         <span class="text-[9px] font-bold uppercase ${subClass}">${topic.subject}</span>
-                        <h3 class="text-xs font-bold text-white mt-0.5">${topic.topic}</h3>
+                        <h3 class="text-xs font-bold text-white mt-0.5">${isHighWeightTopic(topic.topic) ? '<i class="fa-solid fa-star text-accentAmber mr-1.5 animate-pulse" title="High-Weight Core Topic (SSC Obsession)"></i>' : ''}${topic.topic}</h3>
                     </div>
                     <span class="bg-white/5 border border-white/5 px-2 py-0.5 text-[9px] font-bold text-gray-400 uppercase rounded">${topic.category || 'Core'}</span>
                 </div>
@@ -1889,6 +1917,9 @@ function drawBezierLink(x1, y1, x2, y2, isCompleted) {
 function renderSvgNode(node, statusClass = "", progressText = "") {
     const extraClass = node.type + " " + statusClass;
     let label = node.name;
+    if (node.type === "topic" && isHighWeightTopic(node.name)) {
+        label = "★ " + label;
+    }
     if (label.length > 20) {
         label = label.substring(0, 18) + "...";
     }
@@ -2281,7 +2312,7 @@ function initForms() {
     if (noteContentInput && latexPreview) {
         noteContentInput.addEventListener("input", () => {
             const val = noteContentInput.value.trim();
-            latexPreview.innerText = val || "Type math formulas inside $...$ to preview render...";
+            latexPreview.innerHTML = parseMarkdown(val) || "Type math formulas inside $...$ to preview render...";
             if (window.renderMathInElement && val) {
                 window.renderMathInElement(latexPreview, {
                     delimiters: [
@@ -2605,7 +2636,7 @@ function renderToolkit() {
                     </button>
                 </div>
                 <div class="text-[9px] text-gray-500 font-semibold uppercase mt-0.5">Subject: ${n.subject} &bull; ${catLabel} &bull; ${n.date}</div>
-                <div class="text-[11px] text-gray-300 mt-2 whitespace-pre-wrap">${n.content}</div>
+                <div class="text-[11px] text-gray-300 mt-2">${parseMarkdown(n.content)}</div>
             </div>
         `;
     });
@@ -4099,4 +4130,62 @@ function toggleFreeModeComponents(show) {
     if (btnEngReset) btnEngReset.style.display = show ? "flex" : "none";
     if (btnReasReset) btnReasReset.style.display = show ? "flex" : "none";
     if (btnCompReset) btnCompReset.style.display = show ? "flex" : "none";
+}
+
+// PWA & Markdown Helpers
+function isHighWeightTopic(topicName) {
+    if (!topicName) return false;
+    const name = topicName.trim().toLowerCase();
+    const highWeight = [
+        "percentage", "profit & loss", "ratio & proportion", "average", "si & ci", 
+        "mixture & alligation", "partnership", "algebra", "geometry", "mensuration",
+        "time, speed & distance", "time & work", "series", "coding-decoding", 
+        "direction sense", "blood relations", "puzzles", "non-verbal reasoning", 
+        "subject-verb agreement", "voice & narration", "tenses", "articles & nouns", 
+        "prepositions", "ancient & medieval history", "modern history", "polity", 
+        "economics", "general science"
+    ];
+    return highWeight.some(hw => name.includes(hw) || hw.includes(name));
+}
+
+function parseMarkdown(text) {
+    if (!text) return "";
+    
+    // Simple HTML escape to prevent visual breakage
+    let html = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Headings
+    html = html.replace(/^### (.*?)$/gm, '<h5 class="text-xs font-bold text-white mt-2 mb-1">$1</h5>');
+    html = html.replace(/^## (.*?)$/gm, '<h4 class="text-sm font-bold text-white mt-3 mb-1">$1</h4>');
+    html = html.replace(/^# (.*?)$/gm, '<h3 class="text-base font-extrabold text-white mt-4 mb-2">$1</h3>');
+
+    // Bold (**text**)
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-extrabold">$1</strong>');
+
+    // Italic (*text*)
+    html = html.replace(/\*(.*?)\*/g, '<em class="text-gray-200 italic">$1</em>');
+
+    // Blockquotes
+    html = html.replace(/^&gt; (.*?)$/gm, '<blockquote class="border-l-2 border-accentPurple pl-2 text-gray-400 my-1.5 italic bg-white/2px p-1 rounded">$1</blockquote>');
+
+    // Bullet Lists (- or *)
+    html = html.replace(/^\s*[-*]\s+(.*?)$/gm, '<li class="list-disc list-inside ml-2 text-gray-300">$1</li>');
+
+    // Code blocks / Inline code
+    html = html.replace(/`(.*?)`/g, '<code class="bg-black/40 px-1 py-0.5 rounded font-mono text-accentCyan text-[10px]">$1</code>');
+
+    // Horizontal Rule
+    html = html.replace(/^---$/gm, '<hr class="border-white/5 my-2">');
+
+    // Lists wrapper
+    html = html.replace(/(<li.*?>.*?<\/li>)+/gs, '<ul>$&</ul>');
+
+    // Newlines mapping
+    html = html.replace(/\n\n/g, '<p class="my-2"></p>');
+    html = html.replace(/\n/g, '<br>');
+
+    return html;
 }
