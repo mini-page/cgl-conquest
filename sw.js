@@ -1,19 +1,21 @@
-const CACHE_NAME = 'cgl-conquest-cache-v3';
+const CACHE_NAME = 'cgl-conquest-cache-v6';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './app.js',
-  './icon.svg',
-  './manifest.json',
+  './js/state.js',
+  './js/navigation.js',
+  './js/dashboard.js',
+  './js/syllabus.js',
+  './js/plan.js',
+  './js/mocks.js',
+  './js/toolkit.js',
+  './js/speed.js',
   './data/plan.json',
   './data/quizzes.json',
   './data/syllabus.json',
-  './data/vocab.json',
-  './data/plan.js',
-  './data/quizzes.js',
-  './data/syllabus.js',
-  './data/vocab.js'
+  './data/vocab.json'
 ];
 
 self.addEventListener('install', (e) => {
@@ -39,9 +41,12 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((cachedResponse) => {
-      const fetchPromise = fetch(e.request).then((networkResponse) => {
+  // Network First for HTML, JS, JSON code files
+  const isCode = e.request.url.includes('.html') || e.request.url.includes('.js') || e.request.url.includes('.json') || e.request.url.endsWith('/');
+  
+  if (isCode) {
+    e.respondWith(
+      fetch(e.request).then((networkResponse) => {
         if (networkResponse.status === 200) {
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(e.request, networkResponse.clone());
@@ -49,9 +54,23 @@ self.addEventListener('fetch', (e) => {
         }
         return networkResponse;
       }).catch(() => {
-        // Silent catch for network failure
-      });
-      return cachedResponse || fetchPromise;
-    })
-  );
+        return caches.match(e.request);
+      })
+    );
+  } else {
+    // Cache First / Stale-While-Revalidate for CSS/SVG/icons
+    e.respondWith(
+      caches.match(e.request).then((cachedResponse) => {
+        const fetchPromise = fetch(e.request).then((networkResponse) => {
+          if (networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(e.request, networkResponse.clone());
+            });
+          }
+          return networkResponse;
+        }).catch(() => {});
+        return cachedResponse || fetchPromise;
+      })
+    );
+  }
 });
