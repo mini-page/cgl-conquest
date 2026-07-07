@@ -1,0 +1,77 @@
+const EMBEDDED_FLASHCARDS = [
+  {
+    "word": "Pernicious",
+    "def": "Having a harmful effect, especially in a gradual or subtle way.",
+    "ex": "\"The pernicious influence of negative company.\""
+  },
+  {
+    "word": "Supercilious",
+    "def": "Behaving or looking as though one thinks one is superior to others.",
+    "ex": "\"A supercilious lady who looked down on servants.\""
+  },
+  {
+    "word": "Ephemeral",
+    "def": "Lasting for a very short time; transient.",
+    "ex": "\"Fame is ephemeral, but knowledge stays.\""
+  },
+  {
+    "word": "Alacrity",
+    "def": "Brisk and cheerful readiness.",
+    "ex": "\"She accepted the study challenge with alacrity.\""
+  },
+  {
+    "word": "Cacophony",
+    "def": "A harsh, discordant mixture of sounds.",
+    "ex": "\"The cacophony of the busy marketplace.\""
+  },
+  {
+    "word": "Benevolent",
+    "def": "Well-meaning and kindly.",
+    "ex": "\"A benevolent teacher who helped poor children.\""
+  },
+  {
+    "word": "Burn the midnight oil",
+    "def": "To study or work late into the night.",
+    "ex": "\"He is burning the midnight oil for the CGL exam.\""
+  },
+  {
+    "word": "A feather in one's cap",
+    "def": "An achievement to be proud of.",
+    "ex": "\"Clearing CGL with Rank 1 will be a feather in his cap.\""
+  },
+  {
+    "word": "By leaps and bounds",
+    "def": "Very rapidly; making quick progress.",
+    "ex": "\"His speed has improved by leaps and bounds.\""
+  },
+  {
+    "word": "Spick and span",
+    "def": "Neat, clean, and well-organized.",
+    "ex": "\"The study desk was kept spick and span.\""
+  },
+  {
+    "word": "Loquacious",
+    "def": "Tending to talk a great deal; extremely talkative.",
+    "ex": "\"A loquacious candidate lost time in interviews.\""
+  },
+  {
+    "word": "Pragmatic",
+    "def": "Dealing with things sensibly and realistically based on practical experiences.",
+    "ex": "\"A pragmatic study plan is better than a fantasy one.\""
+  },
+  {
+    "word": "Red Herring",
+    "def": "Something, especially a clue, that is or is intended to be misleading.",
+    "ex": "\"The mock question had a red herring option.\""
+  },
+  {
+    "word": "At one's beck and call",
+    "def": "Always ready to obey someone's orders immediately.",
+    "ex": "\"You must not be at anyone's beck and call during study hours.\""
+  },
+  {
+    "word": "Frugal",
+    "def": "Sparing or economical with regard to money or food; simple.",
+    "ex": "\"Living a frugal life to save time and resources.\""
+  }
+];

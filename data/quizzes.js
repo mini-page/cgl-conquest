@@ -1,0 +1,405 @@
+const EMBEDDED_QUIZZES = {
+  "english": [
+    {
+      "q": "Synonym of 'ABATE':",
+      "o": [
+        "Diminish",
+        "Increase",
+        "Prolong",
+        "Intensify"
+      ],
+      "a": 0
+    },
+    {
+      "q": "Antonym of 'ALACRITY':",
+      "o": [
+        "Enthusiasm",
+        "Apathy",
+        "Swiftness",
+        "Zeal"
+      ],
+      "a": 1
+    },
+    {
+      "q": "Find the correctly spelled word:",
+      "o": [
+        "Committee",
+        "Comitee",
+        "Committe",
+        "Comitte"
+      ],
+      "a": 0
+    },
+    {
+      "q": "One Word Substitution: 'One who hates mankind'",
+      "o": [
+        "Philanthropist",
+        "Misogynist",
+        "Misanthrope",
+        "Egotist"
+      ],
+      "a": 2
+    },
+    {
+      "q": "Idiom Meaning: 'To spill the beans'",
+      "o": [
+        "To cook beans",
+        "To reveal a secret",
+        "To waste money",
+        "To cause an accident"
+      ],
+      "a": 1
+    },
+    {
+      "q": "Synonym of 'FUTILE':",
+      "o": [
+        "Fruitful",
+        "Useless",
+        "Productive",
+        "Important"
+      ],
+      "a": 1
+    },
+    {
+      "q": "Antonym of 'HOSTILE':",
+      "o": [
+        "Friendly",
+        "Adverse",
+        "Antagonistic",
+        "Unkind"
+      ],
+      "a": 0
+    },
+    {
+      "q": "Identify the part of speech of the underlined word: 'She runs fast.'",
+      "o": [
+        "Noun",
+        "Adjective",
+        "Adverb",
+        "Verb"
+      ],
+      "a": 2
+    }
+  ],
+  "reasoning": [
+    {
+      "q": "Complete the series: 3, 7, 15, 31, 63, ?",
+      "o": [
+        "127",
+        "95",
+        "128",
+        "125"
+      ],
+      "a": 0
+    },
+    {
+      "q": "If 'MONKEY' is coded as 'XDJMNL', how is 'TIGER' coded?",
+      "o": [
+        "SDFHS",
+        "QDFHS",
+        "QDYTR",
+        "SDFTR"
+      ],
+      "a": 1
+    },
+    {
+      "q": "In a family, A is B's brother, C is A's father, D is C's mother. How is B related to D?",
+      "o": [
+        "Grandson",
+        "Granddaughter",
+        "Grandchild",
+        "Daughter-in-law"
+      ],
+      "a": 2
+    },
+    {
+      "q": "Select the odd one out: 27, 64, 125, 144",
+      "o": [
+        "27",
+        "64",
+        "125",
+        "144"
+      ],
+      "a": 3
+    },
+    {
+      "q": "Find the next term in the series: B2D, E3G, H4J, ?",
+      "o": [
+        "K5M",
+        "K6N",
+        "L5M",
+        "K5N"
+      ],
+      "a": 0,
+      "d": "easy"
+    },
+    {
+      "q": "Pointing to a photograph, a man said: 'I have no brother or sister, but that man's father is my father's son.' Whose photograph was it?",
+      "o": [
+        "His own",
+        "His father's",
+        "His son's",
+        "His nephew's"
+      ],
+      "a": 2,
+      "d": "hard"
+    },
+    {
+      "q": "If '+' means '×', '-' means '÷', '×' means '-' and '÷' means '+', then: 16 + 4 - 8 × 2 ÷ 3 = ?",
+      "o": [
+        "12",
+        "9",
+        "6",
+        "11"
+      ],
+      "a": 1,
+      "d": "medium"
+    },
+    {
+      "q": "A clock shows 4:30. If the minute hand points East, in which direction does the hour hand point?",
+      "o": [
+        "North",
+        "North-East",
+        "South-East",
+        "North-West"
+      ],
+      "a": 1,
+      "d": "hard"
+    },
+    {
+      "q": "If A=1, FAT=27, then FAITH = ?",
+      "o": [
+        "44",
+        "42",
+        "40",
+        "41"
+      ],
+      "a": 0,
+      "d": "hard"
+    },
+    {
+      "q": "Which number replaces the question mark? 12 : 144 :: 13 : ?",
+      "o": [
+        "169",
+        "156",
+        "182",
+        "196"
+      ],
+      "a": 0,
+      "d": "medium"
+    },
+    {
+      "q": "What is the alphabetical position of letter 'K'?",
+      "o": [
+        "10",
+        "11",
+        "12",
+        "9"
+      ],
+      "a": 1,
+      "d": "easy"
+    },
+    {
+      "q": "What is the reverse alphabetical position of letter 'T' (where Z=1)?",
+      "o": [
+        "7",
+        "8",
+        "6",
+        "9"
+      ],
+      "a": 0,
+      "d": "medium"
+    },
+    {
+      "q": "Which letter is opposite to 'Q' in the alphabet (where A is opposite to Z)?",
+      "o": [
+        "J",
+        "K",
+        "I",
+        "L"
+      ],
+      "a": 0,
+      "d": "medium"
+    }
+  ],
+  "computer": [
+    {
+      "q": "Which of the following keyboard shortcut is used to close the active application window in MS Windows OS?",
+      "o": [
+        "Alt + F4",
+        "Ctrl + C",
+        "Win + L",
+        "Alt + Tab"
+      ],
+      "a": 0,
+      "d": "easy"
+    },
+    {
+      "q": "What is the default port number used by HTTPS (Secure Hypertext Protocol)?",
+      "o": [
+        "Port 80",
+        "Port 21",
+        "Port 443",
+        "Port 22"
+      ],
+      "a": 2,
+      "d": "easy"
+    },
+    {
+      "q": "Which keyboard command opens the 'Run' utility dialog box in Windows OS?",
+      "o": [
+        "Win + R",
+        "Win + E",
+        "Win + D",
+        "Ctrl + Shift + Esc"
+      ],
+      "a": 0,
+      "d": "easy"
+    },
+    {
+      "q": "What is the network protocol port number commonly used for sending email messages (SMTP)?",
+      "o": [
+        "Port 25",
+        "Port 110",
+        "Port 143",
+        "Port 53"
+      ],
+      "a": 0,
+      "d": "medium"
+    },
+    {
+      "q": "Which key combination launches the Windows Task Manager directly?",
+      "o": [
+        "Ctrl + Alt + Del",
+        "Ctrl + Shift + Esc",
+        "Win + Tab",
+        "Alt + Shift + Enter"
+      ],
+      "a": 1,
+      "d": "medium"
+    },
+    {
+      "q": "In Microsoft Excel, which cell referencing remains completely fixed when a formula is copy-pasted?",
+      "o": [
+        "Relative (A1)",
+        "Absolute ($A$1)",
+        "Mixed ($A1)",
+        "Dynamic (A1:B1)"
+      ],
+      "a": 1,
+      "d": "medium"
+    },
+    {
+      "q": "Which Excel formula is used to look up a value in the leftmost column of a table and return a value in the same row?",
+      "o": [
+        "HLOOKUP",
+        "VLOOKUP",
+        "LOOKUP",
+        "MATCH"
+      ],
+      "a": 1,
+      "d": "medium"
+    },
+    {
+      "q": "What malware encrypts the user's hard drive files and demands payment to decrypt them?",
+      "o": [
+        "Ransomware",
+        "Trojan",
+        "Adware",
+        "Rootkit"
+      ],
+      "a": 0,
+      "d": "hard"
+    },
+    {
+      "q": "A firewall is primarily used in networking systems to protect against which of the following?",
+      "o": [
+        "Virus transmission in flash drives",
+        "Unauthorized incoming/outgoing network access",
+        "Power supply fluctuations",
+        "Physical theft of hard disks"
+      ],
+      "a": 1,
+      "d": "hard"
+    },
+    {
+      "q": "Which type of malware replicates itself across computer networks without needing to attach to a host file?",
+      "o": [
+        "Trojan Horse",
+        "Ransomware",
+        "Worm",
+        "Spyware"
+      ],
+      "a": 2,
+      "d": "hard"
+    }
+  ],
+  "gk": [
+    {
+      "q": "River Ganga originates from which of the following glaciers?",
+      "o": ["Yamunotri", "Gangotri", "Alkapuri", "Milam"],
+      "a": 1,
+      "d": "easy"
+    },
+    {
+      "q": "Which river is also known as 'Dakshin Ganga' due to its length and size?",
+      "o": ["Krishna", "Cauvery", "Godavari", "Mahanadi"],
+      "a": 2,
+      "d": "easy"
+    },
+    {
+      "q": "On which river is the Sardar Sarovar Dam constructed?",
+      "o": ["Narmada", "Tapi", "Sabarmati", "Mahi"],
+      "a": 0,
+      "d": "easy"
+    },
+    {
+      "q": "Which of the following is the highest peak in the Western Ghats of India?",
+      "o": ["Doda Betta", "Anamudi", "Mahendragiri", "Kalsubai"],
+      "a": 1,
+      "d": "medium"
+    },
+    {
+      "q": "The Kanchenjunga peak, the third highest mountain in the world, is located in which Indian state?",
+      "o": ["Uttarakhand", "Himachal Pradesh", "Sikkim", "Arunachal Pradesh"],
+      "a": 2,
+      "d": "medium"
+    },
+    {
+      "q": "Which is the longest dam in India, built across the Mahanadi river in Odisha?",
+      "o": ["Tehri Dam", "Bhakra Dam", "Hirakud Dam", "Nagarjuna Sagar Dam"],
+      "a": 2,
+      "d": "medium"
+    },
+    {
+      "q": "Which boundary line separates the territories of India and China?",
+      "o": ["Radcliffe Line", "McMahon Line", "Durand Line", "Line of Control"],
+      "a": 1,
+      "d": "medium"
+    },
+    {
+      "q": "In which year did the famous Battle of Haldighati take place between Akbar and Maharana Pratap?",
+      "o": ["1556", "1576", "1526", "1586"],
+      "a": 1,
+      "d": "hard"
+    },
+    {
+      "q": "Who was the founder of the ancient Maurya Dynasty in India?",
+      "o": ["Ashoka", "Chandragupta Maurya", "Bindusara", "Chandragupta I"],
+      "a": 1,
+      "d": "hard"
+    },
+    {
+      "q": "The historic First Battle of Panipat was fought in which year?",
+      "o": ["1526", "1556", "1761", "1530"],
+      "a": 0,
+      "d": "hard"
+    },
+    {
+      "q": "In which year did Mahatma Gandhi lead the Dandi Salt March?",
+      "o": ["1920", "1930", "1942", "1919"],
+      "a": 1,
+      "d": "hard"
+    }
+  ]
+};

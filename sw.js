@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cgl-conquest-cache-v2';
+const CACHE_NAME = 'cgl-conquest-cache-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,11 @@ const ASSETS = [
   './data/plan.json',
   './data/quizzes.json',
   './data/syllabus.json',
-  './data/vocab.json'
+  './data/vocab.json',
+  './data/plan.js',
+  './data/quizzes.js',
+  './data/syllabus.js',
+  './data/vocab.js'
 ];
 
 self.addEventListener('install', (e) => {

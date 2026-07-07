@@ -12,635 +12,20 @@ if ('serviceWorker' in navigator) {
 }
 
 // 1. SYLLABUS DATABASE
-
-// Live Placeholders for Decoupled JSON Data
-let SYLLABUS_DATA = [];
-let PLAN_DATA = [];
-let FLASHCARDS = [];
-let ENGLISH_QUESTIONS = [];
-let REASONING_QUESTIONS = [];
-let COMP_QUESTIONS = [];
-let GK_QUESTIONS = [];
+let SYLLABUS_DATA = typeof EMBEDDED_SYLLABUS_DATA !== 'undefined' ? EMBEDDED_SYLLABUS_DATA : [];
+let PLAN_DATA = typeof EMBEDDED_PLAN_DATA !== 'undefined' ? EMBEDDED_PLAN_DATA : [];
+let FLASHCARDS = typeof EMBEDDED_FLASHCARDS !== 'undefined' ? EMBEDDED_FLASHCARDS : [];
+let ENGLISH_QUESTIONS = typeof EMBEDDED_QUIZZES !== 'undefined' ? EMBEDDED_QUIZZES.english : [];
+let REASONING_QUESTIONS = typeof EMBEDDED_QUIZZES !== 'undefined' ? EMBEDDED_QUIZZES.reasoning : [];
+let COMP_QUESTIONS = typeof EMBEDDED_QUIZZES !== 'undefined' ? EMBEDDED_QUIZZES.computer : [];
+let GK_QUESTIONS = typeof EMBEDDED_QUIZZES !== 'undefined' ? EMBEDDED_QUIZZES.gk : [];
 
 async function loadApplicationData() {
-    const isLocalFilesystem = (window.location.protocol === "file:");
-    
-    if (isLocalFilesystem) {
-        console.warn("Direct filesystem access detected (CORS restrictions apply). Falling back to embedded core datasets.");
-        loadEmbeddedFallbackData();
-        return;
-    }
-
-    try {
-        const [syllabusRes, planRes, vocabRes, quizzesRes] = await Promise.all([
-            fetch("data/syllabus.json"),
-            fetch("data/plan.json"),
-            fetch("data/vocab.json"),
-            fetch("data/quizzes.json")
-        ]);
-
-        if (!syllabusRes.ok || !planRes.ok || !vocabRes.ok || !quizzesRes.ok) {
-            throw new Error("HTTP response status not OK");
-        }
-
-        SYLLABUS_DATA = await syllabusRes.json();
-        PLAN_DATA = await planRes.json();
-        FLASHCARDS = await vocabRes.json();
-        
-        const quizzes = await quizzesRes.json();
-        ENGLISH_QUESTIONS = quizzes.english;
-        REASONING_QUESTIONS = quizzes.reasoning;
-        COMP_QUESTIONS = quizzes.computer;
-        GK_QUESTIONS = quizzes.gk;
-
-        console.log("Successfully loaded decoupled databases from external JSON files!");
-    } catch (err) {
-        console.error("Failed to fetch external JSON databases. Reverting to embedded core fallbacks:", err);
-        loadEmbeddedFallbackData();
-    }
-}
-
-function loadEmbeddedFallbackData() {
-    SYLLABUS_DATA = EMBEDDED_SYLLABUS_DATA;
-    PLAN_DATA = EMBEDDED_PLAN_DATA;
-    FLASHCARDS = EMBEDDED_FLASHCARDS;
-    ENGLISH_QUESTIONS = EMBEDDED_ENGLISH_QUESTIONS;
-    REASONING_QUESTIONS = EMBEDDED_REASONING_QUESTIONS;
-    COMP_QUESTIONS = EMBEDDED_COMP_QUESTIONS;
-    GK_QUESTIONS = EMBEDDED_GK_QUESTIONS;
+    // Data loaded instantly from global JS scripts, bypassing CORS blocks
+    console.log("Application databases successfully initialized from inline datasets.");
 }
 
 
-const EMBEDDED_SYLLABUS_DATA = [
-    // 1. QUANTITATIVE APTITUDE
-    {
-        id: "q-1",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Percentage",
-        subtopics: [
-            { id: "q-1-1", name: "Basic Calculations & Fractions Conversion", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-1-2", name: "Percentage Increase/Decrease & Successive changes", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-1-3", name: "Product Constancy & Consumption-Price models", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-1-4", name: "Income-Expenditure & Population word problems", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-1-5", name: "Venn Diagram based Percentage questions", difficulty: "Hard", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "q-2",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Ratio & Proportion",
-        subtopics: [
-            { id: "q-2-1", name: "Basic Ratios, Combining & Balancing Ratios", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-2-2", name: "Proportionals (Mean, Third, Fourth Proportion)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-2-3", name: "Incomes, Expenses & Savings Ratio problems", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-2-4", name: "Coins, Bag & Value distribution problems", difficulty: "Moderate", weightage: "Medium", effort: "Low" }
-        ]
-    },
-    {
-        id: "q-3",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Average",
-        subtopics: [
-            { id: "q-3-1", name: "Basic Average & Consecutive Numbers properties", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "q-3-2", name: "Weighted Average & Group changes (Replacement/Inclusion/Exclusion)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-3-3", name: "Average Speed word problems", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "q-3-4", name: "Advanced averages with variables (Error correction)", difficulty: "Hard", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "q-4",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Profit & Loss",
-        subtopics: [
-            { id: "q-4-1", name: "Basic Cost Price, Selling Price & Profit/Loss %", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-4-2", name: "Marked Price, Discounts & Successive Discounts", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-4-3", name: "Dishonest Dealer & Cheating weights models", difficulty: "Hard", weightage: "High", effort: "Moderate" },
-            { id: "q-4-4", name: "SP of two articles same / CP same logic", difficulty: "Moderate", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "q-5",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Simple & Compound Interest",
-        subtopics: [
-            { id: "q-5-1", name: "Simple Interest basics & Rate/Time relations", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "q-5-2", name: "Compound Interest (Annual, Half-yearly, Quarterly)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-5-3", name: "Difference between CI and SI (2 years & 3 years)", difficulty: "Moderate", weightage: "High", effort: "Low" },
-            { id: "q-5-4", name: "SI and CI Installations models", difficulty: "Hard", weightage: "Medium", effort: "High" }
-        ]
-    },
-    {
-        id: "q-6",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Time & Work",
-        subtopics: [
-            { id: "q-6-1", name: "Basic Efficiency & Days calculations (LCM Method)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-6-2", name: "Alternate Days working schedule", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-6-3", name: "Men, Women, Boys efficiency ratio equation (MDH rule)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-6-4", name: "Pipes & Cisterns (Inlet, Outlet, Leakages)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-6-5", name: "Work & Wages division models", difficulty: "Easy", weightage: "Medium", effort: "Low" }
-        ]
-    },
-    {
-        id: "q-7",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Time, Speed & Distance",
-        subtopics: [
-            { id: "q-7-1", name: "Speed Conversions & Relative Speed concepts", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-7-2", name: "Train Crossing (Pole, Platform, Other train)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-7-3", name: "Boats & Streams (Upstream, Downstream)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-7-4", name: "Linear Races & Circular Tracks", difficulty: "Hard", weightage: "Medium", effort: "High" }
-        ]
-    },
-    {
-        id: "q-8",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Mixture & Alligation",
-        subtopics: [
-            { id: "q-8-1", name: "Basic Alligation rule on price/weight", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "q-8-2", name: "Replacement & Repeated dilution formula", difficulty: "Hard", weightage: "Medium", effort: "High" },
-            { id: "q-8-3", name: "Mixing of three or more containers", difficulty: "Moderate", weightage: "Low", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "q-9",
-        subject: "Quantitative Aptitude",
-        category: "Arithmetic",
-        topic: "Partnership",
-        subtopics: [
-            { id: "q-9-1", name: "Simple Partnerships (Capital & Time ratio)", difficulty: "Easy", weightage: "Low", effort: "Low" },
-            { id: "q-9-2", name: "Active & Sleeping partners (Salaries distribution)", difficulty: "Moderate", weightage: "Low", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "q-10",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Number System",
-        subtopics: [
-            { id: "q-10-1", name: "Classification of Numbers & Face/Place value", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "q-10-2", name: "Divisibility Rules (Combined 7-11-13, 11, 72, 88)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-10-3", name: "Unit Digit & Last Two Digits calculations", difficulty: "Moderate", weightage: "Medium", effort: "Moderate" },
-            { id: "q-10-4", name: "Remainder Theorems (Euler, Fermat, Wilson, Chinese)", difficulty: "Hard", weightage: "High", effort: "High" },
-            { id: "q-10-5", name: "Factors (Sum, Product, Odd/Even factors count)", difficulty: "Moderate", weightage: "Medium", effort: "Moderate" },
-            { id: "q-10-6", name: "HCF & LCM word models & Bell ring problems", difficulty: "Easy", weightage: "High", effort: "Low" }
-        ]
-    },
-    {
-        id: "q-11",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Algebra",
-        subtopics: [
-            { id: "q-11-1", name: "Algebraic Identities (Squares, Cubes, a3+b3+c3-3abc)", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "q-11-2", name: "x + 1/x type variations & transformations", difficulty: "Easy", weightage: "High", effort: "Moderate" },
-            { id: "q-11-3", name: "Linear Equations & Graphs (Parallel, Coincident lines)", difficulty: "Moderate", weightage: "Medium", effort: "Moderate" },
-            { id: "q-11-4", name: "Quadratic Equations (Roots, Discriminants, Max/Min value)", difficulty: "Hard", weightage: "High", effort: "High" }
-        ]
-    },
-    {
-        id: "q-12",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Geometry",
-        subtopics: [
-            { id: "q-12-1", name: "Lines, Angles & Parallel lines properties", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "q-12-2", name: "Triangles (Congruency, Similarity, Sine/Cosine rules)", difficulty: "Hard", weightage: "High", effort: "High" },
-            { id: "q-12-3", name: "Triangle Centers (Incenter, Orthocenter, Centroid, Circumcenter)", difficulty: "Hard", weightage: "High", effort: "High" },
-            { id: "q-12-4", name: "Circles (Chords, Tangents, Secants theorems)", difficulty: "Hard", weightage: "High", effort: "High" },
-            { id: "q-12-5", name: "Polygons (Sum of Interior/Exterior angles, Diagonals)", difficulty: "Easy", weightage: "Medium", effort: "Low" }
-        ]
-    },
-    {
-        id: "q-13",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Mensuration (2D & 3D)",
-        subtopics: [
-            { id: "q-13-1", name: "2D Area & Perimeter (Triangle, Quadrilaterals, Circle)", difficulty: "Easy", weightage: "High", effort: "Moderate" },
-            { id: "q-13-2", name: "3D Cuboid, Cube, Cylinder, Cone (Surface Area & Volume)", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "q-13-3", name: "Spheres & Hemispheres (Melting & Recasting)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-13-4", name: "Prism & Pyramid (Hexagonal, Triangular bases)", difficulty: "Hard", weightage: "Medium", effort: "High" },
-            { id: "q-13-5", name: "Frustum of Cone (Tier 2 Focus)", difficulty: "Hard", weightage: "Medium", effort: "High" }
-        ]
-    },
-    {
-        id: "q-14",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Trigonometry",
-        subtopics: [
-            { id: "q-14-1", name: "Trigonometric Ratios & Value Chart (0-90 degrees)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-14-2", name: "Trigonometric Identities & Complementary Angles", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "q-14-3", name: "Maximum & Minimum values of Trig expressions", difficulty: "Hard", weightage: "Medium", effort: "Moderate" },
-            { id: "q-14-4", name: "Heights & Distances (Angle of Elevation/Depression)", difficulty: "Moderate", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "q-15",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Statistics & Probability",
-        subtopics: [
-            { id: "q-15-1", name: "Mean, Median, Mode & Standard Deviation", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-15-2", name: "Basic Probability (Coins, Dice, Cards)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "q-15-3", name: "Conditional Probability & Multiplication theorem", difficulty: "Hard", weightage: "Medium", effort: "High" }
-        ]
-    },
-    {
-        id: "q-16",
-        subject: "Quantitative Aptitude",
-        category: "Advanced Mathematics",
-        topic: "Data Interpretation",
-        subtopics: [
-            { id: "q-16-1", name: "Bar Graph, Line Graph analysis", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-16-2", name: "Pie Chart (Degree & Percent distributions)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "q-16-3", name: "Histogram & Frequency Polygon", difficulty: "Moderate", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-
-    // 2. GENERAL INTELLIGENCE & REASONING
-    {
-        id: "r-1",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Coding-Decoding",
-        subtopics: [
-            { id: "r-1-1", name: "Letter-to-Letter Coding (Place values & Opposites)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "r-1-2", name: "Letter-to-Number & Mixed Chinese Coding", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "r-1-3", name: "Advanced Logical pattern codings", difficulty: "Moderate", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "r-2",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Analogy & Classification",
-        subtopics: [
-            { id: "r-2-1", name: "Word/GK based Analogy & Odd One Out", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "r-2-2", name: "Number & Alphabet Set-Analogies (Tough patterns)", difficulty: "Hard", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "r-3",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Series (Number & Alphabet)",
-        subtopics: [
-            { id: "r-3-1", name: "Alphanumeric & Continuous Pattern Series", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "r-3-2", name: "Missing Number Series (Double diff, Squares/Cubes)", difficulty: "Hard", weightage: "High", effort: "Moderate" },
-            { id: "r-3-3", name: "Wrong Number Series identification", difficulty: "Hard", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "r-4",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Blood Relations",
-        subtopics: [
-            { id: "r-4-1", name: "Family Tree & Direct Pointer relations", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "r-4-2", name: "Coded Blood Relations (A+B means A is father)", difficulty: "Moderate", weightage: "High", effort: "Low" }
-        ]
-    },
-    {
-        id: "r-5",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Direction Sense",
-        subtopics: [
-            { id: "r-5-1", name: "Basic Directions & Pythagoras Theorem turns", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "r-5-2", name: "Shadow-based directions & Angle turns", difficulty: "Moderate", weightage: "Medium", effort: "Low" }
-        ]
-    },
-    {
-        id: "r-6",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Order & Ranking",
-        subtopics: [
-            { id: "r-6-1", name: "Row position calculations & Interchanging positions", difficulty: "Easy", weightage: "Low", effort: "Low" },
-            { id: "r-6-2", name: "Comparison puzzles (A is taller than B...)", difficulty: "Easy", weightage: "Medium", effort: "Low" }
-        ]
-    },
-    {
-        id: "r-7",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Syllogism",
-        subtopics: [
-            { id: "r-7-1", name: "Basic Venn Diagram (Some/All/No cases)", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "r-7-2", name: "Possibility cases & Either-Or conditions", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "r-7-3", name: "Only / Few / Only a few advanced Syllogisms", difficulty: "Hard", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "r-8",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Seating Arrangement & Puzzles",
-        subtopics: [
-            { id: "r-8-1", name: "Linear & Circular seating (Facing inside/outside)", difficulty: "Moderate", weightage: "Low", effort: "Moderate" },
-            { id: "r-8-2", name: "Matrix/Grid based puzzle puzzles", difficulty: "Hard", weightage: "Low", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "r-9",
-        subject: "General Intelligence & Reasoning",
-        category: "Verbal Reasoning",
-        topic: "Data Sufficiency",
-        subtopics: [
-            { id: "r-9-1", name: "Data sufficiency using Reasoning principles", difficulty: "Hard", weightage: "Low", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "r-10",
-        subject: "General Intelligence & Reasoning",
-        category: "Non-Verbal Reasoning",
-        topic: "Paper Folding & Cutting",
-        subtopics: [
-            { id: "r-10-1", name: "Visualizing unfolded paper patterns", difficulty: "Easy", weightage: "Low", effort: "Low" }
-        ]
-    },
-    {
-        id: "r-11",
-        subject: "General Intelligence & Reasoning",
-        category: "Non-Verbal Reasoning",
-        topic: "Mirror & Water Images",
-        subtopics: [
-            { id: "r-11-1", name: "Alphabet & Figure reflective images", difficulty: "Easy", weightage: "Low", effort: "Low" }
-        ]
-    },
-    {
-        id: "r-12",
-        subject: "General Intelligence & Reasoning",
-        category: "Non-Verbal Reasoning",
-        topic: "Embedded Figures & Completion",
-        subtopics: [
-            { id: "r-12-1", name: "Finding embedded figures & completing designs", difficulty: "Easy", weightage: "High", effort: "Low" }
-        ]
-    },
-    {
-        id: "r-13",
-        subject: "General Intelligence & Reasoning",
-        category: "Non-Verbal Reasoning",
-        topic: "Figure Series & Matrix",
-        subtopics: [
-            { id: "r-13-1", name: "Rotational series & element shifts patterns", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "r-13-2", name: "Dice (Standard, Open Dice opposites properties)", difficulty: "Easy", weightage: "High", effort: "Low" }
-        ]
-    },
-
-    // 3. ENGLISH LANGUAGE & COMPREHENSION
-    {
-        id: "e-1",
-        subject: "English Language & Comprehension",
-        category: "Grammar",
-        topic: "Parts of Speech",
-        subtopics: [
-            { id: "e-1-1", name: "Nouns & Pronouns Rules", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "e-1-2", name: "Subject-Verb Agreement (Concord)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "e-1-3", name: "Adjectives & Adverbs positioning rules", difficulty: "Moderate", weightage: "Medium", effort: "Low" },
-            { id: "e-1-4", name: "Prepositions usage & Fixed Prepositions (Tough)", difficulty: "Hard", weightage: "High", effort: "Moderate" },
-            { id: "e-1-5", name: "Conjunctions & Conditional Sentences", difficulty: "Moderate", weightage: "Medium", effort: "Low" }
-        ]
-    },
-    {
-        id: "e-2",
-        subject: "English Language & Comprehension",
-        category: "Grammar",
-        topic: "Active & Passive Voice",
-        subtopics: [
-            { id: "e-2-1", name: "Tense changes & Auxiliary verbs transitions", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "e-2-2", name: "Imperative, Interrogative & Infinitive Voice shifts", difficulty: "Moderate", weightage: "High", effort: "Low" }
-        ]
-    },
-    {
-        id: "e-3",
-        subject: "English Language & Comprehension",
-        category: "Grammar",
-        topic: "Direct & Indirect Speech",
-        subtopics: [
-            { id: "e-3-1", name: "Assertive sentences, Tense & Time conversion rules", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "e-3-2", name: "Exclamatory, Optative & Coded sentence conversions", difficulty: "Moderate", weightage: "High", effort: "Low" }
-        ]
-    },
-    {
-        id: "e-4",
-        subject: "English Language & Comprehension",
-        category: "Grammar",
-        topic: "Error Spotting & Improvement",
-        subtopics: [
-            { id: "e-4-1", name: "Noun/Pronoun/Verb Spotting drills", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "e-4-2", name: "Modifier, Dangling Participle, Parallelism errors", difficulty: "Hard", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "e-5",
-        subject: "English Language & Comprehension",
-        category: "Vocabulary",
-        topic: "Vocabulary Drills",
-        subtopics: [
-            { id: "e-5-1", name: "Synonyms & Antonyms (High frequency wordlists)", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "e-5-2", name: "Idioms & Phrases (Origins & applications)", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "e-5-3", name: "One-word Substitutions lists", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "e-5-4", name: "Spelling Correction & Homophones tricks", difficulty: "Easy", weightage: "Low", effort: "Low" }
-        ]
-    },
-    {
-        id: "e-6",
-        subject: "English Language & Comprehension",
-        category: "Reading Comprehension",
-        topic: "Reading Comprehension Passages",
-        subtopics: [
-            { id: "e-6-1", name: "Direct Fact retrieval & Vocabulary contextual clues", difficulty: "Easy", weightage: "High", effort: "Moderate" },
-            { id: "e-6-2", name: "Inference-based, Tone & Central Theme questions", difficulty: "Hard", weightage: "High", effort: "High" }
-        ]
-    },
-    {
-        id: "e-7",
-        subject: "English Language & Comprehension",
-        category: "Reading Comprehension",
-        topic: "Cloze Test",
-        subtopics: [
-            { id: "e-7-1", name: "Grammar-based blanks matching", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "e-7-2", name: "Contextual vocabulary & Collocations fit", difficulty: "Hard", weightage: "High", effort: "High" }
-        ]
-    },
-    {
-        id: "e-8",
-        subject: "English Language & Comprehension",
-        category: "Reading Comprehension",
-        topic: "Para-jumbles",
-        subtopics: [
-            { id: "e-8-1", name: "Finding opening/concluding sentences", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "e-8-2", name: "Mandatory Pairs & Pronoun link methods", difficulty: "Hard", weightage: "High", effort: "High" }
-        ]
-    },
-
-    // 4. GENERAL AWARENESS
-    {
-        id: "a-1",
-        subject: "General Awareness",
-        category: "Static GK",
-        topic: "History",
-        subtopics: [
-            { id: "a-1-1", name: "Ancient History (Harappan, Vedic, Buddhism & Mauryas)", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "a-1-2", name: "Medieval History (Delhi Sultanate, Mughals, Vijayanagara)", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "a-1-3", name: "Modern History (Marathas, British expansion, Congress, Gandhi Era)", difficulty: "Hard", weightage: "High", effort: "High" }
-        ]
-    },
-    {
-        id: "a-2",
-        subject: "General Awareness",
-        category: "Static GK",
-        topic: "Geography",
-        subtopics: [
-            { id: "a-2-1", name: "Indian Physical Geography (Borders, Himalayas, Rivers & Dams)", difficulty: "Easy", weightage: "Medium", effort: "High" },
-            { id: "a-2-2", name: "World Physical Geography (Solar system, Oceans, Atmosphere, Deserts)", difficulty: "Easy", weightage: "Medium", effort: "High" },
-            { id: "a-2-3", name: "Economic & Human Geography (Crops, Minerals, Census 2011)", difficulty: "Moderate", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "a-3",
-        subject: "General Awareness",
-        category: "Static GK",
-        topic: "Indian Polity & Constitution",
-        subtopics: [
-            { id: "a-3-1", name: "Making of Constitution, Sources, Schedules & Parts", difficulty: "Easy", weightage: "High", effort: "Moderate" },
-            { id: "a-3-2", name: "Fundamental Rights, Duties & DPSP (Art 12-51A)", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "a-3-3", name: "President, Parliament, State Legislature & Local Govts", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "a-3-4", name: "Judiciary & Constitutional Bodies (CAG, Election Comm, UPSC)", difficulty: "Hard", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "a-4",
-        subject: "General Awareness",
-        category: "Static GK",
-        topic: "Economics",
-        subtopics: [
-            { id: "a-4-1", name: "Introduction to Economics, Demand-Supply, Elasticity", difficulty: "Moderate", weightage: "Low", effort: "Moderate" },
-            { id: "a-4-2", name: "Macroeconomics (Inflation, GDP/National Income, Five Year Plans)", difficulty: "Moderate", weightage: "Medium", effort: "Moderate" },
-            { id: "a-4-3", name: "Banking & Financial Sector (RBI, Repo Rate, Mon Policy, Budget)", difficulty: "Hard", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "a-5",
-        subject: "General Awareness",
-        category: "Static GK",
-        topic: "Art & Culture",
-        subtopics: [
-            { id: "a-5-1", name: "Indian Classical Dances, Folk Dances & Famous Artists", difficulty: "Easy", weightage: "Medium", effort: "Moderate" },
-            { id: "a-5-2", name: "Festivals, Fair, Fairs & Folk Music", difficulty: "Easy", weightage: "Medium", effort: "Moderate" },
-            { id: "a-5-3", name: "UNESCO World Heritage sites, Temples & Architecture styles", difficulty: "Moderate", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "a-6",
-        subject: "General Awareness",
-        category: "Science",
-        topic: "Physics",
-        subtopics: [
-            { id: "a-6-1", name: "Units, Dimensions & Motion mechanics", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "a-6-2", name: "Work, Energy, Power & Gravity rules", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "a-6-3", name: "Optics (Refraction, Lenses), Wave motion, Sound & Electricity", difficulty: "Moderate", weightage: "High", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "a-7",
-        subject: "General Awareness",
-        category: "Science",
-        topic: "Chemistry",
-        subtopics: [
-            { id: "a-7-1", name: "Matter, States, Atomic Structure & Chemical Bonds", difficulty: "Easy", weightage: "Medium", effort: "Low" },
-            { id: "a-7-2", name: "Acids, Bases & Salts, Common Chemicals formulas", difficulty: "Easy", weightage: "High", effort: "Low" },
-            { id: "a-7-3", name: "Metals & Non-metals, Periodic Table properties", difficulty: "Moderate", weightage: "Medium", effort: "Moderate" }
-        ]
-    },
-    {
-        id: "a-8",
-        subject: "General Awareness",
-        category: "Science",
-        topic: "Biology",
-        subtopics: [
-            { id: "a-8-1", name: "Cell Structure & Divisions, Plant/Animal Kingdom", difficulty: "Moderate", weightage: "High", effort: "Moderate" },
-            { id: "a-8-2", name: "Human Anatomy (Circulatory, Nervous, Digestive systems)", difficulty: "Moderate", weightage: "High", effort: "High" },
-            { id: "a-8-3", name: "Vitamins, Nutrients & Human Diseases (Bacteria/Viruses)", difficulty: "Easy", weightage: "High", effort: "Low" }
-        ]
-    },
-    {
-        id: "a-9",
-        subject: "General Awareness",
-        category: "Current Affairs",
-        topic: "Current Affairs",
-        subtopics: [
-            { id: "a-9-1", name: "National & International News (Past 6-9 Months)", difficulty: "Hard", weightage: "High", effort: "High" },
-            { id: "a-9-2", name: "Sports, Awards, Honors & Nobel Prize winners", difficulty: "Hard", weightage: "High", effort: "Moderate" },
-            { id: "a-9-3", name: "Central Govt Schemes, Indexes, Military Exercises", difficulty: "Hard", weightage: "High", effort: "Moderate" }
-        ]
-    }
-];
-
-// 2. 40-DAY STUDY ROADMAP MAPPING
-// Targets strictly focus on the four core subjects. Computer prep is delegated to daily drills in the background.
-const EMBEDDED_PLAN_DATA = [
-    // PHASE 1: Foundations & Easy Topics (Days 1-10)
-    { day: 1, dayType: "study", phase: 1, name: "Shortcuts & Verbals Foundation", desc: "Set up speed tables, Noun rules, basic physics equations, and Coding-Decoding.", targets: ["q-10-6", "r-1-1", "e-1-1", "a-2-1"], test: "Vocabulary Drill 1", time: "4.5h" },
-    { day: 2, dayType: "study", phase: 1, name: "Percentage & Analogy Basics", desc: "Build base for fractions percentage conversions. Practice letter analogy rules.", targets: ["q-1-1", "r-1-2", "r-2-1", "e-1-2"], test: "Reasoning Sectional 1", time: "4.5h" },
-    { day: 3, dayType: "study", phase: 1, name: "Ratio, Proportions & Word analogies", desc: "Master balancing ratio proportions and combining fractional margins.", targets: ["q-2-1", "q-2-2", "r-2-2", "e-5-1"], test: "Quant Mini Sectional 1", time: "5.0h" },
-    { day: 4, dayType: "study", phase: 1, name: "Average & Speed Directions", desc: "Learn consecutive numbers averages and Pythagoras direction maps.", targets: ["q-3-1", "r-5-1", "e-5-2", "a-6-1"], test: "Vocabulary Drill 2", time: "5.0h" },
-    { day: 5, dayType: "study", phase: 1, name: "Advanced Percentage & Pronouns", desc: "Successive change formulas in percentage. Direction shadow rules.", targets: ["q-1-2", "r-5-2", "e-1-3", "a-7-1"], test: "None", time: "5.0h" },
-    { day: 6, dayType: "study", phase: 1, name: "Ratio Advanced & Series patterns", desc: "Income-expense ratio splits. Alphanumeric series logic. Static art and culture.", targets: ["q-2-3", "r-3-1", "e-5-3", "a-5-1"], test: "English Vocab Quiz 1", time: "4.5h" },
-    { day: 7, dayType: "study", phase: 1, name: "Average Group Adjustments & Medieval GK", desc: "Replacement properties of groups. Chronology of Delhi Sultanate.", targets: ["q-3-2", "r-6-1", "e-5-4", "a-1-2"], test: "English Grammar Quiz", time: "5.0h" },
-    { day: 8, dayType: "study", phase: 1, name: "Simplification & Constitution structure", desc: "BODMAS simplifications. Parts, schedules and sources of Indian constitution.", targets: ["q-10-1", "r-6-2", "e-1-5", "a-3-1"], test: "Reasoning Speed Test 1", time: "4.5h" },
-    { day: 9, dayType: "study", phase: 1, name: "Arithmetic Foundations Review", desc: "Resolve incorrect equations in ratios/percent. Review monthly current affairs.", targets: ["q-1-3", "r-4-1", "e-1-4", "a-9-1"], test: "GK Static Revision Test", time: "5.5h" },
-    { day: 10, dayType: "test", phase: 1, name: "Phase 1 Revision & Full Mock Test 1", desc: "Simulate exact exam environment. Spend 3 hours reviewing mock mistakes.", targets: [], test: "Full Length Mock 01 & Analysis", time: "6.0h" },
-
-    // PHASE 2: Applications & Practice (Days 11-25)
-    { day: 11, dayType: "study", phase: 2, name: "Profit & Loss & Paper Folding", desc: "Cost price and selling price ratios. Visual folded cuts. Sentence improvements.", targets: ["q-4-1", "r-10-1", "e-4-1", "a-3-2"], test: "English Grammar Test 2", time: "5.0h" },
-    { day: 12, dayType: "study", phase: 2, name: "Simple Interest & Mirror Images", desc: "Rate and time adjustments. Reflective images in alphabets. Parliament rules.", targets: ["q-5-1", "r-11-1", "e-4-2", "a-3-3"], test: "Reasoning Non-Verbal Test", time: "5.0h" },
-    { day: 13, dayType: "study", phase: 2, name: "Compound Interest & Figure Completion", desc: "CI compounding calculations. Figure completion. Active/Passive voice shifts.", targets: ["q-5-2", "r-12-1", "e-2-1", "a-8-3"], test: "Quant CI Sectional", time: "5.5h" },
-    { day: 14, dayType: "study", phase: 2, name: "Time & Work (LCM) & Dice Rules", desc: "Efficiency and total units via LCM. Dice standard vs open positions.", targets: ["q-6-1", "r-13-2", "e-2-2", "a-8-1"], test: "Reasoning Sectional 2", time: "5.0h" },
-    { day: 15, dayType: "study", phase: 2, name: "TSD & Direct/Indirect Speech", desc: "Relative speed and train crossovers. Direct indirect speech converters.", targets: ["q-7-1", "r-13-1", "e-3-1", "a-6-2"], test: "English Voice & Narration Drill", time: "5.5h" },
-    { day: 16, dayType: "study", phase: 2, name: "Profit & Loss (Discounts)", desc: "Marked price, discounts and successive margins. Indian physical geography.", targets: ["q-4-2", "r-4-2", "e-3-2", "a-2-2"], test: "GK Geography Test", time: "5.0h" },
-    { day: 17, dayType: "study", phase: 2, name: "SI-CI Differences & Syllogism Intro", desc: "2 & 3 year CI-SI differences formulas. Syllogism basics (Some/All Venn).", targets: ["q-5-3", "r-7-1", "e-4-2", "a-2-3"], test: "Reasoning Syllogism Quiz", time: "5.5h" },
-    { day: 18, dayType: "study", phase: 2, name: "Alternate Days Work & Syllogism Cases", desc: "Pipes & cisterns logic. Syllogism possibilities. Cell biology structure.", targets: ["q-6-2", "q-6-4", "r-7-2", "a-8-2"], test: "Time-Work Sectional Drill", time: "5.5h" },
-    { day: 19, dayType: "study", phase: 2, name: "Boats & Streams & Modern History Revolt", desc: "Upstream and downstream speeds. Modern history 1857 revolt details.", targets: ["q-7-3", "r-7-3", "e-4-2", "a-1-3"], test: "None", time: "5.0h" },
-    { day: 20, dayType: "test", phase: 2, name: "Mid-Term Review & Full Mock Test 2", desc: "Evaluate progress in Arithmetic. Spend extra time analyzing mock errors.", targets: [], test: "Full Length Mock 02 & Analysis", time: "6.0h" },
-    { day: 21, dayType: "study", phase: 2, name: "Partnership & Economics Demand", desc: "Capital time ratio calculations. Demand, supply and elasticity core terms.", targets: ["q-9-1", "q-9-2", "e-1-4", "a-4-1"], test: "GK Economics Drill", time: "5.0h" },
-    { day: 22, dayType: "study", phase: 2, name: "P&L Dishonest Dealer & Judiciary GK", desc: "Cheating weight margins. Supreme Court and CAG articles. Physics optics.", targets: ["q-4-3", "r-7-2", "a-3-4", "a-6-3"], test: "Quant P&L Special Test", time: "5.5h" },
-    { day: 23, dayType: "study", phase: 2, name: "Work & Wages & Chemistry Formulas", desc: "Wage divisions based on work. Acids bases and salts.", targets: ["q-6-3", "q-6-5", "r-7-3", "a-7-2"], test: "Science Chemistry Quiz", time: "5.0h" },
-    { day: 24, dayType: "study", phase: 2, name: "Mixture & Alligation Dilutions", desc: "Dilution formulas. Current Affairs Month 2. Word power lists.", targets: ["q-8-1", "q-8-2", "e-5-2", "a-9-2"], test: "GK Current Affairs Test 2", time: "5.0h" },
-    { day: 25, dayType: "test", phase: 2, name: "Phase 2 Target Mock & Review", desc: "Take a strict timed mock. Mark formulas in mistake notebook.", targets: [], test: "Full Length Mock 03 & Analysis", time: "6.0h" },
-
-    // PHASE 3: Advanced Math & Harder Topics (Days 26-35)
-    { day: 26, dayType: "study", phase: 3, name: "Advanced Number System Remainders", desc: "Remainder theorems (Fermat/Wilson/Euler). Reading Comprehension strategies.", targets: ["q-10-2", "q-10-4", "r-8-1", "e-6-1", "a-1-1"], test: "English RC Practice (3 Passages)", time: "6.0h" },
-    { day: 27, dayType: "study", phase: 3, name: "Algebra Identities & Cloze Test", desc: "Quadratic identities and graphs. Cloze test grammar matching.", targets: ["q-11-1", "q-11-2", "r-8-2", "e-7-1", "a-4-2"], test: "Quant Algebra Drill", time: "6.0h" },
-    { day: 28, dayType: "study", phase: 3, name: "Geometry Similarity & Para-jumbles", desc: "Triangle centers and similarity. Para jumbles opening sentence links.", targets: ["q-12-2", "q-12-3", "r-9-1", "e-8-1", "a-4-3"], test: "Reasoning Puzzle Test", time: "6.5h" },
-    { day: 29, dayType: "study", phase: 3, name: "Geometry Circles & Advanced RC", desc: "Circle tangents, secants properties. Inference based RC questions.", targets: ["q-12-4", "q-12-5", "r-3-2", "e-6-2", "a-5-2"], test: "English Passage speed drill", time: "6.0h" },
-    { day: 30, dayType: "study", phase: 3, name: "Mensuration 2D/3D Formulas", desc: "Surface areas and volumes formulas. Cloze vocabulary matching.", targets: ["q-13-1", "q-13-2", "q-13-3", "e-7-2"], test: "Quant Mensuration Special", time: "6.5h" },
-    { day: 31, dayType: "study", phase: 3, name: "Trigonometry Values & Para-jumbles Pairs", desc: "Trig complementary ratios. Para jumbles pronoun connectors.", targets: ["q-14-1", "q-14-2", "r-3-3", "e-8-2", "a-5-3"], test: "English Jumbles speed run", time: "6.0h" },
-    { day: 32, dayType: "study", phase: 3, name: "Mensuration Prisms & Chemistry Table", desc: "Pyramids and frustum volumes. Periodic table chemical bonds.", targets: ["q-13-4", "q-13-5", "r-8-1", "a-7-3"], test: "Quant Mensuration Advanced", time: "6.5h" },
-    { day: 33, dayType: "study", phase: 3, name: "Trig Max-Min & Current Affairs 3", desc: "Maximum minimum limits of sin/cos. Government schemes and honors.", targets: ["q-14-3", "q-14-4", "r-8-2", "e-5-1", "a-9-3"], test: "GK Central Schemes Quiz", time: "6.0h" },
-    { day: 34, dayType: "study", phase: 3, name: "Statistics, Probability & Mean Mode", desc: "Mean, median, mode calculations and dice probability. National parks static GK.", targets: ["q-15-1", "q-15-2", "q-15-3", "a-2-3"], test: "Quant Stats & Prob Quiz", time: "5.5h" },
-    { day: 35, dayType: "test", phase: 3, name: "Phase 3 Revision & Full Mock Test 4", desc: "Incorporate advanced math topics in the mock. Evaluate speed factors.", targets: [], test: "Full Length Mock 04 & Analysis", time: "6.5h" },
-
-    // PHASE 4: Simulations & Intense Revision (Days 36-40)
-    { day: 36, dayType: "simulation", phase: 4, name: "Simulation Run & Mock Test 5", desc: "Simulate exact exam timing. Revise mistake notebook for 2 hours.", targets: ["q-16-1", "q-16-2", "q-16-3"], test: "Full Length Mock 05 & Analysis", time: "6.5h" },
-    { day: 37, dayType: "simulation", phase: 4, name: "Simulation Run & Mock Test 6", desc: "Complete mock and full qualifying computer section. Memorize GK summaries.", targets: [], test: "Full Length Mock 06 & Computer Test", time: "6.5h" },
-    { day: 38, dayType: "simulation", phase: 4, name: "Simulation Run & Mock Test 7", desc: "Final full length simulation. Mark remaining errors in mistake log.", targets: [], test: "Full Length Mock 07 & Analysis", time: "6.5h" },
-    { day: 39, dayType: "simulation", phase: 4, name: "Final Review & Rapid Drill", desc: "Review all formulas in Geometry/Mensuration. Practice 100 synonym flashcards.", targets: [], test: "Quant Formula Rapid Test", time: "5.0h" },
-    { day: 40, dayType: "exam", phase: 4, name: "Mindset Prep & Strategy Lock", desc: "Relax. Review your formulas. Sleep for 8 hours. You are ready to conquer!", targets: [], test: "Final Strategy Lock", time: "2.0h" }
-];
-
-// 3. APPLICATION STATE MANAGEMENT
 let appState = {
     theme: "dark",
     currentDay: 1,
@@ -675,15 +60,37 @@ function triggerMathTypesetting() {
     }
 }
 
+let navExpanded = true;
+
+function expandNav() {
+    if (navExpanded) return;
+    navExpanded = true;
+    const navItems = document.getElementById("floating-nav-items");
+    const navTrigger = document.getElementById("floating-nav-trigger");
+    if (navItems && navTrigger) {
+        navItems.classList.remove("hidden");
+        navTrigger.classList.add("hidden");
+    }
+}
+
+function shrinkNav() {
+    if (!navExpanded) return;
+    navExpanded = false;
+    const navItems = document.getElementById("floating-nav-items");
+    const navTrigger = document.getElementById("floating-nav-trigger");
+    if (navItems && navTrigger) {
+        navItems.classList.add("hidden");
+        navTrigger.classList.remove("hidden");
+    }
+}
+
 // Header Scroll Shrink (Floating Island Dock UI)
 function initHeaderScroll() {
     let lastScrollY = window.scrollY;
-    const header = document.querySelector("header");
     const mobileFloatingNav = document.getElementById("mobile-floating-nav");
+    const navTrigger = document.getElementById("floating-nav-trigger");
     
-    if (!header) return;
-    
-    // Make sure it is initially visible
+    // Set initial active state of floating bottom bar
     if (mobileFloatingNav) {
         mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
         mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
@@ -693,24 +100,25 @@ function initHeaderScroll() {
         const currentScrollY = window.scrollY;
         
         if (currentScrollY > 40 && currentScrollY > lastScrollY) {
-            // Scrolling down: hide top header, hide floating bottom nav
-            header.style.transform = "translateY(-100%)";
-            header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-            if (mobileFloatingNav) {
-                mobileFloatingNav.classList.add("translate-y-28", "opacity-0");
-                mobileFloatingNav.classList.remove("translate-y-0", "opacity-100");
-            }
+            // Scrolling down: shrink floating bottom nav
+            shrinkNav();
         } else if (currentScrollY < lastScrollY || currentScrollY <= 40) {
-            // Scrolling up or near top: show top header, show floating bottom nav
-            header.style.transform = "translateY(0)";
-            header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-            if (mobileFloatingNav) {
-                mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
-                mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
-            }
+            // Scrolling up or near top: expand floating bottom nav
+            expandNav();
         }
         lastScrollY = currentScrollY;
     });
+
+    if (navTrigger) {
+        navTrigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            expandNav();
+        });
+        navTrigger.addEventListener("touchstart", (e) => {
+            e.stopPropagation();
+            expandNav();
+        });
+    }
 }
 
 function initExamTargetEditor() {
@@ -880,7 +288,9 @@ function initNavigation() {
             }
             
             // Close mobile menu dropdown
-            mobileMenu.classList.add("hidden");
+            if (mobileMenu) {
+                mobileMenu.classList.add("hidden");
+            }
             
             // Trigger specific page renders
             if (target === "page-syllabus") {
@@ -899,9 +309,11 @@ function initNavigation() {
     });
 
     // Mobile Hamburger Menu Toggle
-    mobileMenuBtn.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-    });
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+    }
 }
 
 function initTheme() {
