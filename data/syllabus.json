@@ -1339,5 +1339,426 @@
         "effort": "Moderate"
       }
     ]
+  },
+  {
+    "id": "a-10",
+    "subject": "General Awareness",
+    "category": "Static GK",
+    "topic": "Important Constitutional Articles (Art 1 - 395)",
+    "subtopics": [
+      {
+        "id": "a-10-1",
+        "name": "★ Art 1-4: Name, Territory & New States of the Union",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-2",
+        "name": "Art 5-11: Citizenship at commencement & Regulation by Parliament",
+        "difficulty": "Easy",
+        "weightage": "Medium",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-3",
+        "name": "★ Art 14: Equality before law & Equal protection of laws",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-4",
+        "name": "★ Art 15: Prohibition of discrimination (Race, Religion, Caste, Sex)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-5",
+        "name": "★ Art 16: Equality of opportunity in public employment",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-6",
+        "name": "★ Art 17: Abolition of Untouchability & its offenses",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-7",
+        "name": "★ Art 18: Abolition of Titles (Military & Academic allowed)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-8",
+        "name": "★ Art 19: Protection of 6 Freedoms (Speech, Assembly, Association, etc.)",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-9",
+        "name": "★ Art 20: Protection in conviction (No double jeopardy/ex-post facto)",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-10",
+        "name": "★ Art 21: Protection of Life and Personal Liberty (Wide scope)",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-11",
+        "name": "★ Art 21A: Right to free & compulsory education (Age 6-14)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-12",
+        "name": "Art 22: Protection against arrest and detention in certain cases",
+        "difficulty": "Moderate",
+        "weightage": "Medium",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-13",
+        "name": "★ Art 23: Prohibition of traffic in human beings & forced labor (Begar)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-14",
+        "name": "★ Art 24: Prohibition of employment of children in factories/mines",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-15",
+        "name": "★ Art 25: Freedom of conscience, profession, practice & propagation",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-16",
+        "name": "Art 29-30: Protection of minority groups & educational rights",
+        "difficulty": "Moderate",
+        "weightage": "Medium",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-17",
+        "name": "★ Art 32: Constitutional Remedies (Writs: Habeas Corpus, Mandamus)",
+        "difficulty": "Hard",
+        "weightage": "High",
+        "effort": "High"
+      },
+      {
+        "id": "a-10-18",
+        "name": "★ Art 39A: Equal justice and free legal aid",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-19",
+        "name": "★ Art 40: Organisation of village panchayats",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-20",
+        "name": "★ Art 44: Uniform Civil Code for the citizens",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-21",
+        "name": "★ Art 48A: Protection of environment, forests & wild life",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-22",
+        "name": "★ Art 50: Separation of judiciary from executive",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-23",
+        "name": "★ Art 51: Promotion of international peace and security",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-24",
+        "name": "★ Art 51A: Fundamental Duties (11 Core obligations of citizens)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-25",
+        "name": "Art 52-53: President of India & Executive power of the Union",
+        "difficulty": "Easy",
+        "weightage": "Medium",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-26",
+        "name": "★ Art 54: Election of the President of India",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-27",
+        "name": "★ Art 61: Procedure for impeachment of the President",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-28",
+        "name": "★ Art 72: Power of President to grant pardons & suspend sentences",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-29",
+        "name": "★ Art 74: Council of Ministers to aid & advise President",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-30",
+        "name": "★ Art 76: Attorney-General for India",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-31",
+        "name": "★ Art 85: Sessions of Parliament, prorogation & dissolution",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-32",
+        "name": "★ Art 108: Joint sitting of both Houses in certain cases",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-33",
+        "name": "★ Art 110: Definition of Money Bills",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-34",
+        "name": "★ Art 112: Annual Financial Statement (Union Budget)",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-35",
+        "name": "★ Art 123: Power of President to promulgate Ordinances",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-36",
+        "name": "★ Art 124: Establishment and constitution of Supreme Court",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-37",
+        "name": "★ Art 129: Supreme Court to be a Court of Record",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-38",
+        "name": "★ Art 143: Power of President to consult Supreme Court",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-39",
+        "name": "★ Art 148: Comptroller and Auditor-General of India (CAG)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-40",
+        "name": "★ Art 165: Advocate-General for the State",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-41",
+        "name": "★ Art 213: Power of Governor to promulgate Ordinances",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-42",
+        "name": "★ Art 226: Power of High Courts to issue certain Writs",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-43",
+        "name": "★ Art 239AA: Special provisions with respect to Delhi",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-44",
+        "name": "★ Art 243-243O: Panchayati Raj System definitions & powers",
+        "difficulty": "Hard",
+        "weightage": "High",
+        "effort": "High"
+      },
+      {
+        "id": "a-10-45",
+        "name": "★ Art 262: Adjudication of inter-State water disputes",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-46",
+        "name": "★ Art 263: Provisions with respect to an inter-State Council",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-47",
+        "name": "★ Art 280: Finance Commission establishment & duties",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-48",
+        "name": "★ Art 300A: Right to Property (44th Amendment legal right)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-49",
+        "name": "★ Art 312: Constitutional All-India Services (IAS, IPS, IFS)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-50",
+        "name": "★ Art 315: Public Service Commissions (UPSC & State PSCs)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-51",
+        "name": "★ Art 324: Election Commission of India superintendence",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-52",
+        "name": "★ Art 338 & 338A: National Commissions for SC & ST",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-53",
+        "name": "★ Art 343: Official Language of the Union (Hindi in Devanagari)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-54",
+        "name": "★ Art 352: Proclamation of National Emergency",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-55",
+        "name": "★ Art 356: Provisions for State Emergency (President's Rule)",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-56",
+        "name": "★ Art 360: Provisions for Financial Emergency",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-57",
+        "name": "★ Art 368: Parliament power and procedure to amend Constitution",
+        "difficulty": "Moderate",
+        "weightage": "High",
+        "effort": "Moderate"
+      },
+      {
+        "id": "a-10-58",
+        "name": "★ Art 370: Temporary provisions of J&K (Abrogated in 2019)",
+        "difficulty": "Easy",
+        "weightage": "High",
+        "effort": "Low"
+      },
+      {
+        "id": "a-10-59",
+        "name": "Art 371A-J: Special provisions for Nagaland, Assam, Karnataka, etc.",
+        "difficulty": "Hard",
+        "weightage": "Medium",
+        "effort": "Moderate"
+      }
+    ]
   }
 ]
