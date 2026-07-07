@@ -683,42 +683,32 @@ function initHeaderScroll() {
     
     if (!header) return;
     
+    // Make sure it is initially visible
+    if (mobileFloatingNav) {
+        mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
+        mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
+    }
+    
     window.addEventListener("scroll", () => {
         const currentScrollY = window.scrollY;
         
-        if (window.innerWidth < 768) {
-            // Mobile layout scroll mechanics
-            if (currentScrollY > 60 && currentScrollY > lastScrollY) {
-                // Scrolling down: hide header, reveal floating bottom nav
-                header.style.transform = "translateY(-100%)";
-                header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-                if (mobileFloatingNav) {
-                    mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
-                    mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
-                }
-            } else if (currentScrollY < lastScrollY || currentScrollY <= 60) {
-                // Scrolling up or near top: reveal header, hide bottom floating nav
-                header.style.transform = "translateY(0)";
-                header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
-                if (mobileFloatingNav) {
-                    mobileFloatingNav.classList.add("translate-y-28", "opacity-0");
-                    mobileFloatingNav.classList.remove("translate-y-0", "opacity-100");
-                }
+        if (currentScrollY > 40 && currentScrollY > lastScrollY) {
+            // Scrolling down: hide top header, hide floating bottom nav
+            header.style.transform = "translateY(-100%)";
+            header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+            if (mobileFloatingNav) {
+                mobileFloatingNav.classList.add("translate-y-28", "opacity-0");
+                mobileFloatingNav.classList.remove("translate-y-0", "opacity-100");
             }
-            lastScrollY = currentScrollY;
-            return;
+        } else if (currentScrollY < lastScrollY || currentScrollY <= 40) {
+            // Scrolling up or near top: show top header, show floating bottom nav
+            header.style.transform = "translateY(0)";
+            header.style.transition = "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)";
+            if (mobileFloatingNav) {
+                mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
+                mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
+            }
         }
-
-        // Desktop default state reset
-        header.style.transform = "";
-        header.style.transition = "";
-        
-        if (currentScrollY > 80 && currentScrollY > lastScrollY) {
-            header.classList.add("header-shrink");
-        } else if (currentScrollY < lastScrollY) {
-            header.classList.remove("header-shrink");
-        }
-        
         lastScrollY = currentScrollY;
     });
 }

@@ -42,6 +42,8 @@
     <!-- PWA Manifest & Meta -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d0e12">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="shortcut icon" href="icon.svg">
     <link rel="apple-touch-icon" href="icon.svg">
     <!-- KaTeX Math Rendering CDNs -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -50,89 +52,26 @@
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- HEADER NAVIGATION (XPENSA FLOATING PILL LAYOUT) -->
+    <!-- HEADER NAVIGATION (COMPACTED FLOATING BAR READY) -->
     <header class="bg-bgCard/90 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-14 sm:h-16">
-                <!-- Left: Dynamic Header Page Title & Subtitle -->
+            <div class="flex items-center justify-between h-14">
+                <!-- Left: App Brand Logo -->
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-violet-500/20 text-xs sm:text-sm">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-violet-500/20 text-xs">
                         <i class="fa-solid fa-circle-nodes"></i>
                     </div>
-                    <div class="hidden sm:block">
-                        <h1 id="header-page-title" class="font-heading font-extrabold text-sm sm:text-lg lg:text-xl tracking-tight text-white uppercase transition-all duration-300">Dashboard</h1>
-                        <span class="block text-[8px] sm:text-[9px] text-accentCyan font-bold tracking-widest uppercase">CGL Rank-Maker &bull; 40-Day Conquest</span>
+                    <div>
+                        <h1 class="font-heading font-extrabold text-sm tracking-tight text-white uppercase">CGL Conquest</h1>
                     </div>
                 </div>
 
-                <!-- Center: Desktop Menu (XPensa Floating Pill Container) -->
-                <nav class="hidden md:flex bg-white/5 border border-white/10 rounded-full p-1 gap-1 items-center">
-                    <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200 active-nav" data-target="page-dashboard" title="Dashboard Overview">
-                        <i class="fa-solid fa-chart-line text-sm"></i>
-                    </a>
-                    <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" title="Make It Fast (Speed Drills)">
-                        <i class="fa-solid fa-bolt text-sm"></i>
-                    </a>
-                    <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" title="Study Toolkit">
-                        <i class="fa-solid fa-toolbox text-sm"></i>
-                    </a>
-                    <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" title="40-Day Plan">
-                        <i class="fa-solid fa-calendar-days text-sm"></i>
-                    </a>
-                    <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" title="Syllabus Tracker">
-                        <i class="fa-solid fa-list-check text-sm"></i>
-                    </a>
-                    <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" title="Mock Analytics">
-                        <i class="fa-solid fa-square-poll-vertical text-sm"></i>
-                    </a>
-                    
-                    <!-- Vertical Divider inside Nav Island -->
-                    <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
-
-                    <!-- Theme Toggle inside Nav Island -->
-                    <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white transition duration-200" title="Toggle Light/Dark Theme">
+                <!-- Right: Compact Action Buttons -->
+                <div class="flex items-center gap-3">
+                    <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white hover:bg-white/5 transition duration-200" title="Toggle Light/Dark Theme">
                         <i class="fa-solid fa-sun text-sm"></i>
                     </button>
-                </nav>
-
-                <!-- Right: Actions and Universal Timer Badge -->
-                <div class="flex items-center gap-3">
-                    <div class="hidden lg:flex items-center bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-full text-center">
-                        <span id="countdown-label" class="text-[8px] text-rose-400 font-bold uppercase tracking-wider mr-1.5">Countdown:</span>
-                        <span id="countdown-timer" class="font-mono text-xs font-bold text-white">40d : 00h : 00m</span>
-                    </div>
-
-                    <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 transition">
-                        <i class="fa-solid fa-bars text-lg"></i>
-                    </button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-bgCard px-4 pt-2 pb-4 space-y-1 shadow-xl rounded-b-2xl">
-            <a href="#" class="mobile-nav-item block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition active-nav" data-target="page-dashboard">
-                <i class="fa-solid fa-chart-line mr-2.5 text-accentCyan"></i> Dashboard Overview
-            </a>
-            <a href="#" class="mobile-nav-item block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition" data-target="page-speed">
-                <i class="fa-solid fa-bolt mr-2.5 text-accentRose"></i> Make It Fast (Speed Drills)
-            </a>
-            <a href="#" class="mobile-nav-item block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition" data-target="page-toolkit">
-                <i class="fa-solid fa-toolbox mr-2.5 text-accentGreen"></i> Study Toolkit
-            </a>
-            <a href="#" class="mobile-nav-item block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition" data-target="page-plan">
-                <i class="fa-solid fa-calendar-days mr-2.5 text-accentRose"></i> 40-Day Plan
-            </a>
-            <a href="#" class="mobile-nav-item block px-3 py-2.5 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition" data-target="page-syllabus">
-                <i class="fa-solid fa-list-check mr-2.5 text-accentPurple"></i> Syllabus Tracker
-            </a>
-            <a href="#" class="mobile-nav-item block px-3 py-2.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition" data-target="page-mocks">
-                <i class="fa-solid fa-square-poll-vertical mr-2.5 text-accentAmber"></i> Mock Analytics
-            </a>
-            <div class="sm:hidden mt-2 bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-md text-center">
-                <span class="text-[9px] text-rose-400 font-bold uppercase tracking-wider block">Exam Countdown</span>
-                <span id="countdown-timer-mobile" class="font-mono text-sm font-bold text-white">40d : 00h : 00m : 00s</span>
             </div>
         </div>
     </header>
@@ -142,6 +81,11 @@
         
         <!-- 1. DASHBOARD OVERVIEW PAGE -->
         <section id="page-dashboard" class="content-page space-y-6">
+            <!-- Embedded Page Heading -->
+            <div class="border-b border-white/5 pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-chart-line text-accentCyan mr-2"></i> Dashboard Overview</h2>
+                <p class="text-[10px] text-gray-400 mt-0.5">Track preparation readiness, study plans, mock exams, and target stats.</p>
+            </div>
             <!-- Stats Grid -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-bgCard border border-white/5 rounded-xl p-4 shadow-lg hover:border-accentCyan/30 transition-all duration-300">
@@ -286,6 +230,8 @@
                             <h4 id="display-exam-name" class="text-xs font-extrabold text-white uppercase tracking-wider">SSC CGL Tier-1</h4>
                             <span class="block text-[10px] text-gray-500 font-bold uppercase mt-2">Exam Date</span>
                             <span id="display-exam-date" class="font-mono text-xs text-gray-300">August 15, 2026</span>
+                            <span class="block text-[10px] text-gray-500 font-bold uppercase mt-2">Time Remaining</span>
+                            <div id="countdown-timer" class="font-mono text-sm font-bold text-accentRose tracking-wide animate-pulse">40d : 00h : 00m : 00s</div>
                         </div>
                         
                         <!-- Edit Form Mode (Hidden by default) -->
@@ -310,6 +256,11 @@
 
         <!-- 2. SYLLABUS TRACKER PAGE -->
         <section id="page-syllabus" class="content-page hidden space-y-6">
+            <!-- Embedded Page Heading -->
+            <div class="border-b border-white/5 pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-list-check text-accentPurple mr-2"></i> Syllabus Tracker</h2>
+                <p class="text-[10px] text-gray-400 mt-0.5">Track and complete chapters from Quantitative Aptitude, Reasoning, English, and General Awareness.</p>
+            </div>
             <!-- Search, Filters, Layout switch -->
             <div class="bg-bgCard border border-white/5 rounded-xl p-4 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <!-- Search input -->
@@ -411,6 +362,11 @@
 
         <!-- 3. 40-DAY STUDY PLAN TIMELINE PAGE -->
         <section id="page-plan" class="content-page hidden space-y-6">
+            <!-- Embedded Page Heading -->
+            <div class="border-b border-white/5 pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-calendar-days text-accentRose mr-2"></i> 40-Day Study Plan</h2>
+                <p class="text-[10px] text-gray-400 mt-0.5">Daily target tasks, focus topics, and structured checklists to maintain rank momentum.</p>
+            </div>
             <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="max-w-xl">
                     <h2 class="font-heading font-bold text-lg text-white">40-Day Structured Prep Roadmap</h2>
@@ -455,6 +411,11 @@
 
         <!-- 4. MOCK ANALYTICS PAGE -->
         <section id="page-mocks" class="content-page hidden space-y-6">
+            <!-- Embedded Page Heading -->
+            <div class="border-b border-white/5 pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-square-poll-vertical text-accentAmber mr-2"></i> Mock Analytics</h2>
+                <p class="text-[10px] text-gray-400 mt-0.5">Log mock scores, view percentile trajectory, and track preparation readiness scores.</p>
+            </div>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <!-- Input log form -->
                 <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg lg:col-span-2 space-y-4 flex flex-col justify-between">
@@ -572,6 +533,11 @@
 
         <!-- 5. STUDY TOOLKIT PAGE (FORMULAS, RULES, SI UNITS, COMPUTER AND WRITER) -->
         <section id="page-toolkit" class="content-page hidden space-y-6">
+            <!-- Embedded Page Heading -->
+            <div class="border-b border-white/5 pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-toolbox text-accentGreen mr-2"></i> Study Toolkit</h2>
+                <p class="text-[10px] text-gray-400 mt-0.5">Formulas, rules, geography static GK data tables, fixed vs conditional laws, and custom notes parser.</p>
+            </div>
             <!-- Pomodoro & Mistake Book layout -->
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 <!-- Left 3 columns: Sub-tabs containing standard study reference databases -->
@@ -721,10 +687,82 @@
                                     <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Time & Work Equivalence</h4>
                                     <p class="text-xs text-gray-300 leading-relaxed">Formula: $M_1 D_1 H_1 E_1 / W_1 = M_2 D_2 H_2 E_2 / W_2$ (Men, Days, Hours, Efficiency, Work). If A does work in $x$ days and B in $y$ days, together they take $\frac{xy}{x+y}$ days. Negative work (Pipes & Cistern): Leak draining capacity is subtracted from inlet capacity.</p>
                                 </div>
-                                <!-- Trigonometry -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Trigonometric Ratios & Height Angles</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Ratios: 30°-60°-90° $\rightarrow 1 : \sqrt{3} : 2$; 45°-45°-90° $\rightarrow 1 : 1 : \sqrt{2}$. Identities: $\sin(A+B) = \sin A\cos B + \cos A\sin B$, $\cos(A+B) = \cos A\cos B - \sin A\sin B$. Max value of $a\sin\theta + b\cos\theta = \sqrt{a^2+b^2}$, Min value $= -\sqrt{a^2+b^2}$. If $A+B = 90^\circ$, then $\tan A\tan B = 1$ and $\sin^2 A + \sin^2 B = 1$.</p>
+                                <!-- Trigonometry Ratios & Values Table -->
+                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+                                    <h4 class="text-xs font-bold text-accentCyan uppercase font-heading">Trigonometric Values &amp; Formulas Table</h4>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-left text-[11px] border-collapse">
+                                            <thead>
+                                                <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
+                                                    <th class="pb-1 text-left">Ratio</th>
+                                                    <th class="pb-1 text-center">0°</th>
+                                                    <th class="pb-1 text-center">30°</th>
+                                                    <th class="pb-1 text-center">45°</th>
+                                                    <th class="pb-1 text-center">60°</th>
+                                                    <th class="pb-1 text-center">90°</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-gray-300 font-mono text-center">
+                                                <tr class="border-b border-white/5">
+                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">sin θ</td>
+                                                    <td class="text-white">0</td>
+                                                    <td class="text-accentCyan font-bold">1/2</td>
+                                                    <td class="text-accentCyan font-bold">1/√2</td>
+                                                    <td class="text-accentCyan font-bold">√3/2</td>
+                                                    <td class="text-white">1</td>
+                                                </tr>
+                                                <tr class="border-b border-white/5">
+                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">cos θ</td>
+                                                    <td class="text-white">1</td>
+                                                    <td class="text-accentCyan font-bold">√3/2</td>
+                                                    <td class="text-accentCyan font-bold">1/2</td>
+                                                    <td class="text-accentCyan font-bold">1/√2</td>
+                                                    <td class="text-white">0</td>
+                                                </tr>
+                                                <tr class="border-b border-white/5">
+                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">tan θ</td>
+                                                    <td class="text-white">0</td>
+                                                    <td class="text-accentCyan font-bold">1/√3</td>
+                                                    <td class="text-white">1</td>
+                                                    <td class="text-accentCyan font-bold">√3</td>
+                                                    <td class="text-gray-500 text-[10px]">Undef</td>
+                                                </tr>
+                                                <tr class="border-b border-white/5">
+                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">cosec θ</td>
+                                                    <td class="text-gray-500 text-[10px]">Undef</td>
+                                                    <td class="text-white">2</td>
+                                                    <td class="text-accentCyan font-bold">√2</td>
+                                                    <td class="text-accentCyan font-bold">2/√3</td>
+                                                    <td class="text-white">1</td>
+                                                </tr>
+                                                <tr class="border-b border-white/5">
+                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">sec θ</td>
+                                                    <td class="text-white">1</td>
+                                                    <td class="text-accentCyan font-bold">2/√3</td>
+                                                    <td class="text-accentCyan font-bold">√2</td>
+                                                    <td class="text-white">2</td>
+                                                    <td class="text-gray-500 text-[10px]">Undef</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">cot θ</td>
+                                                    <td class="text-gray-500 text-[10px]">Undef</td>
+                                                    <td class="text-accentCyan font-bold">√3</td>
+                                                    <td class="text-white">1</td>
+                                                    <td class="text-accentCyan font-bold">1/√3</td>
+                                                    <td class="text-white">0</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5 text-[11px] space-y-1.5">
+                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">📐 Core Identities &amp; Complementary Relations</span>
+                                        <p class="text-gray-300 leading-relaxed font-sans">
+                                            • <strong class="text-white">Basic Identities:</strong> $sin^2	heta + cos^2	heta = 1$ | $1 + 	an^2	heta = sec^2	heta$ | $1 + cot^2	heta = 	ext{cosec}^2	heta$<br>
+                                            • <strong class="text-white">Complementary (If A+B=90°):</strong> $sin A = cos B$ | $	an A 	an B = 1$ | $sin^2 A + sin^2 B = 1$<br>
+                                            • <strong class="text-white">Min/Max limits:</strong> For $asin	heta + bcos	heta$, Max $= sqrt{a^2+b^2}$ | Min $= -sqrt{a^2+b^2}$<br>
+                                            • <strong class="text-white">Height &amp; Distance Triangles:</strong> 30°-60°-90° $ightarrow 1 : sqrt{3} : 2$ | 45°-45°-90° $ightarrow 1 : 1 : sqrt{2}$
+                                        </p>
+                                    </div>
                                 </div>
                                 <!-- Coordinate Geometry -->
                                 <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
@@ -1335,6 +1373,11 @@
 
         <!-- 6. SPEED DRILLS / MAKE IT FAST PAGE -->
         <section id="page-speed" class="content-page hidden space-y-6">
+            <!-- Embedded Page Heading -->
+            <div class="border-b border-white/5 pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-bolt text-accentRose mr-2"></i> Speed Drills</h2>
+                <p class="text-[10px] text-gray-400 mt-0.5">Sharpen response speed on squares, cubes, tables, geometry, triplets, and trig ratios.</p>
+            </div>
             <!-- Speed Drills Sub-Tabs -->
             <div class="flex flex-wrap gap-2 border-b border-white/10 pb-3">
                 <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200 active-nav-tab" data-target="speed-tab-maths">
@@ -1619,7 +1662,7 @@
     </div>
 
     <!-- Mobile Floating Navigation Island -->
-    <nav id="mobile-floating-nav" class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-bgCard/90 backdrop-blur-lg border border-white/10 rounded-full p-1.5 flex gap-2 items-center shadow-2xl z-50 transition-all duration-300 transform translate-y-28 opacity-0">
+    <nav id="mobile-floating-nav" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-bgCard/90 backdrop-blur-lg border border-white/10 rounded-full p-1.5 flex gap-2 items-center shadow-2xl z-50 transition-all duration-300 transform translate-y-0 opacity-100">
         <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" title="Dashboard">
             <i class="fa-solid fa-chart-line text-sm"></i>
         </a>
