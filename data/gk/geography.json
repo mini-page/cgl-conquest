@@ -1,0 +1,146 @@
+{
+  "rivers": [
+    {
+      "name": "Ganga",
+      "length": "2,525 km",
+      "origin": "Gangotri Glacier (UK)",
+      "detail": "Devprayag (Alaknanda + Bhagirathi)"
+    },
+    {
+      "name": "Godavari",
+      "length": "1,465 km",
+      "origin": "Trimbakeshwar (MH)",
+      "detail": "Known as 'Dakshin Ganga' (Peninsular longest)"
+    },
+    {
+      "name": "Krishna",
+      "length": "1,400 km",
+      "origin": "Mahabaleshwar (MH)",
+      "detail": "Tributaries: Tungabhadra & Bhima"
+    },
+    {
+      "name": "Yamuna",
+      "length": "1,376 km",
+      "origin": "Yamunotri (UK)",
+      "detail": "Largest tributary of Ganga, merges at Prayagraj"
+    },
+    {
+      "name": "Narmada",
+      "length": "1,312 km",
+      "origin": "Amarkantak (MP)",
+      "detail": "West flowing through rift valley, Dhuandhar falls"
+    },
+    {
+      "name": "Indus",
+      "length": "1,114 km",
+      "origin": "Mansarovar (Tibet)",
+      "detail": "Flows through Ladakh; enters Pakistan"
+    },
+    {
+      "name": "Brahmaputra",
+      "length": "916 km",
+      "origin": "Angsi Glacier (Tibet)",
+      "detail": "Called Tsangpo in Tibet, Dihang in Arunachal"
+    },
+    {
+      "name": "Mahanadi",
+      "length": "851 km",
+      "origin": "Sihawa (Chhattisgarh)",
+      "detail": "Hirakud Dam (Odisha) built on it"
+    }
+  ],
+  "mountains": [
+    {
+      "range": "Karakoram",
+      "peak": "K2 (Godwin-Austen)",
+      "elevation": "8,611m",
+      "detail": "Highest peak in India region (Ladakh)"
+    },
+    {
+      "range": "Himalayas",
+      "peak": "Kanchenjunga",
+      "elevation": "8,586m",
+      "detail": "Sikkim, world's 3rd highest peak"
+    },
+    {
+      "range": "Western Ghats",
+      "peak": "Anamudi",
+      "elevation": "2,695m",
+      "detail": "Kerala, Sahyadri biodiversity hotspot"
+    },
+    {
+      "range": "Aravali",
+      "peak": "Guru Shikhar",
+      "elevation": "1,722m",
+      "detail": "Rajasthan, oldest fold mountain range"
+    },
+    {
+      "range": "Satpura",
+      "peak": "Dhupgarh",
+      "elevation": "1,350m",
+      "detail": "Madhya Pradesh (Panchmarhi)"
+    },
+    {
+      "range": "Eastern Ghats",
+      "peak": "Jindhagada Peak",
+      "elevation": "1,690m",
+      "detail": "Andhra Pradesh (Discontinuous range)"
+    },
+    {
+      "range": "Vindhya",
+      "peak": "Sadbhawna Shikhar",
+      "elevation": "752m",
+      "detail": "MP, divides North & South India"
+    }
+  ],
+  "dams": [
+    {
+      "name": "Tehri Dam",
+      "river": "Bhagirathi",
+      "state": "Uttarakhand",
+      "significance": "Highest Dam in India (260.5m)"
+    },
+    {
+      "name": "Hirakud Dam",
+      "river": "Mahanadi",
+      "state": "Odisha",
+      "significance": "Longest Dam in India (25.8 km)"
+    },
+    {
+      "name": "Bhakra Nangal",
+      "river": "Sutlej",
+      "state": "Himachal Pradesh",
+      "significance": "Largest concrete gravity dam"
+    },
+    {
+      "name": "Nagarjuna Sagar",
+      "river": "Krishna",
+      "state": "Andhra / Telangana",
+      "significance": "Largest masonry dam in the world"
+    },
+    {
+      "name": "Sardar Sarovar",
+      "river": "Narmada",
+      "state": "Gujarat",
+      "significance": "Major gravity dam supplying GJ, MP, MH"
+    }
+  ],
+  "passes": [
+    {
+      "name": "Shipki La",
+      "detail": "Satluj river enters India (Himachal Pradesh)"
+    },
+    {
+      "name": "Nathu La",
+      "detail": "Indo-China trade border pass (Sikkim)"
+    },
+    {
+      "name": "Zoji La",
+      "detail": "Srinagar to Leh connectivity highway (Ladakh)"
+    },
+    {
+      "name": "Borders",
+      "detail": "McMahon Line (India-China), Radcliffe Line (India-Pakistan)"
+    }
+  ]
+}

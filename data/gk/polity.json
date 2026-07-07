@@ -1,0 +1,57 @@
+[
+  {
+    "section": "Fundamental Rights",
+    "items": [
+      {
+        "key": "Article 14",
+        "val": "Equality before law"
+      },
+      {
+        "key": "Article 19",
+        "val": "Freedom of speech & expression"
+      },
+      {
+        "key": "Article 21",
+        "val": "Right to life & personal liberty"
+      },
+      {
+        "key": "Article 32",
+        "val": "Constitutional Remedies (Heart & Soul)"
+      }
+    ]
+  },
+  {
+    "section": "Emergency Provisions",
+    "items": [
+      {
+        "key": "Article 352",
+        "val": "National Emergency"
+      },
+      {
+        "key": "Article 356",
+        "val": "President's Rule (State Emergency)"
+      },
+      {
+        "key": "Article 360",
+        "val": "Financial Emergency"
+      }
+    ]
+  },
+  {
+    "section": "Important Amendments",
+    "items": [
+      {
+        "key": "42nd Amendment",
+        "val": "Mini-Constitution (added Socialist, Secular, Integrity)"
+      },
+      {
+        "key": "44th Amendment",
+        "val": "Removed 'Right to Property' from Fundamental Rights"
+      },
+      {
+        "key": "86th Amendment",
+        "val": "Right to Education (added Article 21A)"
+      }
+    ]
+  }
+]

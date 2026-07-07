@@ -1,0 +1,41 @@
+{
+  "units": [
+    {
+      "name": "Force",
+      "unit": "Newton (N)"
+    },
+    {
+      "name": "Work/Energy",
+      "unit": "Joule (J)"
+    },
+    {
+      "name": "Power",
+      "unit": "Watt (W)"
+    },
+    {
+      "name": "Pressure",
+      "unit": "Pascal (Pa)"
+    },
+    {
+      "name": "Resistance",
+      "unit": "Ohm (\\Omega)"
+    },
+    {
+      "name": "Magnetic Flux",
+      "unit": "Weber (Wb)"
+    },
+    {
+      "name": "Frequency",
+      "unit": "Hertz (Hz)"
+    },
+    {
+      "name": "Charge",
+      "unit": "Coulomb (C)"
+    },
+    {
+      "name": "Luminous",
+      "unit": "Lumen (lm)"
+    }
+  ],
+  "facts": "Constants: $c \\approx 3 \\times 10^8 \\text{ m/s}$, $g = 9.8 \\text{ m/s}^2$, $G = 6.674 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2/\\text{kg}^2$, $h = 6.626 \\times 10^{-34} \\text{ J}\\cdot\\text{s}$. Vitamins: Vit A deficiency (Night blindness), Vit B1 (Beriberi), Vit C (Scurvy), Vit D (Rickets), Vit K (non-clotting of blood)."
+}
