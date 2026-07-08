@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Subject-Verb Agreement Core Cases",
+    "content": "If two subjects are joined by *along with, together with, in addition to, as well as, accompanied by*, the verb agrees with the **First Subject**. If joined by *neither... nor, either... or, not only... but also*, the verb agrees with the **Nearest Subject**. Singular verbs follow expressions like *each of, either of, neither of, one of* + plural noun (e.g., \"Each of the boys has *[not have]* completed his work\")."
+  },
+  {
+    "title": "Conditional Clauses Structure",
+    "content": "| Conditional Type | If-Clause Tense | Main Clause Tense |\n| --- | --- | --- |\n| Type 1 (Real) | Present Simple | Will/Can + V1 |\n| Type 2 (Unreal) | Past Simple | Would + V1 |\n| Type 3 (Impossible) | Past Perfect | Would have + V3 |\n\n### 💡 Pro Grammar Tip\n\nIn imaginary/unreal conditions, always use \"were\" regardless of subject (e.g., \"If I *were* you...\"). Never use \"will/would\" in the *if-clause*."
+  },
+  {
+    "title": "Active / Passive Transformations",
+    "content": "Passive of imperative sentence \"Do it\" = \"Let it be done\" or \"You are ordered to do it.\" Modals: \"She can play cricket\" $\\rightarrow$ \"Cricket can be played by her.\" Prepositions do not vanish: \"He laughed at me\" $\\rightarrow$ \"I was laughed at by him.\" For transitive verbs only. Interrogative active: \"Who did this?\" $\\rightarrow$ \"By whom was this done?\""
+  },
+  {
+    "title": "Direct & Indirect Speech Rules",
+    "content": "Tense shifts (if reporting verb is in past): Present Simple $\\rightarrow$ Past Simple; Present Perfect $\\rightarrow$ Past Perfect; Past Simple $\\rightarrow$ Past Perfect. Pronoun shift formula: **SON** (1st person subject, 2nd person object, 3rd person no change). Questions: Reporting verb \"said to\" changes to \"asked\". No conjunction \"that\" is used for wh-questions; use \"if/whether\" for yes/no questions."
+  },
+  {
+    "title": "Plural vs Singular Noun Traps",
+    "content": "**Plural in form, singular in use**: *Mathematics, Physics, News, Politics, Billiards, Gallows, Innings* (always take a singular verb). **Singular in form, plural in use**: *Cattle, Gentry, Clergy, Poultry, Peasantry, People, Police* (always take a plural verb; e.g., \"Cattle are grazing *[not is grazing]*\"). **Uncountable nouns**: *Scenery, Furniture, Advice, Information, Luggage, Hair* (never take plural forms or \"a/an\")."
+  },
+  {
+    "title": "Pronoun Order & Cases",
+    "content": "When multiple persons are in one sentence, normal order is **Second Person (2) $\\rightarrow$ Third Person (3) $\\rightarrow$ First Person (1)** (e.g., \"You, he and I are study partners\"). If confessing a mistake or guilt, the order becomes **1 $\\rightarrow$ 2 $\\rightarrow$ 3** (e.g., \"I, you and he committed the error\"). Objective case follow prepositions and \"let\" (e.g., \"Between you and me *[not I]*\", \"Let him and me *[not I]* go\")."
+  },
+  {
+    "title": "Fixed Prepositions Combinations",
+    "content": "*Abstain from* (not of) • *Proficient in* • *Accused of* • *Comply with* • *Different from* (not than) • *Congratulate on* (not for) • *Refrain from* • *Prevent from* • *Key to* success • *Aim at* • *Deprived of* • *Adapted to* environment."
+  }
+]

@@ -86,16 +86,33 @@ body.light-theme .mobile-nav-item.active-nav {
 }
 
 /* Toolkit Active Subtabs */
+button.active-nav-tab,
+a.active-nav-tab,
 .active-nav-tab {
     background-color: rgba(139, 92, 246, 0.15) !important;
     color: #c084fc !important;
     border: 1px solid rgba(139, 92, 246, 0.3) !important;
 }
 
+body.light-theme button.active-nav-tab,
+body.light-theme a.active-nav-tab,
 body.light-theme .active-nav-tab {
     background-color: rgba(109, 40, 217, 0.08) !important;
     color: #6d28d9 !important;
     border: 1px solid rgba(109, 40, 217, 0.2) !important;
+}
+
+/* Active Calculation Drill Mode highlight in Cyan */
+button.drill-mode-btn.active-nav-tab {
+    background-color: rgba(6, 182, 212, 0.2) !important;
+    color: #22d3ee !important;
+    border-color: rgba(6, 182, 212, 0.5) !important;
+}
+
+body.light-theme button.drill-mode-btn.active-nav-tab {
+    background-color: rgba(8, 145, 178, 0.12) !important;
+    color: #0891b2 !important;
+    border-color: rgba(8, 145, 178, 0.3) !important;
 }
 
 /* Custom Dropdown vector arrow alignment overrides */
@@ -351,6 +368,37 @@ header.header-shrink .w-9.h-9.rounded-xl {
 }
 
 /* Speed Drills Bottom Centering Layout */
-#page-speed {
-    padding-bottom: 25vh !important;
+.content-page {
+    padding-bottom: 12rem !important;
+}
+
+/* Floating Navbar Shrunk styling matching mobile thumb & desktop center positioning */
+#mobile-floating-nav {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#mobile-floating-nav.nav-shrunk {
+    right: 1.5rem !important;
+    left: auto !important;
+    transform: translateX(0) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+@media (min-width: 768px) {
+    #mobile-floating-nav.nav-shrunk {
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+    }
+}
+
+/* Immersive Fullscreen Drill Card Styles */
+.fullscreen-drill-card {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
 }

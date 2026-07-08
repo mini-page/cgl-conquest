@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Keyboard Shortcut Commands",
+    "content": "Close Program: **Alt + F4**\nTask Manager: **Ctrl + Shift + Esc**\nLock Windows: **Win + L**\nProperties of selected: **Alt + Enter**\nSwitch open apps: **Alt + Tab**\nRun utility: **Win + R**"
+  },
+  {
+    "title": "MS Excel Formulas & Cell Referencing",
+    "content": "**References**: Relative (A1), Absolute ($A$1 - remains fixed when copy pasted), Mixed ($A1 or A$1). • **Formulas**: VLOOKUP(value, table, col, match), CONCATENATE(), COUNTIF(range, criteria), IF(test, true_val, false_val)."
+  },
+  {
+    "title": "Internet Protocols & Network Port Mappings",
+    "content": "HTTP (Web): **Port 80**\nHTTPS (Secure): **Port 443**\nFTP (Files): **Port 21**\nSMTP (Email Send): **Port 25**\nDNS (Domain Resolv): **Port 53**\nSSH (Sec Shell): **Port 22**"
+  },
+  {
+    "title": "Cybersecurity: Malwares & Safeguards",
+    "content": "**Trojans**: Disguised as legitimate software. • **Worms**: Self-replicating programs that travel over networks without host files. • **Ransomware**: Encrypts system data, demanding payment. • **Firewall**: Moniters incoming/outgoing traffic based on security rules."
+  }
+]

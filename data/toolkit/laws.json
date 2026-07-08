@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Quantitative Aptitude",
+    "content": "Fixed\n**Centroid Ratio:** Median division is always $2:1$ from vertex.\n\nFixed\n**Right Triangle Radii:** Inradius is always $\\frac{a+b-c}{2}$; Circumradius is always $\\frac{c}{2}$.\n\nFixed\n**HCF-LCM Relation:** Product of two numbers $A \\times B$ is always $\\text{HCF} \\times \\text{LCM}$.\n\n**Center Angles:** BIC is $90^\\circ + \\frac{A}{2}$ (Incenter), $180^\\circ - A$ (Orthocenter), $2A$ (Circumcenter).\n\n**Interest Rates:** Simple Interest remains constant year-on-year; Compound Interest compounds progressively."
+  },
+  {
+    "title": "Reasoning & Logic",
+    "content": "Fixed\n**Standard Dice:** Sum of opposite faces is always exactly $7$.\n\nFixed\n**Alphabet Sum:** Position sum of any letter and its opposite letter is always $27$ (e.g. A + Z = 27).\n\n**Leap Year Odd Days:** 2 odd days if divisible by 4 (or 400 for century years), else 1 odd day.\n\n**Family Tree Genders:** Gender of a sibling or child is conditional on explicit statements (cannot assume from names).\n\n**Clock Hand Relative Speed:** Always $5.5^\\circ/\\text{minute}$ (calculated from differences of hand motions)."
+  },
+  {
+    "title": "English Grammar",
+    "content": "Fixed\n**Imaginary Clauses:** Always use the verb **were** regardless of singular/plural subject (e.g., \"If I were...\").\n\nFixed\n**Objective Case:** Objective pronouns (him, me, us) always follow \"between\" or \"let\".\n\n**Subject Concord:** Verb agrees with **Subject 1** for *as well as/along with*; but agrees with **Nearest Subject** for *either... or/neither... nor*.\n\n**Tense Shifts:** Voice/Narration changes are conditional on the active reporting verb tense (Past vs Present)."
+  },
+  {
+    "title": "Computer & Science",
+    "content": "Fixed\n**Port Numbers:** Fixed protocol standards (HTTP=80, HTTPS=443, SMTP=25, FTP=21).\n\nFixed\n**Excel Absolute Reference:** Cell referencing with `$` symbols (e.g. `$A$1`) never shifts when copy-pasting.\n\n**Excel Relative Reference:** Cell referencing without `$` symbols (e.g. `A1`) updates dynamically relative to destination.\n\n**Science Constants:** Acceleration due to gravity $g$ is $9.8 \\text{ m/s}^2$ on Earth but changes depending on altitude/planet."
+  }
+]

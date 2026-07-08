@@ -33,6 +33,25 @@ function initHeaderScroll() {
     if (mobileFloatingNav) {
         mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
         mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
+
+        // Double tap or double click to scroll to top when shrunk
+        mobileFloatingNav.addEventListener("dblclick", () => {
+            if (mobileFloatingNav.classList.contains("nav-shrunk")) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        });
+        
+        let lastTap = 0;
+        mobileFloatingNav.addEventListener("touchstart", (e) => {
+            if (!mobileFloatingNav.classList.contains("nav-shrunk")) return;
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        });
     }
     
     window.addEventListener("scroll", () => {
@@ -110,8 +129,13 @@ function initNavigation() {
             } else if (target === "page-mocks") {
                 renderMockAnalytics();
             } else if (target === "page-toolkit") {
-                renderToolkit();
-                if (typeof renderGKTab === "function") renderGKTab();
+                const activeTkTab = document.querySelector(".toolkit-tab-btn.active-nav-tab");
+                const activePanelId = activeTkTab ? activeTkTab.getAttribute("data-target") : "tk-quant";
+                if (typeof renderToolkitSubTab === "function") {
+                    renderToolkitSubTab(activePanelId);
+                } else {
+                    renderToolkit();
+                }
             } else if (target === "page-speed") {
                 resetDrillSession();
                 setTimeout(triggerMathTypesetting, 50);
@@ -125,6 +149,53 @@ function initNavigation() {
             mobileMenu.classList.toggle("hidden");
         });
     }
+
+    // Global Keyboard Shortcuts for Page Navigation
+    window.addEventListener("keydown", (e) => {
+        // Skip shortcuts if user is typing in form inputs/textarea
+        const tag = document.activeElement.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement.isContentEditable) {
+            return;
+        }
+
+        let targetPage = "";
+        if (e.key === "1") targetPage = "page-dashboard";
+        else if (e.key === "2") targetPage = "page-toolkit";
+        else if (e.key === "3") targetPage = "page-speed";
+        else if (e.key === "4") targetPage = "page-plan";
+        else if (e.key === "5") targetPage = "page-syllabus";
+        else if (e.key === "6") targetPage = "page-mocks";
+        else if (e.key === "p" || e.key === "P") {
+            if (window.isDrillModalActive && typeof toggleModalPause === "function") {
+                toggleModalPause();
+                e.preventDefault();
+            }
+            return;
+        }
+        else if (e.key === "Escape") {
+            if (window.isDrillModalActive && typeof closeDrillModal === "function") {
+                closeDrillModal();
+                e.preventDefault();
+            }
+            return;
+        }
+        else if (e.key === "t" || e.key === "T") {
+            const themeBtn = document.getElementById("theme-toggle");
+            if (themeBtn) {
+                themeBtn.click();
+                e.preventDefault();
+            }
+            return;
+        }
+
+        if (targetPage) {
+            const navBtn = document.querySelector(`.nav-item[data-target="${targetPage}"]`);
+            if (navBtn) {
+                navBtn.click();
+                e.preventDefault();
+            }
+        }
+    });
 }
 
 function initTheme() {

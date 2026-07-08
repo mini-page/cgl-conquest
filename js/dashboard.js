@@ -93,8 +93,8 @@ function initToolkitTabs() {
                 targetPanel.classList.remove("hidden");
             }
 
-            if (targetPanelId === "tk-physics" && typeof renderGKTab === "function") {
-                renderGKTab();
+            if (typeof renderToolkitSubTab === "function") {
+                renderToolkitSubTab(targetPanelId);
             }
         };
     });

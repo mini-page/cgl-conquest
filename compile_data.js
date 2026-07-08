@@ -5,6 +5,7 @@ const rootDir = __dirname;
 const statePath = path.join(rootDir, 'js/state.js');
 const dataDir = path.join(rootDir, 'data');
 const gkDir = path.join(rootDir, 'data/gk');
+const tkDir = path.join(rootDir, 'data/toolkit');
 
 console.log("Starting SSC CGL Dashboard Data Compilation...");
 
@@ -28,47 +29,83 @@ const history = fs.readFileSync(path.join(gkDir, 'history.json'), 'utf8');
 const geography = fs.readFileSync(path.join(gkDir, 'geography.json'), 'utf8');
 const science = fs.readFileSync(path.join(gkDir, 'science.json'), 'utf8');
 
-// 3. Compile primary databases
-const primaryRegex = /\/\/ 1\. SYLLABUS DATABASE \(INLINE COMPILED\)[\s\S]*?async function loadApplicationData\(\) \{[\s\S]*?\}/;
-const primaryReplace = `// 1. SYLLABUS DATABASE (INLINE COMPILED)
-const SYLLABUS_DATA = ${syllabus.trim()};
-const PLAN_DATA = ${plan.trim()};
-const FLASHCARDS = ${vocab.trim()};
-const EMBEDDED_QUIZZES = ${quizzes.trim()};
-const ENGLISH_QUESTIONS = EMBEDDED_QUIZZES.english;
-const REASONING_QUESTIONS = EMBEDDED_QUIZZES.reasoning;
-const COMP_QUESTIONS = EMBEDDED_QUIZZES.computer;
-const GK_QUESTIONS = EMBEDDED_QUIZZES.gk;
+// 3. Read Toolkit static JSON databases
+const quant = fs.readFileSync(path.join(tkDir, 'quant.json'), 'utf8');
+const grammar = fs.readFileSync(path.join(tkDir, 'grammar.json'), 'utf8');
+const reasoning = fs.readFileSync(path.join(tkDir, 'reasoning.json'), 'utf8');
+const computer = fs.readFileSync(path.join(tkDir, 'computer.json'), 'utf8');
+const laws = fs.readFileSync(path.join(tkDir, 'laws.json'), 'utf8');
+const patterns = fs.readFileSync(path.join(tkDir, 'patterns.json'), 'utf8');
 
-async function loadApplicationData() {
-    console.log("Application databases successfully loaded directly from inline JS objects.");
-}`;
+// 4. Compile primary databases
+const primaryRegex = /\/\/ 1\. SYLLABUS DATABASE \(INLINE COMPILED\)[\s\S]*?async function loadApplicationData\(\) \{[\s\S]*?\}/;
+const primaryReplace = '// 1. SYLLABUS DATABASE (INLINE COMPILED)\n' +
+  'const SYLLABUS_DATA = ' + syllabus.trim() + ';\n' +
+  'const PLAN_DATA = ' + plan.trim() + ';\n' +
+  'const FLASHCARDS = ' + vocab.trim() + ';\n' +
+  'const EMBEDDED_QUIZZES = ' + quizzes.trim() + ';\n' +
+  'const ENGLISH_QUESTIONS = EMBEDDED_QUIZZES.english;\n' +
+  'const REASONING_QUESTIONS = EMBEDDED_QUIZZES.reasoning;\n' +
+  'const COMP_QUESTIONS = EMBEDDED_QUIZZES.computer;\n' +
+  'const GK_QUESTIONS = EMBEDDED_QUIZZES.gk;\n\n' +
+  'async function loadApplicationData() {\n' +
+  '    console.log("Application databases successfully loaded directly from inline JS objects.");\n' +
+  '}';
 
 if (primaryRegex.test(stateJs)) {
-    stateJs = stateJs.replace(primaryRegex, primaryReplace);
+    stateJs = stateJs.replace(primaryRegex, () => primaryReplace);
     console.log("✔ Primary databases compiled successfully.");
 } else {
-    console.warn("⚠ Warning: Primary database boundary markers not matched in js/state.js.");
+    const rawDeclarationsRegex = /\/\/ 1\. SYLLABUS DATABASE[\s\S]*?async function loadApplicationData\(\) \{[\s\S]*?\}/;
+    if (rawDeclarationsRegex.test(stateJs)) {
+        stateJs = stateJs.replace(rawDeclarationsRegex, () => primaryReplace);
+        console.log("✔ Placed primary database compiles over raw let templates.");
+    } else {
+        console.warn("⚠ Warning: Primary database boundary markers not matched in js/state.js.");
+    }
 }
 
-// 4. Compile GK databases
+// 5. Compile GK databases
 const gkRegex = /\/\/ === GK STATIC DATA \(INLINE COMPILED\) ===[\s\S]*?\};/;
-const gkReplace = `// === GK STATIC DATA (INLINE COMPILED) ===
-const GK_STATIC_DATA = {
-  polity: ${polity.trim()},
-  history: ${history.trim()},
-  geography: ${geography.trim()},
-  science: ${science.trim()}
-};`;
+const gkReplace = '// === GK STATIC DATA (INLINE COMPILED) ===\n' +
+  'const GK_STATIC_DATA = {\n' +
+  '  polity: ' + polity.trim() + ',\n' +
+  '  history: ' + history.trim() + ',\n' +
+  '  geography: ' + geography.trim() + ',\n' +
+  '  science: ' + science.trim() + '\n};';
 
 if (gkRegex.test(stateJs)) {
-    stateJs = stateJs.replace(gkRegex, gkReplace);
+    stateJs = stateJs.replace(gkRegex, () => gkReplace);
     console.log("✔ GK static databases compiled successfully.");
 } else {
-    // If not found, append to end
     stateJs = stateJs + '\n\n' + gkReplace;
     console.log("✔ GK static databases appended to state.js.");
 }
 
+// 6. Compile Toolkit databases
+const tkRegex = /\/\/ === TOOLKIT STATIC DATA \(INLINE COMPILED\) ===[\s\S]*?\};/;
+const tkReplace = '// === TOOLKIT STATIC DATA (INLINE COMPILED) ===\n' +
+  'const TOOLKIT_STATIC_DATA = {\n' +
+  '  quant: ' + quant.trim() + ',\n' +
+  '  grammar: ' + grammar.trim() + ',\n' +
+  '  reasoning: ' + reasoning.trim() + ',\n' +
+  '  computer: ' + computer.trim() + ',\n' +
+  '  laws: ' + laws.trim() + ',\n' +
+  '  patterns: ' + patterns.trim() + '\n};';
+
+if (tkRegex.test(stateJs)) {
+    stateJs = stateJs.replace(tkRegex, () => tkReplace);
+    console.log("✔ Toolkit static databases compiled successfully.");
+} else {
+    stateJs = stateJs + '\n\n' + tkReplace;
+    console.log("✔ Toolkit static databases appended to state.js.");
+}
+
+// Restore line endings before saving
+const originalEndings = fs.readFileSync(statePath, 'utf8').includes('\r\n') ? '\r\n' : '\n';
+if (originalEndings === '\r\n') {
+    stateJs = stateJs.replace(/\n/g, '\r\n');
+}
+
 fs.writeFileSync(statePath, stateJs, 'utf8');
-console.log("SUCCESS: Data synchronization complete! js/state.js is fully rebuilt.");
+console.log("SUCCESS: Injection-safe callback-based compilation complete! js/state.js is fully rebuilt.");

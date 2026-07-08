@@ -538,357 +538,25 @@
                         <!-- TAB: QUANT FORMULAS -->
                         <div id="tk-quant" class="toolkit-panel space-y-4">
                             <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">🎯 Must-Know Quant Formulas (Rank-Maker High ROI)</h3>
-                            <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-                                <!-- Percentage -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase">Percentage & Product Constancy</h4>
-                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                                        <span class="text-[10px] text-gray-400 font-bold block uppercase mb-1">⚖️ Product Constancy Rule</span>
-                                        <p class="text-xs text-gray-200">
-                                            If a value increases by <span class="text-accentCyan font-bold">x%</span>, the decrease required to restore the original value is:
-                                            <span class="block mt-1 font-mono text-center text-accentCyan bg-white/5 py-1 rounded font-extrabold text-[12px]">[x / (100 + x)] × 100%</span>
-                                        </p>
-                                    </div>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full text-left text-[11px] border-collapse">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
-                                                    <th class="pb-1">Fraction</th>
-                                                    <th class="pb-1">Percentage</th>
-                                                    <th class="pb-1">Fraction</th>
-                                                    <th class="pb-1">Percentage</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-gray-300 font-mono">
-                                                <tr class="border-b border-white/5"><td class="py-1">1/2</td><td class="text-accentCyan">50.00%</td><td class="py-1">1/8</td><td class="text-accentCyan">12.50%</td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1">1/3</td><td class="text-accentCyan">33.33%</td><td class="py-1">1/9</td><td class="text-accentCyan">11.11%</td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1">1/4</td><td class="text-accentCyan">25.00%</td><td class="py-1">1/10</td><td class="text-accentCyan">10.00%</td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1">1/5</td><td class="text-accentCyan">20.00%</td><td class="py-1">1/11</td><td class="text-accentCyan">9.09%</td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1">1/6</td><td class="text-accentCyan">16.67%</td><td class="py-1">1/12</td><td class="text-accentCyan">8.33%</td></tr>
-                                                <tr><td class="py-1">1/7</td><td class="text-accentCyan">14.28%</td><td class="py-1">1/16</td><td class="text-accentCyan">6.25%</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- Profit & Loss -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase">Profit, Loss & Successive Discounts</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs">
-                                        <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                                            <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">🏷️ CP to MP Ratio</span>
-                                            <div class="font-mono text-accentCyan font-bold text-center py-1 bg-white/5 rounded text-[10px]">CP / MP = (100 - d%) / (100 + p%)</div>
-                                        </div>
-                                        <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                                            <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">📉 Net Discount</span>
-                                            <div class="font-mono text-accentCyan font-bold text-center py-1 bg-white/5 rounded text-[10px]">(d₁ + d₂ - d₁d₂/100)%</div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5 text-[11px] text-gray-300">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">⚖️ Faulty Weight Shortcut</span>
-                                        <ul class="list-disc list-inside space-y-1 pl-1">
-                                            <li>Formula: <span class="font-mono text-accentCyan font-bold">Profit % = [Error / (True Weight - Error)] × 100%</span></li>
-                                            <li>Example: 900g instead of 1kg → <span class="font-mono text-accentCyan font-bold">[100 / 900] × 100% = 11.11%</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- Interest -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase font-heading">Simple & Compound Interest</h4>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full text-left text-[11px] border-collapse">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
-                                                    <th class="pb-1">Duration</th>
-                                                    <th class="pb-1">CI & SI Difference Formula</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-gray-300 font-mono">
-                                                <tr class="border-b border-white/5"><td class="py-1.5 font-sans font-bold">2 Years Diff</td><td class="text-accentCyan font-bold">Diff = P × (R / 100)²</td></tr>
-                                                <tr><td class="py-1.5 font-sans font-bold">3 Years Diff</td><td class="text-accentCyan font-bold">Diff = [P × R² × (300 + R)] / 100³</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5 text-[11px]">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">🏦 Effective CI Rates (2 Years)</span>
-                                        <div class="grid grid-cols-4 gap-1.5 text-center font-mono">
-                                            <div class="bg-white/5 py-1 rounded">5% → <span class="text-accentCyan font-bold">10.25%</span></div>
-                                            <div class="bg-white/5 py-1 rounded">10% → <span class="text-accentCyan font-bold">21%</span></div>
-                                            <div class="bg-white/5 py-1 rounded">15% → <span class="text-accentCyan font-bold">32.25%</span></div>
-                                            <div class="bg-white/5 py-1 rounded">20% → <span class="text-accentCyan font-bold">44%</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Algebra -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Algebraic Identities & Roots</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">$a^3+b^3+c^3 - 3abc = (a+b+c)(a^2+b^2+c^2 - ab - bc - ca) = \frac{1}{2}(a+b+c)[(a-b)^2 + (b-c)^2 + (c-a)^2]$. If $a+b+c=0$, then $a^3+b^3+c^3 = 3abc$. Reciprocal: If $x + \frac{1}{x} = k$, then $x^2 + \frac{1}{x^2} = k^2 - 2$, and $x^3 + \frac{1}{x^3} = k^3 - 3k$.</p>
-                                </div>
-                                <!-- Geometry -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase">Geometry Centers & Theorems</h4>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full text-left text-[11px] border-collapse">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
-                                                    <th class="pb-1">Triangle Center</th>
-                                                    <th class="pb-1">Angle Formulas & Properties</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-gray-300 text-[11px]">
-                                                <tr class="border-b border-white/5"><td class="py-1 font-bold text-accentCyan">Centroid (G)</td><td class="font-mono">Divides median in ratio <span class="text-accentCyan font-bold">2:1</span></td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1 font-bold text-accentCyan">Incenter (I)</td><td class="font-mono">∠BIC = <span class="text-accentCyan font-bold">90° + ∠A/2</span> | Inradius r = (P+B-H)/2</td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1 font-bold text-accentCyan">Circumcenter (C)</td><td class="font-mono">∠BOC = <span class="text-accentCyan font-bold">2 × ∠A</span> | Circumradius R = H/2</td></tr>
-                                                <tr><td class="py-1 font-bold text-accentCyan">Orthocenter (O)</td><td class="font-mono">∠BOC = <span class="text-accentCyan font-bold">180° - ∠A</span></td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5 text-[11px] space-y-1">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">⭕ High-Yield Circle Theorems</span>
-                                        <ul class="list-disc list-inside space-y-1 pl-1">
-                                            <li><span class="font-bold text-gray-200">Tangent Secant</span>: <span class="font-mono text-accentCyan">PT² = PA × PB</span></li>
-                                            <li><span class="font-bold text-gray-200">Apollonius Median</span>: <span class="font-mono text-accentCyan">AB² + AC² = 2(AD² + BD²)</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- Mensuration -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Mensuration (3D Surfaces & Volumes)</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed"><strong>Frustum of Cone</strong>: Volume $= \frac{1}{3}\pi h(R^2 + r^2 + Rr)$, Curved Area $= \pi l(R+r)$ where $l = \sqrt{h^2 + (R-r)^2}$. <strong>Sphere</strong>: Volume $= \frac{4}{3}\pi R^3$, Area $= 4\pi R^2$. <strong>Pyramid</strong>: Volume $= \frac{1}{3} \times \text{Base Area} \times \text{Height}$, Lateral Area $= \frac{1}{2} \times \text{Base Perimeter} \times \text{Slant Height}$.</p>
-                                </div>
-                                <!-- Time Speed Distance -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Time, Speed, Distance & Boats</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Average speed for same distances = $\frac{2xy}{x+y}$. Relative speed: opposite direction $= S_1 + S_2$, same direction $= |S_1 - S_2|$. Upstream Boat Speed $= U - V$, Downstream Speed $= U + V$, where $U$ is boat speed in still water and $V$ is stream speed. Distance formula: $D = \text{Speed Difference} \times \frac{T_1 \times T_2}{T_1 - T_2}$ or $D = \frac{S_1 S_2}{S_1 - S_2} \times \text{Time Diff}$.</p>
-                                </div>
-                                <!-- Time & Work -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Time & Work Equivalence</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Formula: $M_1 D_1 H_1 E_1 / W_1 = M_2 D_2 H_2 E_2 / W_2$ (Men, Days, Hours, Efficiency, Work). If A does work in $x$ days and B in $y$ days, together they take $\frac{xy}{x+y}$ days. Negative work (Pipes & Cistern): Leak draining capacity is subtracted from inlet capacity.</p>
-                                </div>
-                                <!-- Trigonometry Ratios & Values Table -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase font-heading">Trigonometric Values &amp; Formulas Table</h4>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full text-left text-[11px] border-collapse">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
-                                                    <th class="pb-1 text-left">Ratio</th>
-                                                    <th class="pb-1 text-center">0°</th>
-                                                    <th class="pb-1 text-center">30°</th>
-                                                    <th class="pb-1 text-center">45°</th>
-                                                    <th class="pb-1 text-center">60°</th>
-                                                    <th class="pb-1 text-center">90°</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-gray-300 font-mono text-center">
-                                                <tr class="border-b border-white/5">
-                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">sin θ</td>
-                                                    <td class="text-white">0</td>
-                                                    <td class="text-accentCyan font-bold">1/2</td>
-                                                    <td class="text-accentCyan font-bold">1/√2</td>
-                                                    <td class="text-accentCyan font-bold">√3/2</td>
-                                                    <td class="text-white">1</td>
-                                                </tr>
-                                                <tr class="border-b border-white/5">
-                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">cos θ</td>
-                                                    <td class="text-white">1</td>
-                                                    <td class="text-accentCyan font-bold">√3/2</td>
-                                                    <td class="text-accentCyan font-bold">1/2</td>
-                                                    <td class="text-accentCyan font-bold">1/√2</td>
-                                                    <td class="text-white">0</td>
-                                                </tr>
-                                                <tr class="border-b border-white/5">
-                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">tan θ</td>
-                                                    <td class="text-white">0</td>
-                                                    <td class="text-accentCyan font-bold">1/√3</td>
-                                                    <td class="text-white">1</td>
-                                                    <td class="text-accentCyan font-bold">√3</td>
-                                                    <td class="text-gray-500 text-[10px]">Undef</td>
-                                                </tr>
-                                                <tr class="border-b border-white/5">
-                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">cosec θ</td>
-                                                    <td class="text-gray-500 text-[10px]">Undef</td>
-                                                    <td class="text-white">2</td>
-                                                    <td class="text-accentCyan font-bold">√2</td>
-                                                    <td class="text-accentCyan font-bold">2/√3</td>
-                                                    <td class="text-white">1</td>
-                                                </tr>
-                                                <tr class="border-b border-white/5">
-                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">sec θ</td>
-                                                    <td class="text-white">1</td>
-                                                    <td class="text-accentCyan font-bold">2/√3</td>
-                                                    <td class="text-accentCyan font-bold">√2</td>
-                                                    <td class="text-white">2</td>
-                                                    <td class="text-gray-500 text-[10px]">Undef</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="py-1.5 text-left font-sans font-bold text-accentCyan">cot θ</td>
-                                                    <td class="text-gray-500 text-[10px]">Undef</td>
-                                                    <td class="text-accentCyan font-bold">√3</td>
-                                                    <td class="text-white">1</td>
-                                                    <td class="text-accentCyan font-bold">1/√3</td>
-                                                    <td class="text-white">0</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5 text-[11px] space-y-1.5">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">📐 Core Identities &amp; Complementary Relations</span>
-                                        <p class="text-gray-300 leading-relaxed font-sans">
-                                            • <strong class="text-white">Basic Identities:</strong> $sin^2	heta + cos^2	heta = 1$ | $1 + 	an^2	heta = sec^2	heta$ | $1 + cot^2	heta = 	ext{cosec}^2	heta$<br>
-                                            • <strong class="text-white">Complementary (If A+B=90°):</strong> $sin A = cos B$ | $	an A 	an B = 1$ | $sin^2 A + sin^2 B = 1$<br>
-                                            • <strong class="text-white">Min/Max limits:</strong> For $asin	heta + bcos	heta$, Max $= sqrt{a^2+b^2}$ | Min $= -sqrt{a^2+b^2}$<br>
-                                            • <strong class="text-white">Height &amp; Distance Triangles:</strong> 30°-60°-90° $ightarrow 1 : sqrt{3} : 2$ | 45°-45°-90° $ightarrow 1 : 1 : sqrt{2}$
-                                        </p>
-                                    </div>
-                                </div>
-                                <!-- Coordinate Geometry -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase mb-1">Coordinate Geometry</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Distance between $(x_1, y_1)$ and $(x_2, y_2) = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$. Section formula (internal division): $(x, y) = (\frac{m x_2 + n x_1}{m+n}, \frac{m y_2 + n y_1}{m+n})$. Slope of line $m = \frac{y_2-y_1}{x_2-x_1}$. If parallel: $m_1 = m_2$; if perpendicular: $m_1 m_2 = -1$. Area of triangle $= \frac{1}{2}|x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)|$.</p>
-                                </div>
+                            <div id="tk-quant-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Loaded dynamically from quant.json -->
                             </div>
                         </div>
 
-                        <!-- TAB: GRAMMAR RULES -->
                         <div id="tk-grammar" class="toolkit-panel hidden space-y-4">
                             <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">✍️ English Grammar Rules (Error Spotting High ROI)</h3>
-                            <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-                                <!-- Subject Verb -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase mb-1">Subject-Verb Agreement Core Cases</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">If two subjects are joined by *along with, together with, in addition to, as well as, accompanied by*, the verb agrees with the **First Subject**. If joined by *neither... nor, either... or, not only... but also*, the verb agrees with the **Nearest Subject**. Singular verbs follow expressions like *each of, either of, neither of, one of* + plural noun (e.g., "Each of the boys has *[not have]* completed his work").</p>
-                                </div>
-                                <!-- Conditionals -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase">Conditional Clauses Structure</h4>
-                                    <div class="overflow-x-auto">
-                                        <table class="w-full text-left text-[11px] border-collapse">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
-                                                    <th class="pb-1 pr-2">Conditional Type</th>
-                                                    <th class="pb-1 pr-2">If-Clause Tense</th>
-                                                    <th class="pb-1">Main Clause Tense</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="text-gray-300 font-mono">
-                                                <tr class="border-b border-white/5"><td class="py-1 font-sans font-bold text-accentRose">Type 1 (Real)</td><td>Present Simple</td><td class="text-accentRose">Will/Can + V1</td></tr>
-                                                <tr class="border-b border-white/5"><td class="py-1 font-sans font-bold text-accentRose">Type 2 (Unreal)</td><td>Past Simple</td><td class="text-accentRose">Would + V1</td></tr>
-                                                <tr><td class="py-1 font-sans font-bold text-accentRose">Type 3 (Impossible)</td><td>Past Perfect</td><td class="text-accentRose">Would have + V3</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5 text-[11px]">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">💡 Pro Grammar Tip</span>
-                                        <p class="text-gray-200">In imaginary/unreal conditions, always use <span class="text-accentRose font-bold">"were"</span> regardless of subject (e.g., "If I *were* you..."). Never use "will/would" in the *if-clause*.</p>
-                                    </div>
-                                </div>
-                                <!-- Active Passive -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase mb-1">Active / Passive Transformations</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Passive of imperative sentence "Do it" = "Let it be done" or "You are ordered to do it." Modals: "She can play cricket" $\rightarrow$ "Cricket can be played by her." Prepositions do not vanish: "He laughed at me" $\rightarrow$ "I was laughed at by him." For transitive verbs only. Interrogative active: "Who did this?" $\rightarrow$ "By whom was this done?"</p>
-                                </div>
-                                <!-- Direct Indirect -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase mb-1">Direct & Indirect Speech Rules</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Tense shifts (if reporting verb is in past): Present Simple $\rightarrow$ Past Simple; Present Perfect $\rightarrow$ Past Perfect; Past Simple $\rightarrow$ Past Perfect. Pronoun shift formula: **SON** (1st person subject, 2nd person object, 3rd person no change). Questions: Reporting verb "said to" changes to "asked". No conjunction "that" is used for wh-questions; use "if/whether" for yes/no questions.</p>
-                                </div>
-                                <!-- Noun Rules -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase mb-1">Plural vs Singular Noun Traps</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed"><strong>Plural in form, singular in use</strong>: *Mathematics, Physics, News, Politics, Billiards, Gallows, Innings* (always take a singular verb). <strong>Singular in form, plural in use</strong>: *Cattle, Gentry, Clergy, Poultry, Peasantry, People, Police* (always take a plural verb; e.g., "Cattle are grazing *[not is grazing]*"). <strong>Uncountable nouns</strong>: *Scenery, Furniture, Advice, Information, Luggage, Hair* (never take plural forms or "a/an").</p>
-                                </div>
-                                <!-- Pronoun Rules -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase mb-1">Pronoun Order & Cases</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">When multiple persons are in one sentence, normal order is **Second Person (2) $\rightarrow$ Third Person (3) $\rightarrow$ First Person (1)** (e.g., "You, he and I are study partners"). If confessing a mistake or guilt, the order becomes **1 $\rightarrow$ 2 $\rightarrow$ 3** (e.g., "I, you and he committed the error"). Objective case follow prepositions and "let" (e.g., "Between you and me *[not I]*", "Let him and me *[not I]* go").</p>
-                                </div>
-                                <!-- Fixed Prepositions -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase mb-1">Fixed Prepositions Combinations</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">*Abstain from* (not of) &bull; *Proficient in* &bull; *Accused of* &bull; *Comply with* &bull; *Different from* (not than) &bull; *Congratulate on* (not for) &bull; *Refrain from* &bull; *Prevent from* &bull; *Key to* success &bull; *Aim at* &bull; *Deprived of* &bull; *Adapted to* environment.</p>
-                                </div>
+                            <div id="tk-grammar-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Loaded dynamically from grammar.json -->
                             </div>
                         </div>
 
-                        <!-- TAB: REASONING SHORTCUTS -->
                         <div id="tk-reasoning" class="toolkit-panel hidden space-y-4">
-                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">🧠 General Intelligence & Reasoning Tricks</h3>
-                            <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-                                <!-- Alphabet EJOTY -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase mb-1">Alphabet Code Map (EJOTY)</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Memorize position blocks: E(5), J(10), O(15), T(20), Y(25). Opposite alphabet pairs sum is always **27** (A+Z = 27, B+Y = 27). Mnemonic reverse pairs: A-Z (Azhar), B-Y (Boy), C-X (Crux), D-W (Dew), E-V (Love/Even), G-T (G.T. Road), H-S (High School), I-R (Indian Railways), K-P (K.P. Thakur), L-O (Love), M-N (Man).</p>
-                                    
-                                    <!-- Dynamic Alphabet reference maps -->
-                                    <div class="mt-3 overflow-x-auto bg-black/20 p-3 rounded-xl border border-white/5">
-                                        <table class="w-full text-center border-collapse text-[10px] text-gray-300">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-accentPurple font-extrabold">
-                                                    <th class="px-1 py-0.5">A</th><th class="px-1 py-0.5">B</th><th class="px-1 py-0.5">C</th><th class="px-1 py-0.5">D</th><th class="px-1 py-0.5">E</th><th class="px-1 py-0.5">F</th><th class="px-1 py-0.5">G</th><th class="px-1 py-0.5">H</th><th class="px-1 py-0.5">I</th><th class="px-1 py-0.5">J</th><th class="px-1 py-0.5">K</th><th class="px-1 py-0.5">L</th><th class="px-1 py-0.5">M</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="border-b border-white/5 font-mono text-white">
-                                                    <td class="px-1 py-0.5">1</td><td class="px-1 py-0.5">2</td><td class="px-1 py-0.5">3</td><td class="px-1 py-0.5">4</td><td class="px-1 py-0.5">5</td><td class="px-1 py-0.5">6</td><td class="px-1 py-0.5">7</td><td class="px-1 py-0.5">8</td><td class="px-1 py-0.5">9</td><td class="px-1 py-0.5">10</td><td class="px-1 py-0.5">11</td><td class="px-1 py-0.5">12</td><td class="px-1 py-0.5">13</td>
-                                                </tr>
-                                                <tr class="border-b border-white/5 font-mono text-gray-500">
-                                                    <td class="px-1 py-0.5">26</td><td class="px-1 py-0.5">25</td><td class="px-1 py-0.5">24</td><td class="px-1 py-0.5">23</td><td class="px-1 py-0.5">22</td><td class="px-1 py-0.5">21</td><td class="px-1 py-0.5">20</td><td class="px-1 py-0.5">19</td><td class="px-1 py-0.5">18</td><td class="px-1 py-0.5">17</td><td class="px-1 py-0.5">16</td><td class="px-1 py-0.5">15</td><td class="px-1 py-0.5">14</td>
-                                                </tr>
-                                                <tr class="font-extrabold text-accentCyan">
-                                                    <td class="px-1 py-0.5">Z</td><td class="px-1 py-0.5">Y</td><td class="px-1 py-0.5">X</td><td class="px-1 py-0.5">W</td><td class="px-1 py-0.5">V</td><td class="px-1 py-0.5">U</td><td class="px-1 py-0.5">T</td><td class="px-1 py-0.5">S</td><td class="px-1 py-0.5">R</td><td class="px-1 py-0.5">Q</td><td class="px-1 py-0.5">P</td><td class="px-1 py-0.5">O</td><td class="px-1 py-0.5">N</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="w-full text-center border-collapse text-[10px] text-gray-300 mt-3 border-t border-white/5 pt-2">
-                                            <thead>
-                                                <tr class="border-b border-white/10 text-accentPurple font-extrabold">
-                                                    <th class="px-1 py-0.5">N</th><th class="px-1 py-0.5">O</th><th class="px-1 py-0.5">P</th><th class="px-1 py-0.5">Q</th><th class="px-1 py-0.5">R</th><th class="px-1 py-0.5">S</th><th class="px-1 py-0.5">T</th><th class="px-1 py-0.5">U</th><th class="px-1 py-0.5">V</th><th class="px-1 py-0.5">W</th><th class="px-1 py-0.5">X</th><th class="px-1 py-0.5">Y</th><th class="px-1 py-0.5">Z</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="border-b border-white/5 font-mono text-white">
-                                                    <td class="px-1 py-0.5">14</td><td class="px-1 py-0.5">15</td><td class="px-1 py-0.5">16</td><td class="px-1 py-0.5">17</td><td class="px-1 py-0.5">18</td><td class="px-1 py-0.5">19</td><td class="px-1 py-0.5">20</td><td class="px-1 py-0.5">21</td><td class="px-1 py-0.5">22</td><td class="px-1 py-0.5">23</td><td class="px-1 py-0.5">24</td><td class="px-1 py-0.5">25</td><td class="px-1 py-0.5">26</td>
-                                                </tr>
-                                                <tr class="border-b border-white/5 font-mono text-gray-500">
-                                                    <td class="px-1 py-0.5">13</td><td class="px-1 py-0.5">12</td><td class="px-1 py-0.5">11</td><td class="px-1 py-0.5">10</td><td class="px-1 py-0.5">9</td><td class="px-1 py-0.5">8</td><td class="px-1 py-0.5">7</td><td class="px-1 py-0.5">6</td><td class="px-1 py-0.5">5</td><td class="px-1 py-0.5">4</td><td class="px-1 py-0.5">3</td><td class="px-1 py-0.5">2</td><td class="px-1 py-0.5">1</td>
-                                                </tr>
-                                                <tr class="font-extrabold text-accentCyan">
-                                                    <td class="px-1 py-0.5">M</td><td class="px-1 py-0.5">L</td><td class="px-1 py-0.5">K</td><td class="px-1 py-0.5">J</td><td class="px-1 py-0.5">I</td><td class="px-1 py-0.5">H</td><td class="px-1 py-0.5">G</td><td class="px-1 py-0.5">F</td><td class="px-1 py-0.5">E</td><td class="px-1 py-0.5">D</td><td class="px-1 py-0.5">C</td><td class="px-1 py-0.5">B</td><td class="px-1 py-0.5">A</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <!-- Clocks -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase mb-1">Clock Hands Angle Equation</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Angle between Hour hand and Minute hand $= |30H - \frac{11}{2}M|$ degrees. In 1 hour, hour hand travels 30° ($0.5^\circ$ per minute) and minute hand travels 360° ($6^\circ$ per minute). Relative speed is $5.5^\circ$ per minute. Hands coincide every $65\frac{5}{11}$ minutes.</p>
-                                </div>
-                                <!-- Calendar -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase mb-1">Calendar Odd Days Rules</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Normal year $= 365 \text{ days} = 52 \text{ weeks} + 1 \text{ odd day}$. Leap year $= 366 \text{ days} = 52 \text{ weeks} + 2 \text{ odd days}$. Centenary leap years must be divisible by 400 (1600, 2000 are leap; 1700, 1800, 1900 are normal). Month codes for ordinary year: Jan(0), Feb(3), Mar(3), Apr(6), May(1), Jun(4), Jul(6), Aug(2), Sep(5), Oct(0), Nov(3), Dec(5).</p>
-                                </div>
-                                <!-- Syllogism -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase mb-1">Syllogism Truth Matrix</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">"Only a few A are B" implies: **Some A are B** AND **Some A are NOT B**. Possibility cases: A conclusion stating "All A can be B is a possibility" is false (since some A must not be B), but "All B can be A is a possibility" is true.</p>
-                                </div>
-                                <!-- Direction Sense -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase mb-1">Direction Sense Shadows & Triplets</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">At sunrise, shadow is always towards **West**. At sunset, shadow is always towards **East**. No shadow at 12:00 Noon. Shortcuts: Memorize Pythagorean triplets to find shortest distance instantly: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (9,40,41), (20,21,29).</p>
-                                </div>
-                                <!-- Dice rules -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase mb-1">Dice Closed & Open Rules</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed">Standard Dice: Sum of opposite faces is always **7** (1 opposite 6, 2 opposite 5, 3 opposite 4). Ordinary Dice: Sum of adjacent faces can be 7. Closed Dice Rule: If two positions of a single dice have one common face in the same position, then the remaining faces in the same positions are opposite to each other.</p>
-                                </div>
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">🧠 General Intelligence &amp; Reasoning Tricks</h3>
+                            <div id="tk-reasoning-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Loaded dynamically from reasoning.json -->
                             </div>
                         </div>
 
-                        <!-- TAB: GK & SCIENCE -->
                         <div id="tk-physics" class="toolkit-panel hidden space-y-4">
                             <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">⚛️ General Awareness &amp; Static GK (Polity, History, Geography, Science)</h3>
                             <div id="gk-dynamic-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
@@ -898,250 +566,26 @@
 
                         <!-- TAB: COMPUTER TIER-2 -->
                         <div id="tk-computer" class="toolkit-panel hidden space-y-4">
-                            <h3 class="font-heading font-extrabold text-sm text-cyan-300 uppercase border-b border-cyan-900/50 pb-2">💻 Computer Knowledge Qualifying Capsule (Tier-2 Focus)</h3>
-                            <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-                                <div class="bg-cyan-950/10 border border-cyan-800/20 rounded-lg p-3">
-                                    <h4 class="text-xs font-bold text-cyan-400 uppercase mb-1">Keyboard Shortcut Commands</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs text-gray-300 mt-1">
-                                        <div>Close Program: <strong>Alt + F4</strong></div>
-                                        <div>Task Manager: <strong>Ctrl + Shift + Esc</strong></div>
-                                        <div>Lock Windows: <strong>Win + L</strong></div>
-                                        <div>Properties of selected: <strong>Alt + Enter</strong></div>
-                                        <div>Switch open apps: <strong>Alt + Tab</strong></div>
-                                        <div>Run utility: <strong>Win + R</strong></div>
-                                    </div>
-                                </div>
-                                <div class="bg-cyan-950/10 border border-cyan-800/20 rounded-lg p-3">
-                                    <h4 class="text-xs font-bold text-cyan-400 uppercase mb-1">MS Excel Formulas & Cell Referencing</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed"><strong>References</strong>: Relative (A1), Absolute ($A$1 - remains fixed when copy pasted), Mixed ($A1 or A$1). &bull; <strong>Formulas</strong>: VLOOKUP(value, table, col, match), CONCATENATE(), COUNTIF(range, criteria), IF(test, true_val, false_val).</p>
-                                </div>
-                                <div class="bg-cyan-950/10 border border-cyan-800/20 rounded-lg p-3">
-                                    <h4 class="text-xs font-bold text-cyan-400 uppercase mb-1">Internet Protocols & Network Port Mappings</h4>
-                                    <div class="grid grid-cols-2 gap-2 text-xs text-gray-300 mt-1">
-                                        <div>HTTP (Web): <strong>Port 80</strong></div>
-                                        <div>HTTPS (Secure): <strong>Port 443</strong></div>
-                                        <div>FTP (Files): <strong>Port 21</strong></div>
-                                        <div>SMTP (Email Send): <strong>Port 25</strong></div>
-                                        <div>DNS (Domain Resolv): <strong>Port 53</strong></div>
-                                        <div>SSH (Sec Shell): <strong>Port 22</strong></div>
-                                    </div>
-                                </div>
-                                <div class="bg-cyan-950/10 border border-cyan-800/20 rounded-lg p-3">
-                                    <h4 class="text-xs font-bold text-cyan-400 uppercase mb-1">Cybersecurity: Malwares & Safeguards</h4>
-                                    <p class="text-xs text-gray-300 leading-relaxed"><strong>Trojans</strong>: Disguised as legitimate software. &bull; <strong>Worms</strong>: Self-replicating programs that travel over networks without host files. &bull; <strong>Ransomware</strong>: Encrypts system data, demanding payment. &bull; <strong>Firewall</strong>: Moniters incoming/outgoing traffic based on security rules.</p>
-                                </div>
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">💻 Computer Knowledge Qualifying Capsule (Tier-2 Focus)</h3>
+                            <div id="tk-computer-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Loaded dynamically from computer.json -->
                             </div>
                         </div>
 
-                        <!-- TAB: FIXED VS CONDITIONAL LAWS -->
                         <div id="tk-laws" class="toolkit-panel hidden space-y-4">
-                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">⚖️ CGL Formula Guide: Constant vs. Conditional Laws</h3>
-                            <p class="text-xs text-gray-400 border-l-2 border-accentRose pl-3">Toppers distinguish clearly between absolute mathematical constants (fixed rules) and context-dependent cases (conditional rules) to eliminate silly mistakes.</p>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-1">
-                                <!-- Quantitative Aptitude Laws -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentCyan uppercase border-b border-white/5 pb-1"><i class="fa-solid fa-calculator mr-1"></i> Quantitative Aptitude</h4>
-                                    <div class="space-y-2">
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Centroid Ratio:</strong> Median division is always $2:1$ from vertex.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Right Triangle Radii:</strong> Inradius is always $\frac{a+b-c}{2}$; Circumradius is always $\frac{c}{2}$.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">HCF-LCM Relation:</strong> Product of two numbers $A \times B$ is always $\text{HCF} \times \text{LCM}$.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Center Angles:</strong> BIC is $90^\circ + \frac{A}{2}$ (Incenter), $180^\circ - A$ (Orthocenter), $2A$ (Circumcenter).
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Interest Rates:</strong> Simple Interest remains constant year-on-year; Compound Interest compounds progressively.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Reasoning & Logic Laws -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentPurple uppercase border-b border-white/5 pb-1"><i class="fa-solid fa-brain mr-1"></i> Reasoning & Logic</h4>
-                                    <div class="space-y-2">
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Standard Dice:</strong> Sum of opposite faces is always exactly $7$.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Alphabet Sum:</strong> Position sum of any letter and its opposite letter is always $27$ (e.g. A + Z = 27).
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Leap Year Odd Days:</strong> 2 odd days if divisible by 4 (or 400 for century years), else 1 odd day.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Family Tree Genders:</strong> Gender of a sibling or child is conditional on explicit statements (cannot assume from names).
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Clock Hand Relative Speed:</strong> Always $5.5^\circ/\text{minute}$ (calculated from differences of hand motions).
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- English Grammar Laws -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentRose uppercase border-b border-white/5 pb-1"><i class="fa-solid fa-pen-nib mr-1"></i> English Grammar</h4>
-                                    <div class="space-y-2">
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Imaginary Clauses:</strong> Always use the verb **were** regardless of singular/plural subject (e.g., "If I were...").
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Objective Case:</strong> Objective pronouns (him, me, us) always follow "between" or "let".
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Subject Concord:</strong> Verb agrees with **Subject 1** for *as well as/along with*; but agrees with **Nearest Subject** for *either... or/neither... nor*.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Tense Shifts:</strong> Voice/Narration changes are conditional on the active reporting verb tense (Past vs Present).
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Computer & Science Laws -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <h4 class="text-xs font-bold text-accentAmber uppercase border-b border-white/5 pb-1"><i class="fa-solid fa-flask mr-1"></i> Computer & Science</h4>
-                                    <div class="space-y-2">
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Port Numbers:</strong> Fixed protocol standards (HTTP=80, HTTPS=443, SMTP=25, FTP=21).
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-green-500/10 text-green-400 mr-1.5">Fixed</span>
-                                            <strong class="text-white">Excel Absolute Reference:</strong> Cell referencing with `$` symbols (e.g. `$A$1`) never shifts when copy-pasting.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Excel Relative Reference:</strong> Cell referencing without `$` symbols (e.g. `A1`) updates dynamically relative to destination.
-                                        </div>
-                                        <div class="text-xs">
-                                            <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase rounded bg-rose-500/10 text-rose-400 mr-1.5">Conditional</span>
-                                            <strong class="text-white">Science Constants:</strong> Acceleration due to gravity $g$ is $9.8 \text{ m/s}^2$ on Earth but changes depending on altitude/planet.
-                                        </div>
-                                    </div>
-                                </div>
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">⚖️ Study Conquest Rules (Fixed vs. Conditional)</h3>
+                            <div id="tk-laws-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Loaded dynamically from laws.json -->
                             </div>
                         </div>
 
-                        <!-- TAB: WEIGHTAGE PATTERNS -->
                         <div id="tk-patterns" class="toolkit-panel hidden space-y-4">
-                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">📊 SSC CGL Weightage Patterns &amp; Core Obsession Topics (Last 5 Years)</h3>
-                            <p class="text-xs text-gray-400 border-l-2 border-accentAmber pl-3">A structural breakdown of the high-weight topics that SSC repeatedly tests, analyzed from historical PYQs. Study these checklists before practicing.</p>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-1">
-                                <!-- Card 1: Quantitative Aptitude -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
-                                        <h4 class="text-xs font-bold text-accentCyan uppercase"><i class="fa-solid fa-calculator mr-1"></i> Quantitative Aptitude Core Strategy</h4>
-                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
-                                    </div>
-                                    <div class="space-y-2 text-xs text-gray-300">
-                                        <p><strong>Arithmetic (40-50%):</strong> Percentage (Direct &amp; successive), Profit &amp; Loss (CP/MP ratio, faulty weights), Average, SI &amp; CI (2/3 yr difference), and Mixture &amp; Alligation.</p>
-                                        <p><strong>Algebra:</strong> Linear equations (2 variables), Quadratic roots/coefficients, Algebraic identities (like $x+1/x=k$), and Surds/Indices.</p>
-                                        <p><strong>Geometry:</strong> Master triangle properties (centers, circumradius, inradius equations) instead of spending days on complex proofs.</p>
-                                        <p><strong>Mensuration:</strong> Rotating shapes (Cube, Cuboid, Cone, Sphere, Hemisphere). Learn formulas cold.</p>
-                                    </div>
-                                    <div class="border-t border-white/5 pt-2">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
-                                        <div class="flex flex-wrap gap-2">
-                                            <a href="ssc_patterns/quant_topic_pyramid.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Topic Pyramid</a>
-                                            <a href="ssc_patterns/quant_arithmetic_core_pillars.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Arithmetic Pillars</a>
-                                            <a href="ssc_patterns/quant_algebra_core_targets.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Algebra Targets</a>
-                                            <a href="ssc_patterns/quant_geometry_properties_strategy.png" target="_blank" class="text-[10px] text-accentCyan hover:underline"><i class="fa-solid fa-image mr-1"></i> Geometry Properties</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 2: General Intelligence & Reasoning -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
-                                        <h4 class="text-xs font-bold text-accentPurple uppercase"><i class="fa-solid fa-brain mr-1"></i> General Intelligence &amp; Reasoning</h4>
-                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
-                                    </div>
-                                    <div class="space-y-2 text-xs text-gray-300">
-                                        <p><strong>Series (Number &amp; Alphabet):</strong> Requires pattern recognition practice (do 200 questions). Jumps, alternations, prime numbers, etc.</p>
-                                        <p><strong>Coding-Decoding:</strong> Letter shifts, alphabetical position, and number coding rules. Looks complex but is highly logical.</p>
-                                        <p><strong>Direction &amp; Blood Relations:</strong> Always draw tree diagrams and paths. Solve in under 2 minutes combined.</p>
-                                        <p><strong>Non-Verbal Reasoning:</strong> Mirror image (left-right flip), Water image (top-bottom flip), Paper folding, Embedded figures. Zero memorization, only spatial thinking.</p>
-                                    </div>
-                                    <div class="border-t border-white/5 pt-2">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
-                                        <div class="flex flex-wrap gap-2">
-                                            <a href="ssc_patterns/reasoning_series_patterns.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Series Patterns</a>
-                                            <a href="ssc_patterns/reasoning_coding_decoding.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Coding-Decoding</a>
-                                            <a href="ssc_patterns/reasoning_direction_blood_relations.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Direction &amp; Family</a>
-                                            <a href="ssc_patterns/reasoning_floor_box_puzzles.png" target="_blank" class="text-[10px] text-accentPurple hover:underline"><i class="fa-solid fa-image mr-1"></i> Floor/Box Puzzles</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 3: English Language & Comprehension -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
-                                        <h4 class="text-xs font-bold text-accentRose uppercase"><i class="fa-solid fa-language mr-1"></i> English Language &amp; Comprehension</h4>
-                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
-                                    </div>
-                                    <div class="space-y-2 text-xs text-gray-300">
-                                        <p><strong>The Grammar Test:</strong> English score is heavily dependent on learning 8 core pillars (Subject-Verb agreement, Tenses, Pronouns, Voice, Narration, Prepositions, Articles, Conjunctions).</p>
-                                        <p><strong>Error Detection:</strong> Mechanical. SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, and Subject-Verb agreement.</p>
-                                        <p><strong>Cloze Test &amp; Passages:</strong> Cloze test is 80% grammar context. Passages are straightforward (not literary masterpieces)—read slowly, mark details, answer directly.</p>
-                                        <p><strong>Vocabulary:</strong> Master the PYQ bullseye first (clear preferences and repeating patterns). Do not blindly memorize random words.</p>
-                                    </div>
-                                    <div class="border-t border-white/5 pt-2">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
-                                        <div class="flex flex-wrap gap-2">
-                                            <a href="ssc_patterns/english_biggest_shortcut.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Grammar Weight</a>
-                                            <a href="ssc_patterns/english_score_8_pillars.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Score Pillars</a>
-                                            <a href="ssc_patterns/english_error_detection_mechanical.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Error Detection</a>
-                                            <a href="ssc_patterns/english_cloze_comprehension.png" target="_blank" class="text-[10px] text-accentRose hover:underline"><i class="fa-solid fa-image mr-1"></i> Cloze Test</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Card 4: General Awareness & History/Polity -->
-                                <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-                                    <div class="flex items-center justify-between border-b border-white/5 pb-1">
-                                        <h4 class="text-xs font-bold text-accentAmber uppercase"><i class="fa-solid fa-globe mr-1"></i> General Awareness (GK/GS)</h4>
-                                        <span class="px-1.5 py-0.5 text-[8px] font-extrabold uppercase rounded bg-rose-500/10 text-rose-400 border border-rose-500/20">High weight</span>
-                                    </div>
-                                    <div class="space-y-2 text-xs text-gray-300">
-                                        <p><strong>Ancient &amp; Medieval History:</strong> Buddhism &amp; Jainism (councils, teachings), Mauryan Empire (Ashoka, edicts, Kautilya), Gupta Empire (literature, science), and Mughals (Akbar's Mansabdari/Din-i-Ilahi, Jizya tax rules). Ignore obscure regional dates.</p>
-                                        <p><strong>Modern History:</strong> INC Swadeshi, Quit India movements, important personalities (Gandhi, Bose, Tilak, Bhagat), Acts (1773-1935), and Revolt of 1857 (causes, leaders).</p>
-                                        <p><strong>Polity:</strong> Fundamental Rights, Parliament (bills, sessions, committees), DPSP, and Amendments (42nd, 44th, 73rd, 74th, 86th).</p>
-                                        <p><strong>Economics &amp; Current Affairs:</strong> GDP vs GNP, RBI rate mechanics (Repo, Reverse Repo, CRR, SLR). Current affairs focus strictly on 5 areas: Awards, Govt Schemes, Sports, Days, and Int. Orgs.</p>
-                                    </div>
-                                    <div class="border-t border-white/5 pt-2">
-                                        <span class="text-[9px] text-gray-400 font-bold block uppercase mb-1">Visual Reference Sheets:</span>
-                                        <div class="flex flex-wrap gap-2">
-                                            <a href="ssc_patterns/history_ancient_medieval_clusters.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> History Core</a>
-                                            <a href="ssc_patterns/history_modern_big_6_checklist.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> Modern History</a>
-                                            <a href="ssc_patterns/polity_predictable_goldmine.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> Polity Goldmine</a>
-                                            <a href="ssc_patterns/current_affairs_key_categories.png" target="_blank" class="text-[10px] text-accentAmber hover:underline"><i class="fa-solid fa-image mr-1"></i> Current Affairs</a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">📊 SSC CGL Weightage, Prioritization &amp; High ROI Patterns</h3>
+                            <div id="tk-patterns-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                                <!-- Loaded dynamically from patterns.json -->
                             </div>
                         </div>
 
-                        <!-- TAB: CUSTOM NOTES WRITER -->
                         <div id="tk-custom" class="toolkit-panel hidden space-y-5">
                             <div class="bg-white/2px border border-white/5 rounded-xl p-4">
                                 <h4 class="text-xs font-bold text-accentPurple uppercase mb-3"><i class="fa-solid fa-plus-circle mr-1"></i> Add Custom Formula / Study Trick</h4>
@@ -1240,7 +684,7 @@
                 
             </div>
             <!-- Speed Drills Sub-Tabs -->
-            <div class="flex flex-wrap gap-2 border-b border-white/10 pb-3">
+            <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-none whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-white/10 mb-3">
                 <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200 active-nav-tab" data-target="speed-tab-maths">
                     <i class="fa-solid fa-calculator mr-1.5 text-accentCyan"></i> Maths (Speed Calculations)
                 </button>
@@ -1259,35 +703,14 @@
             </div>
 
             <!-- Unified Sectional Challenge status bar -->
-            <div id="challenge-status-bar" class="bg-bgCard border border-white/5 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4 shadow-md">
-                <div class="flex items-center gap-3">
-                    <span id="challenge-badge" class="px-3 py-1 text-[10px] font-extrabold uppercase rounded-full bg-white/5 text-gray-400">Sectional Run Off</span>
-                    <div>
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">⚡ 15-Min Conquest Challenge</h4>
-                        <span id="challenge-desc" class="text-[10px] text-gray-500">Answer 25 questions in 15 minutes. Level goes from Easy &rarr; Medium &rarr; Hard!</span>
-                    </div>
-                </div>
-                <!-- Timer, Progress, Level, controls -->
-                <div class="flex items-center gap-4 flex-wrap">
-                    <div class="text-right">
-                        <span class="text-[9px] text-gray-500 font-bold block uppercase">Timer</span>
-                        <span id="challenge-timer" class="font-mono font-extrabold text-sm text-accentCyan">15:00</span>
-                    </div>
-                    <div class="text-right border-l border-white/10 pl-4">
-                        <span class="text-[9px] text-gray-500 font-bold block uppercase">Progress</span>
-                        <span id="challenge-progress" class="font-mono font-extrabold text-sm text-white">0 / 25</span>
-                    </div>
-                    <div class="text-right border-l border-white/10 pl-4">
-                        <span class="text-[9px] text-gray-500 font-bold block uppercase">Level</span>
-                        <span id="challenge-diff" class="font-bold text-xs uppercase text-accentGreen">Easy</span>
-                    </div>
-                    <button id="btn-challenge-start" class="bg-accentCyan hover:bg-cyan-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200 ml-2">
-                        <i class="fa-solid fa-play mr-1"></i> Start Challenge
-                    </button>
-                </div>
-            </div>
+            <!-- Placed in sidebar -->
 
-            <!-- TAB CONTENT AREAS -->
+            <!-- TAB CONTENT GRID WRAPPER -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+                
+                <!-- MAIN CONTENT AREA (3 Columns) -->
+                <div class="lg:col-span-3 space-y-6">
+                    <!-- TAB CONTENT AREAS -->
 
             <!-- MATHS TAB -->
             <div id="speed-tab-maths" class="speed-tab-content space-y-6">
@@ -1307,7 +730,7 @@
                     </div>
                     
                     <!-- Mode Selectors -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                    <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-none whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 mb-6">
                         <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition active-nav-tab" data-mode="squares">Squares (1-30)</button>
                         <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="cubes">Cubes (1-20)</button>
                         <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="tables">Tables (1-40)</button>
@@ -1390,6 +813,7 @@
                             </div>
                         </div>
                         <div id="eng-quiz-container" class="space-y-4">
+                            <button id="btn-launch-eng-quiz" class="w-full bg-accentRose/10 border border-accentRose/20 hover:bg-accentRose/20 text-accentRose font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
                             <span class="block text-[10px] text-accentRose font-bold uppercase tracking-wider">Question <span id="eng-q-num">1</span> of 5</span>
                             <p id="eng-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
                             <div id="eng-options" class="space-y-2"></div>
@@ -1414,6 +838,7 @@
                             </div>
                         </div>
                         <div id="reas-quiz-container" class="space-y-4">
+                            <button id="btn-launch-reas-quiz" class="w-full bg-accentPurple/10 border border-accentPurple/20 hover:bg-accentPurple/20 text-accentPurple font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
                             <span class="block text-[10px] text-accentPurple font-bold uppercase tracking-wider">Question <span id="reas-q-num">1</span> of 10</span>
                             <p id="reas-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
                             <div id="reas-options" class="space-y-2"></div>
@@ -1438,6 +863,7 @@
                             </div>
                         </div>
                         <div id="comp-quiz-container" class="space-y-4">
+                            <button id="btn-launch-comp-quiz" class="w-full bg-accentAmber/10 border border-accentAmber/20 hover:bg-accentAmber/20 text-accentAmber font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
                             <span class="block text-[10px] text-accentAmber font-bold uppercase tracking-wider">Question <span id="comp-q-num">1</span> of 10</span>
                             <p id="comp-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
                             <div id="comp-options" class="space-y-2"></div>
@@ -1462,6 +888,7 @@
                             </div>
                         </div>
                         <div id="gk-quiz-container" class="space-y-4">
+                            <button id="btn-launch-gk-quiz" class="w-full bg-accentGreen/10 border border-accentGreen/20 hover:bg-accentGreen/20 text-accentGreen font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
                             <span class="block text-[10px] text-accentGreen font-bold uppercase tracking-wider">Question <span id="gk-q-num">1</span> of 10</span>
                             <p id="gk-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
                             <div id="gk-options" class="space-y-2"></div>
@@ -1473,7 +900,43 @@
                     </div>
                 </div>
             </div>
-
+                </div>
+                
+                <!-- SIDEBAR CHALLENGE RUN-OFF (1 Column) -->
+                <div class="lg:col-span-1 lg:sticky lg:top-6 space-y-4">
+                    <div id="challenge-status-bar" class="bg-bgCard border border-white/5 rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+                        <div class="flex items-center gap-3 border-b border-white/5 pb-3">
+                            <span id="challenge-badge" class="px-2.5 py-0.5 text-[8px] font-extrabold uppercase rounded-full bg-accentCyan/10 text-accentCyan border border-accentCyan/20">Run Off</span>
+                            <div>
+                                <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">⚡ Conquest Challenge</h4>
+                                <span id="challenge-desc-label" class="text-[8px] text-gray-500 font-bold block uppercase">15-Min Simulator</span>
+                            </div>
+                        </div>
+                        <p id="challenge-desc" class="text-[10px] text-gray-400 leading-relaxed">Answer 25 questions in 15 minutes. Level goes from Easy &rarr; Medium &rarr; Hard!</p>
+                        
+                        <div class="grid grid-cols-3 gap-2 py-2 border-b border-white/5">
+                            <div class="text-center bg-black/20 p-2 rounded-xl border border-white/5">
+                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Timer</span>
+                                <span id="challenge-timer" class="font-mono font-extrabold text-xs text-accentCyan">15:00</span>
+                            </div>
+                            <div class="text-center bg-black/20 p-2 rounded-xl border border-white/5">
+                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Progress</span>
+                                <span id="challenge-progress" class="font-mono font-extrabold text-xs text-white">0 / 25</span>
+                            </div>
+                            <div class="text-center bg-black/20 p-2 rounded-xl border border-white/5">
+                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Level</span>
+                                <span id="challenge-diff" class="font-bold text-[10px] uppercase text-accentGreen">Easy</span>
+                            </div>
+                        </div>
+                        
+                        <button id="btn-challenge-start" class="w-full bg-accentCyan hover:bg-cyan-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md">
+                            <i class="fa-solid fa-play mr-1"></i> Start Challenge
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+            
         </section>
 
     </main>
@@ -1522,6 +985,74 @@
         </div>
     </div>
 
+    <!-- MODAL: IMMERSIVE DRILL WINDOW -->
+    <div id="modal-drill-window" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div id="drill-window-card" class="bg-bgCard border border-white/10 w-full max-w-3xl h-[85vh] rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300 relative">
+            <!-- Drill Header -->
+            <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-white/2px">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-accentCyan animate-pulse"></span>
+                    <h3 id="drill-modal-title" class="font-heading font-extrabold text-xs text-white uppercase tracking-wider">⚡ Speed Drill Simulator</h3>
+                </div>
+                <div class="flex items-center gap-3">
+                    <!-- Pause/Resume Button -->
+                    <button id="btn-drill-modal-pause" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Pause session [Shortcut: P]">
+                        <i class="fa-solid fa-pause"></i> <span>Pause</span>
+                    </button>
+                    <!-- Fullscreen Toggle Button -->
+                    <button id="btn-drill-fullscreen" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5">
+                        <i class="fa-solid fa-expand"></i> <span>Fullscreen</span>
+                    </button>
+                    <!-- Close Button -->
+                    <button id="btn-drill-modal-close" class="text-gray-400 hover:text-white transition text-xl px-1">&times;</button>
+                </div>
+            </div>
+            
+            <!-- Timer Bar (Top of body) -->
+            <div id="modal-drill-timer-bar" class="w-full bg-white/5 h-1.5 overflow-hidden">
+                <div id="modal-drill-timer-fill" class="bg-accentCyan h-full transition-all duration-1000" style="width: 100%;"></div>
+            </div>
+            
+            <!-- Drill Body (Central Display) -->
+            <div class="flex-grow overflow-y-auto p-8 flex flex-col justify-center items-center text-center space-y-8 relative">
+                <!-- Paused Overlay Screen -->
+                <div id="modal-drill-paused-overlay" class="absolute inset-0 bg-bgCard/95 flex flex-col justify-center items-center z-10 hidden">
+                    <i class="fa-solid fa-circle-pause text-5xl text-accentCyan mb-4 animate-pulse"></i>
+                    <h3 class="text-xl font-heading font-extrabold text-white uppercase tracking-wider mb-2">Drill Paused</h3>
+                    <p class="text-xs text-gray-400">Click Resume or press 'P' to continue your session</p>
+                </div>
+
+                <!-- Drill Content wrapper to be blurred when paused -->
+                <div id="modal-drill-content-wrapper" class="w-full flex flex-col justify-center items-center space-y-8 transition-all duration-300">
+                    <!-- Question Label -->
+                    <h2 id="modal-drill-question" class="text-3xl font-heading font-extrabold text-white leading-tight max-w-2xl">
+                        Question
+                    </h2>
+                    
+                    <!-- Input Field (for math/input answers) -->
+                    <div id="modal-drill-input-wrapper" class="w-full max-w-md hidden">
+                        <div class="flex gap-2">
+                            <input type="number" id="modal-drill-answer" class="w-full bg-white/5 border border-white/10 text-center text-2xl font-bold rounded-2xl px-6 py-4 outline-none focus:border-accentCyan focus:ring-1 focus:ring-accentCyan transition" placeholder="Type answer here...">
+                            <button id="btn-modal-drill-submit" class="bg-accentCyan hover:bg-cyan-500 text-white font-extrabold px-6 py-4 rounded-2xl text-xs uppercase tracking-wider transition">Check</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Options Grid (for MCQ answers) -->
+                    <div id="modal-drill-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-md hidden">
+                        <!-- Injected dynamically -->
+                    </div>
+                    
+                    <!-- Stats / Feedback -->
+                    <div class="pt-6 flex items-center gap-6 justify-center text-xs font-bold text-gray-500 uppercase tracking-widest">
+                        <div id="modal-drill-score">Score: 0 / 0</div>
+                        <div class="w-px h-3 bg-white/10"></div>
+                        <div id="modal-drill-streak">Streak: 0 🔥</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Floating Navigation Island -->
     <nav id="mobile-floating-nav" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-bgCard/90 backdrop-blur-lg border border-white/10 rounded-full p-1.5 flex gap-2 items-center shadow-2xl z-50 transition-all duration-300 transform translate-y-0 opacity-100">
         <!-- Shrunk state icon (Hidden by default in expanded state) -->
@@ -1531,26 +1062,26 @@
         
         <!-- Expanded state items -->
         <div id="floating-nav-items" class="flex gap-2 items-center transition-all duration-300">
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" title="Dashboard">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" title="Dashboard [Shortcut: 1]">
                 <i class="fa-solid fa-chart-line text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" title="Speed Drills">
-                <i class="fa-solid fa-bolt text-sm"></i>
-            </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" title="Study Toolkit">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" title="Study Toolkit [Shortcut: 2]">
                 <i class="fa-solid fa-toolbox text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" title="40-Day Plan">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" title="Speed Drills [Shortcut: 3]">
+                <i class="fa-solid fa-bolt text-sm"></i>
+            </a>
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" title="40-Day Plan [Shortcut: 4]">
                 <i class="fa-solid fa-calendar-days text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" title="Syllabus Tracker">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" title="Syllabus Tracker [Shortcut: 5]">
                 <i class="fa-solid fa-list-check text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" title="Mock Analytics">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" title="Mock Analytics [Shortcut: 6]">
                 <i class="fa-solid fa-square-poll-vertical text-sm"></i>
             </a>
             <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
-            <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white transition duration-200" title="Toggle Light/Dark Theme">
+            <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white transition duration-200" title="Toggle Light/Dark Theme [Shortcut: T]">
                 <i class="fa-solid fa-sun text-sm"></i>
             </button>
         </div>

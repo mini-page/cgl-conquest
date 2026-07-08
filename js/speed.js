@@ -1,3 +1,6 @@
+// Modal drill states
+window.window.isDrillModalActive = false;
+let activeModalDrillType = "";
 // === SPEED DRILLS & CHALLENGES MODULE ===
 // 14. SPEED DRILLS ("MAKE IT FAST"), FLASHCARDS & COMPUTER QUIZ ENGINES
 // ==========================================================================
@@ -155,14 +158,13 @@ function initSpeedDrillsPage() {
                 drillIsPlaying = false;
                 pauseBtn.innerHTML = `<i class="fa-solid fa-play mr-1"></i> Start`;
                 clearInterval(drillTimerInterval);
-                const optionsGrid = document.getElementById("drill-options");
-                if (optionsGrid) optionsGrid.classList.add("hidden");
+                closeDrillModal();
                 speakText("Paused");
             } else {
                 drillIsPlaying = true;
                 pauseBtn.innerHTML = `<i class="fa-solid fa-pause mr-1"></i> Pause`;
-                const optionsGrid = document.getElementById("drill-options");
-                if (optionsGrid) optionsGrid.classList.remove("hidden");
+                openDrillModal("Maths Speed Drill: " + drillMode.toUpperCase(), true);
+                activeModalDrillType = "maths";
                 generateDrillQuestion();
             }
         };
@@ -230,6 +232,11 @@ function initSpeedDrillsPage() {
             btn.className = "eng-opt-btn w-full text-left p-3 rounded-xl border border-white/5 hover:border-accentRose bg-white/2px hover:bg-white/5 transition text-xs font-semibold text-gray-300";
             btn.innerText = option;
             btn.onclick = () => {
+                if (window.isDrillModalActive) {
+                    highlightModalOptions(item.a, idx, "english");
+                }
+                const modalScore = document.getElementById("modal-drill-score");
+                if (modalScore) setTimeout(() => { modalScore.innerText = `Score: ${engCorrect}/${engAttempts}`; }, 50);
                 engAttempts++;
                 const buttons = optionsContainer.querySelectorAll(".eng-opt-btn");
                 buttons.forEach((b, bIdx) => {
@@ -258,6 +265,17 @@ function initSpeedDrillsPage() {
             };
             optionsContainer.appendChild(btn);
         });
+        
+        // Sync modal choices
+        syncModalContent(
+            item.q, 
+            item.o, 
+            (val, idx) => {
+                const btns = optionsContainer.querySelectorAll(".eng-opt-btn");
+                if (btns[idx]) btns[idx].click();
+            }, 
+            "english"
+        );
     };
 
     const resetEngBtn = document.getElementById("btn-eng-reset");
@@ -297,6 +315,11 @@ function initSpeedDrillsPage() {
             btn.className = "reas-opt-btn w-full text-left p-3 rounded-xl border border-white/5 hover:border-accentPurple bg-white/2px hover:bg-white/5 transition text-xs font-semibold text-gray-300";
             btn.innerText = option;
             btn.onclick = () => {
+                if (window.isDrillModalActive) {
+                    highlightModalOptions(item.a, idx, "reasoning");
+                }
+                const modalScore = document.getElementById("modal-drill-score");
+                if (modalScore) setTimeout(() => { modalScore.innerText = `Score: ${reasCorrect}/${reasAttempts}`; }, 50);
                 reasAttempts++;
                 const buttons = optionsContainer.querySelectorAll(".reas-opt-btn");
                 buttons.forEach((b, bIdx) => {
@@ -325,6 +348,17 @@ function initSpeedDrillsPage() {
             };
             optionsContainer.appendChild(btn);
         });
+        
+        // Sync modal choices
+        syncModalContent(
+            item.q, 
+            item.o, 
+            (val, idx) => {
+                const btns = optionsContainer.querySelectorAll(".reas-opt-btn");
+                if (btns[idx]) btns[idx].click();
+            }, 
+            "reasoning"
+        );
     };
 
     const resetReasBtn = document.getElementById("btn-reas-reset");
@@ -364,6 +398,11 @@ function initSpeedDrillsPage() {
             btn.className = "comp-opt-btn w-full text-left p-3 rounded-xl border border-white/5 hover:border-accentAmber bg-white/2px hover:bg-white/5 transition text-xs font-semibold text-gray-300";
             btn.innerText = option;
             btn.onclick = () => {
+                if (window.isDrillModalActive) {
+                    highlightModalOptions(item.a, idx, "computer");
+                }
+                const modalScore = document.getElementById("modal-drill-score");
+                if (modalScore) setTimeout(() => { modalScore.innerText = `Score: ${compCorrect}/${compAttempts}`; }, 50);
                 compAttempts++;
                 const buttons = optionsContainer.querySelectorAll(".comp-opt-btn");
                 buttons.forEach((b, bIdx) => {
@@ -392,6 +431,17 @@ function initSpeedDrillsPage() {
             };
             optionsContainer.appendChild(btn);
         });
+        
+        // Sync modal choices
+        syncModalContent(
+            item.q, 
+            item.o, 
+            (val, idx) => {
+                const btns = optionsContainer.querySelectorAll(".comp-opt-btn");
+                if (btns[idx]) btns[idx].click();
+            }, 
+            "computer"
+        );
     };
 
     const resetCompBtn = document.getElementById("btn-comp-reset");
@@ -439,6 +489,11 @@ function initSpeedDrillsPage() {
             btn.className = "gk-opt-btn w-full text-left p-3 rounded-xl border border-white/5 hover:border-accentGreen bg-white/2px hover:bg-white/5 transition text-xs font-semibold text-gray-300";
             btn.innerText = option;
             btn.onclick = () => {
+                if (window.isDrillModalActive) {
+                    highlightModalOptions(item.a, idx, "gk");
+                }
+                const modalScore = document.getElementById("modal-drill-score");
+                if (modalScore) setTimeout(() => { modalScore.innerText = `Score: ${gkCorrect}/${gkAttempts}`; }, 50);
                 gkAttempts++;
                 const buttons = optionsContainer.querySelectorAll(".gk-opt-btn");
                 buttons.forEach((b, bIdx) => {
@@ -467,6 +522,17 @@ function initSpeedDrillsPage() {
             };
             optionsContainer.appendChild(btn);
         });
+        
+        // Sync modal choices
+        syncModalContent(
+            item.q, 
+            item.o, 
+            (val, idx) => {
+                const btns = optionsContainer.querySelectorAll(".gk-opt-btn");
+                if (btns[idx]) btns[idx].click();
+            }, 
+            "gk"
+        );
     };
 
     const resetGkBtn = document.getElementById("btn-gk-reset");
@@ -479,6 +545,53 @@ function initSpeedDrillsPage() {
             const scoreEl = document.getElementById("gk-quiz-score");
             if (scoreEl) scoreEl.innerText = "Score: 0/0";
             renderGkQuestion();
+        };
+    }
+
+    // Modal close, pause & fullscreen event triggers
+    const btnDrillClose = document.getElementById("btn-drill-modal-close");
+    if (btnDrillClose) btnDrillClose.onclick = () => closeDrillModal();
+    
+    const btnDrillPause = document.getElementById("btn-drill-modal-pause");
+    if (btnDrillPause) btnDrillPause.onclick = () => toggleModalPause();
+    
+    const btnDrillFull = document.getElementById("btn-drill-fullscreen");
+    if (btnDrillFull) btnDrillFull.onclick = () => toggleDrillFullscreen();
+    
+    // Launch Quizzes in Immersive Simulator
+    const btnLaunchEng = document.getElementById("btn-launch-eng-quiz");
+    if (btnLaunchEng) {
+        btnLaunchEng.onclick = () => {
+            if (isChallengeActive) return;
+            openDrillModal("English Vocabulary Quiz", true);
+            startQuizInModal("english");
+        };
+    }
+    
+    const btnLaunchReas = document.getElementById("btn-launch-reas-quiz");
+    if (btnLaunchReas) {
+        btnLaunchReas.onclick = () => {
+            if (isChallengeActive) return;
+            openDrillModal("Reasoning Logical Speed Test", true);
+            startQuizInModal("reasoning");
+        };
+    }
+    
+    const btnLaunchComp = document.getElementById("btn-launch-comp-quiz");
+    if (btnLaunchComp) {
+        btnLaunchComp.onclick = () => {
+            if (isChallengeActive) return;
+            openDrillModal("Computer Tier-2 Practice", true);
+            startQuizInModal("computer");
+        };
+    }
+    
+    const btnLaunchGk = document.getElementById("btn-launch-gk-quiz");
+    if (btnLaunchGk) {
+        btnLaunchGk.onclick = () => {
+            if (isChallengeActive) return;
+            openDrillModal("GK & General Studies Practice", true);
+            startQuizInModal("gk");
         };
     }
 
@@ -746,14 +859,17 @@ function generateDrillQuestion() {
     }
 
     qLabel.innerText = questionText;
+    const modalQLabel = document.getElementById("modal-drill-question");
+    if (modalQLabel) modalQLabel.innerText = questionText;
+    
     drillAnswerVal = answer;
 
+    const choices = generateMathOptions(answer);
     const optionsGrid = document.getElementById("drill-options");
     if (optionsGrid) {
         optionsGrid.innerHTML = "";
         optionsGrid.classList.remove("hidden");
         
-        const choices = generateMathOptions(answer);
         choices.forEach(val => {
             const btn = document.createElement("button");
             btn.className = "math-opt-btn p-3 rounded-xl border border-white/5 bg-white/2px hover:bg-cyan-500/10 hover:border-accentCyan transition text-sm font-bold text-gray-200";
@@ -762,15 +878,29 @@ function generateDrillQuestion() {
             optionsGrid.appendChild(btn);
         });
     }
+    
+    // Sync to modal options
+    syncModalContent(
+        questionText, 
+        choices, 
+        (val, idx) => {
+            const btns = document.querySelectorAll(".math-opt-btn");
+            if (btns[idx]) btns[idx].click();
+        }, 
+        "maths"
+    );
 
     clearInterval(drillTimerInterval);
     drillTimerSecs = 15;
     const fill = document.getElementById("drill-timer-fill");
+    const modalFill = document.getElementById("modal-drill-timer-fill");
     if (fill) fill.style.width = "100%";
+    if (modalFill) modalFill.style.width = "100%";
 
     drillTimerInterval = setInterval(() => {
         drillTimerSecs--;
         if (fill) fill.style.width = `${(drillTimerSecs / 15) * 100}%`;
+        if (modalFill) modalFill.style.width = `${(drillTimerSecs / 15) * 100}%`;
 
         if (drillTimerSecs <= 0) {
             clearInterval(drillTimerInterval);
@@ -836,6 +966,16 @@ function checkDrillAnswer(chosenVal) {
     }
 
     if (scoreEl) scoreEl.innerText = `Score: ${drillCorrect}/${drillAttempts}`;
+    const modalScore = document.getElementById("modal-drill-score");
+    if (modalScore) modalScore.innerText = `Score: ${drillCorrect}/${drillAttempts}`;
+    
+    if (window.isDrillModalActive) {
+        const btnTextArr = Array.from(buttons).map(b => b.innerText);
+        const correctIdx = btnTextArr.indexOf(String(drillAnswerVal));
+        const chosenIdx = btnTextArr.indexOf(String(chosenVal));
+        highlightModalOptions(correctIdx, chosenIdx, "maths");
+    }
+    
     setTimeout(generateDrillQuestion, 1500);
 }
 
@@ -874,6 +1014,8 @@ function resetDrillSession() {
 function startChallengeRun() {
     isChallengeActive = true;
     challengeTimeRemaining = 900; // 15 mins
+    openDrillModal("⚡ Conquest Challenge", true);
+    activeModalDrillType = "challenge";
     challengeQuestionIndex = 0;
     challengeScore = 0;
     
@@ -927,6 +1069,21 @@ function updateChallengeUI() {
     if (diffEl) {
         diffEl.innerText = level;
         diffEl.className = `font-bold text-xs uppercase ${colorClass}`;
+    }
+    
+    // Update modal title, progress and score
+    if (window.isDrillModalActive) {
+        const titleEl = document.getElementById("drill-modal-title");
+        if (titleEl) titleEl.innerText = `⚡ Conquest Challenge [${formattedTime}]`;
+        
+        const modalScore = document.getElementById("modal-drill-score");
+        if (modalScore) modalScore.innerText = `Score: ${challengeScore}`;
+        
+        const modalStreak = document.getElementById("modal-drill-streak");
+        if (modalStreak) modalStreak.innerText = `Q: ${challengeQuestionIndex + 1} / 25 (${level})`;
+        
+        const modalFill = document.getElementById("modal-drill-timer-fill");
+        if (modalFill) modalFill.style.width = `${(challengeTimeRemaining / 900) * 100}%`;
     }
 }
 
@@ -1213,6 +1370,16 @@ function generateChallengeQuestion() {
                 btn.onclick = () => submitChallengeAnswer("maths", choice, qData.a, optionsGrid.querySelectorAll(".math-opt-btn"));
                 optionsGrid.appendChild(btn);
             });
+            
+            syncModalContent(
+                qData.q,
+                qData.o,
+                (val, idx) => {
+                    const btns = optionsGrid.querySelectorAll(".math-opt-btn");
+                    if (btns[idx]) btns[idx].click();
+                },
+                "maths"
+            );
         }
     } else if (challengeActiveTab === "english") {
         const qText = document.getElementById("eng-q-text");
@@ -1230,6 +1397,16 @@ function generateChallengeQuestion() {
                 btn.onclick = () => submitChallengeAnswer("english", idx, qData.a, optionsGrid.querySelectorAll(".eng-opt-btn"));
                 optionsGrid.appendChild(btn);
             });
+            
+            syncModalContent(
+                qData.q,
+                qData.o,
+                (val, mIdx) => {
+                    const btns = optionsGrid.querySelectorAll(".eng-opt-btn");
+                    if (btns[mIdx]) btns[mIdx].click();
+                },
+                "english"
+            );
         }
     } else if (challengeActiveTab === "reasoning") {
         const qText = document.getElementById("reas-q-text");
@@ -1247,6 +1424,16 @@ function generateChallengeQuestion() {
                 btn.onclick = () => submitChallengeAnswer("reasoning", idx, qData.a, optionsGrid.querySelectorAll(".reas-opt-btn"));
                 optionsGrid.appendChild(btn);
             });
+            
+            syncModalContent(
+                qData.q,
+                qData.o,
+                (val, mIdx) => {
+                    const btns = optionsGrid.querySelectorAll(".reas-opt-btn");
+                    if (btns[mIdx]) btns[mIdx].click();
+                },
+                "reasoning"
+            );
         }
     } else if (challengeActiveTab === "computer") {
         const qText = document.getElementById("comp-q-text");
@@ -1264,6 +1451,16 @@ function generateChallengeQuestion() {
                 btn.onclick = () => submitChallengeAnswer("computer", idx, qData.a, optionsGrid.querySelectorAll(".comp-opt-btn"));
                 optionsGrid.appendChild(btn);
             });
+            
+            syncModalContent(
+                qData.q,
+                qData.o,
+                (val, mIdx) => {
+                    const btns = optionsGrid.querySelectorAll(".comp-opt-btn");
+                    if (btns[mIdx]) btns[mIdx].click();
+                },
+                "computer"
+            );
         }
     }
 }
@@ -1311,6 +1508,7 @@ function submitChallengeAnswer(subject, chosenValOrIndex, correctValOrIndex, opt
 
 function endChallengeRun(completed = false, aborted = false) {
     isChallengeActive = false;
+    closeDrillModal();
     clearInterval(challengeTimerInterval);
 
     const btnChallengeStart = document.getElementById("btn-challenge-start");
@@ -1423,17 +1621,58 @@ function parseMarkdown(text) {
     // Italic (*text*)
     html = html.replace(/\*(.*?)\*/g, '<em class="text-gray-200 italic">$1</em>');
 
+    // Links ([text](url))
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="text-accentCyan hover:underline font-bold">$1</a>');
+
     // Blockquotes
     html = html.replace(/^&gt; (.*?)$/gm, '<blockquote class="border-l-2 border-accentPurple pl-2 text-gray-400 my-1.5 italic bg-white/2px p-1 rounded">$1</blockquote>');
-
-    // Bullet Lists (- or *)
-    html = html.replace(/^\s*[-*]\s+(.*?)$/gm, '<li class="list-disc list-inside ml-2 text-gray-300">$1</li>');
 
     // Code blocks / Inline code
     html = html.replace(/`(.*?)`/g, '<code class="bg-black/40 px-1 py-0.5 rounded font-mono text-accentCyan text-[10px]">$1</code>');
 
     // Horizontal Rule
     html = html.replace(/^---$/gm, '<hr class="border-white/5 my-2">');
+
+    // Parse tables
+    const lines = html.split('\n');
+    let inTable = false;
+    let tableHtml = '';
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (line.startsWith('|') && line.endsWith('|')) {
+            const cells = line.split('|').map(c => c.trim()).filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
+            if (!inTable) {
+                inTable = true;
+                tableHtml = '<div class="overflow-x-auto my-3"><table class="w-full text-left text-[11px] border-collapse"><thead>';
+                tableHtml += '<tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">';
+                cells.forEach(c => tableHtml += `<th class="pb-1">${c}</th>`);
+                tableHtml += '</tr></thead><tbody class="text-gray-300 font-mono">';
+            } else {
+                if (cells.every(c => c.match(/^:-*:-*$|^-+$|^:-+$|^-+:$/))) {
+                    continue; // Skip separator line
+                }
+                tableHtml += '<tr class="border-b border-white/5">';
+                cells.forEach(c => tableHtml += `<td class="py-1">${c}</td>`);
+                tableHtml += '</tr>';
+            }
+            lines[i] = ''; // Clear line as it is consumed by the table
+        } else {
+            if (inTable) {
+                inTable = false;
+                tableHtml += '</tbody></table></div>';
+                lines[i] = tableHtml + '\n' + lines[i];
+                tableHtml = '';
+            }
+        }
+    }
+    if (inTable) {
+        tableHtml += '</tbody></table></div>';
+        lines.push(tableHtml);
+    }
+    html = lines.filter(l => l !== '').join('\n');
+
+    // Bullet Lists (- or *)
+    html = html.replace(/^\s*[-*]\s+(.*?)$/gm, '<li class="list-disc list-inside ml-2 text-gray-300">$1</li>');
 
     // Lists wrapper
     html = html.replace(/(<li.*?>.*?<\/li>)+/gs, '<ul>$&</ul>');
@@ -1443,4 +1682,200 @@ function parseMarkdown(text) {
     html = html.replace(/\n/g, '<br>');
 
     return html;
+}
+
+
+// === IMMERSIVE DRILL SIMULATOR MODAL HELPERS ===
+function openDrillModal(title, isMCQ) {
+    const modal = document.getElementById("modal-drill-window");
+    if (!modal) return;
+    
+    const floatingNav = document.getElementById("mobile-floating-nav");
+    if (floatingNav) floatingNav.classList.add("hidden");
+    document.getElementById("floating-nav-trigger").classList.add("hidden");
+    document.getElementById("drill-modal-title").innerText = title;
+    
+    const inputWrapper = document.getElementById("modal-drill-input-wrapper");
+    const optionsGrid = document.getElementById("modal-drill-options");
+    
+    if (isMCQ) {
+        if (inputWrapper) inputWrapper.classList.add("hidden");
+        if (optionsGrid) optionsGrid.classList.remove("hidden");
+    } else {
+        if (inputWrapper) inputWrapper.classList.remove("hidden");
+        if (optionsGrid) optionsGrid.classList.add("hidden");
+        
+        const inputField = document.getElementById("modal-drill-answer");
+        if (inputField) {
+            inputField.value = "";
+            inputField.disabled = false;
+            setTimeout(() => inputField.focus(), 100);
+        }
+    }
+    
+    modal.classList.add("active");
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    window.isDrillModalActive = true;
+}
+
+function closeDrillModal() {
+    const modal = document.getElementById("modal-drill-window");
+    if (!modal) return;
+    
+    modal.classList.remove("active");
+    modal.classList.add("opacity-0", "pointer-events-none");
+    window.isDrillModalActive = false;
+    
+    // Restore navigation bar
+    const floatingNav = document.getElementById("mobile-floating-nav");
+    if (floatingNav) floatingNav.classList.remove("hidden");
+    
+    // Reset pause overlays and state
+    drillIsPaused = false;
+    const overlay = document.getElementById("modal-drill-paused-overlay");
+    const wrapper = document.getElementById("modal-drill-content-wrapper");
+    const pauseBtn = document.getElementById("btn-drill-modal-pause");
+    if (overlay) overlay.classList.add("hidden");
+    if (wrapper) wrapper.classList.remove("blur-md");
+    if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pause</span>';
+    
+    // Also reset fullscreen classes if active
+    const card = document.getElementById("drill-window-card");
+    if (card) card.classList.remove("fullscreen-drill-card");
+    
+    const expandBtn = document.getElementById("btn-drill-fullscreen");
+    if (expandBtn) expandBtn.innerHTML = '<i class="fa-solid fa-expand"></i> <span>Fullscreen</span>';
+    
+    // Stop Maths drill if running
+    if (drillIsPlaying) {
+        drillIsPlaying = false;
+        const pauseBtn = document.getElementById("btn-drill-pause");
+        if (pauseBtn) pauseBtn.innerHTML = `<i class="fa-solid fa-play mr-1"></i> Start`;
+        clearInterval(drillTimerInterval);
+    }
+    
+    // Abort Conquest Challenge if running
+    if (isChallengeActive) {
+        endChallengeRun(false, true);
+    }
+}
+
+function toggleDrillFullscreen() {
+    const card = document.getElementById("drill-window-card");
+    const btn = document.getElementById("btn-drill-fullscreen");
+    if (!card || !btn) return;
+    
+    const isFullscreen = card.classList.toggle("fullscreen-drill-card");
+    if (isFullscreen) {
+        btn.innerHTML = '<i class="fa-solid fa-compress"></i> <span>Exit Fullscreen</span>';
+    } else {
+        btn.innerHTML = '<i class="fa-solid fa-expand"></i> <span>Fullscreen</span>';
+    }
+}
+
+function syncModalContent(question, choices, onOptionClick, subject) {
+    if (!window.isDrillModalActive) return;
+    
+    const modalQ = document.getElementById("modal-drill-question");
+    if (modalQ) modalQ.innerText = question;
+    
+    const modalOptions = document.getElementById("modal-drill-options");
+    if (modalOptions) {
+        modalOptions.innerHTML = "";
+        
+        let hoverBorder = "hover:border-accentCyan";
+        if (subject === "english") hoverBorder = "hover:border-accentRose";
+        else if (subject === "reasoning") hoverBorder = "hover:border-accentPurple";
+        else if (subject === "computer") hoverBorder = "hover:border-accentAmber";
+        else if (subject === "gk") hoverBorder = "hover:border-accentGreen";
+        
+        choices.forEach((choice, idx) => {
+            const btn = document.createElement("button");
+            btn.className = `math-opt-btn w-full text-left p-4 rounded-2xl border border-white/5 bg-white/2px ${hoverBorder} hover:bg-white/5 transition text-sm font-semibold text-gray-200`;
+            btn.innerText = choice;
+            btn.onclick = () => onOptionClick(choice, idx, btn);
+            modalOptions.appendChild(btn);
+        });
+    }
+}
+
+function highlightModalOptions(correctIndex, chosenIndex, subject) {
+    if (!window.isDrillModalActive) return;
+    const modalOptions = document.getElementById("modal-drill-options");
+    if (!modalOptions) return;
+    
+    const buttons = modalOptions.querySelectorAll("button");
+    
+    let activeRose = "border-accentRose bg-accentRose/15 text-accentRose";
+    let activePurple = "border-accentPurple bg-accentPurple/15 text-accentPurple";
+    let activeAmber = "border-accentAmber bg-accentAmber/15 text-accentAmber";
+    
+    buttons.forEach((b, idx) => {
+        b.disabled = true;
+        if (idx === correctIndex) {
+            b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
+        } else if (idx === chosenIndex) {
+            let color = activeRose;
+            if (subject === "reasoning") color = activePurple;
+            else if (subject === "computer") color = activeAmber;
+            else if (subject === "maths" || subject === "challenge") color = "border-accentCyan bg-accentCyan/15 text-accentCyan";
+            b.className = b.className.replace("border-white/5", color);
+        }
+    });
+}
+
+
+let drillIsPaused = false;
+
+function toggleModalPause() {
+    if (!window.isDrillModalActive) return;
+    
+    drillIsPaused = !drillIsPaused;
+    
+    const overlay = document.getElementById("modal-drill-paused-overlay");
+    const wrapper = document.getElementById("modal-drill-content-wrapper");
+    const pauseBtn = document.getElementById("btn-drill-modal-pause");
+    
+    if (drillIsPaused) {
+        if (overlay) overlay.classList.remove("hidden");
+        if (wrapper) wrapper.classList.add("blur-md");
+        if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Resume</span>';
+        
+        // Pause active timers
+        if (activeModalDrillType === "maths") {
+            clearInterval(drillTimerInterval);
+        } else if (activeModalDrillType === "challenge") {
+            clearInterval(challengeTimerInterval);
+        }
+        speakText("Paused");
+    } else {
+        if (overlay) overlay.classList.add("hidden");
+        if (wrapper) wrapper.classList.remove("blur-md");
+        if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pause</span>';
+        
+        // Resume active timers
+        if (activeModalDrillType === "maths") {
+            const fill = document.getElementById("drill-timer-fill");
+            const modalFill = document.getElementById("modal-drill-timer-fill");
+            clearInterval(drillTimerInterval);
+            drillTimerInterval = setInterval(() => {
+                drillTimerSecs--;
+                if (fill) fill.style.width = `${(drillTimerSecs / 15) * 100}%`;
+                if (modalFill) modalFill.style.width = `${(drillTimerSecs / 15) * 100}%`;
+                if (drillTimerSecs <= 0) {
+                    checkDrillAnswer("");
+                }
+            }, 1000);
+        } else if (activeModalDrillType === "challenge") {
+            clearInterval(challengeTimerInterval);
+            challengeTimerInterval = setInterval(() => {
+                challengeTimeRemaining--;
+                updateChallengeUI();
+                if (challengeTimeRemaining <= 0) {
+                    endChallengeRun(false); 
+                }
+            }, 1000);
+        }
+        speakText("Resumed");
+    }
 }
