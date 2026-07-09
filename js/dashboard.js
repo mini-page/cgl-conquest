@@ -108,6 +108,15 @@ function initToolkitTabs() {
             renderToolkit();
         };
     });
+
+    // Trigger initial render of active tab (e.g., Quant Formulas on load)
+    const activeTab = document.querySelector(".toolkit-tab-btn.active-nav-tab");
+    if (activeTab) {
+        const targetPanelId = activeTab.getAttribute("data-target");
+        if (typeof renderToolkitSubTab === "function") {
+            renderToolkitSubTab(targetPanelId);
+        }
+    }
 }
 
 // 6. GENERAL PROGRESS COMPUTATIONS & RENDER
@@ -538,6 +547,11 @@ function formatTimeSeconds(secs) {
 }
 
 function initPomoTimer() {
+    // Enforce 25m study timer as default
+    appState.pomoTime = 1500;
+    appState.pomoMode = "study";
+    appState.pomoActive = false;
+    
     const btnStart = document.getElementById("btn-pomo-start");
     const btnPause = document.getElementById("btn-pomo-pause");
     const btnReset = document.getElementById("btn-pomo-reset");
@@ -551,17 +565,30 @@ function initPomoTimer() {
     const updatePomoDisplay = () => {
         const mins = Math.floor(appState.pomoTime / 60);
         const secs = appState.pomoTime % 60;
-        timeDisplay.innerText = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        const formatted = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        
+        if (timeDisplay) timeDisplay.innerText = formatted;
+        
+        const capsuleTime = document.getElementById("pomo-capsule-time");
+        if (capsuleTime) capsuleTime.innerText = formatted;
         
         const pct = appState.pomoTime / initialTime;
         const offset = pomoRingCircumference * (1 - pct);
-        ringFill.style.strokeDashoffset = isNaN(offset) ? 0 : offset;
+        if (ringFill) ringFill.style.strokeDashoffset = isNaN(offset) ? 0 : offset;
+        
+        // Update Play/Pause button icon inside Pomo Capsule in the Top Bar
+        const capsuleToggle = document.getElementById("btn-pomo-capsule-toggle");
+        if (capsuleToggle) {
+            capsuleToggle.innerHTML = appState.pomoActive ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+        }
     };
 
     btnStart.onclick = () => {
         appState.pomoActive = true;
-        btnStart.disabled = true;
-        btnPause.disabled = false;
+        if (btnStart) btnStart.disabled = true;
+        if (btnPause) btnPause.disabled = false;
+        
+        updatePomoDisplay(); // Sync Play/Pause icon immediately
         
         pomoTimerInterval = setInterval(() => {
             if (appState.pomoTime > 0) {
@@ -570,8 +597,8 @@ function initPomoTimer() {
             } else {
                 clearInterval(pomoTimerInterval);
                 appState.pomoActive = false;
-                btnStart.disabled = false;
-                btnPause.disabled = true;
+                if (btnStart) btnStart.disabled = false;
+                if (btnPause) btnPause.disabled = true;
                 
                 speakText("Focus timer completed. Great job, soldier! Take a rest break.");
                 appState.pomoTime = initialTime;
@@ -582,15 +609,16 @@ function initPomoTimer() {
 
     btnPause.onclick = () => {
         appState.pomoActive = false;
-        btnStart.disabled = false;
-        btnPause.disabled = true;
+        if (btnStart) btnStart.disabled = false;
+        if (btnPause) btnPause.disabled = true;
         clearInterval(pomoTimerInterval);
+        updatePomoDisplay(); // Sync Play/Pause icon immediately
     };
 
     btnReset.onclick = () => {
         appState.pomoActive = false;
-        btnStart.disabled = false;
-        btnPause.disabled = true;
+        if (btnStart) btnStart.disabled = false;
+        if (btnPause) btnPause.disabled = true;
         clearInterval(pomoTimerInterval);
         appState.pomoTime = initialTime;
         updatePomoDisplay();
@@ -608,11 +636,69 @@ function initPomoTimer() {
             initialTime = seconds;
             appState.pomoTime = seconds;
             
-            statusLabel.innerText = mode === "study" ? "STUDY TIME" : "REST BREAK";
-            ringFill.style.stroke = mode === "study" ? "var(--accent-rose)" : "var(--accent-green)";
+            if (statusLabel) statusLabel.innerText = mode === "study" ? "STUDY TIME" : "REST BREAK";
+            if (ringFill) ringFill.style.stroke = mode === "study" ? "var(--accent-rose)" : "var(--accent-green)";
             
             btnReset.click();
         };
+    });
+
+    // === TOP BAR POMODORO CAPSULE & POPOVER TOGGLE LISTENERS ===
+    const pomoCapsule = document.getElementById("pomo-capsule");
+    const pomoDrawer = document.getElementById("pomo-drawer");
+    const pomoDrawerClose = document.getElementById("btn-pomo-drawer-close");
+
+    function showPomoPopover() {
+        if (!pomoDrawer) return;
+        pomoDrawer.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+        pomoDrawer.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
+    }
+
+    function hidePomoPopover() {
+        if (!pomoDrawer) return;
+        pomoDrawer.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+        pomoDrawer.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
+    }
+
+    function togglePomoPopover() {
+        if (!pomoDrawer) return;
+        const isHidden = pomoDrawer.classList.contains("opacity-0");
+        if (isHidden) {
+            showPomoPopover();
+        } else {
+            hidePomoPopover();
+        }
+    }
+
+    if (pomoCapsule && pomoDrawer) {
+        pomoCapsule.onclick = (e) => {
+            // If play/pause button inside capsule was clicked
+            if (e.target.closest("#btn-pomo-capsule-toggle")) {
+                if (appState.pomoActive) {
+                    if (btnPause) btnPause.click();
+                } else {
+                    if (btnStart) btnStart.click();
+                }
+                e.stopPropagation();
+                return;
+            }
+            togglePomoPopover();
+        };
+    }
+
+    if (pomoDrawerClose) {
+        pomoDrawerClose.onclick = () => {
+            hidePomoPopover();
+        };
+    }
+
+    // Close popover when clicking outside it
+    document.addEventListener("click", (e) => {
+        if (pomoDrawer && !pomoDrawer.classList.contains("opacity-0")) {
+            if (!pomoDrawer.contains(e.target) && !pomoCapsule.contains(e.target)) {
+                hidePomoPopover();
+            }
+        }
     });
 
     updatePomoDisplay();

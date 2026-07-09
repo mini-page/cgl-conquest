@@ -1,6 +1,6 @@
 // === STATE & DATABASE MODULE ===
 /* ==========================================================================
-   SSC CGL Rank-Maker Dashboard - Application Logic (Tailwind Core Edition)
+   Conquest Dashboard - Application Logic (Tailwind Core Edition)
    ========================================================================== */
 
 // PWA Service Worker Registration
@@ -2431,7 +2431,8 @@ const EMBEDDED_QUIZZES = {
         "Prolong",
         "Intensify"
       ],
-      "a": 0
+      "a": 0,
+      "level": "easy"
     },
     {
       "q": "Antonym of 'ALACRITY':",
@@ -2441,7 +2442,8 @@ const EMBEDDED_QUIZZES = {
         "Swiftness",
         "Zeal"
       ],
-      "a": 1
+      "a": 1,
+      "level": "medium"
     },
     {
       "q": "Find the correctly spelled word:",
@@ -2451,7 +2453,8 @@ const EMBEDDED_QUIZZES = {
         "Committe",
         "Comitte"
       ],
-      "a": 0
+      "a": 0,
+      "level": "advance"
     },
     {
       "q": "One Word Substitution: 'One who hates mankind'",
@@ -2461,7 +2464,8 @@ const EMBEDDED_QUIZZES = {
         "Misanthrope",
         "Egotist"
       ],
-      "a": 2
+      "a": 2,
+      "level": "easy"
     },
     {
       "q": "Idiom Meaning: 'To spill the beans'",
@@ -2471,7 +2475,8 @@ const EMBEDDED_QUIZZES = {
         "To waste money",
         "To cause an accident"
       ],
-      "a": 1
+      "a": 1,
+      "level": "medium"
     },
     {
       "q": "Synonym of 'FUTILE':",
@@ -2481,7 +2486,8 @@ const EMBEDDED_QUIZZES = {
         "Productive",
         "Important"
       ],
-      "a": 1
+      "a": 1,
+      "level": "advance"
     },
     {
       "q": "Antonym of 'HOSTILE':",
@@ -2491,7 +2497,8 @@ const EMBEDDED_QUIZZES = {
         "Antagonistic",
         "Unkind"
       ],
-      "a": 0
+      "a": 0,
+      "level": "easy"
     },
     {
       "q": "Identify the part of speech of the underlined word: 'She runs fast.'",
@@ -2501,7 +2508,8 @@ const EMBEDDED_QUIZZES = {
         "Adverb",
         "Verb"
       ],
-      "a": 2
+      "a": 2,
+      "level": "medium"
     }
   ],
   "reasoning": [
@@ -2513,7 +2521,8 @@ const EMBEDDED_QUIZZES = {
         "128",
         "125"
       ],
-      "a": 0
+      "a": 0,
+      "level": "easy"
     },
     {
       "q": "If 'MONKEY' is coded as 'XDJMNL', how is 'TIGER' coded?",
@@ -2523,7 +2532,8 @@ const EMBEDDED_QUIZZES = {
         "QDYTR",
         "SDFTR"
       ],
-      "a": 1
+      "a": 1,
+      "level": "medium"
     },
     {
       "q": "In a family, A is B's brother, C is A's father, D is C's mother. How is B related to D?",
@@ -2533,7 +2543,8 @@ const EMBEDDED_QUIZZES = {
         "Grandchild",
         "Daughter-in-law"
       ],
-      "a": 2
+      "a": 2,
+      "level": "advance"
     },
     {
       "q": "Select the odd one out: 27, 64, 125, 144",
@@ -2543,7 +2554,8 @@ const EMBEDDED_QUIZZES = {
         "125",
         "144"
       ],
-      "a": 3
+      "a": 3,
+      "level": "easy"
     },
     {
       "q": "Find the next term in the series: B2D, E3G, H4J, ?",
@@ -2554,7 +2566,8 @@ const EMBEDDED_QUIZZES = {
         "K5N"
       ],
       "a": 0,
-      "d": "easy"
+      "d": "easy",
+      "level": "medium"
     },
     {
       "q": "Pointing to a photograph, a man said: 'I have no brother or sister, but that man's father is my father's son.' Whose photograph was it?",
@@ -2565,7 +2578,8 @@ const EMBEDDED_QUIZZES = {
         "His nephew's"
       ],
       "a": 2,
-      "d": "hard"
+      "d": "hard",
+      "level": "advance"
     },
     {
       "q": "If '+' means '×', '-' means '÷', '×' means '-' and '÷' means '+', then: 16 + 4 - 8 × 2 ÷ 3 = ?",
@@ -2576,7 +2590,8 @@ const EMBEDDED_QUIZZES = {
         "11"
       ],
       "a": 1,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     },
     {
       "q": "A clock shows 4:30. If the minute hand points East, in which direction does the hour hand point?",
@@ -2587,7 +2602,8 @@ const EMBEDDED_QUIZZES = {
         "North-West"
       ],
       "a": 1,
-      "d": "hard"
+      "d": "hard",
+      "level": "medium"
     },
     {
       "q": "If A=1, FAT=27, then FAITH = ?",
@@ -2598,7 +2614,8 @@ const EMBEDDED_QUIZZES = {
         "41"
       ],
       "a": 0,
-      "d": "hard"
+      "d": "hard",
+      "level": "advance"
     },
     {
       "q": "Which number replaces the question mark? 12 : 144 :: 13 : ?",
@@ -2609,7 +2626,8 @@ const EMBEDDED_QUIZZES = {
         "196"
       ],
       "a": 0,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     },
     {
       "q": "What is the alphabetical position of letter 'K'?",
@@ -2620,7 +2638,8 @@ const EMBEDDED_QUIZZES = {
         "9"
       ],
       "a": 1,
-      "d": "easy"
+      "d": "easy",
+      "level": "medium"
     },
     {
       "q": "What is the reverse alphabetical position of letter 'T' (where Z=1)?",
@@ -2631,7 +2650,8 @@ const EMBEDDED_QUIZZES = {
         "9"
       ],
       "a": 0,
-      "d": "medium"
+      "d": "medium",
+      "level": "advance"
     },
     {
       "q": "Which letter is opposite to 'Q' in the alphabet (where A is opposite to Z)?",
@@ -2642,7 +2662,8 @@ const EMBEDDED_QUIZZES = {
         "L"
       ],
       "a": 0,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     }
   ],
   "computer": [
@@ -2655,7 +2676,8 @@ const EMBEDDED_QUIZZES = {
         "Alt + Tab"
       ],
       "a": 0,
-      "d": "easy"
+      "d": "easy",
+      "level": "easy"
     },
     {
       "q": "What is the default port number used by HTTPS (Secure Hypertext Protocol)?",
@@ -2666,7 +2688,8 @@ const EMBEDDED_QUIZZES = {
         "Port 22"
       ],
       "a": 2,
-      "d": "easy"
+      "d": "easy",
+      "level": "medium"
     },
     {
       "q": "Which keyboard command opens the 'Run' utility dialog box in Windows OS?",
@@ -2677,7 +2700,8 @@ const EMBEDDED_QUIZZES = {
         "Ctrl + Shift + Esc"
       ],
       "a": 0,
-      "d": "easy"
+      "d": "easy",
+      "level": "advance"
     },
     {
       "q": "What is the network protocol port number commonly used for sending email messages (SMTP)?",
@@ -2688,7 +2712,8 @@ const EMBEDDED_QUIZZES = {
         "Port 53"
       ],
       "a": 0,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     },
     {
       "q": "Which key combination launches the Windows Task Manager directly?",
@@ -2699,7 +2724,8 @@ const EMBEDDED_QUIZZES = {
         "Alt + Shift + Enter"
       ],
       "a": 1,
-      "d": "medium"
+      "d": "medium",
+      "level": "medium"
     },
     {
       "q": "In Microsoft Excel, which cell referencing remains completely fixed when a formula is copy-pasted?",
@@ -2710,7 +2736,8 @@ const EMBEDDED_QUIZZES = {
         "Dynamic (A1:B1)"
       ],
       "a": 1,
-      "d": "medium"
+      "d": "medium",
+      "level": "advance"
     },
     {
       "q": "Which Excel formula is used to look up a value in the leftmost column of a table and return a value in the same row?",
@@ -2721,7 +2748,8 @@ const EMBEDDED_QUIZZES = {
         "MATCH"
       ],
       "a": 1,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     },
     {
       "q": "What malware encrypts the user's hard drive files and demands payment to decrypt them?",
@@ -2732,7 +2760,8 @@ const EMBEDDED_QUIZZES = {
         "Rootkit"
       ],
       "a": 0,
-      "d": "hard"
+      "d": "hard",
+      "level": "medium"
     },
     {
       "q": "A firewall is primarily used in networking systems to protect against which of the following?",
@@ -2743,7 +2772,8 @@ const EMBEDDED_QUIZZES = {
         "Physical theft of hard disks"
       ],
       "a": 1,
-      "d": "hard"
+      "d": "hard",
+      "level": "advance"
     },
     {
       "q": "Which type of malware replicates itself across computer networks without needing to attach to a host file?",
@@ -2754,75 +2784,142 @@ const EMBEDDED_QUIZZES = {
         "Spyware"
       ],
       "a": 2,
-      "d": "hard"
+      "d": "hard",
+      "level": "easy"
     }
   ],
   "gk": [
     {
       "q": "River Ganga originates from which of the following glaciers?",
-      "o": ["Yamunotri", "Gangotri", "Alkapuri", "Milam"],
+      "o": [
+        "Yamunotri",
+        "Gangotri",
+        "Alkapuri",
+        "Milam"
+      ],
       "a": 1,
-      "d": "easy"
+      "d": "easy",
+      "level": "easy"
     },
     {
       "q": "Which river is also known as 'Dakshin Ganga' due to its length and size?",
-      "o": ["Krishna", "Cauvery", "Godavari", "Mahanadi"],
+      "o": [
+        "Krishna",
+        "Cauvery",
+        "Godavari",
+        "Mahanadi"
+      ],
       "a": 2,
-      "d": "easy"
+      "d": "easy",
+      "level": "medium"
     },
     {
       "q": "On which river is the Sardar Sarovar Dam constructed?",
-      "o": ["Narmada", "Tapi", "Sabarmati", "Mahi"],
+      "o": [
+        "Narmada",
+        "Tapi",
+        "Sabarmati",
+        "Mahi"
+      ],
       "a": 0,
-      "d": "easy"
+      "d": "easy",
+      "level": "advance"
     },
     {
       "q": "Which of the following is the highest peak in the Western Ghats of India?",
-      "o": ["Doda Betta", "Anamudi", "Mahendragiri", "Kalsubai"],
+      "o": [
+        "Doda Betta",
+        "Anamudi",
+        "Mahendragiri",
+        "Kalsubai"
+      ],
       "a": 1,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     },
     {
       "q": "The Kanchenjunga peak, the third highest mountain in the world, is located in which Indian state?",
-      "o": ["Uttarakhand", "Himachal Pradesh", "Sikkim", "Arunachal Pradesh"],
+      "o": [
+        "Uttarakhand",
+        "Himachal Pradesh",
+        "Sikkim",
+        "Arunachal Pradesh"
+      ],
       "a": 2,
-      "d": "medium"
+      "d": "medium",
+      "level": "medium"
     },
     {
       "q": "Which is the longest dam in India, built across the Mahanadi river in Odisha?",
-      "o": ["Tehri Dam", "Bhakra Dam", "Hirakud Dam", "Nagarjuna Sagar Dam"],
+      "o": [
+        "Tehri Dam",
+        "Bhakra Dam",
+        "Hirakud Dam",
+        "Nagarjuna Sagar Dam"
+      ],
       "a": 2,
-      "d": "medium"
+      "d": "medium",
+      "level": "advance"
     },
     {
       "q": "Which boundary line separates the territories of India and China?",
-      "o": ["Radcliffe Line", "McMahon Line", "Durand Line", "Line of Control"],
+      "o": [
+        "Radcliffe Line",
+        "McMahon Line",
+        "Durand Line",
+        "Line of Control"
+      ],
       "a": 1,
-      "d": "medium"
+      "d": "medium",
+      "level": "easy"
     },
     {
       "q": "In which year did the famous Battle of Haldighati take place between Akbar and Maharana Pratap?",
-      "o": ["1556", "1576", "1526", "1586"],
+      "o": [
+        "1556",
+        "1576",
+        "1526",
+        "1586"
+      ],
       "a": 1,
-      "d": "hard"
+      "d": "hard",
+      "level": "medium"
     },
     {
       "q": "Who was the founder of the ancient Maurya Dynasty in India?",
-      "o": ["Ashoka", "Chandragupta Maurya", "Bindusara", "Chandragupta I"],
+      "o": [
+        "Ashoka",
+        "Chandragupta Maurya",
+        "Bindusara",
+        "Chandragupta I"
+      ],
       "a": 1,
-      "d": "hard"
+      "d": "hard",
+      "level": "advance"
     },
     {
       "q": "The historic First Battle of Panipat was fought in which year?",
-      "o": ["1526", "1556", "1761", "1530"],
+      "o": [
+        "1526",
+        "1556",
+        "1761",
+        "1530"
+      ],
       "a": 0,
-      "d": "hard"
+      "d": "hard",
+      "level": "easy"
     },
     {
       "q": "In which year did Mahatma Gandhi lead the Dandi Salt March?",
-      "o": ["1920", "1930", "1942", "1919"],
+      "o": [
+        "1920",
+        "1930",
+        "1942",
+        "1919"
+      ],
       "a": 1,
-      "d": "hard"
+      "d": "hard",
+      "level": "medium"
     }
   ]
 };
@@ -2853,7 +2950,7 @@ let appState = {
 // Timer Intervals
 let sessionTimerInterval = null;
 let pomoTimerInterval = null;
-const pomoRingCircumference = 534; // 2 * PI * 85
+const pomoRingCircumference = 390; // 2 * PI * 85
 
 // Math Typesetting trigger using KaTeX
 function triggerMathTypesetting() {
@@ -2878,7 +2975,7 @@ function loadStateFromStorage() {
         try {
             appState = { ...appState, ...JSON.parse(saved) };
             if (!appState.weakAlerts) appState.weakAlerts = {};
-            if (!appState.examName) appState.examName = "SSC CGL Tier-1";
+            if (!appState.examName) appState.examName = "Conquest";
             if (!appState.examDate) appState.examDate = "2026-08-15";
         } catch (e) {
             console.error("Error loading localStorage state:", e);
@@ -2891,7 +2988,7 @@ function loadStateFromStorage() {
             });
         });
         appState.weakAlerts = {};
-        appState.examName = "SSC CGL Tier-1";
+        appState.examName = "Conquest";
         appState.examDate = "2026-08-15";
         saveStateToStorage();
     }
@@ -2905,37 +3002,37 @@ function saveStateToStorage() {
 
 // === GK STATIC DATA (INLINE COMPILED) ===
 const GK_STATIC_DATA = {
-  polity: [
-  {
-    "title": "🔥 Top 15 Articles to Memorize First",
-    "content": "These 15 articles carry 80% of the weightage for direct factual questions in SSC exams. Memorize these cold before studying the rest!\n\n| Article | Topic | Core Detail |\n| --- | --- | --- |\n| **Article 1** | India, Union of States | Defines territory of India |\n| **Article 14** | Equality | Equality before law & equal protection |\n| **Article 19** | Freedom | Six fundamental democratic freedoms |\n| **Article 21** | Right to Life | Protection of life and personal liberty |\n| **Article 21A** | Education | Free & compulsory education for 6-14 yrs |\n| **Article 32** | Constitutional Remedies | Right to move SC for FR enforcement |\n| **Article 39A** | Free Legal Aid | Free legal services for poor citizens |\n| **Article 44** | Uniform Civil Code (UCC) | Uniform laws for all religious communities |\n| **Article 51A** | Fundamental Duties | 11 core citizen responsibilities |\n| **Article 52** | President | Defines the head of executive |\n| **Article 74** | Council of Ministers | PM & Cabinet to advise the President |\n| **Article 80** | Rajya Sabha | Composition of the Upper House |\n| **Article 110** | Money Bill | Definition & procedures for Money Bills |\n| **Article 324** | Election Commission | Supervise, direct, & control elections |\n| **Article 368** | Constitutional Amendment | Power & procedure of Parliament to amend |"
-  },
-  {
-    "title": "🏆 Tier 1 Constitutional Articles (Must Know)",
-    "content": "High frequency articles frequently tested in Tier-1 exams.\n\n| Article | Part | Topic | Memory Trick |\n| --- | --- | --- | --- |\n| **1** | I | India – Union of States | **1 India** |\n| **3** | I | Formation of new States | **3** = Three ways: create, merge, rename |\n| **5–11** | II | Citizenship | **5–11** = Citizen |\n| **12** | III | Definition of State | Start of Rights |\n| **13** | III | Laws violating FR are void | **13** = Unlucky law |\n| **14** | III | Equality before Law | **1+4 = Equal** (5 fingers each hand) |\n| **15** | III | No discrimination | **15** = No discrimination |\n| **16** | III | Equal opportunity in jobs | **16** = Government Jobs |\n| **17** | III | Abolition of Untouchability | **17** breaks social barriers |\n| **18** | III | Abolition of Titles | **18** = No \"Sir\", \"Raja\" |\n| **19** | III | Six Fundamental Freedoms | **19** = Freedom |\n| **20** | III | Protection in criminal cases | Criminal safeguards |\n| **21** | III | Right to Life & Personal Liberty | **21** = Life |\n| **21A** | III | Education (6–14 years) | **A** = Admission to school |\n| **22** | III | Protection against arrest | Police article |\n| **23** | III | Human trafficking prohibited | Human dignity |\n| **24** | III | Child labour prohibited | Children |\n| **25–28** | III | Freedom of Religion | Religion block |\n| **29–30** | III | Cultural & Educational Rights | Minorities |\n| **32** | III | Constitutional Remedies | **Heart & Soul** (Ambedkar) |\n| **36–51** | IV | DPSP | Welfare State |\n| **39A** | IV | Free Legal Aid | **A** = Advocate |\n| **40** | IV | Panchayats | Village governance |\n| **44** | IV | Uniform Civil Code | **UCC** |\n| **48A** | IV | Environment | **A** = Air & Animals |\n| **49** | IV | Monuments | Heritage |\n| **50** | IV | Separation of Judiciary | Judges |\n| **51** | IV | International Peace | UN |"
-  },
-  {
-    "title": "⭐ Tier 2 Articles (Very High Frequency)",
-    "content": "Highly predictable articles relating to Union Executive & Parliament.\n\n| Article | Part | Topic | Memory Trick |\n| --- | --- | --- | --- |\n| **51A** | IVA | Fundamental Duties | **A** = Actions (Duties) |\n| **52** | V | President | President starts Union Executive |\n| **54** | V | Election of President | Electoral College |\n| **61** | V | Impeachment of President | Remove President |\n| **63** | V | Vice-President | **VP** |\n| **74** | V | Council of Ministers | PM advises President |\n| **75** | V | Prime Minister | PM & Council |\n| **76** | V | Attorney General | Government lawyer |\n| **80** | V | Rajya Sabha Composition | **80** = Upper House |\n| **81** | V | Lok Sabha Composition | **81** = Lower House |\n| **83** | V | Term of Parliament | 5 years |\n| **85** | V | Sessions of Parliament | Summon/Prorogue |\n| **110** | V | Money Bill | **110** = Money |\n| **112** | V | Union Budget | Annual Financial Statement |\n| **123** | V | President's Ordinance | Emergency lawmaking |\n| **124** | V | Supreme Court | SC starts at 124 |\n| **143** | V | President seeks SC advice | Advisory Jurisdiction |"
-  },
-  {
-    "title": "⭐ Tier 3 Articles (Frequently Asked)",
-    "content": "Frequently queried bodies, offices, and emergency provisions.\n\n| Article | Topic | Core Detail |\n| --- | --- | --- |\n| **148** | CAG | Comptroller & Auditor General of India |\n| **153** | Governor | Governors of States |\n| **155** | Appointment of Governor | Appointed by President of India |\n| **163** | Gov Council of Ministers | Cabinet to aid and advise Governor |\n| **165** | Advocate General | State legal adviser |\n| **214** | High Court | High Courts for States |\n| **226** | HC Writs | Power of High Courts to issue writs |\n| **243** | Panchayats | Definitions & Gram Sabha |\n| **243P** | Municipalities | Definitions & Composition |\n| **280** | Finance Commission | Recommends tax distribution |\n| **300A** | Right to Property | Legal/Constitutional Right (not FR) |\n| **312** | All India Services | IAS, IPS, IFS |\n| **315** | UPSC | Public Service Commissions |\n| **324** | Election Commission | Superintends election process |\n| **330** | SC/ST LS Reservation | Reserved seats in Lok Sabha |\n| **343** | Official Language | Hindi in Devanagari script |\n| **352** | National Emergency | War, external aggression, armed rebellion |\n| **356** | President's Rule | Failure of constitutional machinery |\n| **360** | Financial Emergency | Threat to financial stability |\n| **368** | Constitutional Amendment | Power of Parliament to amend |"
-  },
-  {
-    "title": "🗺️ Constitution Articles Memory Roadmap",
-    "content": "Organize article numbers by Part to build a clear mental schema.\n\n```text\nPart I (Union & Territory) ─── [1, 3]\n│\nPart II (Citizenship) ──────── [5-11]\n│\nPart III (Fundamental Rights) ─ [12, 13, 14, 15, 16, 17, 18, 19, 21, 21A, 32]\n│\nPart IV (DPSP) ─────────────── [39A, 44, 48A]\n│\nPart IVA (Duties) ──────────── [51A]\n│\nPart V (Union Government) ──── [52, 74, 80, 110, 124]\n│\nPart XV (Elections) ────────── [324]\n│\nPart XVIII (Emergencies) ───── [352, 356, 360]\n│\nPart XX (Amendment) ────────── [368]\n```"
-  },
-  {
-    "title": "🎯 Daily Micro Trick: The 5-Point Memory Chain",
-    "content": "To memorize effectively, link each article using this 5-point chain:\n\n`Article` → `Part` → `Topic` → `Keyword` → `PYQ Fact`\n\n> **Example: Article 32**\n> - **Article**: Article 32\n> - **Part**: Part III\n> - **Topic**: Constitutional Remedies\n> - **Keyword**: Heart & Soul\n> - **PYQ Fact**: Called the \"Heart and Soul of the Constitution\" by Dr. B. R. Ambedkar"
-  }
+  polity: [
+  {
+    "title": "🔥 Top 15 Articles to Memorize First",
+    "content": "These 15 articles carry 80% of the weightage for direct factual questions in SSC exams. Memorize these cold before studying the rest!\n\n| Article | Topic | Core Detail |\n| --- | --- | --- |\n| **Article 1** | India, Union of States | Defines territory of India |\n| **Article 14** | Equality | Equality before law & equal protection |\n| **Article 19** | Freedom | Six fundamental democratic freedoms |\n| **Article 21** | Right to Life | Protection of life and personal liberty |\n| **Article 21A** | Education | Free & compulsory education for 6-14 yrs |\n| **Article 32** | Constitutional Remedies | Right to move SC for FR enforcement |\n| **Article 39A** | Free Legal Aid | Free legal services for poor citizens |\n| **Article 44** | Uniform Civil Code (UCC) | Uniform laws for all religious communities |\n| **Article 51A** | Fundamental Duties | 11 core citizen responsibilities |\n| **Article 52** | President | Defines the head of executive |\n| **Article 74** | Council of Ministers | PM & Cabinet to advise the President |\n| **Article 80** | Rajya Sabha | Composition of the Upper House |\n| **Article 110** | Money Bill | Definition & procedures for Money Bills |\n| **Article 324** | Election Commission | Supervise, direct, & control elections |\n| **Article 368** | Constitutional Amendment | Power & procedure of Parliament to amend |"
+  },
+  {
+    "title": "🏆 Tier 1 Constitutional Articles (Must Know)",
+    "content": "High frequency articles frequently tested in Tier-1 exams.\n\n| Article | Part | Topic | Memory Trick |\n| --- | --- | --- | --- |\n| **1** | I | India – Union of States | **1 India** |\n| **3** | I | Formation of new States | **3** = Three ways: create, merge, rename |\n| **5–11** | II | Citizenship | **5–11** = Citizen |\n| **12** | III | Definition of State | Start of Rights |\n| **13** | III | Laws violating FR are void | **13** = Unlucky law |\n| **14** | III | Equality before Law | **1+4 = Equal** (5 fingers each hand) |\n| **15** | III | No discrimination | **15** = No discrimination |\n| **16** | III | Equal opportunity in jobs | **16** = Government Jobs |\n| **17** | III | Abolition of Untouchability | **17** breaks social barriers |\n| **18** | III | Abolition of Titles | **18** = No \"Sir\", \"Raja\" |\n| **19** | III | Six Fundamental Freedoms | **19** = Freedom |\n| **20** | III | Protection in criminal cases | Criminal safeguards |\n| **21** | III | Right to Life & Personal Liberty | **21** = Life |\n| **21A** | III | Education (6–14 years) | **A** = Admission to school |\n| **22** | III | Protection against arrest | Police article |\n| **23** | III | Human trafficking prohibited | Human dignity |\n| **24** | III | Child labour prohibited | Children |\n| **25–28** | III | Freedom of Religion | Religion block |\n| **29–30** | III | Cultural & Educational Rights | Minorities |\n| **32** | III | Constitutional Remedies | **Heart & Soul** (Ambedkar) |\n| **36–51** | IV | DPSP | Welfare State |\n| **39A** | IV | Free Legal Aid | **A** = Advocate |\n| **40** | IV | Panchayats | Village governance |\n| **44** | IV | Uniform Civil Code | **UCC** |\n| **48A** | IV | Environment | **A** = Air & Animals |\n| **49** | IV | Monuments | Heritage |\n| **50** | IV | Separation of Judiciary | Judges |\n| **51** | IV | International Peace | UN |"
+  },
+  {
+    "title": "⭐ Tier 2 Articles (Very High Frequency)",
+    "content": "Highly predictable articles relating to Union Executive & Parliament.\n\n| Article | Part | Topic | Memory Trick |\n| --- | --- | --- | --- |\n| **51A** | IVA | Fundamental Duties | **A** = Actions (Duties) |\n| **52** | V | President | President starts Union Executive |\n| **54** | V | Election of President | Electoral College |\n| **61** | V | Impeachment of President | Remove President |\n| **63** | V | Vice-President | **VP** |\n| **74** | V | Council of Ministers | PM advises President |\n| **75** | V | Prime Minister | PM & Council |\n| **76** | V | Attorney General | Government lawyer |\n| **80** | V | Rajya Sabha Composition | **80** = Upper House |\n| **81** | V | Lok Sabha Composition | **81** = Lower House |\n| **83** | V | Term of Parliament | 5 years |\n| **85** | V | Sessions of Parliament | Summon/Prorogue |\n| **110** | V | Money Bill | **110** = Money |\n| **112** | V | Union Budget | Annual Financial Statement |\n| **123** | V | President's Ordinance | Emergency lawmaking |\n| **124** | V | Supreme Court | SC starts at 124 |\n| **143** | V | President seeks SC advice | Advisory Jurisdiction |"
+  },
+  {
+    "title": "⭐ Tier 3 Articles (Frequently Asked)",
+    "content": "Frequently queried bodies, offices, and emergency provisions.\n\n| Article | Topic | Core Detail |\n| --- | --- | --- |\n| **148** | CAG | Comptroller & Auditor General of India |\n| **153** | Governor | Governors of States |\n| **155** | Appointment of Governor | Appointed by President of India |\n| **163** | Gov Council of Ministers | Cabinet to aid and advise Governor |\n| **165** | Advocate General | State legal adviser |\n| **214** | High Court | High Courts for States |\n| **226** | HC Writs | Power of High Courts to issue writs |\n| **243** | Panchayats | Definitions & Gram Sabha |\n| **243P** | Municipalities | Definitions & Composition |\n| **280** | Finance Commission | Recommends tax distribution |\n| **300A** | Right to Property | Legal/Constitutional Right (not FR) |\n| **312** | All India Services | IAS, IPS, IFS |\n| **315** | UPSC | Public Service Commissions |\n| **324** | Election Commission | Superintends election process |\n| **330** | SC/ST LS Reservation | Reserved seats in Lok Sabha |\n| **343** | Official Language | Hindi in Devanagari script |\n| **352** | National Emergency | War, external aggression, armed rebellion |\n| **356** | President's Rule | Failure of constitutional machinery |\n| **360** | Financial Emergency | Threat to financial stability |\n| **368** | Constitutional Amendment | Power of Parliament to amend |"
+  },
+  {
+    "title": "🗺️ Constitution Articles Memory Roadmap",
+    "content": "Organize article numbers by Part to build a clear mental schema.\n\n```text\nPart I (Union & Territory) ─── [1, 3]\n│\nPart II (Citizenship) ──────── [5-11]\n│\nPart III (Fundamental Rights) ─ [12, 13, 14, 15, 16, 17, 18, 19, 21, 21A, 32]\n│\nPart IV (DPSP) ─────────────── [39A, 44, 48A]\n│\nPart IVA (Duties) ──────────── [51A]\n│\nPart V (Union Government) ──── [52, 74, 80, 110, 124]\n│\nPart XV (Elections) ────────── [324]\n│\nPart XVIII (Emergencies) ───── [352, 356, 360]\n│\nPart XX (Amendment) ────────── [368]\n```"
+  },
+  {
+    "title": "🎯 Daily Micro Trick: The 5-Point Memory Chain",
+    "content": "To memorize effectively, link each article using this 5-point chain:\n\n`Article` → `Part` → `Topic` → `Keyword` → `PYQ Fact`\n\n> **Example: Article 32**\n> - **Article**: Article 32\n> - **Part**: Part III\n> - **Topic**: Constitutional Remedies\n> - **Keyword**: Heart & Soul\n> - **PYQ Fact**: Called the \"Heart and Soul of the Constitution\" by Dr. B. R. Ambedkar"
+  }
 ],
-  history: [
-  {
-    "title": "⚔️ Crucial Battles & Timelines",
-    "content": "| Event / Battle | Year | Key Detail / Significance |\n| --- | --- | --- |\n| **Harappa Excavation** | 1921 | Excavated by Daya Ram Sahni |\n| **Mohenjodaro Excavation** | 1922 | Excavated by R.D. Banerjee |\n| **1st Battle of Tarain** | 1191 | Prithviraj Chauhan defeats Mohammad Ghori |\n| **2nd Battle of Tarain** | 1192 | Mohammad Ghori defeats Prithviraj Chauhan |\n| **1st Battle of Panipat** | 1526 | Babur defeats Ibrahim Lodi (Mughal rule starts) |\n| **2nd Battle of Panipat** | 1556 | Akbar defeats Hemu |\n| **3rd Battle of Panipat** | 1761 | Ahmad Shah Abdali defeats Marathas |\n| **Battle of Plassey** | 1757 | Robert Clive defeats Nawab Siraj-ud-Daulah |\n| **Battle of Buxar** | 1764 | British defeat joint Mughal / Nawab alliance |"
-  }
+  history: [
+  {
+    "title": "⚔️ Crucial Battles & Timelines",
+    "content": "| Event / Battle | Year | Key Detail / Significance |\n| --- | --- | --- |\n| **Harappa Excavation** | 1921 | Excavated by Daya Ram Sahni |\n| **Mohenjodaro Excavation** | 1922 | Excavated by R.D. Banerjee |\n| **1st Battle of Tarain** | 1191 | Prithviraj Chauhan defeats Mohammad Ghori |\n| **2nd Battle of Tarain** | 1192 | Mohammad Ghori defeats Prithviraj Chauhan |\n| **1st Battle of Panipat** | 1526 | Babur defeats Ibrahim Lodi (Mughal rule starts) |\n| **2nd Battle of Panipat** | 1556 | Akbar defeats Hemu |\n| **3rd Battle of Panipat** | 1761 | Ahmad Shah Abdali defeats Marathas |\n| **Battle of Plassey** | 1757 | Robert Clive defeats Nawab Siraj-ud-Daulah |\n| **Battle of Buxar** | 1764 | British defeat joint Mughal / Nawab alliance |"
+  }
 ],
   geography: {
   "rivers": [
@@ -3128,156 +3225,156 @@ const GK_STATIC_DATA = {
 
 // === TOOLKIT STATIC DATA (INLINE COMPILED) ===
 const TOOLKIT_STATIC_DATA = {
-  quant: [
-  {
-    "title": "Percentage & Product Constancy",
-    "content": "### ⚖️ Product Constancy Rule\n\nIf a value increases by x%, the decrease required to restore the original value is:\n`[x / (100 + x)] × 100%`\n\n| Fraction | Percentage | Fraction | Percentage |\n| --- | --- | --- | --- |\n| 1/2 | 50.00% | 1/8 | 12.50% |\n| 1/3 | 33.33% | 1/9 | 11.11% |\n| 1/4 | 25.00% | 1/10 | 10.00% |\n| 1/5 | 20.00% | 1/11 | 9.09% |\n| 1/6 | 16.67% | 1/12 | 8.33% |\n| 1/7 | 14.28% | 1/16 | 6.25% |"
-  },
-  {
-    "title": "Profit, Loss & Successive Discounts",
-    "content": "### 🏷️ CP to MP Ratio\n\nCP / MP = (100 - d%) / (100 + p%)\n\n### 📉 Net Discount\n\n(d₁ + d₂ - d₁d₂/100)%\n\n### ⚖️ Faulty Weight Shortcut\n\n- Formula: `Profit % = [Error / (True Weight - Error)] × 100%`\n\n- Example: 900g instead of 1kg → `[100 / 900] × 100% = 11.11%`"
-  },
-  {
-    "title": "Simple & Compound Interest",
-    "content": "| Duration | CI & SI Difference Formula |\n| --- | --- |\n| 2 Years Diff | Diff = P × (R / 100)² |\n| 3 Years Diff | Diff = [P × R² × (300 + R)] / 100³ |\n\n### 🏦 Effective CI Rates (2 Years)\n\n5% → 10.25%\n10% → 21%\n15% → 32.25%\n20% → 44%"
-  },
-  {
-    "title": "Algebraic Identities & Roots",
-    "content": "$a^3+b^3+c^3 - 3abc = (a+b+c)(a^2+b^2+c^2 - ab - bc - ca) = \\frac{1}{2}(a+b+c)[(a-b)^2 + (b-c)^2 + (c-a)^2]$. If $a+b+c=0$, then $a^3+b^3+c^3 = 3abc$. Reciprocal: If $x + \\frac{1}{x} = k$, then $x^2 + \\frac{1}{x^2} = k^2 - 2$, and $x^3 + \\frac{1}{x^3} = k^3 - 3k$."
-  },
-  {
-    "title": "Geometry Centers & Theorems",
-    "content": "| Triangle Center | Angle Formulas & Properties |\n| --- | --- |\n| Centroid (G) | Divides median in ratio 2:1 |\n| Incenter (I) | ∠BIC = 90° + ∠A/2 | Inradius r = (P+B-H)/2 |\n| Circumcenter (C) | ∠BOC = 2 × ∠A | Circumradius R = H/2 |\n| Orthocenter (O) | ∠BOC = 180° - ∠A |\n\n### ⭕ High-Yield Circle Theorems\n\n- `PT² = PA × PB`\n\n- `AB² + AC² = 2(AD² + BD²)`"
-  },
-  {
-    "title": "Mensuration (3D Surfaces & Volumes)",
-    "content": "**Frustum of Cone**: Volume $= \\frac{1}{3}\\pi h(R^2 + r^2 + Rr)$, Curved Area $= \\pi l(R+r)$ where $l = \\sqrt{h^2 + (R-r)^2}$. **Sphere**: Volume $= \\frac{4}{3}\\pi R^3$, Area $= 4\\pi R^2$. **Pyramid**: Volume $= \\frac{1}{3} \\times \\text{Base Area} \\times \\text{Height}$, Lateral Area $= \\frac{1}{2} \\times \\text{Base Perimeter} \\times \\text{Slant Height}$."
-  },
-  {
-    "title": "Time, Speed, Distance & Boats",
-    "content": "Average speed for same distances = $\\frac{2xy}{x+y}$. Relative speed: opposite direction $= S_1 + S_2$, same direction $= |S_1 - S_2|$. Upstream Boat Speed $= U - V$, Downstream Speed $= U + V$, where $U$ is boat speed in still water and $V$ is stream speed. Distance formula: $D = \\text{Speed Difference} \\times \\frac{T_1 \\times T_2}{T_1 - T_2}$ or $D = \\frac{S_1 S_2}{S_1 - S_2} \\times \\text{Time Diff}$."
-  },
-  {
-    "title": "Time & Work Equivalence",
-    "content": "Formula: $M_1 D_1 H_1 E_1 / W_1 = M_2 D_2 H_2 E_2 / W_2$ (Men, Days, Hours, Efficiency, Work). If A does work in $x$ days and B in $y$ days, together they take $\\frac{xy}{x+y}$ days. Negative work (Pipes & Cistern): Leak draining capacity is subtracted from inlet capacity."
-  },
-  {
-    "title": "Trigonometric Values &amp; Formulas Table",
-    "content": "| Ratio | 0° | 30° | 45° | 60° | 90° |\n| --- | --- | --- | --- | --- | --- |\n| sin θ | 0 | 1/2 | 1/√2 | √3/2 | 1 |\n| cos θ | 1 | √3/2 | 1/2 | 1/√2 | 0 |\n| tan θ | 0 | 1/√3 | 1 | √3 | Undef |\n| cosec θ | Undef | 2 | √2 | 2/√3 | 1 |\n| sec θ | 1 | 2/√3 | √2 | 2 | Undef |\n| cot θ | Undef | √3 | 1 | 1/√3 | 0 |\n\n### 📐 Core Identities & Complementary Relations\n\n• **Basic Identities:** $sin^2\theta + cos^2\theta = 1$ | $1 + \tan^2\theta = sec^2\theta$ | $1 + cot^2\theta = \text{cosec}^2\theta$\n\n• **Complementary (If A+B=90°):** $sin A = cos B$ | $\tan A \tan B = 1$ | $sin^2 A + sin^2 B = 1$\n\n• **Min/Max limits:** For $asin\theta + bcos\theta$, Max $= sqrt{a^2+b^2}$ | Min $= -sqrt{a^2+b^2}$\n\n• **Height & Distance Triangles:** 30°-60°-90° $\rightarrow 1 : sqrt{3} : 2$ | 45°-45°-90° $\rightarrow 1 : 1 : sqrt{2}$"
-  },
-  {
-    "title": "Coordinate Geometry",
-    "content": "Distance between $(x_1, y_1)$ and $(x_2, y_2) = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$. Section formula (internal division): $(x, y) = (\\frac{m x_2 + n x_1}{m+n}, \\frac{m y_2 + n y_1}{m+n})$. Slope of line $m = \\frac{y_2-y_1}{x_2-x_1}$. If parallel: $m_1 = m_2$; if perpendicular: $m_1 m_2 = -1$. Area of triangle $= \\frac{1}{2}|x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)|$."
-  }
+  quant: [
+  {
+    "title": "Percentage & Product Constancy",
+    "content": "### ⚖️ Product Constancy Rule\n\nIf a value increases by x%, the decrease required to restore the original value is:\n`[x / (100 + x)] × 100%`\n\n| Fraction | Percentage | Fraction | Percentage |\n| --- | --- | --- | --- |\n| 1/2 | 50.00% | 1/8 | 12.50% |\n| 1/3 | 33.33% | 1/9 | 11.11% |\n| 1/4 | 25.00% | 1/10 | 10.00% |\n| 1/5 | 20.00% | 1/11 | 9.09% |\n| 1/6 | 16.67% | 1/12 | 8.33% |\n| 1/7 | 14.28% | 1/16 | 6.25% |"
+  },
+  {
+    "title": "Profit, Loss & Successive Discounts",
+    "content": "### 🏷️ CP to MP Ratio\n\nCP / MP = (100 - d%) / (100 + p%)\n\n### 📉 Net Discount\n\n(d₁ + d₂ - d₁d₂/100)%\n\n### ⚖️ Faulty Weight Shortcut\n\n- Formula: `Profit % = [Error / (True Weight - Error)] × 100%`\n\n- Example: 900g instead of 1kg → `[100 / 900] × 100% = 11.11%`"
+  },
+  {
+    "title": "Simple & Compound Interest",
+    "content": "| Duration | CI & SI Difference Formula |\n| --- | --- |\n| 2 Years Diff | Diff = P × (R / 100)² |\n| 3 Years Diff | Diff = [P × R² × (300 + R)] / 100³ |\n\n### 🏦 Effective CI Rates (2 Years)\n\n5% → 10.25%\n10% → 21%\n15% → 32.25%\n20% → 44%"
+  },
+  {
+    "title": "Algebraic Identities & Roots",
+    "content": "$a^3+b^3+c^3 - 3abc = (a+b+c)(a^2+b^2+c^2 - ab - bc - ca) = \\frac{1}{2}(a+b+c)[(a-b)^2 + (b-c)^2 + (c-a)^2]$. If $a+b+c=0$, then $a^3+b^3+c^3 = 3abc$. Reciprocal: If $x + \\frac{1}{x} = k$, then $x^2 + \\frac{1}{x^2} = k^2 - 2$, and $x^3 + \\frac{1}{x^3} = k^3 - 3k$."
+  },
+  {
+    "title": "Geometry Centers & Theorems",
+    "content": "| Triangle Center | Angle Formulas & Properties |\n| --- | --- |\n| Centroid (G) | Divides median in ratio 2:1 |\n| Incenter (I) | ∠BIC = 90° + ∠A/2 | Inradius r = (P+B-H)/2 |\n| Circumcenter (C) | ∠BOC = 2 × ∠A | Circumradius R = H/2 |\n| Orthocenter (O) | ∠BOC = 180° - ∠A |\n\n### ⭕ High-Yield Circle Theorems\n\n- `PT² = PA × PB`\n\n- `AB² + AC² = 2(AD² + BD²)`"
+  },
+  {
+    "title": "Mensuration (3D Surfaces & Volumes)",
+    "content": "**Frustum of Cone**: Volume $= \\frac{1}{3}\\pi h(R^2 + r^2 + Rr)$, Curved Area $= \\pi l(R+r)$ where $l = \\sqrt{h^2 + (R-r)^2}$. **Sphere**: Volume $= \\frac{4}{3}\\pi R^3$, Area $= 4\\pi R^2$. **Pyramid**: Volume $= \\frac{1}{3} \\times \\text{Base Area} \\times \\text{Height}$, Lateral Area $= \\frac{1}{2} \\times \\text{Base Perimeter} \\times \\text{Slant Height}$."
+  },
+  {
+    "title": "Time, Speed, Distance & Boats",
+    "content": "Average speed for same distances = $\\frac{2xy}{x+y}$. Relative speed: opposite direction $= S_1 + S_2$, same direction $= |S_1 - S_2|$. Upstream Boat Speed $= U - V$, Downstream Speed $= U + V$, where $U$ is boat speed in still water and $V$ is stream speed. Distance formula: $D = \\text{Speed Difference} \\times \\frac{T_1 \\times T_2}{T_1 - T_2}$ or $D = \\frac{S_1 S_2}{S_1 - S_2} \\times \\text{Time Diff}$."
+  },
+  {
+    "title": "Time & Work Equivalence",
+    "content": "Formula: $M_1 D_1 H_1 E_1 / W_1 = M_2 D_2 H_2 E_2 / W_2$ (Men, Days, Hours, Efficiency, Work). If A does work in $x$ days and B in $y$ days, together they take $\\frac{xy}{x+y}$ days. Negative work (Pipes & Cistern): Leak draining capacity is subtracted from inlet capacity."
+  },
+  {
+    "title": "Trigonometric Values &amp; Formulas Table",
+    "content": "| Ratio | 0° | 30° | 45° | 60° | 90° |\n| --- | --- | --- | --- | --- | --- |\n| sin θ | 0 | 1/2 | 1/√2 | √3/2 | 1 |\n| cos θ | 1 | √3/2 | 1/2 | 1/√2 | 0 |\n| tan θ | 0 | 1/√3 | 1 | √3 | Undef |\n| cosec θ | Undef | 2 | √2 | 2/√3 | 1 |\n| sec θ | 1 | 2/√3 | √2 | 2 | Undef |\n| cot θ | Undef | √3 | 1 | 1/√3 | 0 |\n\n### 📐 Core Identities & Complementary Relations\n\n• **Basic Identities:** $sin^2\theta + cos^2\theta = 1$ | $1 + \tan^2\theta = sec^2\theta$ | $1 + cot^2\theta = \text{cosec}^2\theta$\n\n• **Complementary (If A+B=90°):** $sin A = cos B$ | $\tan A \tan B = 1$ | $sin^2 A + sin^2 B = 1$\n\n• **Min/Max limits:** For $asin\theta + bcos\theta$, Max $= sqrt{a^2+b^2}$ | Min $= -sqrt{a^2+b^2}$\n\n• **Height & Distance Triangles:** 30°-60°-90° $\rightarrow 1 : sqrt{3} : 2$ | 45°-45°-90° $\rightarrow 1 : 1 : sqrt{2}$"
+  },
+  {
+    "title": "Coordinate Geometry",
+    "content": "Distance between $(x_1, y_1)$ and $(x_2, y_2) = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$. Section formula (internal division): $(x, y) = (\\frac{m x_2 + n x_1}{m+n}, \\frac{m y_2 + n y_1}{m+n})$. Slope of line $m = \\frac{y_2-y_1}{x_2-x_1}$. If parallel: $m_1 = m_2$; if perpendicular: $m_1 m_2 = -1$. Area of triangle $= \\frac{1}{2}|x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)|$."
+  }
 ],
-  grammar: [
-  {
-    "title": "Subject-Verb Agreement Core Cases",
-    "content": "If two subjects are joined by *along with, together with, in addition to, as well as, accompanied by*, the verb agrees with the **First Subject**. If joined by *neither... nor, either... or, not only... but also*, the verb agrees with the **Nearest Subject**. Singular verbs follow expressions like *each of, either of, neither of, one of* + plural noun (e.g., \"Each of the boys has *[not have]* completed his work\")."
-  },
-  {
-    "title": "Conditional Clauses Structure",
-    "content": "| Conditional Type | If-Clause Tense | Main Clause Tense |\n| --- | --- | --- |\n| Type 1 (Real) | Present Simple | Will/Can + V1 |\n| Type 2 (Unreal) | Past Simple | Would + V1 |\n| Type 3 (Impossible) | Past Perfect | Would have + V3 |\n\n### 💡 Pro Grammar Tip\n\nIn imaginary/unreal conditions, always use \"were\" regardless of subject (e.g., \"If I *were* you...\"). Never use \"will/would\" in the *if-clause*."
-  },
-  {
-    "title": "Active / Passive Transformations",
-    "content": "Passive of imperative sentence \"Do it\" = \"Let it be done\" or \"You are ordered to do it.\" Modals: \"She can play cricket\" $\\rightarrow$ \"Cricket can be played by her.\" Prepositions do not vanish: \"He laughed at me\" $\\rightarrow$ \"I was laughed at by him.\" For transitive verbs only. Interrogative active: \"Who did this?\" $\\rightarrow$ \"By whom was this done?\""
-  },
-  {
-    "title": "Direct & Indirect Speech Rules",
-    "content": "Tense shifts (if reporting verb is in past): Present Simple $\\rightarrow$ Past Simple; Present Perfect $\\rightarrow$ Past Perfect; Past Simple $\\rightarrow$ Past Perfect. Pronoun shift formula: **SON** (1st person subject, 2nd person object, 3rd person no change). Questions: Reporting verb \"said to\" changes to \"asked\". No conjunction \"that\" is used for wh-questions; use \"if/whether\" for yes/no questions."
-  },
-  {
-    "title": "Plural vs Singular Noun Traps",
-    "content": "**Plural in form, singular in use**: *Mathematics, Physics, News, Politics, Billiards, Gallows, Innings* (always take a singular verb). **Singular in form, plural in use**: *Cattle, Gentry, Clergy, Poultry, Peasantry, People, Police* (always take a plural verb; e.g., \"Cattle are grazing *[not is grazing]*\"). **Uncountable nouns**: *Scenery, Furniture, Advice, Information, Luggage, Hair* (never take plural forms or \"a/an\")."
-  },
-  {
-    "title": "Pronoun Order & Cases",
-    "content": "When multiple persons are in one sentence, normal order is **Second Person (2) $\\rightarrow$ Third Person (3) $\\rightarrow$ First Person (1)** (e.g., \"You, he and I are study partners\"). If confessing a mistake or guilt, the order becomes **1 $\\rightarrow$ 2 $\\rightarrow$ 3** (e.g., \"I, you and he committed the error\"). Objective case follow prepositions and \"let\" (e.g., \"Between you and me *[not I]*\", \"Let him and me *[not I]* go\")."
-  },
-  {
-    "title": "Fixed Prepositions Combinations",
-    "content": "*Abstain from* (not of) • *Proficient in* • *Accused of* • *Comply with* • *Different from* (not than) • *Congratulate on* (not for) • *Refrain from* • *Prevent from* • *Key to* success • *Aim at* • *Deprived of* • *Adapted to* environment."
-  }
+  grammar: [
+  {
+    "title": "Subject-Verb Agreement Core Cases",
+    "content": "If two subjects are joined by *along with, together with, in addition to, as well as, accompanied by*, the verb agrees with the **First Subject**. If joined by *neither... nor, either... or, not only... but also*, the verb agrees with the **Nearest Subject**. Singular verbs follow expressions like *each of, either of, neither of, one of* + plural noun (e.g., \"Each of the boys has *[not have]* completed his work\")."
+  },
+  {
+    "title": "Conditional Clauses Structure",
+    "content": "| Conditional Type | If-Clause Tense | Main Clause Tense |\n| --- | --- | --- |\n| Type 1 (Real) | Present Simple | Will/Can + V1 |\n| Type 2 (Unreal) | Past Simple | Would + V1 |\n| Type 3 (Impossible) | Past Perfect | Would have + V3 |\n\n### 💡 Pro Grammar Tip\n\nIn imaginary/unreal conditions, always use \"were\" regardless of subject (e.g., \"If I *were* you...\"). Never use \"will/would\" in the *if-clause*."
+  },
+  {
+    "title": "Active / Passive Transformations",
+    "content": "Passive of imperative sentence \"Do it\" = \"Let it be done\" or \"You are ordered to do it.\" Modals: \"She can play cricket\" $\\rightarrow$ \"Cricket can be played by her.\" Prepositions do not vanish: \"He laughed at me\" $\\rightarrow$ \"I was laughed at by him.\" For transitive verbs only. Interrogative active: \"Who did this?\" $\\rightarrow$ \"By whom was this done?\""
+  },
+  {
+    "title": "Direct & Indirect Speech Rules",
+    "content": "Tense shifts (if reporting verb is in past): Present Simple $\\rightarrow$ Past Simple; Present Perfect $\\rightarrow$ Past Perfect; Past Simple $\\rightarrow$ Past Perfect. Pronoun shift formula: **SON** (1st person subject, 2nd person object, 3rd person no change). Questions: Reporting verb \"said to\" changes to \"asked\". No conjunction \"that\" is used for wh-questions; use \"if/whether\" for yes/no questions."
+  },
+  {
+    "title": "Plural vs Singular Noun Traps",
+    "content": "**Plural in form, singular in use**: *Mathematics, Physics, News, Politics, Billiards, Gallows, Innings* (always take a singular verb). **Singular in form, plural in use**: *Cattle, Gentry, Clergy, Poultry, Peasantry, People, Police* (always take a plural verb; e.g., \"Cattle are grazing *[not is grazing]*\"). **Uncountable nouns**: *Scenery, Furniture, Advice, Information, Luggage, Hair* (never take plural forms or \"a/an\")."
+  },
+  {
+    "title": "Pronoun Order & Cases",
+    "content": "When multiple persons are in one sentence, normal order is **Second Person (2) $\\rightarrow$ Third Person (3) $\\rightarrow$ First Person (1)** (e.g., \"You, he and I are study partners\"). If confessing a mistake or guilt, the order becomes **1 $\\rightarrow$ 2 $\\rightarrow$ 3** (e.g., \"I, you and he committed the error\"). Objective case follow prepositions and \"let\" (e.g., \"Between you and me *[not I]*\", \"Let him and me *[not I]* go\")."
+  },
+  {
+    "title": "Fixed Prepositions Combinations",
+    "content": "*Abstain from* (not of) • *Proficient in* • *Accused of* • *Comply with* • *Different from* (not than) • *Congratulate on* (not for) • *Refrain from* • *Prevent from* • *Key to* success • *Aim at* • *Deprived of* • *Adapted to* environment."
+  }
 ],
-  reasoning: [
-  {
-    "title": "Alphabet Code Map (EJOTY)",
-    "content": "Memorize position blocks: E(5), J(10), O(15), T(20), Y(25). Opposite alphabet pairs sum is always **27** (A+Z = 27, B+Y = 27). Mnemonic reverse pairs: A-Z (Azhar), B-Y (Boy), C-X (Crux), D-W (Dew), E-V (Love/Even), G-T (G.T. Road), H-S (High School), I-R (Indian Railways), K-P (K.P. Thakur), L-O (Love), M-N (Man).\n\n| A | B | C | D | E | F | G | H | I | J | K | L | M |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 |\n| 26 | 25 | 24 | 23 | 22 | 21 | 20 | 19 | 18 | 17 | 16 | 15 | 14 |\n| Z | Y | X | W | V | U | T | S | R | Q | P | O | N |\n\n| N | O | P | Q | R | S | T | U | V | W | X | Y | Z |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 |\n| 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 |\n| M | L | K | J | I | H | G | F | E | D | C | B | A |"
-  },
-  {
-    "title": "Clock Hands Angle Equation",
-    "content": "Angle between Hour hand and Minute hand $= |30H - \\frac{11}{2}M|$ degrees. In 1 hour, hour hand travels 30° ($0.5^\\circ$ per minute) and minute hand travels 360° ($6^\\circ$ per minute). Relative speed is $5.5^\\circ$ per minute. Hands coincide every $65\\frac{5}{11}$ minutes."
-  },
-  {
-    "title": "Calendar Odd Days Rules",
-    "content": "Normal year $= 365 \\text{ days} = 52 \\text{ weeks} + 1 \\text{ odd day}$. Leap year $= 366 \\text{ days} = 52 \\text{ weeks} + 2 \\text{ odd days}$. Centenary leap years must be divisible by 400 (1600, 2000 are leap; 1700, 1800, 1900 are normal). Month codes for ordinary year: Jan(0), Feb(3), Mar(3), Apr(6), May(1), Jun(4), Jul(6), Aug(2), Sep(5), Oct(0), Nov(3), Dec(5)."
-  },
-  {
-    "title": "Syllogism Truth Matrix",
-    "content": "\"Only a few A are B\" implies: **Some A are B** AND **Some A are NOT B**. Possibility cases: A conclusion stating \"All A can be B is a possibility\" is false (since some A must not be B), but \"All B can be A is a possibility\" is true."
-  },
-  {
-    "title": "Direction Sense Shadows & Triplets",
-    "content": "At sunrise, shadow is always towards **West**. At sunset, shadow is always towards **East**. No shadow at 12:00 Noon. Shortcuts: Memorize Pythagorean triplets to find shortest distance instantly: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (9,40,41), (20,21,29)."
-  },
-  {
-    "title": "Dice Closed & Open Rules",
-    "content": "Standard Dice: Sum of opposite faces is always **7** (1 opposite 6, 2 opposite 5, 3 opposite 4). Ordinary Dice: Sum of adjacent faces can be 7. Closed Dice Rule: If two positions of a single dice have one common face in the same position, then the remaining faces in the same positions are opposite to each other."
-  }
+  reasoning: [
+  {
+    "title": "Alphabet Code Map (EJOTY)",
+    "content": "Memorize position blocks: E(5), J(10), O(15), T(20), Y(25). Opposite alphabet pairs sum is always **27** (A+Z = 27, B+Y = 27). Mnemonic reverse pairs: A-Z (Azhar), B-Y (Boy), C-X (Crux), D-W (Dew), E-V (Love/Even), G-T (G.T. Road), H-S (High School), I-R (Indian Railways), K-P (K.P. Thakur), L-O (Love), M-N (Man).\n\n| A | B | C | D | E | F | G | H | I | J | K | L | M |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 |\n| 26 | 25 | 24 | 23 | 22 | 21 | 20 | 19 | 18 | 17 | 16 | 15 | 14 |\n| Z | Y | X | W | V | U | T | S | R | Q | P | O | N |\n\n| N | O | P | Q | R | S | T | U | V | W | X | Y | Z |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 |\n| 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 |\n| M | L | K | J | I | H | G | F | E | D | C | B | A |"
+  },
+  {
+    "title": "Clock Hands Angle Equation",
+    "content": "Angle between Hour hand and Minute hand $= |30H - \\frac{11}{2}M|$ degrees. In 1 hour, hour hand travels 30° ($0.5^\\circ$ per minute) and minute hand travels 360° ($6^\\circ$ per minute). Relative speed is $5.5^\\circ$ per minute. Hands coincide every $65\\frac{5}{11}$ minutes."
+  },
+  {
+    "title": "Calendar Odd Days Rules",
+    "content": "Normal year $= 365 \\text{ days} = 52 \\text{ weeks} + 1 \\text{ odd day}$. Leap year $= 366 \\text{ days} = 52 \\text{ weeks} + 2 \\text{ odd days}$. Centenary leap years must be divisible by 400 (1600, 2000 are leap; 1700, 1800, 1900 are normal). Month codes for ordinary year: Jan(0), Feb(3), Mar(3), Apr(6), May(1), Jun(4), Jul(6), Aug(2), Sep(5), Oct(0), Nov(3), Dec(5)."
+  },
+  {
+    "title": "Syllogism Truth Matrix",
+    "content": "\"Only a few A are B\" implies: **Some A are B** AND **Some A are NOT B**. Possibility cases: A conclusion stating \"All A can be B is a possibility\" is false (since some A must not be B), but \"All B can be A is a possibility\" is true."
+  },
+  {
+    "title": "Direction Sense Shadows & Triplets",
+    "content": "At sunrise, shadow is always towards **West**. At sunset, shadow is always towards **East**. No shadow at 12:00 Noon. Shortcuts: Memorize Pythagorean triplets to find shortest distance instantly: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (9,40,41), (20,21,29)."
+  },
+  {
+    "title": "Dice Closed & Open Rules",
+    "content": "Standard Dice: Sum of opposite faces is always **7** (1 opposite 6, 2 opposite 5, 3 opposite 4). Ordinary Dice: Sum of adjacent faces can be 7. Closed Dice Rule: If two positions of a single dice have one common face in the same position, then the remaining faces in the same positions are opposite to each other."
+  }
 ],
-  computer: [
-  {
-    "title": "Keyboard Shortcut Commands",
-    "content": "Close Program: **Alt + F4**\nTask Manager: **Ctrl + Shift + Esc**\nLock Windows: **Win + L**\nProperties of selected: **Alt + Enter**\nSwitch open apps: **Alt + Tab**\nRun utility: **Win + R**"
-  },
-  {
-    "title": "MS Excel Formulas & Cell Referencing",
-    "content": "**References**: Relative (A1), Absolute ($A$1 - remains fixed when copy pasted), Mixed ($A1 or A$1). • **Formulas**: VLOOKUP(value, table, col, match), CONCATENATE(), COUNTIF(range, criteria), IF(test, true_val, false_val)."
-  },
-  {
-    "title": "Internet Protocols & Network Port Mappings",
-    "content": "HTTP (Web): **Port 80**\nHTTPS (Secure): **Port 443**\nFTP (Files): **Port 21**\nSMTP (Email Send): **Port 25**\nDNS (Domain Resolv): **Port 53**\nSSH (Sec Shell): **Port 22**"
-  },
-  {
-    "title": "Cybersecurity: Malwares & Safeguards",
-    "content": "**Trojans**: Disguised as legitimate software. • **Worms**: Self-replicating programs that travel over networks without host files. • **Ransomware**: Encrypts system data, demanding payment. • **Firewall**: Moniters incoming/outgoing traffic based on security rules."
-  }
+  computer: [
+  {
+    "title": "Keyboard Shortcut Commands",
+    "content": "Close Program: **Alt + F4**\nTask Manager: **Ctrl + Shift + Esc**\nLock Windows: **Win + L**\nProperties of selected: **Alt + Enter**\nSwitch open apps: **Alt + Tab**\nRun utility: **Win + R**"
+  },
+  {
+    "title": "MS Excel Formulas & Cell Referencing",
+    "content": "**References**: Relative (A1), Absolute ($A$1 - remains fixed when copy pasted), Mixed ($A1 or A$1). • **Formulas**: VLOOKUP(value, table, col, match), CONCATENATE(), COUNTIF(range, criteria), IF(test, true_val, false_val)."
+  },
+  {
+    "title": "Internet Protocols & Network Port Mappings",
+    "content": "HTTP (Web): **Port 80**\nHTTPS (Secure): **Port 443**\nFTP (Files): **Port 21**\nSMTP (Email Send): **Port 25**\nDNS (Domain Resolv): **Port 53**\nSSH (Sec Shell): **Port 22**"
+  },
+  {
+    "title": "Cybersecurity: Malwares & Safeguards",
+    "content": "**Trojans**: Disguised as legitimate software. • **Worms**: Self-replicating programs that travel over networks without host files. • **Ransomware**: Encrypts system data, demanding payment. • **Firewall**: Moniters incoming/outgoing traffic based on security rules."
+  }
 ],
-  laws: [
-  {
-    "title": "Quantitative Aptitude",
-    "content": "Fixed\n**Centroid Ratio:** Median division is always $2:1$ from vertex.\n\nFixed\n**Right Triangle Radii:** Inradius is always $\\frac{a+b-c}{2}$; Circumradius is always $\\frac{c}{2}$.\n\nFixed\n**HCF-LCM Relation:** Product of two numbers $A \\times B$ is always $\\text{HCF} \\times \\text{LCM}$.\n\n**Center Angles:** BIC is $90^\\circ + \\frac{A}{2}$ (Incenter), $180^\\circ - A$ (Orthocenter), $2A$ (Circumcenter).\n\n**Interest Rates:** Simple Interest remains constant year-on-year; Compound Interest compounds progressively."
-  },
-  {
-    "title": "Reasoning & Logic",
-    "content": "Fixed\n**Standard Dice:** Sum of opposite faces is always exactly $7$.\n\nFixed\n**Alphabet Sum:** Position sum of any letter and its opposite letter is always $27$ (e.g. A + Z = 27).\n\n**Leap Year Odd Days:** 2 odd days if divisible by 4 (or 400 for century years), else 1 odd day.\n\n**Family Tree Genders:** Gender of a sibling or child is conditional on explicit statements (cannot assume from names).\n\n**Clock Hand Relative Speed:** Always $5.5^\\circ/\\text{minute}$ (calculated from differences of hand motions)."
-  },
-  {
-    "title": "English Grammar",
-    "content": "Fixed\n**Imaginary Clauses:** Always use the verb **were** regardless of singular/plural subject (e.g., \"If I were...\").\n\nFixed\n**Objective Case:** Objective pronouns (him, me, us) always follow \"between\" or \"let\".\n\n**Subject Concord:** Verb agrees with **Subject 1** for *as well as/along with*; but agrees with **Nearest Subject** for *either... or/neither... nor*.\n\n**Tense Shifts:** Voice/Narration changes are conditional on the active reporting verb tense (Past vs Present)."
-  },
-  {
-    "title": "Computer & Science",
-    "content": "Fixed\n**Port Numbers:** Fixed protocol standards (HTTP=80, HTTPS=443, SMTP=25, FTP=21).\n\nFixed\n**Excel Absolute Reference:** Cell referencing with `$` symbols (e.g. `$A$1`) never shifts when copy-pasting.\n\n**Excel Relative Reference:** Cell referencing without `$` symbols (e.g. `A1`) updates dynamically relative to destination.\n\n**Science Constants:** Acceleration due to gravity $g$ is $9.8 \\text{ m/s}^2$ on Earth but changes depending on altitude/planet."
-  }
+  laws: [
+  {
+    "title": "Quantitative Aptitude",
+    "content": "Fixed\n**Centroid Ratio:** Median division is always $2:1$ from vertex.\n\nFixed\n**Right Triangle Radii:** Inradius is always $\\frac{a+b-c}{2}$; Circumradius is always $\\frac{c}{2}$.\n\nFixed\n**HCF-LCM Relation:** Product of two numbers $A \\times B$ is always $\\text{HCF} \\times \\text{LCM}$.\n\n**Center Angles:** BIC is $90^\\circ + \\frac{A}{2}$ (Incenter), $180^\\circ - A$ (Orthocenter), $2A$ (Circumcenter).\n\n**Interest Rates:** Simple Interest remains constant year-on-year; Compound Interest compounds progressively."
+  },
+  {
+    "title": "Reasoning & Logic",
+    "content": "Fixed\n**Standard Dice:** Sum of opposite faces is always exactly $7$.\n\nFixed\n**Alphabet Sum:** Position sum of any letter and its opposite letter is always $27$ (e.g. A + Z = 27).\n\n**Leap Year Odd Days:** 2 odd days if divisible by 4 (or 400 for century years), else 1 odd day.\n\n**Family Tree Genders:** Gender of a sibling or child is conditional on explicit statements (cannot assume from names).\n\n**Clock Hand Relative Speed:** Always $5.5^\\circ/\\text{minute}$ (calculated from differences of hand motions)."
+  },
+  {
+    "title": "English Grammar",
+    "content": "Fixed\n**Imaginary Clauses:** Always use the verb **were** regardless of singular/plural subject (e.g., \"If I were...\").\n\nFixed\n**Objective Case:** Objective pronouns (him, me, us) always follow \"between\" or \"let\".\n\n**Subject Concord:** Verb agrees with **Subject 1** for *as well as/along with*; but agrees with **Nearest Subject** for *either... or/neither... nor*.\n\n**Tense Shifts:** Voice/Narration changes are conditional on the active reporting verb tense (Past vs Present)."
+  },
+  {
+    "title": "Computer & Science",
+    "content": "Fixed\n**Port Numbers:** Fixed protocol standards (HTTP=80, HTTPS=443, SMTP=25, FTP=21).\n\nFixed\n**Excel Absolute Reference:** Cell referencing with `$` symbols (e.g. `$A$1`) never shifts when copy-pasting.\n\n**Excel Relative Reference:** Cell referencing without `$` symbols (e.g. `A1`) updates dynamically relative to destination.\n\n**Science Constants:** Acceleration due to gravity $g$ is $9.8 \\text{ m/s}^2$ on Earth but changes depending on altitude/planet."
+  }
 ],
-  patterns: [
-  {
-    "title": "Quantitative Aptitude Core Strategy",
-    "content": "**Arithmetic (40-50%):** Percentage (Direct & successive), Profit & Loss (CP/MP ratio, faulty weights), Average, SI & CI (2/3 yr difference), and Mixture & Alligation.\n**Algebra:** Linear equations (2 variables), Quadratic roots/coefficients, Algebraic identities (like $x+1/x=k$), and Surds/Indices.\n**Geometry:** Master triangle properties (centers, circumradius, inradius equations) instead of spending days on complex proofs.\n**Mensuration:** Rotating shapes (Cube, Cuboid, Cone, Sphere, Hemisphere). Learn formulas cold.\n\n### Visual Reference Sheets:\n\n[** Topic Pyramid](ssc_patterns/quant_topic_pyramid.png)\n[** Arithmetic Pillars](ssc_patterns/quant_arithmetic_core_pillars.png)\n[** Algebra Targets](ssc_patterns/quant_algebra_core_targets.png)\n[** Geometry Properties](ssc_patterns/quant_geometry_properties_strategy.png)"
-  },
-  {
-    "title": "General Intelligence &amp; Reasoning",
-    "content": "**Series (Number & Alphabet):** Requires pattern recognition practice (do 200 questions). Jumps, alternations, prime numbers, etc.\n**Coding-Decoding:** Letter shifts, alphabetical position, and number coding rules. Looks complex but is highly logical.\n**Direction & Blood Relations:** Always draw tree diagrams and paths. Solve in under 2 minutes combined.\n**Non-Verbal Reasoning:** Mirror image (left-right flip), Water image (top-bottom flip), Paper folding, Embedded figures. Zero memorization, only spatial thinking.\n\n### Visual Reference Sheets:\n\n[** Series Patterns](ssc_patterns/reasoning_series_patterns.png)\n[** Coding-Decoding](ssc_patterns/reasoning_coding_decoding.png)\n[** Direction & Family](ssc_patterns/reasoning_direction_blood_relations.png)\n[** Floor/Box Puzzles](ssc_patterns/reasoning_floor_box_puzzles.png)"
-  },
-  {
-    "title": "English Language &amp; Comprehension",
-    "content": "**The Grammar Test:** English score is heavily dependent on learning 8 core pillars (Subject-Verb agreement, Tenses, Pronouns, Voice, Narration, Prepositions, Articles, Conjunctions).\n**Error Detection:** Mechanical. SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, and Subject-Verb agreement.\n**Cloze Test & Passages:** Cloze test is 80% grammar context. Passages are straightforward (not literary masterpieces)—read slowly, mark details, answer directly.\n**Vocabulary:** Master the PYQ bullseye first (clear preferences and repeating patterns). Do not blindly memorize random words.\n\n### Visual Reference Sheets:\n\n[** Grammar Weight](ssc_patterns/english_biggest_shortcut.png)\n[** Score Pillars](ssc_patterns/english_score_8_pillars.png)\n[** Error Detection](ssc_patterns/english_error_detection_mechanical.png)\n[** Cloze Test](ssc_patterns/english_cloze_comprehension.png)"
-  },
-  {
-    "title": "General Awareness (GK/GS)",
-    "content": "**Ancient & Medieval History:** Buddhism & Jainism (councils, teachings), Mauryan Empire (Ashoka, edicts, Kautilya), Gupta Empire (literature, science), and Mughals (Akbar's Mansabdari/Din-i-Ilahi, Jizya tax rules). Ignore obscure regional dates.\n**Modern History:** INC Swadeshi, Quit India movements, important personalities (Gandhi, Bose, Tilak, Bhagat), Acts (1773-1935), and Revolt of 1857 (causes, leaders).\n**Polity:** Fundamental Rights, Parliament (bills, sessions, committees), DPSP, and Amendments (42nd, 44th, 73rd, 74th, 86th).\n**Economics & Current Affairs:** GDP vs GNP, RBI rate mechanics (Repo, Reverse Repo, CRR, SLR). Current affairs focus strictly on 5 areas: Awards, Govt Schemes, Sports, Days, and Int. Orgs.\n\n### Visual Reference Sheets:\n\n[** History Core](ssc_patterns/history_ancient_medieval_clusters.png)\n[** Modern History](ssc_patterns/history_modern_big_6_checklist.png)\n[** Polity Goldmine](ssc_patterns/polity_predictable_goldmine.png)\n[** Current Affairs](ssc_patterns/current_affairs_key_categories.png)"
-  }
+  patterns: [
+  {
+    "title": "Quantitative Aptitude Core Strategy",
+    "content": "**Arithmetic (40-50%):** Percentage (Direct & successive), Profit & Loss (CP/MP ratio, faulty weights), Average, SI & CI (2/3 yr difference), and Mixture & Alligation.\n**Algebra:** Linear equations (2 variables), Quadratic roots/coefficients, Algebraic identities (like $x+1/x=k$), and Surds/Indices.\n**Geometry:** Master triangle properties (centers, circumradius, inradius equations) instead of spending days on complex proofs.\n**Mensuration:** Rotating shapes (Cube, Cuboid, Cone, Sphere, Hemisphere). Learn formulas cold.\n\n### Visual Reference Sheets:\n\n[** Topic Pyramid](ssc_patterns/quant_topic_pyramid.png)\n[** Arithmetic Pillars](ssc_patterns/quant_arithmetic_core_pillars.png)\n[** Algebra Targets](ssc_patterns/quant_algebra_core_targets.png)\n[** Geometry Properties](ssc_patterns/quant_geometry_properties_strategy.png)"
+  },
+  {
+    "title": "General Intelligence &amp; Reasoning",
+    "content": "**Series (Number & Alphabet):** Requires pattern recognition practice (do 200 questions). Jumps, alternations, prime numbers, etc.\n**Coding-Decoding:** Letter shifts, alphabetical position, and number coding rules. Looks complex but is highly logical.\n**Direction & Blood Relations:** Always draw tree diagrams and paths. Solve in under 2 minutes combined.\n**Non-Verbal Reasoning:** Mirror image (left-right flip), Water image (top-bottom flip), Paper folding, Embedded figures. Zero memorization, only spatial thinking.\n\n### Visual Reference Sheets:\n\n[** Series Patterns](ssc_patterns/reasoning_series_patterns.png)\n[** Coding-Decoding](ssc_patterns/reasoning_coding_decoding.png)\n[** Direction & Family](ssc_patterns/reasoning_direction_blood_relations.png)\n[** Floor/Box Puzzles](ssc_patterns/reasoning_floor_box_puzzles.png)"
+  },
+  {
+    "title": "English Language &amp; Comprehension",
+    "content": "**The Grammar Test:** English score is heavily dependent on learning 8 core pillars (Subject-Verb agreement, Tenses, Pronouns, Voice, Narration, Prepositions, Articles, Conjunctions).\n**Error Detection:** Mechanical. SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, and Subject-Verb agreement.\n**Cloze Test & Passages:** Cloze test is 80% grammar context. Passages are straightforward (not literary masterpieces)—read slowly, mark details, answer directly.\n**Vocabulary:** Master the PYQ bullseye first (clear preferences and repeating patterns). Do not blindly memorize random words.\n\n### Visual Reference Sheets:\n\n[** Grammar Weight](ssc_patterns/english_biggest_shortcut.png)\n[** Score Pillars](ssc_patterns/english_score_8_pillars.png)\n[** Error Detection](ssc_patterns/english_error_detection_mechanical.png)\n[** Cloze Test](ssc_patterns/english_cloze_comprehension.png)"
+  },
+  {
+    "title": "General Awareness (GK/GS)",
+    "content": "**Ancient & Medieval History:** Buddhism & Jainism (councils, teachings), Mauryan Empire (Ashoka, edicts, Kautilya), Gupta Empire (literature, science), and Mughals (Akbar's Mansabdari/Din-i-Ilahi, Jizya tax rules). Ignore obscure regional dates.\n**Modern History:** INC Swadeshi, Quit India movements, important personalities (Gandhi, Bose, Tilak, Bhagat), Acts (1773-1935), and Revolt of 1857 (causes, leaders).\n**Polity:** Fundamental Rights, Parliament (bills, sessions, committees), DPSP, and Amendments (42nd, 44th, 73rd, 74th, 86th).\n**Economics & Current Affairs:** GDP vs GNP, RBI rate mechanics (Repo, Reverse Repo, CRR, SLR). Current affairs focus strictly on 5 areas: Awards, Govt Schemes, Sports, Days, and Int. Orgs.\n\n### Visual Reference Sheets:\n\n[** History Core](ssc_patterns/history_ancient_medieval_clusters.png)\n[** Modern History](ssc_patterns/history_modern_big_6_checklist.png)\n[** Polity Goldmine](ssc_patterns/polity_predictable_goldmine.png)\n[** Current Affairs](ssc_patterns/current_affairs_key_categories.png)"
+  }
 ]
 };

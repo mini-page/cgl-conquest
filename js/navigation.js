@@ -1,26 +1,36 @@
 // === NAVIGATION & THEMING MODULE ===
 let navExpanded = true;
+let lastShiftTime = 0;
+
+function openShortcutsHelpModal() {
+    const modal = document.getElementById("modal-shortcuts-help");
+    if (modal) {
+        modal.classList.add("active");
+        modal.classList.remove("opacity-0", "pointer-events-none");
+    }
+}
+
+function closeShortcutsHelpModal() {
+    const modal = document.getElementById("modal-shortcuts-help");
+    if (modal) {
+        modal.classList.remove("active");
+        modal.classList.add("opacity-0", "pointer-events-none");
+    }
+}
+
 
 function expandNav() {
     if (navExpanded) return;
     navExpanded = true;
-    const navItems = document.getElementById("floating-nav-items");
-    const navTrigger = document.getElementById("floating-nav-trigger");
-    if (navItems && navTrigger) {
-        navItems.classList.remove("hidden");
-        navTrigger.classList.add("hidden");
-    }
+    const mobileFloatingNav = document.getElementById("mobile-floating-nav");
+    if (mobileFloatingNav) mobileFloatingNav.classList.remove("nav-shrunk");
 }
 
 function shrinkNav() {
     if (!navExpanded) return;
     navExpanded = false;
-    const navItems = document.getElementById("floating-nav-items");
-    const navTrigger = document.getElementById("floating-nav-trigger");
-    if (navItems && navTrigger) {
-        navItems.classList.add("hidden");
-        navTrigger.classList.remove("hidden");
-    }
+    const mobileFloatingNav = document.getElementById("mobile-floating-nav");
+    if (mobileFloatingNav) mobileFloatingNav.classList.add("nav-shrunk");
 }
 
 // Header Scroll Shrink (Floating Island Dock UI)
@@ -104,16 +114,32 @@ function initNavigation() {
                 targetPage.classList.remove("hidden");
             }
             
-            // Dynamically update the header page title
-            const headerPageTitle = document.getElementById("header-page-title");
-            if (headerPageTitle) {
+            // Dynamically update the global sticky top bar header page title and icon
+            const globalPageTitle = document.getElementById("global-page-title");
+            const globalPageIcon = document.getElementById("global-page-icon");
+            if (globalPageTitle) {
                 let friendlyName = "Dashboard";
-                if (target === "page-syllabus") friendlyName = "Syllabus Tracker";
-                else if (target === "page-plan") friendlyName = "40-Day Plan";
-                else if (target === "page-mocks") friendlyName = "Mock Analytics";
-                else if (target === "page-toolkit") friendlyName = "Study Toolkit";
-                else if (target === "page-speed") friendlyName = "Speed Drills";
-                headerPageTitle.innerText = friendlyName;
+                let iconClass = '<i class="fa-solid fa-house text-accentCyan"></i>';
+                
+                if (target === "page-syllabus") {
+                    friendlyName = "Syllabus";
+                    iconClass = '<i class="fa-solid fa-book-open text-accentGreen"></i>';
+                } else if (target === "page-plan") {
+                    friendlyName = "Study Plan";
+                    iconClass = '<i class="fa-solid fa-calendar-days text-accentAmber"></i>';
+                } else if (target === "page-mocks") {
+                    friendlyName = "Analysis";
+                    iconClass = '<i class="fa-solid fa-graduation-cap text-accentCyan"></i>';
+                } else if (target === "page-toolkit") {
+                    friendlyName = "Study";
+                    iconClass = '<i class="fa-solid fa-toolbox text-accentPurple"></i>';
+                } else if (target === "page-speed") {
+                    friendlyName = "Drilling";
+                    iconClass = '<i class="fa-solid fa-bolt text-accentRose"></i>';
+                }
+                
+                globalPageTitle.innerText = friendlyName;
+                if (globalPageIcon) globalPageIcon.innerHTML = iconClass;
             }
             
             // Close mobile menu dropdown
@@ -152,10 +178,138 @@ function initNavigation() {
 
     // Global Keyboard Shortcuts for Page Navigation
     window.addEventListener("keydown", (e) => {
+        // Double shift key press listener
+        if (e.key === "Shift") {
+            if (e.repeat) return;
+            const now = Date.now();
+            if (now - lastShiftTime < 300) {
+                openShortcutsHelpModal();
+                e.preventDefault();
+            }
+            lastShiftTime = now;
+            return;
+        }
+
         // Skip shortcuts if user is typing in form inputs/textarea
         const tag = document.activeElement.tagName;
         if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement.isContentEditable) {
             return;
+        }
+
+        // Keybinding: U/u to scroll smoothly to the top of the browser page
+        if (e.key === "u" || e.key === "U") {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            e.preventDefault();
+            return;
+        }
+
+        // Intercept keys 1-4 if speed drill simulator is actively playing to select choices faster
+        if (window.drillIsPlaying) {
+            if (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4") {
+                const choiceIdx = parseInt(e.key) - 1;
+                if (window.isDrillModalActive) {
+                    const modalOpts = document.querySelectorAll("#modal-drill-options button");
+                    if (modalOpts[choiceIdx] && !modalOpts[choiceIdx].disabled) {
+                        modalOpts[choiceIdx].click();
+                    }
+                } else {
+                    const inlineOpts = document.querySelectorAll("#drill-options button");
+                    if (inlineOpts[choiceIdx] && !inlineOpts[choiceIdx].disabled) {
+                        inlineOpts[choiceIdx].click();
+                    }
+                }
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // 1. Spacebar: Play / Pause / Resume / Start of the drills in any mode
+        if (e.key === " " || e.key === "Spacebar") {
+            const speedPage = document.getElementById("page-speed");
+            if (speedPage && !speedPage.classList.contains("hidden")) {
+                if (window.isDrillModalActive) {
+                    const modalPauseBtn = document.getElementById("btn-drill-modal-pause");
+                    if (modalPauseBtn) modalPauseBtn.click();
+                } else {
+                    const inlinePauseBtn = document.getElementById("btn-drill-pause");
+                    if (inlinePauseBtn) inlinePauseBtn.click();
+                }
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // 2. P key: Cycle between modes
+        if (e.key === "p" || e.key === "P") {
+            const speedPage = document.getElementById("page-speed");
+            if (speedPage && !speedPage.classList.contains("hidden")) {
+                const btnCycle = document.getElementById("btn-maths-mode-cycle");
+                if (btnCycle) {
+                    btnCycle.click();
+                    e.preventDefault();
+                    return;
+                }
+            }
+        }
+
+        // 3. X key or Escape: Stop/Close/Exit in any mode
+        if (e.key === "Escape" || e.key === "x" || e.key === "X") {
+            // Close help shortcuts modal first if open
+            const helpModal = document.getElementById("modal-shortcuts-help");
+            if (helpModal && helpModal.classList.contains("active")) {
+                closeShortcutsHelpModal();
+                e.preventDefault();
+                return;
+            }
+            const speedPage = document.getElementById("page-speed");
+            if (speedPage && !speedPage.classList.contains("hidden")) {
+                if (window.isDrillModalActive) {
+                    const modalCloseBtn = document.getElementById("btn-drill-modal-close");
+                    if (modalCloseBtn) modalCloseBtn.click();
+                } else {
+                    const inlineStopBtn = document.getElementById("btn-drill-stop");
+                    if (inlineStopBtn) inlineStopBtn.click();
+                }
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // 4. Difficulty selection overrides (E/M/A/D keys when Speed Page is visible)
+        const speedPage = document.getElementById("page-speed");
+        if (speedPage && !speedPage.classList.contains("hidden")) {
+            const levelSelect = document.getElementById("select-maths-level");
+            const modalSelect = document.getElementById("modal-select-maths-level");
+            const triggerChange = (val) => {
+                if (levelSelect) {
+                    levelSelect.value = val;
+                    levelSelect.dispatchEvent(new Event("change"));
+                }
+                if (modalSelect) {
+                    modalSelect.value = val;
+                    modalSelect.dispatchEvent(new Event("change"));
+                }
+            };
+
+            if (e.key === "e" || e.key === "E") {
+                triggerChange("easy");
+                e.preventDefault();
+                return;
+            } else if (e.key === "m" || e.key === "M") {
+                triggerChange("medium");
+                e.preventDefault();
+                return;
+            } else if (e.key === "a" || e.key === "A") {
+                triggerChange("advance");
+                e.preventDefault();
+                return;
+            } else if (e.key === "d" || e.key === "D") {
+                const current = levelSelect ? levelSelect.value : "medium";
+                const nextMap = { easy: "medium", medium: "advance", advance: "easy" };
+                triggerChange(nextMap[current] || "medium");
+                e.preventDefault();
+                return;
+            }
         }
 
         let targetPage = "";
@@ -165,20 +319,6 @@ function initNavigation() {
         else if (e.key === "4") targetPage = "page-plan";
         else if (e.key === "5") targetPage = "page-syllabus";
         else if (e.key === "6") targetPage = "page-mocks";
-        else if (e.key === "p" || e.key === "P") {
-            if (window.isDrillModalActive && typeof toggleModalPause === "function") {
-                toggleModalPause();
-                e.preventDefault();
-            }
-            return;
-        }
-        else if (e.key === "Escape") {
-            if (window.isDrillModalActive && typeof closeDrillModal === "function") {
-                closeDrillModal();
-                e.preventDefault();
-            }
-            return;
-        }
         else if (e.key === "t" || e.key === "T") {
             const themeBtn = document.getElementById("theme-toggle");
             if (themeBtn) {
@@ -201,7 +341,14 @@ function initNavigation() {
 function initTheme() {
     const themeBtn = document.getElementById("theme-toggle");
     
+    // Bind help shortcuts close button
+    const btnShortcutsClose = document.getElementById("btn-shortcuts-close");
+    if (btnShortcutsClose) {
+        btnShortcutsClose.onclick = () => closeShortcutsHelpModal();
+    }
+    
     // Apply theme classes
+    updateMetaThemeColor(appState.theme);
     if (appState.theme === "light") {
         document.body.classList.add("light-theme");
         document.documentElement.classList.remove("dark");
@@ -214,6 +361,7 @@ function initTheme() {
     
     themeBtn.addEventListener("click", () => {
         appState.theme = appState.theme === "dark" ? "light" : "dark";
+        updateMetaThemeColor(appState.theme);
         if (appState.theme === "light") {
             document.body.classList.add("light-theme");
             document.documentElement.classList.remove("dark");
@@ -231,3 +379,16 @@ function initTheme() {
         }
     });
 }
+
+// Meta Theme-Color updater to sync browser layout shell and tabs
+function updateMetaThemeColor(theme) {
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        document.head.appendChild(meta);
+    }
+    // Deep dark background for dark mode (#0d0e12), subtle grey for light mode (#f3f4f6)
+    meta.setAttribute('content', theme === 'light' ? '#f3f4f6' : '#0d0e12');
+}
+

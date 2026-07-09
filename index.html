@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSC CGL 40-Day Rank-Maker Dashboard</title>
+    <title>Conquest</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -52,6 +52,65 @@
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
 
+    <!-- Sticky Pomodoro & Theme Toggler Shared Island Capsule -->
+    <div class="fixed top-4 right-4 sm:right-12 z-50 flex items-center bg-bgCard/90 backdrop-blur-md border border-white/10 hover:border-white/20 rounded-full p-1 shadow-2xl transition select-none">
+        <!-- Pomodoro Indicator Part -->
+        <div id="pomo-capsule" class="flex items-center gap-2 pl-3 pr-2 py-0.5 cursor-pointer rounded-full transition" data-tooltip="Pomodoro Focus Timer">
+            <span class="text-xs">🍅</span>
+            <span id="pomo-capsule-time" class="font-mono text-xs font-bold text-white">25:00</span>
+            <button id="btn-pomo-capsule-toggle" class="w-5 h-5 rounded-full bg-accentRose/20 text-accentRose flex items-center justify-center text-[10px] hover:bg-accentRose/30 transition">
+                <i class="fa-solid fa-play"></i>
+            </button>
+        </div>
+        
+        <!-- Separator -->
+        <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
+        
+        <!-- Theme Toggle Button Part -->
+        <button id="theme-toggle" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition" title="Toggle Light/Dark Theme">
+            <i class="fa-solid fa-sun"></i>
+        </button>
+    </div>
+
+    <!-- POMODORO TIMER PANEL POPOVER -->
+    <div id="pomo-drawer" class="fixed top-16 right-4 w-72 bg-bgCard border border-white/10 shadow-2xl z-50 rounded-3xl p-5 select-none opacity-0 pointer-events-none transform -translate-y-2 transition-all duration-200 ease-out backdrop-blur-lg flex flex-col justify-between">
+        <div>
+            <!-- Header -->
+            <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-4">
+                <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider"><i class="fa-solid fa-clock text-accentRose mr-2"></i> Pomodoro Timer</h3>
+                <button id="btn-pomo-drawer-close" class="text-gray-400 hover:text-white transition text-xs"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <!-- Timer Display -->
+            <div class="flex flex-col items-center my-4">
+                <div class="relative w-36 h-36 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="72" cy="72" r="62" class="fill-none stroke-white/5 stroke-[4px]" />
+                        <circle id="pomo-progress" cx="72" cy="72" r="62" class="fill-none stroke-accentRose stroke-[4px] stroke-linecap-round transition-all duration-1000" style="stroke-dasharray: 390; stroke-dashoffset: 0;" />
+                    </svg>
+                    <div class="absolute flex flex-col items-center">
+                        <span id="pomo-time-display" class="font-mono text-2xl font-extrabold text-white">25:00</span>
+                        <span id="pomo-status-label" class="text-[7px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Study Time</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mode Selection pills -->
+            <div class="flex justify-center gap-1.5 mb-4">
+                <button class="btn-pomo-mode px-2.5 py-1.5 rounded-full border border-white/5 text-[8px] font-extrabold text-gray-400 bg-white/2px hover:text-white transition duration-200 active-pomo-mode" data-time="1500" data-mode="study">Study (25m)</button>
+                <button class="btn-pomo-mode px-2.5 py-1.5 rounded-full border border-white/5 text-[8px] font-extrabold text-gray-400 bg-white/2px hover:text-white transition duration-200" data-time="300" data-mode="short-break">Break (5m)</button>
+                <button class="btn-pomo-mode px-2.5 py-1.5 rounded-full border border-white/5 text-[8px] font-extrabold text-gray-400 bg-white/2px hover:text-white transition duration-200" data-time="900" data-mode="long-break">Break (15m)</button>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="border-t border-white/5 pt-3.5 flex gap-2">
+            <button id="btn-pomo-start" class="flex-grow bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-lg shadow-rose-500/10 transition">Start</button>
+            <button id="btn-pomo-pause" class="bg-white/5 hover:bg-white/10 text-gray-300 px-3 py-2 rounded-xl text-[10px] font-extrabold border border-white/5 transition" disabled>Pause</button>
+            <button id="btn-pomo-reset" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-3 py-2 rounded-xl text-[10px] border border-white/5 transition"><i class="fa-solid fa-arrows-rotate"></i></button>
+        </div>
+    </div>
+
 
 
     <!-- MAIN APP VIEW WRAPPER -->
@@ -60,8 +119,8 @@
         <!-- 1. DASHBOARD OVERVIEW PAGE -->
         <section id="page-dashboard" class="content-page space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="border-b border-white/5 pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-chart-line text-accentCyan mr-2"></i> Dashboard Overview</h2>
+            <div class="pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-chart-line text-accentCyan mr-2"></i> Dashboard</h2>
                 
             </div>
             <!-- Stats Grid -->
@@ -205,7 +264,7 @@
                         <!-- View Mode -->
                         <div id="exam-target-view" class="space-y-1">
                             <span class="block text-[10px] text-gray-500 font-bold uppercase">Active Target</span>
-                            <h4 id="display-exam-name" class="text-xs font-extrabold text-white uppercase tracking-wider">SSC CGL Tier-1</h4>
+                            <h4 id="display-exam-name" class="text-xs font-extrabold text-white uppercase tracking-wider">Conquest</h4>
                             <span class="block text-[10px] text-gray-500 font-bold uppercase mt-2">Exam Date</span>
                             <span id="display-exam-date" class="font-mono text-xs text-gray-300">August 15, 2026</span>
                             <span class="block text-[10px] text-gray-500 font-bold uppercase mt-2">Time Remaining</span>
@@ -216,7 +275,7 @@
                         <div id="exam-target-edit" class="space-y-3 hidden border-t border-white/5 pt-3">
                             <div class="space-y-1">
                                 <label class="block text-[9px] text-gray-400 font-bold uppercase">Exam Title</label>
-                                <input type="text" id="input-exam-name" class="w-full bg-white/5 border border-white/10 rounded px-2.5 py-1 text-xs text-white outline-none focus:border-accentRose" placeholder="e.g. SSC CGL Tier-1">
+                                <input type="text" id="input-exam-name" class="w-full bg-white/5 border border-white/10 rounded px-2.5 py-1 text-xs text-white outline-none focus:border-accentRose" placeholder="e.g. Conquest">
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-[9px] text-gray-400 font-bold uppercase">Exam Date</label>
@@ -235,8 +294,8 @@
         <!-- 2. SYLLABUS TRACKER PAGE -->
         <section id="page-syllabus" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="border-b border-white/5 pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-list-check text-accentPurple mr-2"></i> Syllabus Tracker</h2>
+            <div class="pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-list-check text-accentPurple mr-2"></i> Syllabus</h2>
                 
             </div>
             <!-- Search, Filters, Layout switch -->
@@ -341,8 +400,8 @@
         <!-- 3. 40-DAY STUDY PLAN TIMELINE PAGE -->
         <section id="page-plan" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="border-b border-white/5 pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-calendar-days text-accentRose mr-2"></i> 40-Day Study Plan</h2>
+            <div class="pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-calendar-days text-accentRose mr-2"></i> Study Plan</h2>
                 
             </div>
             <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -390,8 +449,8 @@
         <!-- 4. MOCK ANALYTICS PAGE -->
         <section id="page-mocks" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="border-b border-white/5 pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-square-poll-vertical text-accentAmber mr-2"></i> Mock Analytics</h2>
+            <div class="pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-square-poll-vertical text-accentAmber mr-2"></i> Analysis</h2>
                 
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -512,24 +571,40 @@
         <!-- 5. STUDY TOOLKIT PAGE (FORMULAS, RULES, SI UNITS, COMPUTER AND WRITER) -->
         <section id="page-toolkit" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="border-b border-white/5 pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-toolbox text-accentGreen mr-2"></i> Study Toolkit</h2>
+            <div class="pb-2.5">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-toolbox text-accentGreen mr-2"></i> Study</h2>
                 
             </div>
             <!-- Pomodoro & Mistake Book layout -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="space-y-4 w-full">
                 <!-- Left 3 columns: Sub-tabs containing standard study reference databases -->
-                <div class="lg:col-span-3 space-y-4">
+                <div class="w-full space-y-4">
                     <!-- Reference Tabs bar -->
-                    <div class="flex border border-white/5 bg-bgCard/60 rounded-full p-1 overflow-x-auto gap-1">
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap active-nav-tab" data-target="tk-quant">📐 Quant Formulas</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap" data-target="tk-grammar">✍️ Grammar Rules</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap" data-target="tk-reasoning">🧠 Reasoning Tricks</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap" data-target="tk-physics">⚛️ GK & Science</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-cyan-300 bg-cyan-950/20 border border-cyan-800/30" data-target="tk-computer">💻 Computer Tier-2</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-purple-300" data-target="tk-custom">✏️ Custom Notes</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-rose-300 bg-rose-950/20 border border-rose-800/30" data-target="tk-laws">⚖️ Fixed vs. Conditional</button>
-                        <button class="toolkit-tab-btn flex-grow text-center text-xs py-2 px-4 rounded-full font-bold transition whitespace-nowrap text-accentAmber bg-amber-950/20 border border-amber-800/30" data-target="tk-patterns">📊 SSC CGL Weightage</button>
+                    <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-none whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0">
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition duration-200 active-nav-tab bg-accentPurple/10 border border-accentPurple/20 text-accentPurple" data-target="tk-quant">
+                            📐 Quant Formulas
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-grammar">
+                            ✍️ Grammar Rules
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-reasoning">
+                            🧠 Reasoning Tricks
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-physics">
+                            ⚛️ GK & Science
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-computer">
+                            💻 Computer Tier-2
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-custom">
+                            ✏️ Custom Notes
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-laws">
+                            ⚖️ Fixed vs. Conditional
+                        </button>
+                        <button class="toolkit-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="tk-patterns">
+                            📊 Conquest Weightage
+                        </button>
                     </div>
 
                     <!-- Tab panels -->
@@ -537,7 +612,7 @@
                         
                         <!-- TAB: QUANT FORMULAS -->
                         <div id="tk-quant" class="toolkit-panel space-y-4">
-                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">🎯 Must-Know Quant Formulas (Rank-Maker High ROI)</h3>
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">🎯 Must-Know Quant Formulas (Conquest High ROI)</h3>
                             <div id="tk-quant-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
                                 <!-- Loaded dynamically from quant.json -->
                             </div>
@@ -580,7 +655,7 @@
                         </div>
 
                         <div id="tk-patterns" class="toolkit-panel hidden space-y-4">
-                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">📊 SSC CGL Weightage, Prioritization &amp; High ROI Patterns</h3>
+                            <h3 class="font-heading font-extrabold text-sm text-white uppercase border-b border-white/5 pb-2">📊 Conquest Weightage, Prioritization &amp; High ROI Patterns</h3>
                             <div id="tk-patterns-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
                                 <!-- Loaded dynamically from patterns.json -->
                             </div>
@@ -646,264 +721,176 @@
                     </div>
                 </div>
 
-                <!-- Right 1 column: Pomodoro focus widget -->
-                <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg flex flex-col items-center justify-between text-center gap-6">
-                    <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider self-start"><i class="fa-solid fa-clock text-accentRose mr-1.5"></i> Pomodoro Timer</h3>
-                    
-                    <div class="relative w-44 h-44">
-                        <svg class="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
-                            <circle cx="100" cy="100" r="85" class="fill-none stroke-white/5 stroke-[5px]" />
-                            <circle id="pomo-progress" cx="100" cy="100" r="85" class="fill-none stroke-accentRose stroke-[5px] stroke-linecap-round transition-all duration-1000" style="stroke-dasharray: 534; stroke-dashoffset: 0;" />
-                        </svg>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <span id="pomo-time-display" class="font-mono text-3xl font-bold text-white">25:00</span>
-                            <span id="pomo-status-label" class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-1">Study Time</span>
-                        </div>
-                    </div>
 
-                    <div class="flex items-center gap-2">
-                        <button id="btn-pomo-start" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white px-5 py-2 rounded-lg text-xs font-semibold shadow-lg shadow-rose-500/20 transition">Start</button>
-                        <button id="btn-pomo-pause" class="bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white px-3 py-2 rounded-lg text-xs font-semibold border border-white/5 transition" disabled>Pause</button>
-                        <button id="btn-pomo-reset" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-3 py-2 rounded-lg text-xs border border-white/5 transition"><i class="fa-solid fa-arrows-rotate"></i></button>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button class="btn-pomo-mode text-[10px] font-bold text-gray-400 hover:text-white border-b-2 border-transparent pb-1 transition active-nav-tab" data-time="1500" data-mode="study">Study (25m)</button>
-                        <button class="btn-pomo-mode text-[10px] font-bold text-gray-400 hover:text-white border-b-2 border-transparent pb-1 transition" data-time="300" data-mode="short-break">Break (5m)</button>
-                        <button class="btn-pomo-mode text-[10px] font-bold text-gray-400 hover:text-white border-b-2 border-transparent pb-1 transition" data-time="900" data-mode="long-break">Break (15m)</button>
-                    </div>
-                </div>
             </div>
         </section>
 
         <!-- 6. SPEED DRILLS / MAKE IT FAST PAGE -->
-        <section id="page-speed" class="content-page hidden space-y-6">
+                <section id="page-speed" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="border-b border-white/5 pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-bolt text-accentRose mr-2"></i> Speed Drills</h2>
-                
+            <div class="pb-2.5 mb-4">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-bolt text-accentRose mr-2"></i> Drilling</h2>
             </div>
             <!-- Speed Drills Sub-Tabs -->
             <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-none whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-white/10 mb-3">
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200 active-nav-tab" data-target="speed-tab-maths">
-                    <i class="fa-solid fa-calculator mr-1.5 text-accentCyan"></i> Maths (Speed Calculations)
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200 active-nav-tab" data-mode="squares">
+                    <i class="fa-solid fa-calculator mr-1.5 text-accentCyan"></i> Squares (1-30)
                 </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="speed-tab-english">
-                    <i class="fa-solid fa-language mr-1.5 text-accentRose"></i> English (Vocab &amp; Flashcards)
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="cubes">
+                    <i class="fa-solid fa-cube mr-1.5 text-accentCyan"></i> Cubes (1-20)
                 </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="speed-tab-reasoning">
-                    <i class="fa-solid fa-brain mr-1.5 text-accentPurple"></i> Reasoning (Logic Drills)
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="tables">
+                    <i class="fa-solid fa-table-cells mr-1.5 text-accentCyan"></i> Tables (1-40)
                 </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="speed-tab-computer">
-                    <i class="fa-solid fa-laptop-code mr-1.5 text-accentAmber"></i> Computer (Tier-2 Simulator)
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="fracPerc">
+                    <i class="fa-solid fa-percent mr-1.5 text-accentCyan"></i> Frac-Percent (Dual)
                 </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-target="speed-tab-gk">
-                    <i class="fa-solid fa-earth-americas mr-1.5 text-accentGreen"></i> GK/GS (Reflex Drills)
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="triplets">
+                    <i class="fa-solid fa-triangle mr-1.5 text-accentCyan"></i> Triplets (Δ)
+                </button>
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="algebra">
+                    <i class="fa-solid fa-square-root-variable mr-1.5 text-accentCyan"></i> Algebra Ident.
+                </button>
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="lcm">
+                    <i class="fa-solid fa-arrow-down-up-across-line mr-1.5 text-accentCyan"></i> LCM (3 Nos)
+                </button>
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="hcf">
+                    <i class="fa-solid fa-arrow-up-down-left-right mr-1.5 text-accentCyan"></i> HCF (3 Nos)
+                </button>
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="alphabets">
+                    <i class="fa-solid fa-arrow-down-a-z mr-1.5 text-accentCyan"></i> Alphabet Codes
+                </button>
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="geomCenters">
+                    <i class="fa-solid fa-circle-dot mr-1.5 text-accentCyan"></i> Geometry Centers
+                </button>
+                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="trigReflex">
+                    <i class="fa-solid fa-wave-square mr-1.5 text-accentCyan"></i> Trig Reflexes
                 </button>
             </div>
 
-            <!-- Unified Sectional Challenge status bar -->
-            <!-- Placed in sidebar -->
-
             <!-- TAB CONTENT GRID WRAPPER -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
                 
                 <!-- MAIN CONTENT AREA (3 Columns) -->
                 <div class="lg:col-span-3 space-y-6">
-                    <!-- TAB CONTENT AREAS -->
-
-            <!-- MATHS TAB -->
-            <div id="speed-tab-maths" class="speed-tab-content space-y-6">
-                <!-- Math Drills Card -->
-                <div class="bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg max-w-4xl mx-auto">
-                    <div class="flex justify-between items-center border-b border-white/5 pb-4 mb-4">
-                        <div class="flex items-center gap-2">
-                            <span class="w-8 h-8 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-sm"><i class="fa-solid fa-bolt"></i></span>
-                            <div>
-                                <h3 class="font-heading font-extrabold text-sm text-white uppercase">⚡ Calculation Speed Drills</h3>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase">Practice arithmetic, fractions, triplets, and algebra daily</span>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span id="drill-score" class="font-mono font-bold text-accentGreen text-sm">Score: 0/0</span>
-                        </div>
-                    </div>
                     
-                    <!-- Mode Selectors -->
-                    <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-none whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 mb-6">
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition active-nav-tab" data-mode="squares">Squares (1-30)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="cubes">Cubes (1-20)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="tables">Tables (1-40)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="fracPerc">Frac-Percent (Dual)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="triplets">Triplets (Δ)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="algebra">Algebra Ident.</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="lcm">LCM (3 Nos)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="hcf">HCF (3 Nos)</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="alphabets">Alphabet Codes</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="geomCenters">Geometry Centers</button>
-                        <button class="drill-mode-btn py-2 px-3 rounded-xl border border-white/5 text-xs text-gray-300 font-bold bg-white/2px hover:bg-white/5 transition" data-mode="trigReflex">Trig Reflexes</button>
-                    </div>
-                    
-                    <!-- Active Question Display Area -->
-                    <div class="bg-black/20 border border-white/5 rounded-2xl p-6 text-center space-y-4">
-                        <div id="drill-timer-bar" class="w-full bg-white/5 h-1 rounded-full overflow-hidden mb-2">
-                            <div id="drill-timer-fill" class="bg-accentCyan h-full transition-all duration-1000" style="width: 100%;"></div>
-                        </div>
-                        <span id="drill-question-label" class="block text-3xl font-heading font-extrabold text-white">Select a mode &amp; press Start</span>
-                        <div class="max-w-md mx-auto flex gap-2">
-                            <button id="btn-drill-pause" class="bg-white/5 hover:bg-white/10 border border-white/5 text-gray-300 hover:text-white font-bold px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200 flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-play mr-1"></i> Start
-                            </button>
-                            <input type="number" id="drill-answer" class="w-full bg-white/5 border border-white/10 text-center text-lg font-bold rounded-xl px-4 py-2 outline-none focus:border-accentCyan transition hidden" placeholder="Answer..." disabled>
-                            <button id="btn-drill-submit" class="bg-accentCyan hover:bg-cyan-500 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wide transition duration-200 hidden" disabled>Check</button>
-                        </div>
-                        
-                        <!-- Math Options Grid (Dynamic Multiple Choice) -->
-                        <div id="drill-options" class="grid grid-cols-2 gap-2 max-w-md mx-auto hidden">
-                            <!-- Injected dynamically -->
-                        </div>
-                        <div id="drill-feedback" class="text-xs font-semibold min-h-[16px] text-gray-400">Streak: 0 🔥</div>
-                    </div>
-                </div>
-            </div>
+                    <!-- Unified Drill & Flashcard Card -->
+                    <div id="unified-drill-card" class="relative overflow-hidden bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col justify-between min-h-[400px]">
 
-            <!-- ENGLISH TAB -->
-            <div id="speed-tab-english" class="speed-tab-content hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Flashcards Card -->
-                <div class="bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg">
-                    <div class="flex items-center gap-2 border-b border-white/5 pb-4 mb-4">
-                        <span class="w-8 h-8 rounded-lg bg-accentRose/10 text-accentRose flex items-center justify-center text-sm"><i class="fa-solid fa-language"></i></span>
                         <div>
-                            <h3 class="font-heading font-extrabold text-sm text-white uppercase">🗂 Vocab Flashcards</h3>
-                            <span class="text-[10px] text-gray-500 font-bold uppercase">CGL High-Frequency Vocabulary</span>
-                        </div>
-                    </div>
-                    
-                    <div class="py-4">
-                        <div id="vocab-card" class="vocab-card-container w-full h-48 rounded-2xl border border-white/5 cursor-pointer bg-white/2px hover:border-white/10 transition relative perspective" onclick="flipVocabCard()">
-                            <div class="vocab-card-inner absolute w-full h-full text-center transition-transform duration-500 transform-style">
-                                <div class="vocab-card-front absolute w-full h-full flex flex-col justify-center items-center p-6 backface-hidden">
-                                    <span class="text-xs text-gray-500 font-bold uppercase mb-2">Word / Phrase</span>
-                                    <span id="vocab-front-word" class="text-2xl font-heading font-extrabold text-accentRose">Pernicious</span>
-                                    <span class="text-[9px] text-gray-500 uppercase tracking-widest mt-4">Click to Flip</span>
+                            <!-- Header with Title, Score & Actions -->
+                            <div class="flex justify-between items-center pb-4 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-8 h-8 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-sm">
+                                        <i class="fa-solid fa-bolt animate-pulse"></i>
+                                    </span>
+                                    <h3 id="drill-category-title" class="font-heading font-extrabold text-sm text-white uppercase">Squares (1-30)</h3>
                                 </div>
-                                <div class="vocab-card-back absolute w-full h-full flex flex-col justify-center items-center p-6 backface-hidden rotate-y-180 bg-black/20 rounded-2xl">
-                                    <span class="text-xs text-gray-500 font-bold uppercase mb-1">Meaning &amp; Usage</span>
-                                    <p id="vocab-back-definition" class="text-xs text-gray-200 max-w-sm leading-relaxed text-center font-medium">Having a harmful effect, especially in a gradual or subtle way.</p>
-                                    <p id="vocab-back-example" class="text-[10px] text-accentRose italic mt-3">"The pernicious influence of negative company."</p>
+                                <div class="flex items-center gap-3">
+                                    <!-- Action 1: Pause / Resume -->
+                                    <button id="btn-drill-pause" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Start/Pause session [Shortcut: Space]">
+                                        <i class="fa-solid fa-play"></i> <span>Start</span>
+                                    </button>
+                                    <!-- Action 2: Mode Switch -->
+                                    <button id="btn-maths-mode-cycle" class="btn-mode-cycle text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" data-mode="popup" data-subject="maths" title="Switch View Mode [Shortcut: P]">
+                                        <i class="fa-solid fa-desktop text-accentCyan"></i> <span>Mode</span>
+                                    </button>
+                                    <!-- Action 3: Close / Terminate -->
+                                    <button id="btn-drill-stop" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5 hover:text-accentRose hover:border-accentRose/50" title="Stop and Terminate session [Shortcut: X]">
+                                        <i class="fa-solid fa-circle-stop text-accentRose"></i> <span>Close</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Timer Bar -->
+                            <div id="drill-timer-bar" class="w-full bg-white/5 h-1 overflow-hidden rounded-full mb-6">
+                                <div id="drill-timer-fill" class="bg-accentCyan h-full transition-all duration-1000" style="width: 100%;"></div>
+                            </div>
+                            
+                            <!-- Relative Content Area wrapper for pause blurring without covering topbar actions -->
+                            <div class="relative min-h-[280px]">
+                                <!-- Inline Paused Screen Overlay -->
+                                <div id="drill-paused-overlay" class="absolute inset-0 bg-bgCard/90 backdrop-blur-md z-40 flex flex-col justify-center items-center space-y-4 hidden rounded-2xl">
+                                    <i class="fa-solid fa-circle-pause text-5xl text-accentCyan mb-2 animate-pulse"></i>
+                                    <h3 class="text-xl font-heading font-extrabold text-white uppercase tracking-wider mb-1">Drill Paused</h3>
+                                    <p class="text-xs text-gray-400 mb-4">Click Resume or press 'Space' to continue your session</p>
+                                    <button id="btn-drill-resume" class="bg-accentCyan hover:bg-cyan-400 text-black font-extrabold px-6 py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200">
+                                        Resume Session
+                                    </button>
+                                </div>
+                            
+                                <!-- Mode 1: Interactive Drill Area -->
+                                <div id="drill-interactive-area" class="space-y-6 transition-all duration-300">
+                                <div class="text-center space-y-6 py-6">
+                                    <h2 id="drill-question-label" class="text-3xl font-heading font-extrabold text-white leading-tight">12² = ?</h2>
+                                    <div id="drill-options" class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+                                        <!-- Injected via JS -->
+                                    </div>
+                                    <!-- Stats / Feedback -->
+                                    <div class="pt-6 flex items-center gap-6 justify-center text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                        <div id="drill-score">Score: 0 / 0</div>
+                                        <div class="w-px h-3 bg-white/10"></div>
+                                        <div id="drill-feedback">Streak: 0 🔥</div>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                            
+                            </div>
+                            
+                            <!-- Card Footer containing Difficulty dropdown -->
+                            <div class="pt-4 mt-4 flex items-center justify-between">
+                                <select id="select-maths-level" class="py-2 px-3 rounded-xl border border-white/5 text-[9px] text-gray-300 font-extrabold bg-bgPage hover:bg-white/5 transition outline-none cursor-pointer">
+                                    <option value="easy">🟢 Easy</option>
+                                    <option value="medium" selected>🟡 Medium</option>
+                                    <option value="advance">🔴 Advance</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Mode 2: Flashcard Area (Hidden by default) -->
+                            <div id="flashcard-interactive-area" class="space-y-6 hidden">
+                                <!-- Flashcard Flip Area -->
+                                <div id="drill-flashcard-box" class="flashcard-box w-full h-52 rounded-2xl border border-white/5 cursor-pointer bg-white/2px hover:border-white/10 transition relative perspective">
+                                    <div class="flashcard-inner absolute w-full h-full text-center transition-transform duration-500 transform-style">
+                                        <!-- Front of Card -->
+                                        <div class="flashcard-front absolute w-full h-full flex flex-col justify-center items-center p-6 backface-hidden">
+                                            <span id="fc-front-tag" class="text-[8px] text-gray-500 font-bold uppercase tracking-wider mb-2">Question</span>
+                                            <span id="fc-front-text" class="flashcard-front-text text-2xl font-heading font-extrabold text-accentCyan">12²</span>
+                                            <span class="text-[8px] text-gray-400 font-bold block mt-4 uppercase">Click to flip</span>
+                                        </div>
+                                        <!-- Back of Card -->
+                                        <div class="flashcard-back absolute w-full h-full flex flex-col justify-center items-center p-6 backface-hidden rotate-y-180 bg-black/20 rounded-2xl">
+                                            <span id="fc-back-tag" class="text-[8px] text-gray-500 font-bold uppercase tracking-wider mb-2">Answer</span>
+                                            <p id="fc-back-text" class="flashcard-back-text text-3xl font-heading font-extrabold text-accentGreen">144</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Controls -->
+                                <div class="flex justify-between items-center mt-4 pt-4 border-t border-white/5">
+                                    <button id="btn-fc-prev" class="bg-white/5 hover:bg-white/10 text-gray-300 font-bold px-4 py-2 rounded-xl text-[10px] uppercase transition"><i class="fa-solid fa-arrow-left mr-1"></i> Prev</button>
+                                    <span id="fc-counter" class="text-[10px] text-gray-500 font-bold uppercase">1 / 10</span>
+                                    <button id="btn-fc-next" class="bg-white/5 hover:bg-white/10 text-gray-300 font-bold px-4 py-2 rounded-xl text-[10px] uppercase transition">Next <i class="fa-solid fa-arrow-right mr-1"></i></button>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-between items-center mt-4">
-                            <button id="btn-vocab-prev" class="bg-white/5 hover:bg-white/10 text-gray-300 font-bold px-3 py-1.5 rounded-xl text-[10px] uppercase transition"><i class="fa-solid fa-arrow-left mr-1"></i> Prev</button>
-                            <span id="vocab-counter" class="text-[10px] text-gray-500 font-bold uppercase">1 / 15</span>
-                            <button id="btn-vocab-next" class="bg-white/5 hover:bg-white/10 text-gray-300 font-bold px-3 py-1.5 rounded-xl text-[10px] uppercase transition">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
-                        </div>
                     </div>
-                </div>
-
-                <!-- English Vocab Quiz Card -->
-                <div class="bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 border-b border-white/5 pb-4 mb-4">
-                            <span class="w-8 h-8 rounded-lg bg-accentRose/10 text-accentRose flex items-center justify-center text-sm"><i class="fa-solid fa-graduation-cap"></i></span>
-                            <div>
-                                <h3 class="font-heading font-extrabold text-sm text-white uppercase">📝 English Vocabulary Quiz</h3>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase">Synonyms &amp; Idioms Practice</span>
-                            </div>
-                        </div>
-                        <div id="eng-quiz-container" class="space-y-4">
-                            <button id="btn-launch-eng-quiz" class="w-full bg-accentRose/10 border border-accentRose/20 hover:bg-accentRose/20 text-accentRose font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
-                            <span class="block text-[10px] text-accentRose font-bold uppercase tracking-wider">Question <span id="eng-q-num">1</span> of 5</span>
-                            <p id="eng-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
-                            <div id="eng-options" class="space-y-2"></div>
-                        </div>
-                    </div>
-                    <div class="border-t border-white/5 pt-4 mt-6 flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase">
-                        <span id="eng-quiz-score">Score: 0/0</span>
-                        <button id="btn-eng-reset" class="text-accentRose hover:text-rose-400 flex items-center gap-1 transition"><i class="fa-solid fa-arrows-rotate"></i> Reset Quiz</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- REASONING TAB -->
-            <div id="speed-tab-reasoning" class="speed-tab-content hidden max-w-2xl mx-auto">
-                <div class="bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col h-full justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 border-b border-white/5 pb-4 mb-4">
-                            <span class="w-8 h-8 rounded-lg bg-accentPurple/10 text-accentPurple flex items-center justify-center text-sm"><i class="fa-solid fa-brain"></i></span>
-                            <div>
-                                <h3 class="font-heading font-extrabold text-sm text-white uppercase">🧠 Reasoning Logical Speed Test</h3>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase">Series &amp; Code Speed Solver</span>
-                            </div>
-                        </div>
-                        <div id="reas-quiz-container" class="space-y-4">
-                            <button id="btn-launch-reas-quiz" class="w-full bg-accentPurple/10 border border-accentPurple/20 hover:bg-accentPurple/20 text-accentPurple font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
-                            <span class="block text-[10px] text-accentPurple font-bold uppercase tracking-wider">Question <span id="reas-q-num">1</span> of 10</span>
-                            <p id="reas-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
-                            <div id="reas-options" class="space-y-2"></div>
-                        </div>
-                    </div>
-                    <div class="border-t border-white/5 pt-4 mt-6 flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase">
-                        <span id="reas-quiz-score">Score: 0/0</span>
-                        <button id="btn-reas-reset" class="text-accentPurple hover:text-purple-400 flex items-center gap-1 transition"><i class="fa-solid fa-arrows-rotate"></i> Reset Quiz</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COMPUTER TAB -->
-            <div id="speed-tab-computer" class="speed-tab-content hidden max-w-2xl mx-auto">
-                <div class="bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col h-full justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 border-b border-white/5 pb-4 mb-4">
-                            <span class="w-8 h-8 rounded-lg bg-accentAmber/10 text-accentAmber flex items-center justify-center text-sm"><i class="fa-solid fa-laptop-code"></i></span>
-                            <div>
-                                <h3 class="font-heading font-extrabold text-sm text-white uppercase">💻 Computer Tier-2 Practice</h3>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase">Qualifying Cutoff Simulator</span>
-                            </div>
-                        </div>
-                        <div id="comp-quiz-container" class="space-y-4">
-                            <button id="btn-launch-comp-quiz" class="w-full bg-accentAmber/10 border border-accentAmber/20 hover:bg-accentAmber/20 text-accentAmber font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
-                            <span class="block text-[10px] text-accentAmber font-bold uppercase tracking-wider">Question <span id="comp-q-num">1</span> of 10</span>
-                            <p id="comp-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
-                            <div id="comp-options" class="space-y-2"></div>
-                        </div>
-                    </div>
-                    <div class="border-t border-white/5 pt-4 mt-6 flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase">
-                        <span id="comp-quiz-score">Score: 0/0</span>
-                        <button id="btn-comp-reset" class="text-accentAmber hover:text-amber-400 flex items-center gap-1 transition"><i class="fa-solid fa-arrows-rotate"></i> Reset Quiz</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- GK/GS TAB -->
-            <div id="speed-tab-gk" class="speed-tab-content hidden max-w-2xl mx-auto">
-                <div class="bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col h-full justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 border-b border-white/5 pb-4 mb-4">
-                            <span class="w-8 h-8 rounded-lg bg-accentGreen/10 text-accentGreen flex items-center justify-center text-sm"><i class="fa-solid fa-earth-americas"></i></span>
-                            <div>
-                                <h3 class="font-heading font-extrabold text-sm text-white uppercase">🌍 GK &amp; General Studies Practice</h3>
-                                <span class="text-[10px] text-gray-500 font-bold uppercase">Rivers, Mountains, Dams, Borders &amp; History Timelines</span>
-                            </div>
-                        </div>
-                        <div id="gk-quiz-container" class="space-y-4">
-                            <button id="btn-launch-gk-quiz" class="w-full bg-accentGreen/10 border border-accentGreen/20 hover:bg-accentGreen/20 text-accentGreen font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200"><i class="fa-solid fa-expand mr-1.5"></i> Launch Quiz Simulator</button>
-                            <span class="block text-[10px] text-accentGreen font-bold uppercase tracking-wider">Question <span id="gk-q-num">1</span> of 10</span>
-                            <p id="gk-q-text" class="text-xs text-gray-200 font-bold leading-relaxed">Loading question...</p>
-                            <div id="gk-options" class="space-y-2"></div>
-                        </div>
-                    </div>
-                    <div class="border-t border-white/5 pt-4 mt-6 flex justify-between items-center text-[10px] font-bold text-gray-500 uppercase">
-                        <span id="gk-quiz-score">Score: 0/0</span>
-                        <button id="btn-gk-reset" class="text-accentGreen hover:text-green-400 flex items-center gap-1 transition"><i class="fa-solid fa-arrows-rotate"></i> Reset Quiz</button>
-                    </div>
-                </div>
-            </div>
                 </div>
                 
-                <!-- SIDEBAR CHALLENGE RUN-OFF (1 Column) -->
-                <div class="lg:col-span-1 lg:sticky lg:top-6 space-y-4">
+                <!-- SIDEBAR CHALLENGE RUN-OFF (2 Columns) -->
+                <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-4">
+                    <!-- DRILL / FLASHCARD SWITCHER CARD -->
+                    <div class="bg-bgCard border border-white/5 rounded-2xl p-3 shadow-lg">
+                        <div class="flex bg-black/40 rounded-xl p-1 border border-white/5">
+                            <button id="toggle-mode-drill" class="flex-grow py-2 rounded-lg text-[10px] font-extrabold uppercase transition duration-150 text-white bg-accentCyan/20 border border-accentCyan/30">
+                                <i class="fa-solid fa-bolt mr-1"></i> Drill Simulator
+                            </button>
+                            <button id="toggle-mode-flashcard" class="flex-grow py-2 rounded-lg text-[10px] font-extrabold uppercase transition duration-150 text-gray-400 hover:text-white">
+                                <i class="fa-solid fa-layer-group mr-1"></i> 3D Flashcards
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div id="challenge-status-bar" class="bg-bgCard border border-white/5 rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
                         <div class="flex items-center gap-3 border-b border-white/5 pb-3">
                             <span id="challenge-badge" class="px-2.5 py-0.5 text-[8px] font-extrabold uppercase rounded-full bg-accentCyan/10 text-accentCyan border border-accentCyan/20">Run Off</span>
@@ -936,7 +923,6 @@
                 </div>
                 
             </div>
-            
         </section>
 
     </main>
@@ -986,25 +972,27 @@
     </div>
 
     <!-- MODAL: IMMERSIVE DRILL WINDOW -->
-    <div id="modal-drill-window" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+    <div id="modal-drill-window" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
         <div id="drill-window-card" class="bg-bgCard border border-white/10 w-full max-w-3xl h-[85vh] rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300 relative">
             <!-- Drill Header -->
             <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-white/2px">
                 <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-accentCyan animate-pulse"></span>
+                    <span id="modal-drill-icon-container" class="text-accentCyan text-sm"><i class="fa-solid fa-calculator"></i></span>
                     <h3 id="drill-modal-title" class="font-heading font-extrabold text-xs text-white uppercase tracking-wider">⚡ Speed Drill Simulator</h3>
                 </div>
                 <div class="flex items-center gap-3">
                     <!-- Pause/Resume Button -->
-                    <button id="btn-drill-modal-pause" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Pause session [Shortcut: P]">
+                    <button id="btn-drill-modal-pause" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Start/Pause session [Shortcut: Space]">
                         <i class="fa-solid fa-pause"></i> <span>Pause</span>
                     </button>
                     <!-- Fullscreen Toggle Button -->
-                    <button id="btn-drill-fullscreen" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5">
+                    <button id="btn-drill-fullscreen" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Switch View Mode [Shortcut: P]">
                         <i class="fa-solid fa-expand"></i> <span>Fullscreen</span>
                     </button>
                     <!-- Close Button -->
-                    <button id="btn-drill-modal-close" class="text-gray-400 hover:text-white transition text-xl px-1">&times;</button>
+                    <button id="btn-drill-modal-close" class="btn-stop-slide text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 py-1.5 rounded-xl border border-white/5 hover:text-accentRose hover:border-accentRose/50" title="Stop and Terminate session [Shortcut: X]">
+                        <i class="fa-solid fa-circle-stop text-accentRose"></i> <span>Close</span>
+                    </button>
                 </div>
             </div>
             
@@ -1016,10 +1004,13 @@
             <!-- Drill Body (Central Display) -->
             <div class="flex-grow overflow-y-auto p-8 flex flex-col justify-center items-center text-center space-y-8 relative">
                 <!-- Paused Overlay Screen -->
-                <div id="modal-drill-paused-overlay" class="absolute inset-0 bg-bgCard/95 flex flex-col justify-center items-center z-10 hidden">
-                    <i class="fa-solid fa-circle-pause text-5xl text-accentCyan mb-4 animate-pulse"></i>
-                    <h3 class="text-xl font-heading font-extrabold text-white uppercase tracking-wider mb-2">Drill Paused</h3>
-                    <p class="text-xs text-gray-400">Click Resume or press 'P' to continue your session</p>
+                <div id="modal-drill-paused-overlay" class="absolute inset-0 bg-bgCard/90 backdrop-blur-md z-10 flex flex-col justify-center items-center space-y-4 hidden">
+                    <i class="fa-solid fa-circle-pause text-5xl text-accentCyan mb-2 animate-pulse"></i>
+                    <h3 class="text-xl font-heading font-extrabold text-white uppercase tracking-wider mb-1">Drill Paused</h3>
+                    <p class="text-xs text-gray-400 mb-4">Click Resume or press 'Space' to continue your session</p>
+                    <button id="btn-drill-modal-resume" class="bg-accentCyan hover:bg-cyan-400 text-black font-extrabold px-6 py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200">
+                        Resume Session
+                    </button>
                 </div>
 
                 <!-- Drill Content wrapper to be blurred when paused -->
@@ -1054,9 +1045,9 @@
     </div>
 
     <!-- Floating Navigation Island -->
-    <nav id="mobile-floating-nav" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-bgCard/90 backdrop-blur-lg border border-white/10 rounded-full p-1.5 flex gap-2 items-center shadow-2xl z-50 transition-all duration-300 transform translate-y-0 opacity-100">
+    <nav id="mobile-floating-nav" class="fixed bottom-6 right-4 translate-x-0 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 bg-bgCard/90 backdrop-blur-lg border border-white/10 rounded-full p-1.5 flex gap-2 items-center shadow-2xl z-50 transition-all duration-300 transform translate-y-0 opacity-100">
         <!-- Shrunk state icon (Hidden by default in expanded state) -->
-        <button id="floating-nav-trigger" class="hidden w-9 h-9 flex items-center justify-center rounded-full text-accentCyan hover:text-white transition duration-200" title="Expand Navigation">
+        <button id="floating-nav-trigger" class="w-9 h-9 flex items-center justify-center rounded-full text-accentCyan hover:text-white transition duration-200" title="Expand Navigation">
             <i class="fa-solid fa-compass text-base animate-pulse"></i>
         </button>
         
@@ -1065,27 +1056,113 @@
             <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" title="Dashboard [Shortcut: 1]">
                 <i class="fa-solid fa-chart-line text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" title="Study Toolkit [Shortcut: 2]">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" title="Study [Shortcut: 2]">
                 <i class="fa-solid fa-toolbox text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" title="Speed Drills [Shortcut: 3]">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" title="Drilling [Shortcut: 3]">
                 <i class="fa-solid fa-bolt text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" title="40-Day Plan [Shortcut: 4]">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" title="Study Plan [Shortcut: 4]">
                 <i class="fa-solid fa-calendar-days text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" title="Syllabus Tracker [Shortcut: 5]">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" title="Syllabus [Shortcut: 5]">
                 <i class="fa-solid fa-list-check text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" title="Mock Analytics [Shortcut: 6]">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" title="Analysis [Shortcut: 6]">
                 <i class="fa-solid fa-square-poll-vertical text-sm"></i>
             </a>
-            <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
-            <button id="theme-toggle" class="w-9 h-9 flex items-center justify-center rounded-full text-gray-300 hover:text-white transition duration-200" title="Toggle Light/Dark Theme [Shortcut: T]">
-                <i class="fa-solid fa-sun text-sm"></i>
-            </button>
         </div>
     </nav>
+
+
+    <!-- MODAL: SHORTCUTS HELP -->
+    <div id="modal-shortcuts-help" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+        <div class="bg-bgCard border border-white/10 w-full max-w-md rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300 relative p-6">
+            <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-4">
+                <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-keyboard text-accentCyan"></i> Keyboard Shortcuts Reference
+                </h3>
+                <button id="btn-shortcuts-close" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Close reference">
+                    ✕ Close
+                </button>
+            </div>
+            
+            <!-- Content list of shortcuts -->
+            <div class="space-y-4 max-h-[50vh] overflow-y-auto pr-1 text-xs text-gray-300 scrollbar-thin">
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div class="font-bold text-white">Action</div>
+                    <div class="font-bold text-accentCyan">Keybinding</div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Start / Pause / Resume Drill</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">Spacebar</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Cycle View Mode</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">P</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Stop & Exit Simulator</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">X</kbd> or <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">Esc</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Select MCQ Options 1–4</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">1</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">2</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">3</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">4</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Easy Difficulty</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">E</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Medium Difficulty</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">M</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Advance Difficulty</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">A</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Cycle Difficulty</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">D</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Scroll to Top</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">U</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Toggle Dark/Light Theme</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">T</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Switch Pages 1–6</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">1</kbd>–<kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">6</kbd> (when drill inactive)</div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pb-2">
+                    <div>Open Shortcuts Help</div>
+                    <div>Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">Shift</kbd> twice</div>
+                </div>
+            </div>
+            
+            <!-- Social links row -->
+            <div class="border-t border-white/5 pt-4 mt-4 flex items-center justify-between">
+                <span class="text-[10px] text-gray-500 font-extrabold uppercase">Connect with me:</span>
+                <div class="flex items-center gap-4">
+                    <a href="https://www.linkedin.com/in/ug5711" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin text-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ug_5711" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="Instagram">
+                        <i class="fa-brands fa-instagram text-lg"></i>
+                    </a>
+                    <a href="http://t.me/@ug_5711" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="Telegram">
+                        <i class="fa-brands fa-telegram text-lg"></i>
+                    </a>
+                    <a href="https://github.com/mini-page/" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="GitHub">
+                        <i class="fa-brands fa-github text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- App Scripts -->
     <script src="js/state.js"></script>
