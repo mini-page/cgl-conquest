@@ -1,62 +1,6 @@
 [
   {
-    "period": "Ancient Era & Indus Valley Civilization",
-    "battles": [
-      {
-        "event": "Harappa Excavation",
-        "year": "1921",
-        "details": "Daya Ram Sahni"
-      },
-      {
-        "event": "Mohenjodaro Excavation",
-        "year": "1922",
-        "details": "R.D. Banerjee"
-      }
-    ]
-  },
-  {
-    "period": "Medieval Battles",
-    "battles": [
-      {
-        "event": "1st Battle of Tarain",
-        "year": "1191",
-        "details": "Prithviraj Chauhan defeats Mohammad Ghori"
-      },
-      {
-        "event": "2nd Battle of Tarain",
-        "year": "1192",
-        "details": "Mohammad Ghori defeats Prithviraj Chauhan"
-      },
-      {
-        "event": "1st Battle of Panipat",
-        "year": "1526",
-        "details": "Babur defeats Ibrahim Lodi (Mughal empire starts)"
-      },
-      {
-        "event": "2nd Battle of Panipat",
-        "year": "1556",
-        "details": "Akbar defeats Hemu"
-      },
-      {
-        "event": "3rd Battle of Panipat",
-        "year": "1761",
-        "details": "Ahmad Shah Abdali defeats Marathas"
-      }
-    ]
-  },
-  {
-    "period": "British Colonial Era Battles",
-    "battles": [
-      {
-        "event": "Battle of Plassey",
-        "year": "1757",
-        "details": "Robert Clive defeats Nawab Siraj-ud-Daulah"
-      },
-      {
-        "event": "Battle of Buxar",
-        "year": "1764",
-        "details": "British defeat joint Mughal / Nawab alliance"
-      }
-    ]
+    "title": "⚔️ Crucial Battles & Timelines",
+    "content": "| Event / Battle | Year | Key Detail / Significance |\n| --- | --- | --- |\n| **Harappa Excavation** | 1921 | Excavated by Daya Ram Sahni |\n| **Mohenjodaro Excavation** | 1922 | Excavated by R.D. Banerjee |\n| **1st Battle of Tarain** | 1191 | Prithviraj Chauhan defeats Mohammad Ghori |\n| **2nd Battle of Tarain** | 1192 | Mohammad Ghori defeats Prithviraj Chauhan |\n| **1st Battle of Panipat** | 1526 | Babur defeats Ibrahim Lodi (Mughal rule starts) |\n| **2nd Battle of Panipat** | 1556 | Akbar defeats Hemu |\n| **3rd Battle of Panipat** | 1761 | Ahmad Shah Abdali defeats Marathas |\n| **Battle of Plassey** | 1757 | Robert Clive defeats Nawab Siraj-ud-Daulah |\n| **Battle of Buxar** | 1764 | British defeat joint Mughal / Nawab alliance |"
   }
 ]

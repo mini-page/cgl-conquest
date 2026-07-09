@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cgl-conquest-cache-v6';
+const CACHE_NAME = 'cgl-conquest-cache-v7';
 const ASSETS = [
   './',
   './index.html',

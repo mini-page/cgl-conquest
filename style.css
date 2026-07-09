@@ -86,16 +86,33 @@ body.light-theme .mobile-nav-item.active-nav {
 }
 
 /* Toolkit Active Subtabs */
+button.active-nav-tab,
+a.active-nav-tab,
 .active-nav-tab {
     background-color: rgba(139, 92, 246, 0.15) !important;
     color: #c084fc !important;
     border: 1px solid rgba(139, 92, 246, 0.3) !important;
 }
 
+body.light-theme button.active-nav-tab,
+body.light-theme a.active-nav-tab,
 body.light-theme .active-nav-tab {
     background-color: rgba(109, 40, 217, 0.08) !important;
     color: #6d28d9 !important;
     border: 1px solid rgba(109, 40, 217, 0.2) !important;
+}
+
+/* Active Calculation Drill Mode highlight in Cyan */
+button.drill-mode-btn.active-nav-tab {
+    background-color: rgba(6, 182, 212, 0.2) !important;
+    color: #22d3ee !important;
+    border-color: rgba(6, 182, 212, 0.5) !important;
+}
+
+body.light-theme button.drill-mode-btn.active-nav-tab {
+    background-color: rgba(8, 145, 178, 0.12) !important;
+    color: #0891b2 !important;
+    border-color: rgba(8, 145, 178, 0.3) !important;
 }
 
 /* Custom Dropdown vector arrow alignment overrides */
@@ -351,6 +368,302 @@ header.header-shrink .w-9.h-9.rounded-xl {
 }
 
 /* Speed Drills Bottom Centering Layout */
-#page-speed {
-    padding-bottom: 25vh !important;
+.content-page {
+    padding-bottom: 12rem !important;
+}
+
+/* Floating Navbar Shrunk styling matching mobile thumb & desktop center positioning */
+#mobile-floating-nav {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#mobile-floating-nav.nav-shrunk {
+    right: 1.5rem !important;
+    left: auto !important;
+    transform: translateX(0) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+}
+
+@media (min-width: 768px) {
+    #mobile-floating-nav.nav-shrunk {
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+    }
+}
+
+/* Immersive Fullscreen Drill Card Styles */
+.fullscreen-drill-card {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+}
+
+
+/* === PREMIUM CUSTOM TOOLTIP STYLES === */
+#custom-tooltip {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    color: #ffffff !important;
+    font-family: inherit !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
+    opacity: 0;
+    transform: scale(0.95);
+    transform-origin: bottom center;
+    transition: opacity 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+#custom-tooltip.active {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+}
+body.light-theme #custom-tooltip {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #0f172a !important;
+}
+
+/* === INTERACTIVE SELECT & OPTIONS THEME === */
+select, select option {
+    background-color: #1e1e2f !important;
+    color: #f1f5f9 !important;
+    border-radius: 0.75rem !important;
+}
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+select:hover {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+select:focus {
+    outline: 2px solid rgba(139, 92, 246, 0.4) !important;
+    border-color: rgba(139, 92, 246, 0.5) !important;
+}
+body.light-theme select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f172a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    color: #0f172a !important;
+}
+body.light-theme select:hover {
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+body.light-theme select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* === FLASHCARDS 3D FLIP TRANSFORMS === */
+.perspective {
+    perspective: 1000px;
+}
+.transform-style {
+    transform-style: preserve-3d;
+}
+.backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+.flashcard-inner {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+/* === SMOOTH NAVBAR MOMENTUM FEEL === */
+#mobile-floating-nav {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Premium Slate Contrast Overrides for Gray Text */
+.text-gray-400 {
+    color: #cbd5e1 !important; /* slate-300 */
+}
+.text-gray-500 {
+    color: #94a3b8 !important; /* slate-400 */
+}
+.text-gray-300 {
+    color: #f1f5f9 !important; /* slate-100 */
+}
+body.light-theme .text-gray-400 {
+    color: #475569 !important; /* slate-600 */
+}
+body.light-theme .text-gray-500 {
+    color: #334155 !important; /* slate-700 */
+}
+body.light-theme .text-gray-300 {
+    color: #0f172a !important; /* slate-900 */
+}
+
+/* === POMODORO POPULAR DRAWER STYLE === */
+#pomo-drawer {
+    background: #181824 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7) !important;
+}
+
+#pomo-drawer svg circle {
+    stroke-linecap: round;
+}
+
+/* Pomo Mode pills inside popover */
+.btn-pomo-mode {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: rgba(0, 0, 0, 0.25) !important;
+    color: #94a3b8 !important;
+    transition: all 0.2s ease;
+}
+
+.btn-pomo-mode:hover {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.btn-pomo-mode.active-nav-tab {
+    background-color: rgba(244, 63, 94, 0.1) !important;
+    border-color: rgba(244, 63, 94, 0.3) !important;
+    color: #f43f5e !important;
+}
+
+/* Light Theme overrides for Pomodoro popover */
+body.light-theme #pomo-drawer {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15) !important;
+}
+body.light-theme .btn-pomo-mode {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    color: #475569 !important;
+}
+body.light-theme .btn-pomo-mode:hover {
+    color: #0f172a !important;
+    background-color: rgba(0, 0, 0, 0.06) !important;
+}
+body.light-theme .btn-pomo-mode.active-nav-tab {
+    background-color: rgba(244, 63, 94, 0.08) !important;
+    border-color: rgba(244, 63, 94, 0.2) !important;
+    color: #e11d48 !important;
+}
+
+/* Top bar capsule styling */
+#pomo-capsule {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    height: 32px !important;
+}
+body.light-theme #pomo-capsule {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+body.light-theme #pomo-capsule span,
+body.light-theme #pomo-capsule button {
+    color: #0f172a !important;
+}
+
+/* === SMOOTH FLOATING NAV TRANSITIONS === */
+#mobile-floating-nav {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    max-width: 500px;
+    height: 48px !important;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#mobile-floating-nav.nav-shrunk {
+    width: 48px !important;
+    height: 48px !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    border-radius: 9999px;
+}
+
+#floating-nav-items {
+    display: flex;
+    align-items: center;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.4s ease;
+    opacity: 1;
+    transform: scale(1);
+    max-width: 500px;
+}
+
+#mobile-floating-nav.nav-shrunk #floating-nav-items {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    max-width: 0;
+    overflow: hidden;
+}
+
+#floating-nav-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.4s ease;
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    max-width: 0;
+    overflow: hidden;
+}
+
+#mobile-floating-nav.nav-shrunk #floating-nav-trigger {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    max-width: 40px;
+    width: 36px;
+}
+
+/* Stop Button sliding transition animation */
+.btn-stop-slide {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    white-space: nowrap !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+    border-width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+.btn-stop-slide.active {
+    max-width: 120px !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding-left: 0.75rem !important; /* px-3 */
+    padding-right: 0.75rem !important;
+    padding-top: 0.375rem !important; /* py-1.5 */
+    padding-bottom: 0.375rem !important;
+    margin-left: 0.5rem !important;
+    border-width: 1px !important;
+    height: auto !important;
 }

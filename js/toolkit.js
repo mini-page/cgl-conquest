@@ -10,61 +10,27 @@ function renderGKTab() {
     
     let html = "";
     
-    // 1. Polity (Rendered as key-value tags grid)
-    html += `
-    <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-        <h4 class="text-xs font-bold text-accentAmber uppercase mb-1">⚖️ Core Constitution Articles &amp; Amendments</h4>`;
-    polity.forEach(sec => {
+    // 1. Polity
+    polity.forEach(card => {
         html += `
-        <div class="space-y-1.5 pt-1">
-            <span class="text-[9px] text-gray-400 font-bold block uppercase">${sec.section}</span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-gray-300">`;
-        sec.items.forEach(item => {
-            html += `
-                <div class="bg-black/20 p-2 rounded-xl border border-white/5 flex gap-2">
-                    <strong class="text-accentAmber font-mono whitespace-nowrap">${item.key}:</strong>
-                    <span>${item.val}</span>
-                </div>`;
-        });
-        html += `
+        <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+            <h4 class="text-xs font-bold text-accentAmber uppercase mb-1">${card.title}</h4>
+            <div class="text-xs text-gray-300 leading-relaxed space-y-2">
+                ${parseMarkdown(card.content)}
             </div>
         </div>`;
     });
-    html += `</div>`;
     
-    // 2. History (Rendered as timeline tables)
-    html += `
-    <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
-        <h4 class="text-xs font-bold text-accentAmber uppercase mb-1">⚔️ Crucial Battles &amp; Timelines</h4>`;
-    history.forEach(era => {
+    // 2. History
+    history.forEach(card => {
         html += `
-        <div class="space-y-1.5 pt-1">
-            <span class="text-[9px] text-gray-400 font-bold block uppercase">${era.period}</span>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-[11px] border-collapse">
-                    <thead>
-                        <tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">
-                            <th class="pb-1 w-2/5">Event / Battle</th>
-                            <th class="pb-1 w-1/5">Year</th>
-                            <th class="pb-1 w-2/5">Key Detail / Significance</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-300 font-mono">`;
-        era.battles.forEach(b => {
-            html += `
-                        <tr class="border-b border-white/5">
-                            <td class="py-1 font-sans font-bold text-accentAmber">${b.event}</td>
-                            <td class="text-white">${b.year}</td>
-                            <td class="font-sans">${b.details}</td>
-                        </tr>`;
-        });
-        html += `
-                    </tbody>
-                </table>
+        <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+            <h4 class="text-xs font-bold text-accentAmber uppercase mb-1">${card.title}</h4>
+            <div class="text-xs text-gray-300 leading-relaxed space-y-2">
+                ${parseMarkdown(card.content)}
             </div>
         </div>`;
     });
-    html += `</div>`;
     
     // 3. Geography
     if (geography.rivers || geography.mountains || geography.dams || geography.passes) {
@@ -210,6 +176,68 @@ function renderGKTab() {
     }
     
     container.innerHTML = html;
+}
+
+// Dynamic Study Toolkit Cards Renderer
+function renderStaticToolkitCards(category, containerId, accentClass) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    if (typeof TOOLKIT_STATIC_DATA === "undefined") {
+        console.warn("TOOLKIT_STATIC_DATA is undefined!");
+        return;
+    }
+    
+    const cards = TOOLKIT_STATIC_DATA[category] || [];
+    let html = "";
+    
+    cards.forEach(card => {
+        let cardAccent = accentClass;
+        if (category === "laws") {
+            if (card.title.includes("Quant")) cardAccent = "text-accentCyan";
+            else if (card.title.includes("Reasoning")) cardAccent = "text-accentPurple";
+            else if (card.title.includes("Grammar") || card.title.includes("English")) cardAccent = "text-accentRose";
+            else if (card.title.includes("Computer") || card.title.includes("Science")) cardAccent = "text-accentAmber";
+        } else if (category === "patterns") {
+            if (card.title.includes("Quant")) cardAccent = "text-accentCyan";
+            else if (card.title.includes("Reasoning") || card.title.includes("Intelligence")) cardAccent = "text-accentPurple";
+            else if (card.title.includes("Grammar") || card.title.includes("English") || card.title.includes("Language")) cardAccent = "text-accentRose";
+            else if (card.title.includes("Awareness") || card.title.includes("GK") || card.title.includes("GS")) cardAccent = "text-accentAmber";
+        }
+        
+        html += `
+        <div class="bg-white/2px border border-white/5 rounded-2xl p-4 space-y-3">
+            <h4 class="text-xs font-bold ${cardAccent} uppercase">${card.title}</h4>
+            <div class="text-xs text-gray-300 leading-relaxed space-y-2">
+                ${parseMarkdown(card.content)}
+            </div>
+        </div>`;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Centralized Study Toolkit Sub-Tab Dispatcher
+function renderToolkitSubTab(targetPanelId) {
+    if (targetPanelId === "tk-quant") {
+        renderStaticToolkitCards("quant", "tk-quant-container", "text-accentCyan");
+    } else if (targetPanelId === "tk-grammar") {
+        renderStaticToolkitCards("grammar", "tk-grammar-container", "text-accentRose");
+    } else if (targetPanelId === "tk-reasoning") {
+        renderStaticToolkitCards("reasoning", "tk-reasoning-container", "text-accentPurple");
+    } else if (targetPanelId === "tk-physics") {
+        renderGKTab();
+    } else if (targetPanelId === "tk-computer") {
+        renderStaticToolkitCards("computer", "tk-computer-container", "text-cyan-400");
+    } else if (targetPanelId === "tk-laws") {
+        renderStaticToolkitCards("laws", "tk-laws-container", "text-accentAmber");
+    } else if (targetPanelId === "tk-patterns") {
+        renderStaticToolkitCards("patterns", "tk-patterns-container", "text-accentAmber");
+    } else if (targetPanelId === "tk-custom") {
+        renderToolkit();
+    }
+    
+    setTimeout(triggerMathTypesetting, 50);
 }
 
 // === STUDY TOOLKIT MODULE ===
