@@ -678,6 +678,15 @@ body.light-theme #pomo-capsule button {
 }
 
 /* === QUIZ FOCUS FOCUS-MODE OVERLAY & DIMMER === */
+html.quiz-focus-active,
+body.quiz-focus-active {
+    overflow: hidden !important;
+    height: 100vh !important;
+    touch-action: none !important;
+}
+#unified-drill-card {
+    touch-action: auto !important;
+}
 #global-header, #mobile-floating-nav, #page-speed > * {
     transition: opacity 0.4s ease-in-out, filter 0.4s ease-in-out;
 }

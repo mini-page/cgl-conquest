@@ -378,7 +378,7 @@ function generateDrillQuestion() {
     if (stopBtn) stopBtn.classList.remove("hidden");
 
     // Activate Blackout Focus Mode
-    document.body.classList.add("quiz-focus-active");
+    document.documentElement.classList.add("quiz-focus-active"); document.body.classList.add("quiz-focus-active");
 
     const level = selectLevel ? selectLevel.value : "medium";
     const qData = generateQuestionTextAndAnswer(drillMode, level);
@@ -500,7 +500,7 @@ function resetDrillSession() {
     clearIdleTimer();
 
     // Disable Blackout Focus Mode
-    document.body.classList.remove("quiz-focus-active");
+    document.documentElement.classList.remove("quiz-focus-active"); document.body.classList.remove("quiz-focus-active");
 
     const scoreEl = document.getElementById("drill-score");
     const feedback = document.getElementById("drill-feedback");
@@ -574,7 +574,7 @@ function startChallengeRun() {
     }
 
     // Activate Blackout Focus Mode
-    document.body.classList.add("quiz-focus-active");
+    document.documentElement.classList.add("quiz-focus-active"); document.body.classList.add("quiz-focus-active");
 
     toggleFreeModeComponents(false);
     updateChallengeUI();
@@ -705,7 +705,7 @@ function endChallengeRun(completed = false, aborted = false) {
     clearInterval(challengeTimerInterval);
 
     // Disable Blackout Focus Mode
-    document.body.classList.remove("quiz-focus-active");
+    document.documentElement.classList.remove("quiz-focus-active"); document.body.classList.remove("quiz-focus-active");
 
     const btnChallengeStart = document.getElementById("btn-challenge-start");
     if (btnChallengeStart) {
@@ -790,7 +790,7 @@ function initSpeedDrillsPage() {
                 clearInterval(drillTimerInterval);
                 
                 // Disable Blackout Focus Mode on pause
-                document.body.classList.remove("quiz-focus-active");
+                document.documentElement.classList.remove("quiz-focus-active"); document.body.classList.remove("quiz-focus-active");
 
                 // Show inline pause overlay
                 const inlineOverlay = document.getElementById("drill-paused-overlay");
@@ -804,7 +804,7 @@ function initSpeedDrillsPage() {
                 pauseBtn.innerHTML = `<i class="fa-solid fa-pause"></i> <span>Pause</span>`;
                 
                 // Activate Blackout Focus Mode on resume
-                document.body.classList.add("quiz-focus-active");
+                document.documentElement.classList.add("quiz-focus-active"); document.body.classList.add("quiz-focus-active");
 
                 // Hide inline pause overlay
                 const inlineOverlay = document.getElementById("drill-paused-overlay");
