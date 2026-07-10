@@ -1,8 +1,4 @@
-// central state values
-window.isDrillModalActive = false;
-let activeModalDrillType = "";
-
-// Calculation Drills States
+// === SPEED DRILLS LOGIC MODULE ===
 let drillMode = "squares"; 
 let drillAnswerVal = null;
 let drillAttempts = 0;
@@ -11,25 +7,23 @@ let drillStreak = 0;
 let drillTimerInterval = null;
 let drillTimerSecs = 15;
 let drillIsPlaying = false;
-// Dynamically expose drillIsPlaying to the window namespace
+
+let isChallengeActive = false;
+let challengeTimeRemaining = 900;
+let challengeTimerInterval = null;
+let challengeQuestionIndex = 0;
+let challengeScore = 0;
+let challengeCorrectAnswerVal = null;
+
+// Dynamically expose values to window namespace
 Object.defineProperty(window, 'drillIsPlaying', {
     get: () => drillIsPlaying,
     set: (v) => { drillIsPlaying = v; }
-}); 
-
-// Flashcard Mode States
-let flashcardModeActive = false;
-let activeFlashcards = [];
-let currentFlashcardIndex = 0;
-
-// Challenge Engine States
-let isChallengeActive = false;
-let challengeTimeRemaining = 900; 
-let challengeTimerInterval = null;
-let challengeQuestionIndex = 0; 
-let challengeScore = 0;
-let challengeActiveTab = "maths"; 
-let challengeCorrectAnswerVal = null; 
+});
+Object.defineProperty(window, 'isChallengeActive', {
+    get: () => isChallengeActive,
+    set: (v) => { isChallengeActive = v; }
+});
 
 // Mode Config Mapping for display titles
 const DRILL_MODE_LABELS = {
@@ -46,13 +40,34 @@ const DRILL_MODE_LABELS = {
     trigReflex: "Trig Reflexes"
 };
 
+// 5-second Idle Auto-Close logic
+let autoCloseTimer = null;
+
+function startIdleTimer() {
+    clearTimeout(autoCloseTimer);
+    autoCloseTimer = setTimeout(() => {
+        const overlay = document.getElementById("drill-paused-overlay");
+        if (overlay && !overlay.classList.contains("hidden")) {
+            if (isChallengeActive) {
+                endChallengeRun(false, true); // Abort challenge
+            } else {
+                resetDrillSession(); // Stop free drill
+            }
+            speakText("Session closed due to inactivity");
+        }
+    }, 5000);
+}
+
+function clearIdleTimer() {
+    clearTimeout(autoCloseTimer);
+}
+
 // Math Options Generator (creates distractors)
 function generateMathOptions(correct) {
     const options = new Set([correct]);
     
     if (typeof correct === "string") {
         if (correct.length === 1 && correct >= "A" && correct <= "Z") {
-            // Letter mapping
             while (options.size < 4) {
                 const charCode = correct.charCodeAt(0);
                 const offset = Math.floor(Math.random() * 9) - 4; // -4 to +4
@@ -62,14 +77,12 @@ function generateMathOptions(correct) {
                 }
             }
         } else if (correct.includes("/") || correct.includes("√") || correct === "Not Defined" || correct.includes("θ") || correct.includes("sec") || correct.includes("cosec") || correct.includes("sin") || correct.includes("cos")) {
-            // Fraction & Trig mapping
-            const allFracs = ["1/2", "1/3", "2/3", "1/4", "3/4", "1/5", "2/5", "3/5", "4/5", "1/6", "5/6", "1/8", "3/8", "5/8", "7/8", "1/12", "1/15", "1/16", "1/10", "1/2", "1/3", "2/3", "1/4", "3/4", "1/5", "2/5", "3/5", "4/5", "1/6", "5/6", "1/8", "3/8", "5/8", "7/8", "1/12", "1/15", "1/16", "1/10", "1/√2", "√3/2", "1/1.414", "1/√3", "√3", "Not Defined", "sec²θ", "cosec²θ", "cot θ", "cos θ", "sin θ"];
+            const allFracs = ["1/2", "1/3", "2/3", "1/4", "3/4", "1/5", "2/5", "3/5", "4/5", "1/6", "5/6", "1/8", "3/8", "5/8", "7/8", "1/12", "1/15", "1/16", "1/10", "1/√2", "√3/2", "1/1.414", "1/√3", "√3", "Not Defined", "sec²θ", "cosec²θ", "cot θ", "cos θ", "sin θ"];
             while (options.size < 4) {
                 const rand = allFracs[Math.floor(Math.random() * allFracs.length)];
                 if (rand !== correct) options.add(rand);
             }
         } else if (correct.includes("%")) {
-            // Percentage mapping
             const allPercs = ["50%", "33.33%", "66.67%", "25%", "75%", "20%", "40%", "60%", "80%", "16.67%", "83.33%", "12.5%", "37.5%", "62.5%", "87.5%", "8.33%", "6.67%", "6.25%", "10%"];
             while (options.size < 4) {
                 const rand = allPercs[Math.floor(Math.random() * allPercs.length)];
@@ -91,7 +104,6 @@ function generateMathOptions(correct) {
     return Array.from(options).sort(() => Math.random() - 0.5);
 }
 
-// Core Math Drills Question & Answer Generator
 // Core Math Drills Question & Answer Generator
 function generateQuestionTextAndAnswer(mode, level) {
     let questionText = "";
@@ -138,7 +150,7 @@ function generateQuestionTextAndAnswer(mode, level) {
         else if (level === "advance") { minIdx = 14; maxIdx = 20; }
         const subList = fracPercPairs.slice(minIdx, maxIdx + 1);
         const item = subList[Math.floor(Math.random() * subList.length)];
-        const type = Math.floor(Math.random() * 2); // 0 = fraction to percent, 1 = percent to fraction
+        const type = Math.floor(Math.random() * 2); 
         if (type === 0) {
             questionText = `Percentage value of fraction '${item.f}' = ?`;
             answer = item.p;
@@ -153,8 +165,8 @@ function generateQuestionTextAndAnswer(mode, level) {
         ];
         const base = baseTriplets[Math.floor(Math.random() * baseTriplets.length)];
         let mult = 1;
-        if (level === "medium") mult = Math.floor(Math.random() * 2) + 2; // 2, 3
-        else if (level === "advance") mult = Math.floor(Math.random() * 3) + 4; // 4, 5, 6
+        if (level === "medium") mult = Math.floor(Math.random() * 2) + 2; 
+        else if (level === "advance") mult = Math.floor(Math.random() * 3) + 4; 
         const trip = base.map(val => val * mult);
 
         const blankIdx = Math.floor(Math.random() * 3);
@@ -167,12 +179,12 @@ function generateQuestionTextAndAnswer(mode, level) {
         const b = Math.floor(Math.random() * 2) + 1; 
         let type = 0;
         if (level === "easy") {
-            type = Math.floor(Math.random() * 2); // 0, 1
+            type = Math.floor(Math.random() * 2); 
         } else if (level === "medium") {
-            const choices = [2, 4]; // ab, a2+b2
+            const choices = [2, 4]; 
             type = choices[Math.floor(Math.random() * choices.length)];
         } else {
-            const choices = [3, 5]; // a2-b2, (a-b)2
+            const choices = [3, 5]; 
             type = choices[Math.floor(Math.random() * choices.length)];
         }
 
@@ -234,10 +246,10 @@ function generateQuestionTextAndAnswer(mode, level) {
         } else if (level === "medium") {
             const lettersSub = "KLMNOPQRSTUVWXYZ";
             chosenChar = lettersSub[Math.floor(Math.random() * lettersSub.length)];
-            type = Math.floor(Math.random() * 2); // 0, 1
+            type = Math.floor(Math.random() * 2); 
         } else {
             chosenChar = letters[Math.floor(Math.random() * letters.length)];
-            type = 2; // Opposite letter
+            type = 2; 
         }
         
         if (type === 0) {
@@ -296,12 +308,12 @@ function generateQuestionTextAndAnswer(mode, level) {
     } else if (mode === "trigReflex") {
         let type = 0;
         if (level === "easy") {
-            type = Math.floor(Math.random() * 2); // 0, 1 (sin, cos)
+            type = Math.floor(Math.random() * 2); 
         } else if (level === "medium") {
-            const choices = [1, 2]; // cos, tan
+            const choices = [1, 2]; 
             type = choices[Math.floor(Math.random() * choices.length)];
         } else {
-            type = 3; // Identities
+            type = 3; 
         }
 
         if (type === 0) {
@@ -315,7 +327,7 @@ function generateQuestionTextAndAnswer(mode, level) {
         } else if (type === 1) {
             const list = [
                 { q: "cos(0°)", a: "1" }, { q: "cos(30°)", a: "√3/2" },
-                { q: "cos(45°)", a: "1/√2" }, { q: "cos(60°)", a: "1/2" }, { q: "cos(90°)", a: "0" }
+                { q: "cos(45°)", a: "1/&radic;2" }, { q: "cos(60°)", a: "1/2" }, { q: "cos(90°)", a: "0" }
             ];
             const item = list[Math.floor(Math.random() * list.length)];
             questionText = `Evaluate: ${item.q} = ?`;
@@ -342,8 +354,13 @@ function generateQuestionTextAndAnswer(mode, level) {
     return { q: questionText, a: answer };
 }
 
-// Generate active question for inline or modal speed drills
+// Generate active question for inline speed drills
 function generateDrillQuestion() {
+    if (isChallengeActive) {
+        generateChallengeQuestion();
+        return;
+    }
+
     const qLabel = document.getElementById("drill-question-label");
     if (!qLabel) return;
 
@@ -354,31 +371,23 @@ function generateDrillQuestion() {
         return;
     }
 
+    // Toggle Difficulty Dropdown VS Close button in header
     const selectLevel = document.getElementById("select-maths-level");
-    const level = selectLevel ? selectLevel.value : "medium";
-
+    if (selectLevel) selectLevel.classList.add("hidden");
     const stopBtn = document.getElementById("btn-drill-stop");
-    if (stopBtn) stopBtn.classList.add("active");
-    const modalCloseBtn = document.getElementById("btn-drill-modal-close");
-    if (modalCloseBtn) modalCloseBtn.classList.add("active");
+    if (stopBtn) stopBtn.classList.remove("hidden");
 
+    const level = selectLevel ? selectLevel.value : "medium";
     const qData = generateQuestionTextAndAnswer(drillMode, level);
     drillAnswerVal = qData.a;
 
     qLabel.innerText = qData.q;
-    const modalQLabel = document.getElementById("modal-drill-question");
-    if (modalQLabel) modalQLabel.innerText = qData.q;
 
     // Restore plain hot streak representation in clean green
     const feedback = document.getElementById("drill-feedback");
     if (feedback) {
         feedback.innerText = `Streak: ${drillStreak} 🔥`;
         feedback.className = "text-xs font-semibold text-accentGreen";
-    }
-    const modalStreakEl = document.getElementById("modal-drill-streak");
-    if (modalStreakEl && !isChallengeActive) {
-        modalStreakEl.innerText = `Streak: ${drillStreak} 🔥`;
-        modalStreakEl.className = "text-xs font-semibold text-accentGreen";
     }
 
     const choices = generateMathOptions(qData.a);
@@ -395,17 +404,6 @@ function generateDrillQuestion() {
             optionsGrid.appendChild(btn);
         });
     }
-    
-    // Sync option clicks to immersive popup modal
-    syncModalContent(
-        qData.q, 
-        choices, 
-        (val, idx) => {
-            const btns = document.querySelectorAll("#drill-options button");
-            if (btns[idx]) btns[idx].click();
-        }, 
-        "maths"
-    );
 
     clearInterval(drillTimerInterval);
     let maxSeconds = 7;
@@ -414,21 +412,17 @@ function generateDrillQuestion() {
     
     drillTimerSecs = maxSeconds;
     const fill = document.getElementById("drill-timer-fill");
-    const modalFill = document.getElementById("modal-drill-timer-fill");
     if (fill) fill.style.width = "100%";
-    if (modalFill) modalFill.style.width = "100%";
 
     drillTimerInterval = setInterval(() => {
         drillTimerSecs--;
         if (fill) fill.style.width = `${(drillTimerSecs / maxSeconds) * 100}%`;
-        if (modalFill) modalFill.style.width = `${(drillTimerSecs / maxSeconds) * 100}%`;
 
         if (drillTimerSecs <= 0) {
             clearInterval(drillTimerInterval);
             drillAttempts++;
             drillStreak = 0;
             
-            const feedback = document.getElementById("drill-feedback");
             const scoreEl = document.getElementById("drill-score");
 
             if (feedback) {
@@ -436,8 +430,6 @@ function generateDrillQuestion() {
                 feedback.className = "text-xs font-semibold text-accentRose";
             }
             if (scoreEl) scoreEl.innerText = `Score: ${drillCorrect}/${drillAttempts}`;
-    const modalScoreEl = document.getElementById("modal-drill-score");
-    if (modalScoreEl) modalScoreEl.innerText = `Score: ${drillCorrect} / ${drillAttempts}`;
             
             const buttons = document.querySelectorAll("#drill-options button");
             buttons.forEach(b => {
@@ -479,11 +471,6 @@ function checkDrillAnswer(chosenVal) {
             feedback.innerText = `Correct! Streak: ${drillStreak} 🔥`;
             feedback.className = "text-xs font-semibold text-accentGreen";
         }
-        const modalStreakEl = document.getElementById("modal-drill-streak");
-        if (modalStreakEl && !isChallengeActive) {
-            modalStreakEl.innerText = `Streak: ${drillStreak} 🔥`;
-            modalStreakEl.className = "text-xs font-semibold text-accentGreen";
-        }
         speakText("Correct");
     } else {
         drillStreak = 0;
@@ -491,25 +478,10 @@ function checkDrillAnswer(chosenVal) {
             feedback.innerText = `Incorrect! Answer was ${drillAnswerVal} ❌`;
             feedback.className = "text-xs font-semibold text-accentRose";
         }
-        const modalStreakEl = document.getElementById("modal-drill-streak");
-        if (modalStreakEl && !isChallengeActive) {
-            modalStreakEl.innerText = `Incorrect! Answer: ${drillAnswerVal}`;
-            modalStreakEl.className = "text-xs font-semibold text-accentRose";
-        }
         speakText("Wrong answer");
     }
 
     if (scoreEl) scoreEl.innerText = `Score: ${drillCorrect}/${drillAttempts}`;
-    const modalScoreEl = document.getElementById("modal-drill-score");
-    if (modalScoreEl) modalScoreEl.innerText = `Score: ${drillCorrect} / ${drillAttempts}`;
-    
-    // Highlight choices inside immersive modal
-    if (window.isDrillModalActive) {
-        const btnTextArr = Array.from(buttons).map(b => b.innerText);
-        const correctIdx = btnTextArr.indexOf(String(drillAnswerVal));
-        const chosenIdx = btnTextArr.indexOf(String(chosenVal));
-        highlightModalOptions(correctIdx, chosenIdx, "maths");
-    }
     
     setTimeout(generateDrillQuestion, 1500);
 }
@@ -522,6 +494,8 @@ function resetDrillSession() {
     drillStreak = 0;
     drillIsPlaying = false; 
     
+    clearIdleTimer();
+
     const scoreEl = document.getElementById("drill-score");
     const feedback = document.getElementById("drill-feedback");
     const pauseBtn = document.getElementById("btn-drill-pause");
@@ -535,432 +509,46 @@ function resetDrillSession() {
     const inlineWrapper = document.getElementById("drill-interactive-area");
     if (inlineWrapper) inlineWrapper.classList.remove("blur-md");
 
+    // Restore difficulty dropdown and hide close button in header
+    const selectLevel = document.getElementById("select-maths-level");
+    if (selectLevel) selectLevel.classList.remove("hidden");
+    const stopBtn = document.getElementById("btn-drill-stop");
+    if (stopBtn) stopBtn.classList.add("hidden");
+
     if (scoreEl) scoreEl.innerText = "Score: 0/0";
     if (feedback) {
         feedback.innerText = "Streak: 0 🔥";
         feedback.className = "text-xs font-semibold text-gray-400";
     }
-    const modalScoreEl = document.getElementById("modal-drill-score");
-    const modalStreakEl = document.getElementById("modal-drill-streak");
-    if (modalScoreEl) modalScoreEl.innerText = "Score: 0 / 0";
-    if (modalStreakEl) {
-        modalStreakEl.innerText = "Streak: 0 🔥";
-        modalStreakEl.className = "text-xs font-semibold text-gray-400";
-    }
-    const stopBtn = document.getElementById("btn-drill-stop");
-    if (stopBtn) stopBtn.classList.remove("active");
-    const modalCloseBtn = document.getElementById("btn-drill-modal-close");
-    if (modalCloseBtn) modalCloseBtn.classList.remove("active");
 
-    if (pauseBtn) pauseBtn.innerHTML = `<i class="fa-solid fa-play mr-1"></i> Start Drill`;
+    if (pauseBtn) pauseBtn.innerHTML = `<i class="fa-solid fa-play mr-1"></i> Start`;
     if (qLabel) qLabel.innerText = "Select a mode & press Start";
     if (fill) fill.style.width = "100%";
     if (optionsGrid) {
         optionsGrid.innerHTML = "";
-        optionsGrid.classList.remove("hidden");
-        // Render 4 transparent dummy options to preserve layout height & prevent jumps
-        for (let i = 0; i < 4; i++) {
-            const btn = document.createElement("button");
-            btn.className = "math-opt-btn p-3 rounded-xl border border-transparent bg-transparent text-sm font-bold text-transparent opacity-0 pointer-events-none select-none";
-            btn.innerHTML = "&nbsp;";
-            optionsGrid.appendChild(btn);
-        }
-    }
-    const modalOptions = document.getElementById("modal-drill-options");
-    if (modalOptions) {
-        modalOptions.innerHTML = "";
-        modalOptions.classList.remove("hidden");
-        for (let i = 0; i < 4; i++) {
-            const btn = document.createElement("button");
-            btn.className = "math-opt-btn w-full p-4 rounded-2xl border border-transparent bg-transparent text-sm font-semibold text-transparent opacity-0 pointer-events-none select-none";
-            btn.innerHTML = "&nbsp;";
-            modalOptions.appendChild(btn);
-        }
+        optionsGrid.classList.add("hidden");
     }
 }
 
-// Flashcard Mode Logic
-function loadFlashcardsForActiveMode() {
-    activeFlashcards = [];
-    const selectLevel = document.getElementById("select-maths-level");
-    const level = selectLevel ? selectLevel.value : "medium";
-    
-    for (let i = 0; i < 10; i++) {
-        activeFlashcards.push(generateQuestionTextAndAnswer(drillMode, level));
-    }
-    currentFlashcardIndex = 0;
-    renderActiveFlashcard();
-}
-
-function renderActiveFlashcard() {
-    const cardBox = document.getElementById("drill-flashcard-box");
-    if (cardBox) cardBox.classList.remove("flipped");
-    
-    setTimeout(() => {
-        const frontText = document.getElementById("fc-front-text");
-        const backText = document.getElementById("fc-back-text");
-        const counter = document.getElementById("fc-counter");
-        
-        if (activeFlashcards.length === 0) return;
-        const currentCard = activeFlashcards[currentFlashcardIndex];
-        
-        if (frontText) frontText.innerText = currentCard.q.replace(" = ?", "");
-        if (backText) backText.innerText = currentCard.a;
-        if (counter) counter.innerText = `${currentFlashcardIndex + 1} / ${activeFlashcards.length}`;
-        
-        setTimeout(triggerMathTypesetting, 50);
-    }, 150);
-}
-
-function flipFlashcard() {
-    const cardBox = document.getElementById("drill-flashcard-box");
-    if (cardBox) cardBox.classList.toggle("flipped");
-}
-
-function triggerMathTypesetting() {
-    if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
-    }
-}
-
-// Core initialization trigger
-function initSpeedDrillsPage() {
-    // 1. Math drill categories tab listeners (Squares, Cubes, etc.)
-    const modeTabs = document.querySelectorAll(".speed-tab-btn");
-    modeTabs.forEach(tab => {
-        tab.onclick = () => {
-            if (isChallengeActive) {
-                speakText("Challenge in progress");
-                alert("Conquest run is active! Abort or complete the current 15-minute challenge before switching categories.");
-                return;
-            }
-            
-            modeTabs.forEach(t => t.classList.remove("active-nav-tab"));
-            tab.classList.add("active-nav-tab");
-            
-            drillMode = tab.getAttribute("data-mode");
-            
-            // Update Card Header Title
-            const cardTitle = document.getElementById("drill-category-title");
-            if (cardTitle) {
-                cardTitle.innerText = DRILL_MODE_LABELS[drillMode] || drillMode;
-            }
-            
-            resetDrillSession();
-            
-            if (flashcardModeActive) {
-                loadFlashcardsForActiveMode();
-            } else {
-                generateDrillQuestion();
-            }
-        };
-    });
-
-    // 2. Drill Mode vs Flashcard Mode Selector
-    const btnToggleDrill = document.getElementById("toggle-mode-drill");
-    const btnToggleFlashcard = document.getElementById("toggle-mode-flashcard");
-    const drillArea = document.getElementById("drill-interactive-area");
-    const flashcardArea = document.getElementById("flashcard-interactive-area");
-
-    if (btnToggleDrill && btnToggleFlashcard) {
-        btnToggleDrill.onclick = () => {
-            if (isChallengeActive) return;
-            flashcardModeActive = false;
-            
-            // Switch tabs styling
-            btnToggleDrill.className = "flex-grow py-2 rounded-lg text-[10px] font-extrabold uppercase transition duration-150 text-white bg-accentCyan/20 border border-accentCyan/30";
-            btnToggleFlashcard.className = "flex-grow py-2 rounded-lg text-[10px] font-extrabold uppercase transition duration-150 text-gray-400 hover:text-white";
-            
-            if (drillArea) drillArea.classList.remove("hidden");
-            if (flashcardArea) flashcardArea.classList.add("hidden");
-            
-            resetDrillSession();
-            generateDrillQuestion();
-        };
-
-        btnToggleFlashcard.onclick = () => {
-            if (isChallengeActive) return;
-            flashcardModeActive = true;
-            
-            // Switch tabs styling
-            btnToggleFlashcard.className = "flex-grow py-2 rounded-lg text-[10px] font-extrabold uppercase transition duration-150 text-white bg-accentCyan/20 border border-accentCyan/30";
-            btnToggleDrill.className = "flex-grow py-2 rounded-lg text-[10px] font-extrabold uppercase transition duration-150 text-gray-400 hover:text-white";
-            
-            if (flashcardArea) flashcardArea.classList.remove("hidden");
-            if (drillArea) drillArea.classList.add("hidden");
-            
-            // Stop active drill
-            drillIsPlaying = false;
-            clearInterval(drillTimerInterval);
-            
-            loadFlashcardsForActiveMode();
-        };
-    }
-
-    // 3. Start / Pause toggle
-    const pauseBtn = document.getElementById("btn-drill-pause");
-    if (pauseBtn) {
-        pauseBtn.onclick = () => {
-            if (isChallengeActive) return; 
-            if (drillIsPlaying) {
-                drillIsPlaying = false;
-                pauseBtn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Resume</span>`;
-                clearInterval(drillTimerInterval);
-                
-                // Show inline pause overlay
-                const inlineOverlay = document.getElementById("drill-paused-overlay");
-                if (inlineOverlay) inlineOverlay.classList.remove("hidden");
-                const inlineWrapper = document.getElementById("drill-interactive-area");
-                if (inlineWrapper) inlineWrapper.classList.add("blur-md");
-                
-                closeDrillModal();
-                speakText("Paused");
-            } else {
-                drillIsPlaying = true;
-                pauseBtn.innerHTML = `<i class="fa-solid fa-pause"></i> <span>Pause</span>`;
-                
-                // Slide active stop button in
-                const stopBtn = document.getElementById("btn-drill-stop");
-                if (stopBtn) stopBtn.classList.add("active");
-                const modalCloseBtn = document.getElementById("btn-drill-modal-close");
-                if (modalCloseBtn) modalCloseBtn.classList.add("active");
-                
-                // Hide inline pause overlay
-                const inlineOverlay = document.getElementById("drill-paused-overlay");
-                if (inlineOverlay) inlineOverlay.classList.add("hidden");
-                const inlineWrapper = document.getElementById("drill-interactive-area");
-                if (inlineWrapper) inlineWrapper.classList.remove("blur-md");
-                
-                const btnCycle = document.getElementById("btn-maths-mode-cycle");
-                const mode = btnCycle ? btnCycle.getAttribute("data-mode") : "popup";
-                
-                if (mode === "inline") {
-                    closeDrillModal();
-                    generateDrillQuestion();
-                } else {
-                    // Popup / Fullscreen
-                    openDrillModal(DRILL_MODE_LABELS[drillMode].toUpperCase(), true);
-                    activeModalDrillType = "maths";
-                    if (mode === "fullscreen") {
-                        toggleDrillFullscreen();
-                    }
-                    generateDrillQuestion();
-                }
-            }
-        };
-    }
-
-    // 4. Level selector change listener
-    const selectLevel = document.getElementById("select-maths-level");
-    const modalSelectLevel = document.getElementById("modal-select-maths-level");
-    
-    if (selectLevel) {
-        selectLevel.onchange = () => {
-            if (modalSelectLevel) modalSelectLevel.value = selectLevel.value;
-            resetDrillSession();
-            if (flashcardModeActive) {
-                loadFlashcardsForActiveMode();
-            } else {
-                generateDrillQuestion();
-            }
-        };
-    }
-    
-    if (modalSelectLevel) {
-        modalSelectLevel.onchange = () => {
-            if (selectLevel) selectLevel.value = modalSelectLevel.value;
-            resetDrillSession();
-            if (flashcardModeActive) {
-                loadFlashcardsForActiveMode();
-            } else {
-                generateDrillQuestion();
-            }
-        };
-    }
-
-    // 5. Flashcard flip interaction
-    const cardBox = document.getElementById("drill-flashcard-box");
-    if (cardBox) {
-        cardBox.onclick = () => flipFlashcard();
-    }
-
-    // 6. Flashcard navigation
-    const fcPrev = document.getElementById("btn-fc-prev");
-    const fcNext = document.getElementById("btn-fc-next");
-    if (fcPrev) {
-        fcPrev.onclick = () => {
-            currentFlashcardIndex = (currentFlashcardIndex - 1 + activeFlashcards.length) % activeFlashcards.length;
-            renderActiveFlashcard();
-        };
-    }
-    if (fcNext) {
-        fcNext.onclick = () => {
-            currentFlashcardIndex = (currentFlashcardIndex + 1) % activeFlashcards.length;
-            renderActiveFlashcard();
-        };
-    }
-
-    // 7. Conquest Challenge Trigger
-    const btnChallengeStart = document.getElementById("btn-challenge-start");
-    if (btnChallengeStart) {
-        btnChallengeStart.onclick = () => {
-            if (isChallengeActive) {
-                endChallengeRun(false, true);
-            } else {
-                startChallengeRun();
-            }
-        };
-    }
-
-    // Modal click bindings
-    const btnDrillClose = document.getElementById("btn-drill-modal-close");
-    if (btnDrillClose) {
-        btnDrillClose.onclick = () => {
-            resetDrillSession();
-            closeDrillModal();
-        };
-    }
-    const btnDrillPause = document.getElementById("btn-drill-modal-pause");
-    if (btnDrillPause) {
-        btnDrillPause.onclick = () => toggleModalPause();
-    }
-    const btnDrillModalResume = document.getElementById("btn-drill-modal-resume");
-    if (btnDrillModalResume) {
-        btnDrillModalResume.onclick = () => toggleModalPause();
-    }
-    const btnDrillFull = document.getElementById("btn-drill-fullscreen");
-    if (btnDrillFull) {
-        btnDrillFull.onclick = () => toggleDrillFullscreen();
-    }
-
-    // 8. Popup Mode cycling (inline, popup, fullscreen)
-    const btnCycle = document.getElementById("btn-maths-mode-cycle");
-    if (btnCycle) {
-        btnCycle.onclick = () => {
-            if (isChallengeActive) return;
-            const currentMode = btnCycle.getAttribute("data-mode") || "popup";
-            let nextMode = "popup";
-            if (currentMode === "inline") nextMode = "popup";
-            else if (currentMode === "popup") nextMode = "fullscreen";
-            else if (currentMode === "fullscreen") nextMode = "inline";
-            
-            btnCycle.setAttribute("data-mode", nextMode);
-            let icon = "fa-expand";
-            let text = "Popup Mode";
-            if (nextMode === "inline") {
-                icon = "fa-play";
-                text = "Inline Mode";
-            } else if (nextMode === "fullscreen") {
-                icon = "fa-maximize";
-                text = "Fullscreen Mode";
-            }
-            btnCycle.innerHTML = `<i class="fa-solid ${icon} text-accentCyan mr-1"></i> ${text}`;
-            
-
-            // Seamless transition of active quiz state
-            if (drillIsPlaying) {
-                if (nextMode === "inline") {
-                    closeDrillModal();
-                } else {
-                    const modalTitle = DRILL_MODE_LABELS[drillMode].toUpperCase();
-                    openDrillModal(modalTitle, true);
-                    activeModalDrillType = "maths";
-                    
-                    const modal = document.getElementById("modal-drill-window");
-                    const card = document.getElementById("drill-window-card");
-                    const btnDrillFull = document.getElementById("btn-drill-fullscreen");
-                    const btnDrillClose = document.getElementById("btn-drill-modal-close");
-                    
-                    if (nextMode === "fullscreen") {
-                        if (card) card.classList.add("fullscreen-drill-card");
-                        if (btnDrillFull) btnDrillFull.innerHTML = '<i class="fa-solid fa-window-restore text-accentCyan"></i> <span>Popup</span>';
-                        if (btnDrillClose) btnDrillClose.innerHTML = '<i class="fa-solid fa-circle-stop text-accentRose"></i> <span>Exit</span>';
-                    } else {
-                        if (card) card.classList.remove("fullscreen-drill-card");
-                        if (btnDrillFull) btnDrillFull.innerHTML = '<i class="fa-solid fa-desktop text-accentCyan"></i> <span>Mode</span>';
-                        if (btnDrillClose) btnDrillClose.innerHTML = '<i class="fa-solid fa-circle-stop text-accentRose"></i> <span>Close</span>';
-                    }
-                    
-                    // Restore current active question/choices to modal
-                    const qLabel = document.getElementById("drill-question-label");
-                    const modalQLabel = document.getElementById("modal-drill-question");
-                    if (qLabel && modalQLabel) {
-                        modalQLabel.innerText = qLabel.innerText;
-                    }
-                    
-                    const buttons = document.querySelectorAll("#drill-options button");
-                    const choices = Array.from(buttons).map(b => b.innerText);
-                    syncModalContent(
-                        qLabel ? qLabel.innerText : "", 
-                        choices, 
-                        (val, idx) => {
-                            const btns = document.querySelectorAll("#drill-options button");
-                            if (btns[idx]) btns[idx].click();
-                        }, 
-                        "maths"
-                    );
-                    
-                    // Sync timer visuals
-                    const fill = document.getElementById("drill-timer-fill");
-                    const modalFill = document.getElementById("modal-drill-timer-fill");
-                    if (fill && modalFill) {
-                        modalFill.style.width = fill.style.width;
-                    }
-                    
-                    window.isDrillModalActive = true;
-                    const modalWin = document.getElementById("modal-drill-window");
-                    if (modalWin) {
-                        modalWin.classList.add("active");
-                        modalWin.classList.remove("opacity-0", "pointer-events-none");
-                    }
-                }
-            }
-        };
-    }
-
-
-
-    // Bind inline stop button listener
-    const inlineStopBtn = document.getElementById("btn-drill-stop");
-    if (inlineStopBtn) {
-        inlineStopBtn.onclick = () => {
-            resetDrillSession();
-            speakText("Drill stopped");
-        };
-    }
-
-    // Bind inline resume button click listener
-    const inlineResumeBtn = document.getElementById("btn-drill-resume");
-    if (inlineResumeBtn) {
-        inlineResumeBtn.onclick = () => {
-            const pauseBtn = document.getElementById("btn-drill-pause");
-            if (pauseBtn) pauseBtn.click();
-        };
-    }
-
-    // Custom tooltips setup
-    if (typeof initCustomTooltips === "function") {
-        setTimeout(initCustomTooltips, 100);
-    }
-}
-
-// ==========================================================================
-// CHALLENGE ENGINE CONTROLLERS
-// ==========================================================================
+// === CONQUEST CHALLENGE ENGINE CONTROLLERS ===
 function startChallengeRun() {
     isChallengeActive = true;
+    drillIsPlaying = true;
     challengeTimeRemaining = 900; 
-    openDrillModal("⚡ Conquest Challenge", true);
-    activeModalDrillType = "challenge";
     challengeQuestionIndex = 0;
     challengeScore = 0;
-    challengeActiveTab = "maths"; // Maths speed run
     
     const btnChallengeStart = document.getElementById("btn-challenge-start");
     if (btnChallengeStart) {
         btnChallengeStart.innerHTML = `<i class="fa-solid fa-square mr-1"></i> Abort Run`;
-        btnChallengeStart.className = "bg-accentRose hover:bg-rose-500 text-white font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200 ml-2 animate-pulse";
+        btnChallengeStart.className = "w-full bg-accentRose hover:bg-rose-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md animate-pulse";
     }
+
+    // Hide difficulty dropdown and show close button in header
+    const selectLevel = document.getElementById("select-maths-level");
+    if (selectLevel) selectLevel.classList.add("hidden");
+    const stopBtn = document.getElementById("btn-drill-stop");
+    if (stopBtn) stopBtn.classList.remove("hidden");
 
     toggleFreeModeComponents(false);
     updateChallengeUI();
@@ -1004,44 +592,18 @@ function updateChallengeUI() {
         diffEl.innerText = level;
         diffEl.className = `font-bold text-xs uppercase ${colorClass}`;
     }
-    
-    if (window.isDrillModalActive) {
-        const titleEl = document.getElementById("drill-modal-title");
-        if (titleEl) titleEl.innerText = `⚡ Conquest Challenge [${formattedTime}]`;
-        
-        const modalScore = document.getElementById("modal-drill-score");
-        if (modalScore) modalScore.innerText = `Score: ${challengeScore}`;
-        
-        const modalStreak = document.getElementById("modal-drill-streak");
-        if (modalStreak) modalStreak.innerText = `Q: ${challengeQuestionIndex + 1} / 25 (${level})`;
-        
-        const modalFill = document.getElementById("modal-drill-timer-fill");
-        if (modalFill) modalFill.style.width = `${(challengeTimeRemaining / 900) * 100}%`;
-    }
 }
 
-// Generate progressive procedural questions for challenges
 function generateProceduralMathQuestion(difficulty) {
     const modes = ["squares", "cubes", "tables", "fracPerc", "triplets", "algebra", "lcm", "hcf", "geomCenters", "trigReflex"];
     const mode = modes[Math.floor(Math.random() * modes.length)];
     const qData = generateQuestionTextAndAnswer(mode, difficulty);
-    // Restore plain hot streak representation in clean green
-    const feedback = document.getElementById("drill-feedback");
-    if (feedback) {
-        feedback.innerText = `Streak: ${drillStreak} 🔥`;
-        feedback.className = "text-xs font-semibold text-accentGreen";
-    }
-    const modalStreakEl = document.getElementById("modal-drill-streak");
-    if (modalStreakEl && !isChallengeActive) {
-        modalStreakEl.innerText = `Streak: ${drillStreak} 🔥`;
-        modalStreakEl.className = "text-xs font-semibold text-accentGreen";
-    }
-
     const choices = generateMathOptions(qData.a);
     return { q: qData.q, a: qData.a, o: choices };
 }
 
 function generateChallengeQuestion() {
+    if (!isChallengeActive) return;
     updateChallengeUI();
 
     let diff = "easy";
@@ -1068,16 +630,6 @@ function generateChallengeQuestion() {
             btn.onclick = () => submitChallengeAnswer("maths", choice, qData.a, optionsGrid.querySelectorAll("button"));
             optionsGrid.appendChild(btn);
         });
-        
-        syncModalContent(
-            qData.q,
-            qData.o,
-            (val, idx) => {
-                const btns = optionsGrid.querySelectorAll("button");
-                if (btns[idx]) btns[idx].click();
-            },
-            "maths"
-        );
     }
 }
 
@@ -1113,7 +665,7 @@ function submitChallengeAnswer(subject, chosenVal, correctVal, optButtons) {
 
 function endChallengeRun(completed = false, aborted = false) {
     isChallengeActive = false;
-    closeDrillModal();
+    drillIsPlaying = false;
     clearInterval(challengeTimerInterval);
 
     const btnChallengeStart = document.getElementById("btn-challenge-start");
@@ -1159,217 +711,142 @@ function toggleFreeModeComponents(show) {
     }
 }
 
-// ==========================================================================
-// IMMERSIVE DRILL SIMULATOR MODAL HELPERS
-// ==========================================================================
-function openDrillModal(title, isMCQ) {
-    const modal = document.getElementById("modal-drill-window");
-    if (!modal) return;
-    
-    // Dynamically update the header category icon
-    const modalIconContainer = document.getElementById("modal-drill-icon-container");
-    if (modalIconContainer) {
-        const iconMap = {
-            squares: "fa-solid fa-calculator",
-            cubes: "fa-solid fa-cube",
-            tables: "fa-solid fa-table-cells",
-            fracPerc: "fa-solid fa-percent",
-            triplets: "fa-solid fa-triangle",
-            algebra: "fa-solid fa-square-root-variable",
-            lcm: "fa-solid fa-arrow-down-up-across-line",
-            hcf: "fa-solid fa-arrow-up-down-left-right",
-            alphabets: "fa-solid fa-arrow-down-a-z",
-            geomCenters: "fa-solid fa-circle-dot"
+// Core initialization trigger
+function initSpeedDrillsPage() {
+    // 1. Math drill categories tab listeners (Squares, Cubes, etc.)
+    const modeTabs = document.querySelectorAll(".speed-tab-btn");
+    modeTabs.forEach(tab => {
+        tab.onclick = () => {
+            if (isChallengeActive) {
+                speakText("Challenge in progress");
+                alert("Conquest run is active! Abort or complete the current 15-minute challenge before switching categories.");
+                return;
+            }
+            modeTabs.forEach(t => t.classList.remove("active-nav-tab"));
+            tab.classList.add("active-nav-tab");
+            drillMode = tab.getAttribute("data-mode");
+            resetDrillSession();
+            generateDrillQuestion();
         };
-        const iconClass = iconMap[drillMode] || "fa-solid fa-bolt";
-        modalIconContainer.innerHTML = `<i class="${iconClass}"></i>`;
+    });
+
+    // 2. Start / Pause toggle
+    const pauseBtn = document.getElementById("btn-drill-pause");
+    if (pauseBtn) {
+        pauseBtn.onclick = () => {
+            if (isChallengeActive) return;
+            if (drillIsPlaying) {
+                drillIsPlaying = false;
+                pauseBtn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Resume</span>`;
+                clearInterval(drillTimerInterval);
+                
+                // Show inline pause overlay
+                const inlineOverlay = document.getElementById("drill-paused-overlay");
+                if (inlineOverlay) inlineOverlay.classList.remove("hidden");
+                const inlineWrapper = document.getElementById("drill-interactive-area");
+                if (inlineWrapper) inlineWrapper.classList.add("blur-md");
+                
+                speakText("Paused");
+            } else {
+                drillIsPlaying = true;
+                pauseBtn.innerHTML = `<i class="fa-solid fa-pause"></i> <span>Pause</span>`;
+                
+                // Hide inline pause overlay
+                const inlineOverlay = document.getElementById("drill-paused-overlay");
+                if (inlineOverlay) inlineOverlay.classList.add("hidden");
+                const inlineWrapper = document.getElementById("drill-interactive-area");
+                if (inlineWrapper) inlineWrapper.classList.remove("blur-md");
+                
+                // Hide difficulty dropdown and show close button in header
+                const selectLevel = document.getElementById("select-maths-level");
+                if (selectLevel) selectLevel.classList.add("hidden");
+                const stopBtn = document.getElementById("btn-drill-stop");
+                if (stopBtn) stopBtn.classList.remove("hidden");
+                
+                clearIdleTimer();
+                generateDrillQuestion();
+                speakText("Resumed");
+            }
+        };
     }
-    
-    const floatingNav = document.getElementById("mobile-floating-nav");
-    if (floatingNav) floatingNav.classList.add("hidden");
-    document.getElementById("floating-nav-trigger").classList.add("hidden");
-    document.getElementById("drill-modal-title").innerText = title;
-    
-    const inputWrapper = document.getElementById("modal-drill-input-wrapper");
-    const optionsGrid = document.getElementById("modal-drill-options");
-    
-    if (isMCQ) {
-        if (inputWrapper) inputWrapper.classList.add("hidden");
-        if (optionsGrid) optionsGrid.classList.remove("hidden");
-    } else {
-        if (inputWrapper) inputWrapper.classList.remove("hidden");
-        if (optionsGrid) optionsGrid.classList.add("hidden");
-        
-        const inputField = document.getElementById("modal-drill-answer");
-        if (inputField) {
-            inputField.value = "";
-            inputField.disabled = false;
-            setTimeout(() => inputField.focus(), 100);
+
+    // 3. Level selector change listener
+    const selectLevel = document.getElementById("select-maths-level");
+    if (selectLevel) {
+        selectLevel.onchange = () => {
+            resetDrillSession();
+            generateDrillQuestion();
+        };
+    }
+
+    // 4. Bind inline stop button listener
+    const inlineStopBtn = document.getElementById("btn-drill-stop");
+    if (inlineStopBtn) {
+        inlineStopBtn.onclick = () => {
+            if (isChallengeActive) {
+                endChallengeRun(false, true); // Abort challenge
+            } else {
+                resetDrillSession();
+            }
+            speakText("Drill stopped");
+        };
+    }
+
+    // 5. Bind inline resume button click listener
+    const inlineResumeBtn = document.getElementById("btn-drill-resume");
+    if (inlineResumeBtn) {
+        inlineResumeBtn.onclick = () => {
+            const pauseBtn = document.getElementById("btn-drill-pause");
+            if (pauseBtn) pauseBtn.click();
+        };
+    }
+
+    // 6. Conquest Challenge Trigger
+    const btnChallengeStart = document.getElementById("btn-challenge-start");
+    if (btnChallengeStart) {
+        btnChallengeStart.onclick = () => {
+            if (isChallengeActive) {
+                endChallengeRun(false, true); // Abort
+            } else {
+                startChallengeRun();
+            }
+        };
+    }
+
+    // 7. Auto-pause logic on document click outside the drill card
+    document.addEventListener("click", (e) => {
+        if (drillIsPlaying && !isChallengeActive) {
+            const drillCard = document.getElementById("unified-drill-card");
+            if (drillCard && !drillCard.contains(e.target) && !e.target.closest(".speed-tab-btn") && !e.target.closest("#mobile-floating-nav")) {
+                const pauseBtn = document.getElementById("btn-drill-pause");
+                if (pauseBtn && pauseBtn.querySelector("span").innerText === "Pause") {
+                    pauseBtn.click();
+                }
+            }
         }
-    }
-    
-    modal.classList.add("active");
-    modal.classList.remove("opacity-0", "pointer-events-none");
-    window.isDrillModalActive = true;
+    });
+
+    // 8. Auto-pause logic on browser blur (switching tabs/windows)
+    window.addEventListener("blur", () => {
+        if (drillIsPlaying) {
+            const pauseBtn = document.getElementById("btn-drill-pause");
+            if (pauseBtn && pauseBtn.querySelector("span").innerText === "Pause") {
+                pauseBtn.click();
+            }
+            startIdleTimer();
+        }
+    });
+
+    // 9. Custom tooltips setup
+    initCustomTooltips();
 }
 
 // Global reference exposed to navigation resets
 window.resetDrillSession = resetDrillSession;
 
-function closeDrillModal() {
-    const modal = document.getElementById("modal-drill-window");
-    if (!modal) return;
-    
-    modal.classList.remove("active");
-    modal.classList.add("opacity-0", "pointer-events-none");
-    window.isDrillModalActive = false;
-    
-    const floatingNav = document.getElementById("mobile-floating-nav");
-    if (floatingNav) floatingNav.classList.remove("hidden");
-    const navTrigger = document.getElementById("floating-nav-trigger");
-    if (navTrigger) navTrigger.classList.remove("hidden");
-    
-    drillIsPaused = false;
-    const overlay = document.getElementById("modal-drill-paused-overlay");
-    const wrapper = document.getElementById("modal-drill-content-wrapper");
-    const pauseBtn = document.getElementById("btn-drill-modal-pause");
-    if (overlay) overlay.classList.add("hidden");
-    if (wrapper) wrapper.classList.remove("blur-md");
-    if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pause</span>';
-    
-    const card = document.getElementById("drill-window-card");
-    if (card) card.classList.remove("fullscreen-drill-card");
-    
-    const expandBtn = document.getElementById("btn-drill-fullscreen");
-    if (expandBtn) expandBtn.innerHTML = '<i class="fa-solid fa-expand"></i> <span>Fullscreen</span>';
-    
-    // Stop/Pause the drill if it was running in modal mode
-    const btnCycle = document.getElementById("btn-maths-mode-cycle");
-    const mode = btnCycle ? btnCycle.getAttribute("data-mode") : "popup";
-    if (mode !== "inline" && drillIsPlaying) {
-        drillIsPlaying = false;
-        const pauseBtn = document.getElementById("btn-drill-pause");
-        if (pauseBtn) pauseBtn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Start</span>`;
-        clearInterval(drillTimerInterval);
-    }
-    
-    if (isChallengeActive) {
-        endChallengeRun(false, true);
-    }
-}
-
-function toggleDrillFullscreen() {
-    const card = document.getElementById("drill-window-card");
-    const btn = document.getElementById("btn-drill-fullscreen");
-    if (!card || !btn) return;
-    
-    const isFullscreen = card.classList.toggle("fullscreen-drill-card");
-    if (isFullscreen) {
-        btn.innerHTML = '<i class="fa-solid fa-compress"></i> <span>Exit Fullscreen</span>';
-    } else {
-        btn.innerHTML = '<i class="fa-solid fa-expand"></i> <span>Fullscreen</span>';
-    }
-}
-
-function syncModalContent(question, choices, onOptionClick, subject) {
-    if (!window.isDrillModalActive) return;
-    
-    const modalQ = document.getElementById("modal-drill-question");
-    if (modalQ) modalQ.innerText = question;
-    
-    const modalOptions = document.getElementById("modal-drill-options");
-    if (modalOptions) {
-        modalOptions.innerHTML = "";
-        
-        choices.forEach((choice, idx) => {
-            const btn = document.createElement("button");
-            btn.className = `math-opt-btn w-full text-center p-4 rounded-2xl border border-white/5 bg-white/2px hover:border-accentCyan hover:bg-white/5 transition text-sm font-semibold text-gray-200`;
-            btn.innerText = choice;
-            btn.onclick = () => onOptionClick(choice, idx, btn);
-            modalOptions.appendChild(btn);
-        });
-    }
-}
-
-function highlightModalOptions(correctIndex, chosenIndex, subject) {
-    if (!window.isDrillModalActive) return;
-    const modalOptions = document.getElementById("modal-drill-options");
-    if (!modalOptions) return;
-    
-    const buttons = modalOptions.querySelectorAll("button");
-    
-    buttons.forEach((b, idx) => {
-        b.disabled = true;
-        if (idx === correctIndex) {
-            b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
-        } else if (idx === chosenIndex) {
-            b.className = b.className.replace("border-white/5", "border-accentCyan bg-accentCyan/15 text-accentCyan");
-        }
-    });
-}
-
-let drillIsPaused = false;
-
-function toggleModalPause() {
-    if (!window.isDrillModalActive) return;
-    
-    drillIsPaused = !drillIsPaused;
-    
-    const overlay = document.getElementById("modal-drill-paused-overlay");
-    const wrapper = document.getElementById("modal-drill-content-wrapper");
-    const pauseBtn = document.getElementById("btn-drill-modal-pause");
-    
-    if (drillIsPaused) {
-        drillIsPlaying = false;
-        const inlinePauseBtn = document.getElementById("btn-drill-pause");
-        if (inlinePauseBtn) inlinePauseBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Resume</span>';
-        
-        if (overlay) overlay.classList.remove("hidden");
-        if (wrapper) wrapper.classList.add("blur-md");
-        if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-play"></i> <span>Resume</span>';
-        
-        if (activeModalDrillType === "maths") {
-            clearInterval(drillTimerInterval);
-        } else if (activeModalDrillType === "challenge") {
-            clearInterval(challengeTimerInterval);
-        }
-        speakText("Paused");
-    } else {
-        drillIsPlaying = true;
-        const inlinePauseBtn = document.getElementById("btn-drill-pause");
-        if (inlinePauseBtn) inlinePauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pause</span>';
-        
-        if (overlay) overlay.classList.add("hidden");
-        if (wrapper) wrapper.classList.remove("blur-md");
-        if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>Pause</span>';
-        
-        if (activeModalDrillType === "maths") {
-            const fill = document.getElementById("drill-timer-fill");
-            const modalFill = document.getElementById("modal-drill-timer-fill");
-            clearInterval(drillTimerInterval);
-            drillTimerInterval = setInterval(() => {
-                drillTimerSecs--;
-                if (fill) fill.style.width = `${(drillTimerSecs / 15) * 100}%`;
-                if (modalFill) modalFill.style.width = `${(drillTimerSecs / 15) * 100}%`;
-                if (drillTimerSecs <= 0) {
-                    checkDrillAnswer("");
-                }
-            }, 1000);
-        } else if (activeModalDrillType === "challenge") {
-            clearInterval(challengeTimerInterval);
-            challengeTimerInterval = setInterval(() => {
-                challengeTimeRemaining--;
-                updateChallengeUI();
-                if (challengeTimeRemaining <= 0) {
-                    endChallengeRun(false); 
-                }
-            }, 1000);
-        }
-        speakText("Resumed");
-    }
-}
-
-// === TOOLTIP & TEXT CONVERTERS ===
+// ==========================================================================
+// TOOLTIP & TEXT CONVERTERS
+// ==========================================================================
 function isHighWeightTopic(topicName) {
     if (!topicName) return false;
     const name = topicName.trim().toLowerCase();
@@ -1470,54 +947,177 @@ function parseMarkdown(text) {
 }
 
 // === CUSTOM TOOLTIP ENGINE ===
+let tooltipTimeout = null;
+let activeTarget = null;
+let isTouchActive = false;
+let isScrolling = false;
+let scrollTimeout = null;
+
 function initCustomTooltips() {
     let tooltipEl = document.getElementById("custom-tooltip");
     if (!tooltipEl) {
         tooltipEl = document.createElement("div");
         tooltipEl.id = "custom-tooltip";
-        tooltipEl.className = "fixed bg-bgCard/95 border border-white/10 backdrop-blur-md text-white text-[10px] font-bold py-1.5 px-3 rounded-xl shadow-2xl pointer-events-none opacity-0 transition-opacity duration-200 z-[9999]";
+        tooltipEl.className = "fixed pointer-events-none z-[9999]";
         document.body.appendChild(tooltipEl);
     }
     
-    const targets = document.querySelectorAll("[data-tooltip], [title]");
-    targets.forEach(target => {
-        if (target.hasAttribute("title") && !target.hasAttribute("data-tooltip")) {
-            target.setAttribute("data-tooltip", target.getAttribute("title"));
-        }
-        if (target.hasAttribute("title")) {
-            target.setAttribute("data-title-backup", target.getAttribute("title"));
-            target.removeAttribute("title");
-        }
-        
-        target.addEventListener("mouseenter", (e) => {
-            const tipText = target.getAttribute("data-tooltip") || target.getAttribute("data-title-backup");
-            if (!tipText) return;
-            
-            tooltipEl.innerText = tipText;
-            tooltipEl.classList.remove("opacity-0");
-            tooltipEl.classList.add("active");
-            
-            const rect = target.getBoundingClientRect();
-            const tooltipRect = tooltipEl.getBoundingClientRect();
-            
-            let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
-            let top = rect.top - tooltipRect.height - 8;
-            
-            if (left < 10) left = 10;
-            if (left + tooltipRect.width > window.innerWidth - 10) {
-                left = window.innerWidth - tooltipRect.width - 10;
-            }
-            if (top < 10) {
-                top = rect.bottom + 8;
-            }
-            
-            tooltipEl.style.left = `${left}px`;
-            tooltipEl.style.top = `${top}px`;
-        });
-        
-        target.addEventListener("mouseleave", () => {
+    function hideTooltip() {
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = null;
+        activeTarget = null;
+        if (tooltipEl) {
             tooltipEl.classList.remove("active");
-            tooltipEl.classList.add("opacity-0");
+        }
+    }
+
+    function showTooltip(target) {
+        if (isScrolling) return;
+        const tipText = target.getAttribute("data-tooltip") || target.getAttribute("data-title-backup");
+        if (!tipText) return;
+        
+        tooltipEl.innerText = tipText;
+        tooltipEl.classList.add("active");
+        
+        const rect = target.getBoundingClientRect();
+        const tooltipRect = tooltipEl.getBoundingClientRect();
+        
+        let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+        let top = rect.top - tooltipRect.height - 8;
+        
+        if (left < 10) left = 10;
+        if (left + tooltipRect.width > window.innerWidth - 10) {
+            left = window.innerWidth - tooltipRect.width - 10;
+        }
+        if (top < 10) {
+            top = rect.bottom + 8;
+        }
+        
+        tooltipEl.style.left = `${left}px`;
+        tooltipEl.style.top = `${top}px`;
+    }
+
+    function handleTitleAttributes(element) {
+        if (!element) return;
+        if (element.hasAttribute("title")) {
+            if (!element.hasAttribute("data-tooltip")) {
+                element.setAttribute("data-tooltip", element.getAttribute("title"));
+            }
+            element.setAttribute("data-title-backup", element.getAttribute("title"));
+            element.removeAttribute("title");
+        }
+    }
+
+    // Scroll event setup (run once)
+    if (!window.hasTooltipScrollListener) {
+        window.hasTooltipScrollListener = true;
+        window.addEventListener("scroll", () => {
+            isScrolling = true;
+            hideTooltip();
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                isScrolling = false;
+            }, 200);
+        }, { passive: true });
+    }
+
+    // Setup global delegated events (run once)
+    if (!window.hasTooltipDelegatedEvents) {
+        window.hasTooltipDelegatedEvents = true;
+
+        // Hover events (Desktop)
+        document.body.addEventListener("mouseover", (e) => {
+            if (isTouchActive) return;
+            if (isScrolling) return;
+
+            const target = e.target.closest("[data-tooltip], [title]");
+            if (!target) {
+                if (activeTarget) {
+                    hideTooltip();
+                }
+                return;
+            }
+
+            handleTitleAttributes(target);
+
+            if (activeTarget === target) return;
+
+            if (activeTarget) {
+                hideTooltip();
+            }
+
+            activeTarget = target;
+            tooltipTimeout = setTimeout(() => {
+                if (activeTarget === target && !isScrolling) {
+                    showTooltip(target);
+                }
+            }, 700); 
         });
-    });
+
+        document.body.addEventListener("mouseout", (e) => {
+            if (isTouchActive) return;
+            if (!activeTarget) return;
+
+            const related = e.relatedTarget;
+            if (!related || !activeTarget.contains(related)) {
+                hideTooltip();
+            }
+        });
+
+        // Touch events (Mobile Long Press)
+        document.body.addEventListener("touchstart", (e) => {
+            isTouchActive = true;
+            if (isScrolling) return;
+
+            const target = e.target.closest("[data-tooltip], [title]");
+            if (!target) {
+                if (activeTarget) {
+                    hideTooltip();
+                }
+                return;
+            }
+
+            handleTitleAttributes(target);
+
+            if (activeTarget === target) return;
+
+            if (activeTarget) {
+                hideTooltip();
+            }
+
+            activeTarget = target;
+            tooltipTimeout = setTimeout(() => {
+                if (activeTarget === target && !isScrolling) {
+                    showTooltip(target);
+                }
+            }, 700); 
+        }, { passive: true });
+
+        document.body.addEventListener("touchend", () => {
+            setTimeout(() => { isTouchActive = false; }, 500);
+            hideTooltip();
+        });
+
+        document.body.addEventListener("touchcancel", () => {
+            setTimeout(() => { isTouchActive = false; }, 500);
+            hideTooltip();
+        });
+
+        document.body.addEventListener("touchmove", () => {
+            hideTooltip();
+        });
+    }
 }
+
+function triggerMathTypesetting() {
+    if (window.triggerMathTypesetting) {
+        window.triggerMathTypesetting();
+    } else if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
+    }
+}
+
+// Expose functions globally
+window.initCustomTooltips = initCustomTooltips;
+window.initSpeedDrillsPage = initSpeedDrillsPage;
+window.startIdleTimer = startIdleTimer;
