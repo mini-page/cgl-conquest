@@ -732,144 +732,145 @@
                 <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-bolt text-accentRose mr-2"></i> Drilling</h2>
             </div>
             <!-- Speed Drills Sub-Tabs -->
-            <div class="flex gap-2 overflow-x-auto pb-3 scrollbar-none whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-white/10 mb-3">
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200 active-nav-tab" data-mode="squares">
-                    <i class="fa-solid fa-calculator mr-1.5 text-accentCyan"></i> Squares (1-30)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="cubes">
-                    <i class="fa-solid fa-cube mr-1.5 text-accentCyan"></i> Cubes (1-20)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="tables">
-                    <i class="fa-solid fa-table-cells mr-1.5 text-accentCyan"></i> Tables (1-40)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="fracPerc">
-                    <i class="fa-solid fa-percent mr-1.5 text-accentCyan"></i> Frac-Percent (Dual)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="triplets">
-                    <i class="fa-solid fa-triangle mr-1.5 text-accentCyan"></i> Triplets (Δ)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="algebra">
-                    <i class="fa-solid fa-square-root-variable mr-1.5 text-accentCyan"></i> Algebra Ident.
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="lcm">
-                    <i class="fa-solid fa-arrow-down-up-across-line mr-1.5 text-accentCyan"></i> LCM (3 Nos)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="hcf">
-                    <i class="fa-solid fa-arrow-up-down-left-right mr-1.5 text-accentCyan"></i> HCF (3 Nos)
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="alphabets">
-                    <i class="fa-solid fa-arrow-down-a-z mr-1.5 text-accentCyan"></i> Alphabet Codes
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="geomCenters">
-                    <i class="fa-solid fa-circle-dot mr-1.5 text-accentCyan"></i> Geometry Centers
-                </button>
-                <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="trigReflex">
-                    <i class="fa-solid fa-wave-square mr-1.5 text-accentCyan"></i> Trig Reflexes
-                </button>
+            <div class="flex items-center justify-between border-b border-white/10 mb-3 pb-3 gap-4">
+                <!-- Subtabs (scrollable left area) -->
+                <div class="flex gap-2 overflow-x-auto scrollbar-none whitespace-nowrap py-1">
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200 active-nav-tab" data-mode="squares">
+                        <i class="fa-solid fa-calculator mr-1.5 text-accentCyan"></i> Squares (1-30)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="cubes">
+                        <i class="fa-solid fa-cube mr-1.5 text-accentCyan"></i> Cubes (1-20)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="tables">
+                        <i class="fa-solid fa-table-cells mr-1.5 text-accentCyan"></i> Tables (1-40)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="fracPerc">
+                        <i class="fa-solid fa-percent mr-1.5 text-accentCyan"></i> Frac-Percent (Dual)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="triplets">
+                        <i class="fa-solid fa-triangle mr-1.5 text-accentCyan"></i> Triplets (Δ)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="algebra">
+                        <i class="fa-solid fa-square-root-variable mr-1.5 text-accentCyan"></i> Algebra Ident.
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="lcm">
+                        <i class="fa-solid fa-arrow-down-up-across-line mr-1.5 text-accentCyan"></i> LCM (3 Nos)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="hcf">
+                        <i class="fa-solid fa-arrow-up-down-left-right mr-1.5 text-accentCyan"></i> HCF (3 Nos)
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="alphabets">
+                        <i class="fa-solid fa-arrow-down-a-z mr-1.5 text-accentCyan"></i> Alphabet Codes
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="geomCenters">
+                        <i class="fa-solid fa-circle-dot mr-1.5 text-accentCyan"></i> Geometry Centers
+                    </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="trigReflex">
+                        <i class="fa-solid fa-wave-square mr-1.5 text-accentCyan"></i> Trig Reflexes
+                    </button>
+                </div>
+                
+                <!-- Conquest Capsule (fixed right area with popover) -->
+                <div class="relative flex-shrink-0">
+                    <button id="btn-conquest-capsule" class="px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan/10 text-accentCyan hover:bg-accentCyan/20 border border-accentCyan/30 transition flex items-center gap-1.5" title="Open Conquest Challenge Popover">
+                        ⚡ Conquest
+                    </button>
+                    
+                    <!-- Conquest Popover Panel (absolute right-aligned) -->
+                    <div id="conquest-popover" class="absolute right-0 top-11 w-72 bg-bgCard/95 border border-white/10 shadow-2xl z-50 rounded-3xl p-5 select-none opacity-0 pointer-events-none transform -translate-y-2 transition-all duration-200 ease-out backdrop-blur-lg flex flex-col gap-4 hidden">
+                        <div class="flex items-center justify-between border-b border-white/5 pb-2">
+                            <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">⚡ Conquest Run</h4>
+                            <button id="btn-conquest-popover-close" class="text-gray-400 hover:text-white transition text-xs"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <p class="text-[10px] text-gray-400 leading-relaxed">Answer 25 procedural questions in 15 minutes. Level scales automatically (Easy &rarr; Medium &rarr; Hard). Cutoff: 20/25.</p>
+                        
+                        <div class="grid grid-cols-3 gap-2 py-2 border-b border-white/5 bg-black/20 rounded-xl p-2.5 border border-white/5">
+                            <div class="text-center">
+                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Timer</span>
+                                <span id="challenge-timer" class="font-mono font-extrabold text-xs text-accentCyan">15:00</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Progress</span>
+                                <span id="challenge-progress" class="font-mono font-extrabold text-xs text-white">0 / 25</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Level</span>
+                                <span id="challenge-diff" class="font-bold text-[10px] uppercase text-accentGreen">Easy</span>
+                            </div>
+                        </div>
+                        
+                        <button id="btn-challenge-start" class="w-full bg-accentCyan hover:bg-cyan-500 text-white font-extrabold py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md">
+                            Start Challenge
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tab Content Layout Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-                
-                <!-- Main Drill Card Area (3 Columns) -->
-                <div class="lg:col-span-3 space-y-6">
-                    <!-- Unified Drill Card -->
-                    <div id="unified-drill-card" class="relative overflow-hidden bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col justify-between min-h-[400px]">
-                        <div>
-                            <!-- Header with Difficulty Dropdown & Actions -->
-                            <div class="flex justify-between items-center pb-4 mb-4 flex-wrap gap-3">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-8 h-8 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-sm">
-                                        <i class="fa-solid fa-bolt animate-pulse"></i>
-                                    </span>
-                                    <select id="select-maths-level" class="py-2 px-3.5 rounded-xl border border-white/5 text-xs text-white font-bold bg-bgPage hover:bg-white/5 transition outline-none cursor-pointer">
-                                        <option value="easy">🟢 Easy</option>
-                                        <option value="medium" selected>🟡 Medium</option>
-                                        <option value="advance">🔴 Advance</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <!-- Action 1: Start / Pause -->
-                                    <button id="btn-drill-pause" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Start/Pause session [Shortcut: Space]">
-                                        <i class="fa-solid fa-play"></i> <span>Start</span>
-                                    </button>
-                                    <!-- Action 2: Stop / Close (Hidden by default, shown when active) -->
-                                    <button id="btn-drill-stop" class="hidden text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5 hover:text-accentRose hover:border-accentRose/50" title="Stop and Terminate session [Shortcut: X]">
-                                        <i class="fa-solid fa-circle-stop text-accentRose"></i> <span>Close</span>
-                                    </button>
-                                </div>
+            <!-- Main Content Centered Card -->
+            <div class="max-w-3xl mx-auto space-y-6">
+                <!-- Unified Drill Card -->
+                <div id="unified-drill-card" class="relative overflow-hidden bg-bgCard border border-white/5 rounded-2xl p-6 shadow-lg flex flex-col justify-between min-h-[400px]">
+                    <div>
+                        <!-- Header with Difficulty Dropdown & Actions -->
+                        <div class="flex justify-between items-center pb-4 mb-4 flex-wrap gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-8 h-8 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-sm flex-shrink-0">
+                                    <i class="fa-solid fa-bolt animate-pulse"></i>
+                                </span>
+                                <select id="select-maths-level" class="py-2 px-3.5 rounded-xl border border-white/5 text-xs text-white font-bold bg-bgPage hover:bg-white/5 transition outline-none cursor-pointer">
+                                    <option value="easy">🟢 Easy</option>
+                                    <option value="medium" selected>🟡 Medium</option>
+                                    <option value="advance">🔴 Advance</option>
+                                </select>
+                                <span id="conquest-active-badge" class="hidden px-2.5 py-0.5 text-[9px] font-extrabold uppercase rounded-full bg-accentCyan/10 text-accentCyan border border-accentCyan/20">⚡ Conquest</span>
                             </div>
-                            
-                            <!-- Timer Bar -->
-                            <div id="drill-timer-bar" class="w-full bg-white/5 h-1 overflow-hidden rounded-full mb-6">
-                                <div id="drill-timer-fill" class="bg-accentCyan h-full transition-all duration-1000" style="width: 100%;"></div>
+                            <div class="flex items-center gap-2">
+                                <!-- Action 1: Start / Pause -->
+                                <button id="btn-drill-pause" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5" title="Start/Pause session [Shortcut: Space]">
+                                    <i class="fa-solid fa-play"></i> <span>Start</span>
+                                </button>
+                                <!-- Action 2: Stop / Close (Hidden by default, shown when active) -->
+                                <button id="btn-drill-stop" class="hidden text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/5 hover:text-accentRose hover:border-accentRose/50" title="Stop and Terminate session [Shortcut: X]">
+                                    <i class="fa-solid fa-circle-stop text-accentRose"></i> <span>Close</span>
+                                </button>
                             </div>
-                            
-                            <!-- Relative Content Area wrapper for pause blurring without covering topbar actions -->
-                            <div class="relative min-h-[280px] flex flex-col justify-center">
-                                <!-- Inline Paused Screen Overlay -->
-                                <div id="drill-paused-overlay" class="absolute inset-0 bg-bgCard/90 backdrop-blur-md z-40 flex flex-col justify-center items-center space-y-4 hidden rounded-2xl">
-                                    <i class="fa-solid fa-circle-pause text-5xl text-accentCyan mb-2 animate-pulse"></i>
-                                    <h3 class="text-xl font-heading font-extrabold text-white uppercase tracking-wider mb-1">Drill Paused</h3>
-                                    <p class="text-xs text-gray-400 mb-4">Click Resume or press 'Space' to continue your session</p>
-                                    <button id="btn-drill-resume" class="bg-accentCyan hover:bg-cyan-400 text-black font-extrabold px-6 py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200">
-                                        Resume Session
-                                    </button>
-                                </div>
-                            
-                                <!-- Interactive Drill Area -->
-                                <div id="drill-interactive-area" class="space-y-6 transition-all duration-300">
-                                    <div class="text-center space-y-6 py-6">
-                                        <h2 id="drill-question-label" class="text-3xl font-heading font-extrabold text-white leading-tight">Select a mode & press Start</h2>
-                                        <div id="drill-options" class="grid grid-cols-2 gap-3 max-w-md mx-auto">
-                                            <!-- Injected via JS -->
-                                        </div>
-                                        <!-- Stats / Feedback (Stacked on mobile, row on tablet+) -->
-                                        <div class="pt-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-6 justify-center text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                            <div id="drill-score">Score: 0 / 0</div>
-                                            <div class="hidden sm:block w-px h-3 bg-white/10"></div>
-                                            <div id="drill-feedback">Streak: 0 🔥</div>
-                                        </div>
+                        </div>
+                        
+                        <!-- Timer Bar -->
+                        <div id="drill-timer-bar" class="w-full bg-white/5 h-1 overflow-hidden rounded-full mb-6">
+                            <div id="drill-timer-fill" class="bg-accentCyan h-full transition-all duration-1000" style="width: 100%;"></div>
+                        </div>
+                        
+                        <!-- Relative Content Area wrapper for pause blurring without covering topbar actions -->
+                        <div class="relative min-h-[280px] flex flex-col justify-center">
+                            <!-- Inline Paused Screen Overlay -->
+                            <div id="drill-paused-overlay" class="absolute inset-0 bg-bgCard/90 backdrop-blur-md z-40 flex flex-col justify-center items-center space-y-4 hidden rounded-2xl">
+                                <i class="fa-solid fa-circle-pause text-5xl text-accentCyan mb-2 animate-pulse"></i>
+                                <h3 class="text-xl font-heading font-extrabold text-white uppercase tracking-wider mb-1">Drill Paused</h3>
+                                <p class="text-xs text-gray-400 mb-4">Click Resume or press 'Space' to continue your session</p>
+                                <button id="btn-drill-resume" class="bg-accentCyan hover:bg-cyan-400 text-black font-extrabold px-6 py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200">
+                                    Resume Session
+                                </button>
+                            </div>
+                        
+                            <!-- Interactive Drill Area -->
+                            <div id="drill-interactive-area" class="space-y-6 transition-all duration-300">
+                                <div class="text-center space-y-6 py-6">
+                                    <h2 id="drill-question-label" class="text-3xl font-heading font-extrabold text-white leading-tight">Select a mode & press Start</h2>
+                                    <div id="drill-options" class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+                                        <!-- Injected via JS -->
+                                    </div>
+                                    <!-- Stats / Feedback (Stacked on mobile, row on tablet+) -->
+                                    <div class="pt-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-6 justify-center text-xs font-bold text-gray-500 uppercase tracking-widest">
+                                        <div id="drill-score">Score: 0 / 0</div>
+                                        <div class="hidden sm:block w-px h-3 bg-white/10"></div>
+                                        <div id="drill-feedback">Streak: 0 🔥</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Sidebar Conquest Challenge (2 Columns) -->
-                <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-4">
-                    <div id="challenge-status-bar" class="bg-bgCard border border-white/5 rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
-                        <div class="flex items-center gap-3 border-b border-white/5 pb-3">
-                            <span id="challenge-badge" class="px-2.5 py-0.5 text-[8px] font-extrabold uppercase rounded-full bg-accentCyan/10 text-accentCyan border border-accentCyan/20">Run Off</span>
-                            <div>
-                                <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">⚡ Conquest Challenge</h4>
-                                <span id="challenge-desc-label" class="text-[8px] text-gray-500 font-bold block uppercase">15-Min Simulator</span>
-                            </div>
-                        </div>
-                        <p id="challenge-desc" class="text-[10px] text-gray-400 leading-relaxed">Answer 25 questions in 15 minutes. Level goes from Easy &rarr; Medium &rarr; Hard!</p>
-                        
-                        <div class="grid grid-cols-3 gap-2 py-2 border-b border-white/5">
-                            <div class="text-center bg-black/20 p-2 rounded-xl border border-white/5">
-                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Timer</span>
-                                <span id="challenge-timer" class="font-mono font-extrabold text-xs text-accentCyan">15:00</span>
-                            </div>
-                            <div class="text-center bg-black/20 p-2 rounded-xl border border-white/5">
-                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Progress</span>
-                                <span id="challenge-progress" class="font-mono font-extrabold text-xs text-white">0 / 25</span>
-                            </div>
-                            <div class="text-center bg-black/20 p-2 rounded-xl border border-white/5">
-                                <span class="text-[8px] text-gray-500 font-bold block uppercase">Level</span>
-                                <span id="challenge-diff" class="font-bold text-[10px] uppercase text-accentGreen">Easy</span>
-                            </div>
-                        </div>
-                        
-                        <button id="btn-challenge-start" class="w-full bg-accentCyan hover:bg-cyan-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md">
-                            <i class="fa-solid fa-play mr-1"></i> Start Challenge
-                        </button>
-                    </div>
-                </div>
-                
             </div>
         </section>
 

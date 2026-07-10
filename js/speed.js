@@ -319,14 +319,14 @@ function generateQuestionTextAndAnswer(mode, level) {
         if (type === 0) {
             const list = [
                 { q: "sin(0°)", a: "0" }, { q: "sin(30°)", a: "1/2" },
-                { q: "sin(45°)", a: "1/√2" }, { q: "sin(60°)", a: "√3/2" }, { q: "sin(90°)", a: "1" }
+                { q: "sin(45°)", a: "1/&radic;2" }, { q: "sin(60°)", a: "&radic;3/2" }, { q: "sin(90°)", a: "1" }
             ];
             const item = list[Math.floor(Math.random() * list.length)];
             questionText = `Evaluate: ${item.q} = ?`;
             answer = item.a;
         } else if (type === 1) {
             const list = [
-                { q: "cos(0°)", a: "1" }, { q: "cos(30°)", a: "√3/2" },
+                { q: "cos(0°)", a: "1" }, { q: "cos(30°)", a: "&radic;3/2" },
                 { q: "cos(45°)", a: "1/&radic;2" }, { q: "cos(60°)", a: "1/2" }, { q: "cos(90°)", a: "0" }
             ];
             const item = list[Math.floor(Math.random() * list.length)];
@@ -334,8 +334,8 @@ function generateQuestionTextAndAnswer(mode, level) {
             answer = item.a;
         } else if (type === 2) {
             const list = [
-                { q: "tan(0°)", a: "0" }, { q: "tan(30°)", a: "1/√3" },
-                { q: "tan(45°)", a: "1" }, { q: "tan(60°)", a: "√3" }, { q: "tan(90°)", a: "Not Defined" }
+                { q: "tan(0°)", a: "0" }, { q: "tan(30°)", a: "1/&radic;3" },
+                { q: "tan(45°)", a: "1" }, { q: "tan(60°)", a: "&radic;3" }, { q: "tan(90°)", a: "Not Defined" }
             ];
             const item = list[Math.floor(Math.random() * list.length)];
             questionText = `Evaluate: ${item.q} = ?`;
@@ -376,6 +376,9 @@ function generateDrillQuestion() {
     if (selectLevel) selectLevel.classList.add("hidden");
     const stopBtn = document.getElementById("btn-drill-stop");
     if (stopBtn) stopBtn.classList.remove("hidden");
+
+    // Activate Blackout Focus Mode
+    document.body.classList.add("quiz-focus-active");
 
     const level = selectLevel ? selectLevel.value : "medium";
     const qData = generateQuestionTextAndAnswer(drillMode, level);
@@ -496,6 +499,9 @@ function resetDrillSession() {
     
     clearIdleTimer();
 
+    // Disable Blackout Focus Mode
+    document.body.classList.remove("quiz-focus-active");
+
     const scoreEl = document.getElementById("drill-score");
     const feedback = document.getElementById("drill-feedback");
     const pauseBtn = document.getElementById("btn-drill-pause");
@@ -514,6 +520,8 @@ function resetDrillSession() {
     if (selectLevel) selectLevel.classList.remove("hidden");
     const stopBtn = document.getElementById("btn-drill-stop");
     if (stopBtn) stopBtn.classList.add("hidden");
+    const activeBadge = document.getElementById("conquest-active-badge");
+    if (activeBadge) activeBadge.classList.add("hidden");
 
     if (scoreEl) scoreEl.innerText = "Score: 0/0";
     if (feedback) {
@@ -544,11 +552,29 @@ function startChallengeRun() {
         btnChallengeStart.className = "w-full bg-accentRose hover:bg-rose-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md animate-pulse";
     }
 
-    // Hide difficulty dropdown and show close button in header
+    const badge = document.getElementById("challenge-badge");
+    if (badge) {
+        badge.innerText = "Run On";
+        badge.className = badge.className.replace("bg-accentCyan/10 text-accentCyan", "bg-accentRose/10 text-accentRose border-accentRose/20");
+    }
+
+    // Hide difficulty dropdown, show active badge and close button in card header
     const selectLevel = document.getElementById("select-maths-level");
     if (selectLevel) selectLevel.classList.add("hidden");
+    const activeBadge = document.getElementById("conquest-active-badge");
+    if (activeBadge) activeBadge.classList.remove("hidden");
     const stopBtn = document.getElementById("btn-drill-stop");
     if (stopBtn) stopBtn.classList.remove("hidden");
+
+    // Close popover panel automatically
+    const popover = document.getElementById("conquest-popover");
+    if (popover) {
+        popover.classList.add("hidden", "opacity-0", "pointer-events-none", "-translate-y-2");
+        popover.classList.remove("translate-y-0");
+    }
+
+    // Activate Blackout Focus Mode
+    document.body.classList.add("quiz-focus-active");
 
     toggleFreeModeComponents(false);
     updateChallengeUI();
@@ -591,6 +617,16 @@ function updateChallengeUI() {
     if (diffEl) {
         diffEl.innerText = level;
         diffEl.className = `font-bold text-xs uppercase ${colorClass}`;
+    }
+
+    // Turn the quiz card stats row into Conquest card layout with details
+    const scoreEl = document.getElementById("drill-score");
+    if (scoreEl) scoreEl.innerHTML = `Conquest: <span class="font-mono text-white ml-1">${challengeQuestionIndex + 1} / 25</span> <span class="${colorClass} ml-1.5 font-extrabold">(${level})</span>`;
+    
+    const feedback = document.getElementById("drill-feedback");
+    if (feedback) {
+        feedback.innerText = `Time: ${formattedTime} ⏰`;
+        feedback.className = "text-xs font-semibold text-accentCyan";
     }
 }
 
@@ -668,11 +704,24 @@ function endChallengeRun(completed = false, aborted = false) {
     drillIsPlaying = false;
     clearInterval(challengeTimerInterval);
 
+    // Disable Blackout Focus Mode
+    document.body.classList.remove("quiz-focus-active");
+
     const btnChallengeStart = document.getElementById("btn-challenge-start");
     if (btnChallengeStart) {
-        btnChallengeStart.innerHTML = `<i class="fa-solid fa-play mr-1"></i> Start Challenge`;
-        btnChallengeStart.className = "w-full bg-accentCyan hover:bg-cyan-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md";
+        btnChallengeStart.innerHTML = `Start Challenge`;
+        btnChallengeStart.className = "w-full bg-accentCyan hover:bg-cyan-500 text-white font-extrabold py-2 rounded-xl text-xs uppercase tracking-wider transition duration-200 shadow-md";
     }
+
+    const badge = document.getElementById("challenge-badge");
+    if (badge) {
+        badge.innerText = "Run Off";
+        badge.className = badge.className.replace("bg-accentRose/10 text-accentRose", "bg-accentCyan/10 text-accentCyan border-accentCyan/20");
+    }
+
+    // Hide active badge in card header
+    const activeBadge = document.getElementById("conquest-active-badge");
+    if (activeBadge) activeBadge.classList.add("hidden");
 
     const timerEl = document.getElementById("challenge-timer");
     const progressEl = document.getElementById("challenge-progress");
@@ -740,6 +789,9 @@ function initSpeedDrillsPage() {
                 pauseBtn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Resume</span>`;
                 clearInterval(drillTimerInterval);
                 
+                // Disable Blackout Focus Mode on pause
+                document.body.classList.remove("quiz-focus-active");
+
                 // Show inline pause overlay
                 const inlineOverlay = document.getElementById("drill-paused-overlay");
                 if (inlineOverlay) inlineOverlay.classList.remove("hidden");
@@ -751,6 +803,9 @@ function initSpeedDrillsPage() {
                 drillIsPlaying = true;
                 pauseBtn.innerHTML = `<i class="fa-solid fa-pause"></i> <span>Pause</span>`;
                 
+                // Activate Blackout Focus Mode on resume
+                document.body.classList.add("quiz-focus-active");
+
                 // Hide inline pause overlay
                 const inlineOverlay = document.getElementById("drill-paused-overlay");
                 if (inlineOverlay) inlineOverlay.classList.add("hidden");
@@ -837,12 +892,63 @@ function initSpeedDrillsPage() {
         }
     });
 
-    // 9. Custom tooltips setup
+    // 9. Conquest Capsule Popover bindings
+    const btnConquestCapsule = document.getElementById("btn-conquest-capsule");
+    const conquestPopover = document.getElementById("conquest-popover");
+    const btnConquestPopoverClose = document.getElementById("btn-conquest-popover-close");
+
+    if (btnConquestCapsule && conquestPopover) {
+        btnConquestCapsule.onclick = (e) => {
+            e.stopPropagation();
+            if (isChallengeActive) {
+                speakText("Challenge in progress");
+                alert("Conquest run is active! Use the Close button in the simulator card to abort the challenge.");
+                return;
+            }
+            const isHidden = conquestPopover.classList.contains("hidden");
+            if (isHidden) {
+                conquestPopover.classList.remove("hidden");
+                void conquestPopover.offsetWidth;
+                conquestPopover.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+                conquestPopover.classList.add("translate-y-0");
+            } else {
+                conquestPopover.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+                conquestPopover.classList.remove("translate-y-0");
+                setTimeout(() => {
+                    conquestPopover.classList.add("hidden");
+                }, 200);
+            }
+        };
+    }
+
+    if (btnConquestPopoverClose && conquestPopover) {
+        btnConquestPopoverClose.onclick = (e) => {
+            e.stopPropagation();
+            conquestPopover.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+            conquestPopover.classList.remove("translate-y-0");
+            setTimeout(() => {
+                conquestPopover.classList.add("hidden");
+            }, 200);
+        };
+    }
+
+    document.addEventListener("click", (e) => {
+        if (conquestPopover && !conquestPopover.contains(e.target) && e.target !== btnConquestCapsule) {
+            conquestPopover.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+            conquestPopover.classList.remove("translate-y-0");
+            setTimeout(() => {
+                conquestPopover.classList.add("hidden");
+            }, 200);
+        }
+    });
+
+    // 10. Custom tooltips setup
     initCustomTooltips();
 }
 
 // Global reference exposed to navigation resets
 window.resetDrillSession = resetDrillSession;
+window.startIdleTimer = startIdleTimer;
 
 // ==========================================================================
 // TOOLTIP & TEXT CONVERTERS
@@ -1120,4 +1226,3 @@ function triggerMathTypesetting() {
 // Expose functions globally
 window.initCustomTooltips = initCustomTooltips;
 window.initSpeedDrillsPage = initSpeedDrillsPage;
-window.startIdleTimer = startIdleTimer;
