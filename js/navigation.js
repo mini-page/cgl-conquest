@@ -255,16 +255,23 @@ function initNavigation() {
             }
         }
 
-        // 2. P key: Cycle between modes
+        // 2. P key: Toggle Pomodoro timer popover
         if (e.key === "p" || e.key === "P") {
-            const speedPage = document.getElementById("page-speed");
-            if (speedPage && !speedPage.classList.contains("hidden")) {
-                const btnCycle = document.getElementById("btn-maths-mode-cycle");
-                if (btnCycle) {
-                    btnCycle.click();
-                    e.preventDefault();
-                    return;
-                }
+            const pomoCapsule = document.getElementById("pomo-capsule");
+            if (pomoCapsule) {
+                pomoCapsule.click();
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // 2b. C key: Toggle Conquest Challenge popover
+        if (e.key === "c" || e.key === "C") {
+            const conquestCapsule = document.getElementById("btn-conquest-capsule");
+            if (conquestCapsule) {
+                conquestCapsule.click();
+                e.preventDefault();
+                return;
             }
         }
 
