@@ -103,6 +103,19 @@ function initNavigation() {
             e.preventDefault();
             const target = item.getAttribute("data-target");
             
+            if (window.drillIsPlaying) {
+                const pauseBtn = document.getElementById("btn-drill-pause");
+                if (pauseBtn) {
+                    const span = pauseBtn.querySelector("span");
+                    if (span && span.innerText.trim() === "Pause") {
+                        pauseBtn.click();
+                    }
+                }
+                if (window.startIdleTimer) {
+                    window.startIdleTimer();
+                }
+            }
+            
             navItems.forEach(ni => ni.classList.remove("active-nav"));
             pages.forEach(p => p.classList.add("hidden"));
             
@@ -119,22 +132,22 @@ function initNavigation() {
             const globalPageIcon = document.getElementById("global-page-icon");
             if (globalPageTitle) {
                 let friendlyName = "Dashboard";
-                let iconClass = '<i class="fa-solid fa-house text-accentCyan"></i>';
+                let iconClass = '<i class="fa-solid fa-chart-line text-accentCyan"></i>';
                 
                 if (target === "page-syllabus") {
                     friendlyName = "Syllabus";
-                    iconClass = '<i class="fa-solid fa-book-open text-accentGreen"></i>';
+                    iconClass = '<i class="fa-solid fa-list-check text-accentGreen"></i>';
                 } else if (target === "page-plan") {
-                    friendlyName = "Study Plan";
+                    friendlyName = "Plan";
                     iconClass = '<i class="fa-solid fa-calendar-days text-accentAmber"></i>';
                 } else if (target === "page-mocks") {
                     friendlyName = "Analysis";
-                    iconClass = '<i class="fa-solid fa-graduation-cap text-accentCyan"></i>';
+                    iconClass = '<i class="fa-solid fa-square-poll-vertical text-accentCyan"></i>';
                 } else if (target === "page-toolkit") {
                     friendlyName = "Study";
                     iconClass = '<i class="fa-solid fa-toolbox text-accentPurple"></i>';
                 } else if (target === "page-speed") {
-                    friendlyName = "Drilling";
+                    friendlyName = "Drills";
                     iconClass = '<i class="fa-solid fa-bolt text-accentRose"></i>';
                 }
                 
@@ -168,6 +181,9 @@ function initNavigation() {
             }
         });
     });
+
+    // Highlight active page on startup (default page-dashboard)
+    document.querySelectorAll('[data-target="page-dashboard"]').forEach(ni => ni.classList.add("active-nav"));
 
     // Mobile Hamburger Menu Toggle
     if (mobileMenuBtn && mobileMenu) {
@@ -239,16 +255,23 @@ function initNavigation() {
             }
         }
 
-        // 2. P key: Cycle between modes
+        // 2. P key: Toggle Pomodoro timer popover
         if (e.key === "p" || e.key === "P") {
-            const speedPage = document.getElementById("page-speed");
-            if (speedPage && !speedPage.classList.contains("hidden")) {
-                const btnCycle = document.getElementById("btn-maths-mode-cycle");
-                if (btnCycle) {
-                    btnCycle.click();
-                    e.preventDefault();
-                    return;
-                }
+            const pomoCapsule = document.getElementById("pomo-capsule");
+            if (pomoCapsule) {
+                pomoCapsule.click();
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // 2b. C key: Toggle Conquest Challenge popover
+        if (e.key === "c" || e.key === "C") {
+            const conquestCapsule = document.getElementById("btn-conquest-capsule");
+            if (conquestCapsule) {
+                conquestCapsule.click();
+                e.preventDefault();
+                return;
             }
         }
 
@@ -312,12 +335,18 @@ function initNavigation() {
             }
         }
 
+        if (window.drillIsPlaying) {
+            if (["1", "2", "3", "4", "5", "6"].includes(e.key)) {
+                return;
+            }
+        }
+
         let targetPage = "";
         if (e.key === "1") targetPage = "page-dashboard";
-        else if (e.key === "2") targetPage = "page-toolkit";
-        else if (e.key === "3") targetPage = "page-speed";
-        else if (e.key === "4") targetPage = "page-plan";
-        else if (e.key === "5") targetPage = "page-syllabus";
+        else if (e.key === "2") targetPage = "page-syllabus";
+        else if (e.key === "3") targetPage = "page-toolkit";
+        else if (e.key === "4") targetPage = "page-speed";
+        else if (e.key === "5") targetPage = "page-plan";
         else if (e.key === "6") targetPage = "page-mocks";
         else if (e.key === "t" || e.key === "T") {
             const themeBtn = document.getElementById("theme-toggle");

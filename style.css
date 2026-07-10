@@ -157,6 +157,15 @@ body.light-theme input:focus, body.light-theme select:focus, body.light-theme te
     box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.1) !important;
 }
 
+/* Scrollbar Utilities */
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-none {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
     width: 6px;
@@ -666,4 +675,30 @@ body.light-theme #pomo-capsule button {
     margin-left: 0.5rem !important;
     border-width: 1px !important;
     height: auto !important;
+}
+
+/* === QUIZ FOCUS FOCUS-MODE OVERLAY & DIMMER === */
+html.quiz-focus-active,
+body.quiz-focus-active {
+    overflow: hidden !important;
+    height: 100vh !important;
+    touch-action: none !important;
+}
+#unified-drill-card {
+    touch-action: auto !important;
+}
+#global-header, #mobile-floating-nav, #page-speed > * {
+    transition: opacity 0.4s ease-in-out, filter 0.4s ease-in-out;
+}
+body.quiz-focus-active #global-header,
+body.quiz-focus-active #mobile-floating-nav,
+body.quiz-focus-active #page-speed > *:not(.max-w-3xl),
+body.quiz-focus-active #page-speed .flex.items-center.justify-between.border-b {
+    opacity: 0.08 !important;
+    filter: blur(5px) !important;
+    pointer-events: none !important;
+}
+body.quiz-focus-active #unified-drill-card {
+    box-shadow: 0 0 50px rgba(6, 182, 212, 0.15) !important;
+    border-color: rgba(6, 182, 212, 0.2) !important;
 }
