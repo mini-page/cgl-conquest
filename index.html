@@ -22,6 +22,13 @@
                         accentRose: '#f43f5e',
                         accentAmber: '#f59e0b',
                         accentGreen: '#10b981',
+                        panel: '#0e1322',
+                        panel2: '#131a2c',
+                        line: '#1e2740',
+                        teal: '#06b6d4',
+                        violet: '#8b5cf6',
+                        amber: '#f59e0b',
+                        rose: '#f43f5e'
                     },
                     fontFamily: {
                         heading: ['Outfit', 'sans-serif'],
@@ -66,9 +73,9 @@
         <!-- Separator -->
         <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
         
-        <!-- Theme Toggle Button Part -->
-        <button id="theme-toggle" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition" title="Toggle Light/Dark Theme">
-            <i class="fa-solid fa-sun"></i>
+        <!-- Shortcuts Help Button Part -->
+        <button id="btn-shortcuts-island-trigger" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition" title="Show Keyboard Shortcuts [Double Shift]">
+            <i class="fa-solid fa-circle-question text-accentCyan"></i>
         </button>
     </div>
 
@@ -294,107 +301,41 @@
         <!-- 2. SYLLABUS TRACKER PAGE -->
         <section id="page-syllabus" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
-            <div class="pb-2.5">
-                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-list-check text-accentPurple mr-2"></i> Syllabus</h2>
-                
-            </div>
-            <!-- Search, Filters, Layout switch -->
-            <div class="bg-bgCard border border-white/5 rounded-xl p-4 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <!-- Search input -->
-                <div class="relative flex-grow max-w-md">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
-                    <input type="text" id="syllabus-search" class="w-full bg-white/5 border border-white/10 focus:border-accentPurple focus:ring-1 focus:ring-accentPurple rounded-lg pl-10 pr-4 py-2 text-xs text-white outline-none transition" placeholder="Search syllabus (e.g., Geometry, Prepositions, series)...">
-                </div>
-
-                <!-- Filters -->
-                <div class="flex flex-wrap items-center gap-2">
-                    <select id="filter-subject" class="bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-[11px] text-gray-300 outline-none focus:border-accentPurple cursor-pointer">
-                        <option value="">All Subjects</option>
-                        <option value="Quantitative Aptitude">Quant (Maths)</option>
-                        <option value="General Intelligence & Reasoning">Reasoning</option>
-                        <option value="English Language & Comprehension">English</option>
-                        <option value="General Awareness">General GK</option>
-                    </select>
-                    <select id="filter-difficulty" class="bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-[11px] text-gray-300 outline-none focus:border-accentPurple cursor-pointer">
-                        <option value="">All Difficulties</option>
-                        <option value="Easy">Easy</option>
-                        <option value="Moderate">Moderate</option>
-                        <option value="Hard">Hard</option>
-                    </select>
-                    <select id="filter-weightage" class="bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-[11px] text-gray-300 outline-none focus:border-accentPurple cursor-pointer">
-                        <option value="">All Weightages</option>
-                        <option value="High">High Weight</option>
-                        <option value="Medium">Medium Weight</option>
-                        <option value="Low">Low Weight</option>
-                    </select>
-                    <select id="filter-status" class="bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-[11px] text-gray-300 outline-none focus:border-accentPurple cursor-pointer">
-                        <option value="">All Status</option>
-                        <option value="not-started">Not Started</option>
-                        <option value="completed">Practiced/Mastered</option>
-                    </select>
-
-                    <span class="w-px h-5 bg-white/10 mx-1"></span>
-
-                    <select id="view-mode-select" class="bg-accentCyan/5 border border-accentCyan/20 text-accentCyan rounded-lg px-3 py-1.5 text-[11px] font-semibold outline-none cursor-pointer">
-                        <option value="tree">📂 Tree Hierarchy</option>
-                        <option value="mindmap">🗺️ Mind Map Map</option>
-                        <option value="table">📊 Table Format</option>
-                        <option value="cards">🗂️ Grid Cards</option>
-                    </select>
-                </div>
+            <div class="pb-2.5 flex items-center justify-between flex-wrap gap-3">
+                <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-compass text-accentCyan mr-2"></i> Syllabus</h2>
             </div>
 
-            <!-- View Container panels -->
-            <div id="syllabus-view-container">
-                <!-- Tree accordion Panel -->
-                <div id="view-tree" class="view-panel space-y-4">
-                    <!-- Dynamic Tree Hierarchy -->
-                </div>
-
-                <!-- SVG Mindmap Panel -->
-                <div id="view-mindmap" class="view-panel hidden bg-bgCard border border-white/5 rounded-xl overflow-hidden shadow-lg">
-                    <div class="bg-white/2px px-4 py-3 border-b border-white/5 flex items-center justify-between flex-wrap gap-2 text-xs">
-                        <div class="flex gap-1.5">
-                            <button id="btn-mm-reset" class="bg-white/5 hover:bg-white/10 border border-white/5 text-gray-300 hover:text-white px-2.5 py-1 rounded transition"><i class="fa-solid fa-arrows-to-eye"></i> Center</button>
-                            <button id="btn-mm-zoomin" class="bg-white/5 hover:bg-white/10 border border-white/5 text-gray-300 hover:text-white px-2.5 py-1 rounded transition"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-                            <button id="btn-mm-zoomout" class="bg-white/5 hover:bg-white/10 border border-white/5 text-gray-300 hover:text-white px-2.5 py-1 rounded transition"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
-                        </div>
-                        <span class="text-[10px] text-gray-400"><i class="fa-solid fa-circle-info mr-1 text-accentCyan"></i> Click subjects/topics nodes. Drag canvas to pan. Scroll to zoom.</span>
-                    </div>
-                    <div id="mindmap-container" class="relative overflow-hidden cursor-grab bg-[#0c0c17]">
-                        <svg id="mindmap-svg" width="100%" height="520px">
-                            <g id="mindmap-g"></g>
-                        </svg>
-                    </div>
-                </div>
-
-                <!-- Table Panel -->
-                <div id="view-table" class="view-panel hidden bg-bgCard border border-white/5 rounded-xl overflow-hidden shadow-lg">
-                    <div class="overflow-x-auto w-full">
-                        <table class="min-w-full divide-y divide-white/5 text-left">
-                            <thead class="bg-white/2px text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                                <tr>
-                                    <th class="px-4 py-3">Subject / Core</th>
-                                    <th class="px-4 py-3">Topic</th>
-                                    <th class="px-4 py-3">Subtopic</th>
-                                    <th class="px-4 py-3 text-center">Diff.</th>
-                                    <th class="px-4 py-3 text-center">Weight</th>
-                                    <th class="px-4 py-3">Progress Checks</th>
-                                    <th class="px-4 py-3 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="syllabus-table-body" class="divide-y divide-white/5 text-xs">
-                                <!-- Inject via JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Cards Grid Panel -->
-                <div id="view-cards" class="view-panel hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Inject via JS -->
-                </div>
+            <!-- Subject Progress Circular Rings Deck -->
+            <div id="ring-deck" class="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-3 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-5 md:overflow-x-visible md:pb-0">
+                <!-- Injected via js/syllabus.js -->
             </div>
+
+            <!-- Filter Panel and View Selectors -->
+            <div class="bg-bgCard border border-white/5 rounded-2xl p-4 shadow-md flex flex-col gap-3">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-grow min-w-[200px]">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                        <input id="syllabus-search" type="text" placeholder="Search syllabus (e.g., Geometry, Prepositions, series)..."
+                            class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-white focus:outline-none focus:border-accentCyan focus:ring-1 focus:ring-accentCyan transition duration-200" />
+                    </div>
+                    <div class="relative shrink-0" id="sort-dropdown-wrap"></div>
+                    <div class="relative shrink-0" id="view-dropdown-wrap"></div>
+                    <button id="btn-toggle-study-mode" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition bg-panel2 border-line text-zinc-400 hover:text-white shrink-0">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span class="font-bold">Study Mode: OFF</span>
+                    </button>
+                </div>
+                <div id="filter-row" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <!-- Breadcrumb Navigation for Drill-downs -->
+            <div id="syllabus-breadcrumb" class="hidden text-[10px] font-mono text-gray-400 flex items-center gap-2 flex-wrap"></div>
+
+            <!-- Mount point for Active View -->
+            <div id="view-mount" class="fade-in"></div>
+
+            <!-- Empty State -->
+            <p id="empty-state" class="hidden text-center text-gray-500 text-xs py-16">No topics match these filters. Try widening the search.</p>
         </section>
 
         <!-- 3. 40-DAY STUDY PLAN TIMELINE PAGE -->
@@ -402,8 +343,8 @@
             <!-- Embedded Page Heading -->
             <div class="pb-2.5">
                 <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-calendar-days text-accentRose mr-2"></i> Study Plan</h2>
-                
             </div>
+            
             <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="max-w-xl">
                     <h2 class="font-heading font-bold text-lg text-white">40-Day Structured Prep Roadmap</h2>
@@ -606,9 +547,29 @@
                         <i class="fa-solid fa-arrow-left mr-1.5"></i> Back to Subjects
                     </button>
                 </div>
-                <div id="study-topics-list" class="space-y-4">
-                    <!-- Loaded dynamically -->
+                
+                <!-- Filter Panel and View Selectors for Study Notes (Replica of Syllabus Console) -->
+                <div class="bg-panel2 rounded-2xl p-4 border border-line shadow-md flex flex-col gap-3">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-grow min-w-[200px]">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                            <input id="study-search" type="text" placeholder="Search study notes..."
+                                class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-white focus:outline-none focus:border-accentCyan focus:ring-1 focus:ring-accentCyan transition duration-200" />
+                        </div>
+                        <div class="relative shrink-0" id="study-sort-dropdown-wrap"></div>
+                        <div class="relative shrink-0" id="study-view-dropdown-wrap"></div>
+                    </div>
+                    <div id="study-filter-row" class="flex flex-wrap gap-2"></div>
                 </div>
+
+                <!-- Breadcrumb Navigation for Drill-downs -->
+                <div id="study-breadcrumb" class="hidden text-[10px] font-mono text-gray-400 flex items-center gap-2 flex-wrap"></div>
+
+                <!-- Mount point for Active View -->
+                <div id="study-view-mount" class="fade-in"></div>
+
+                <!-- Empty State -->
+                <p id="study-empty-state" class="hidden text-center text-gray-500 text-xs py-16">No notes match these filters. Try widening the search.</p>
             </div>
 
             <!-- Custom Notes (Mistake Book) Area -->
@@ -885,22 +846,22 @@
         
         <!-- Expanded state items -->
         <div id="floating-nav-items" class="flex gap-2 items-center transition-all duration-300">
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" data-tooltip="Overview, progress and today's mission [Shortcut: 1]" aria-label="Dashboard">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-dashboard" data-tooltip="Dashboard [1]" aria-label="Dashboard">
                 <i class="fa-solid fa-chart-line text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" data-tooltip="Track syllabus completion [Shortcut: 2]" aria-label="Syllabus">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" data-tooltip="Track [2]" aria-label="Syllabus">
                 <i class="fa-solid fa-list-check text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" data-tooltip="Notes, chapters and study materials [Shortcut: 3]" aria-label="Study">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200 hidden" data-target="page-toolkit" data-tooltip="Study [3]" aria-label="Study">
                 <i class="fa-solid fa-toolbox text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" data-tooltip="Practice drills and quizzes [Shortcut: 4]" aria-label="Drills">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" data-tooltip="Drills [4]" aria-label="Drills">
                 <i class="fa-solid fa-bolt text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" data-tooltip="Daily and long-term planning [Shortcut: 5]" aria-label="Plan">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-plan" data-tooltip="Plan [5]" aria-label="Plan">
                 <i class="fa-solid fa-calendar-days text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" data-tooltip="Performance insights and statistics [Shortcut: 6]" aria-label="Analysis">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-mocks" data-tooltip="Analysis [6]" aria-label="Analysis">
                 <i class="fa-solid fa-square-poll-vertical text-sm"></i>
             </a>
         </div>
@@ -1021,19 +982,32 @@
                     <div>Scroll to Top</div>
                     <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">U</kbd></div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2 items-center">
                     <div>Toggle Dark/Light Theme</div>
-                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">T</kbd></div>
+                    <div class="flex items-center gap-3">
+                        <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">T</kbd>
+                        <div id="theme-toggle" class="w-11 h-6 rounded-full bg-white/5 border border-white/5 relative transition duration-300 cursor-pointer" title="Toggle Light/Dark Theme" role="button">
+                            <span class="absolute left-0.5 top-[1px] w-5 h-5 rounded-full bg-white flex items-center justify-center text-[10px] text-zinc-950 transition-all duration-300 transform" id="theme-toggle-knob">
+                                <i class="fa-solid fa-moon"></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
-                    <div>Switch Pages 1–6</div>
-                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">1</kbd>–<kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">6</kbd> (when drill inactive)</div>
+                    <div>Toggle Study Mode (Syllabus)</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">3</kbd></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
+                    <div>Switch Pages (1, 2, 4, 5, 6)</div>
+                    <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">1</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">2</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">4</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">5</kbd>, <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">6</kbd></div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 pb-2">
                     <div>Open Shortcuts Help</div>
                     <div>Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">Shift</kbd> twice</div>
                 </div>
             </div>
+            
+
             
             <!-- Social links row -->
             <div class="border-t border-white/5 pt-4 mt-4 flex items-center justify-between">

@@ -310,7 +310,8 @@ function renderTodayMissions() {
             const prog = appState.syllabusProgress[subFound.id] || { learned: false, practiced: false, mastered: false };
             const subClass = topicFound.subject === "Quantitative Aptitude" ? "accentCyan" :
                              topicFound.subject === "General Intelligence & Reasoning" ? "accentPurple" :
-                             topicFound.subject === "English Language & Comprehension" ? "accentRose" : "accentAmber";
+                             topicFound.subject === "English Language & Comprehension" ? "accentRose" :
+                             topicFound.subject === "Computer Knowledge" ? "blue-400" : "accentAmber";
             
             const badgeDiffClass = subFound.difficulty === "Easy" ? "bg-accentGreen/10 border-accentGreen/20 text-accentGreen" :
                                    subFound.difficulty === "Moderate" ? "bg-accentAmber/10 border-accentAmber/20 text-accentAmber" : 
@@ -428,6 +429,11 @@ function renderSubjectProgressBars() {
             subClass = "text-accentAmber";
             icon = "fa-globe";
             label = "GENERAL GK & CURRENT";
+        } else if (sub === "Computer Knowledge") {
+            subBarColor = "bg-blue-500";
+            subClass = "text-blue-400";
+            icon = "fa-laptop";
+            label = "COMPUTER KNOWLEDGE";
         }
 
         html += `

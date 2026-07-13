@@ -133,10 +133,11 @@ async function buildSearchIndex(subjects) {
 
 // Custom parser to extract frontmatter YAML lines
 function parseFrontmatter(text) {
+    const cleanText = text.trim();
     const meta = { tags: [] };
-    if (!text.startsWith("---")) return meta;
+    if (!cleanText.startsWith("---")) return meta;
     
-    const parts = text.split("---");
+    const parts = cleanText.split("---");
     if (parts.length < 3) return meta;
     
     const lines = parts[1].split("\n");
@@ -206,6 +207,19 @@ function renderSubjectGrid(subjects) {
     grid.appendChild(notesCard);
 }
 
+// View state for Study Notes Tracker
+let studyState = {
+    view: 'tree',
+    search: '',
+    sortBy: 'name',
+    sortDir: 1,
+    difficulty: '',
+    roi: '',
+    activeSubject: null,
+    chapter: null,
+    openDropdown: null
+};
+
 // Display detailed topic hierarchy accordion for selected subject
 function showSubjectDetail(subjectId) {
     if (!studyCatalog) return;
@@ -213,6 +227,8 @@ function showSubjectDetail(subjectId) {
     if (!subject) return;
     
     activeSubjectId = subjectId;
+    studyState.activeSubject = subjectId;
+    studyState.chapter = null; // reset drilldown
     
     document.getElementById("study-subject-grid").classList.add("hidden");
     document.getElementById("study-custom-notes-area").classList.add("hidden");
@@ -222,50 +238,520 @@ function showSubjectDetail(subjectId) {
     
     const titleEl = document.getElementById("study-active-subject-title");
     if (titleEl) {
-        titleEl.innerHTML = `<i class="fa-solid ${subject.icon} text-accentCyan mr-1.5"></i> ${subject.name}`;
+        titleEl.innerHTML = `<i class="fa-solid ${subject.icon || 'fa-toolbox'} text-accentCyan mr-1.5"></i> ${subject.name}`;
     }
     
-    const topicsList = document.getElementById("study-topics-list");
-    if (topicsList) {
-        topicsList.innerHTML = "";
+    renderStudyTrackerAll();
+}
+
+function initStudyToolbar() {
+    // Setup view select dropdown HTML
+    const viewWrap = document.getElementById("study-view-dropdown-wrap");
+    if (viewWrap) {
+        const viewIcons = { tree: '🌲', explorer: '📂', compact: '📝', grid: '🎴', kanban: '📋', table: '📊' };
+        const viewNames = { tree: 'Tree View', explorer: 'Explorer', compact: 'Compact', grid: 'Grid', kanban: 'Kanban', table: 'Table' };
+        const activeIcon = viewIcons[studyState.view] || '🌲';
+        const activeName = viewNames[studyState.view] || 'Tree View';
         
-        subject.topics.forEach((topic) => {
-            const accordion = document.createElement("div");
-            accordion.className = "border border-white/5 rounded-2xl overflow-hidden bg-white/2px transition duration-300";
+        viewWrap.innerHTML = `
+        <div class="relative" data-study-dd-wrap="view">
+            <button data-study-dd-btn="view" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-teal/10 border-teal/40 text-teal hover:border-teal/60 transition">
+                <span>${activeIcon}</span><span class="font-medium">${activeName}</span><span class="text-[9px] opacity-60">▼</span>
+            </button>
+            <div data-study-dd-panel="view" class="hidden dropdown-panel absolute right-0 mt-2 w-64 bg-panel border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin">
+                ${Object.keys(viewNames).map(vId => `
+                    <button class="w-full text-left p-2.5 rounded-xl text-xs flex items-center gap-2 hover:bg-white/5 transition font-semibold ${studyState.view === vId ? 'text-accentCyan bg-white/[0.03]' : 'text-gray-300'}" onclick="setStudyView('${vId}')">
+                        <span>${viewIcons[vId]}</span><span>${viewNames[vId]}</span>
+                    </button>
+                `).join('')}
+            </div>
+        </div>`;
+    }
+
+    // Setup sort select dropdown HTML
+    const sortWrap = document.getElementById("study-sort-dropdown-wrap");
+    if (sortWrap) {
+        sortWrap.innerHTML = `
+        <div class="relative" data-study-dd-wrap="sort">
+            <button data-study-dd-btn="sort" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-panel2 border-line text-zinc-300 hover:border-teal/40 transition">
+                <span>↕️</span><span class="font-medium">Sort Order</span><span class="text-[9px] opacity-60">▼</span>
+            </button>
+            <div data-study-dd-panel="sort" class="hidden dropdown-panel absolute right-0 mt-2 w-56 bg-panel border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin">
+                ${[
+                    { id: 'name', label: 'Alphabetical (A-Z)' },
+                    { id: 'difficulty', label: 'Difficulty Level' },
+                    { id: 'roi', label: 'ROI (Return on Investment)' }
+                ].map(opt => `
+                    <button class="w-full text-left p-2.5 rounded-xl text-xs hover:bg-white/5 transition font-semibold ${studyState.sortBy === opt.id ? 'text-accentCyan bg-white/[0.03]' : 'text-zinc-300'}" onclick="setStudySort('${opt.id}')">
+                        ${opt.label}
+                    </button>
+                `).join('')}
+            </div>
+        </div>`;
+    }
+
+    // Bind dropdown click toggle behaviors
+    document.querySelectorAll('[data-study-dd-btn]').forEach(btn => {
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.studyDdBtn;
+            const panel = document.querySelector(`[data-study-dd-panel="${id}"]`);
+            const isHidden = panel.classList.contains('hidden');
             
-            let subtopicsHtml = "";
-            topic.subtopics.forEach(sub => {
-                const progress = progressStore[sub.id] || {};
-                const starIcon = progress.starred ? '<i class="fa-solid fa-star text-accentAmber mr-1.5" title="Important Reference"></i>' : '';
-                const learnedIcon = progress.learned ? '<i class="fa-solid fa-circle-check text-accentGreen mr-1.5" title="Marked Learned"></i>' : '';
-                const bookmarkIcon = progress.bookmarked ? '<i class="fa-solid fa-bookmark text-accentCyan mr-1.5" title="Bookmarked"></i>' : '';
-                
-                subtopicsHtml += `
-                    <div class="flex items-center justify-between p-3.5 hover:bg-white/5 border-b border-white/5 last:border-b-0 cursor-pointer transition select-none" onclick="openStudyViewer('${sub.id}')">
-                        <div class="flex items-center gap-2">
+            // Close other study dropdowns
+            document.querySelectorAll('[data-study-dd-panel]').forEach(p => p.classList.add('hidden'));
+            
+            if (isHidden) {
+                panel.classList.remove('hidden');
+                studyState.openDropdown = id;
+            } else {
+                panel.classList.add('hidden');
+                studyState.openDropdown = null;
+            }
+        };
+    });
+
+    // Handle outside clicks to close dropdowns
+    document.removeEventListener('click', handleStudyClickOutside);
+    document.addEventListener('click', handleStudyClickOutside);
+
+    // Bind search
+    const searchInput = document.getElementById("study-search");
+    if (searchInput) {
+        searchInput.value = studyState.search;
+        searchInput.oninput = () => {
+            studyState.search = searchInput.value.trim().toLowerCase();
+            renderStudyTrackerAll();
+        };
+    }
+}
+
+function handleStudyClickOutside(e) {
+    if (studyState.openDropdown) {
+        const wrap = document.querySelector(`[data-study-dd-wrap="${studyState.openDropdown}"]`);
+        if (wrap && !wrap.contains(e.target)) {
+            const panel = wrap.querySelector('[data-study-dd-panel]');
+            if (panel) panel.classList.add('hidden');
+            studyState.openDropdown = null;
+        }
+    }
+}
+
+function setStudyView(vId) {
+    studyState.view = vId;
+    renderStudyTrackerAll();
+}
+
+function setStudySort(sortId) {
+    if (studyState.sortBy === sortId) {
+        studyState.sortDir = -studyState.sortDir;
+    } else {
+        studyState.sortBy = sortId;
+        studyState.sortDir = 1;
+    }
+    renderStudyTrackerAll();
+}
+
+function buildStudyFilterRow() {
+    const filterRow = document.getElementById("study-filter-row");
+    if (!filterRow) return;
+    
+    let html = "";
+    
+    // Add clear button if any filter is active
+    if (studyState.difficulty || studyState.roi || studyState.chapter) {
+        html += `
+        <button class="px-2 py-1 rounded bg-accentRose/15 border border-accentRose/30 text-accentRose hover:bg-accentRose/20 text-[10px] font-bold uppercase transition" onclick="clearStudyFilters()">
+            Clear Filters ×
+        </button>`;
+    }
+    
+    // Difficulty filters
+    ['Easy', 'Moderate', 'Hard'].forEach(diff => {
+        const active = studyState.difficulty === diff;
+        html += `
+        <button class="px-2.5 py-1 rounded-xl text-[10px] font-bold border transition ${active ? 'bg-accentCyan/10 border-accentCyan/40 text-accentCyan' : 'bg-panel border-line text-zinc-400 hover:border-accentCyan/30'}" onclick="toggleStudyDiffFilter('${diff}')">
+            ${diff}
+        </button>`;
+    });
+    
+    // ROI filters
+    ['High', 'Medium', 'Low'].forEach(roi => {
+        const active = studyState.roi === roi;
+        html += `
+        <button class="px-2.5 py-1 rounded-xl text-[10px] font-bold border transition ${active ? 'bg-accentAmber/10 border-accentAmber/40 text-accentAmber' : 'bg-panel border-line text-zinc-400 hover:border-accentAmber/30'}" onclick="toggleStudyRoiFilter('${roi}')">
+            ROI: ${roi}
+        </button>`;
+    });
+    
+    filterRow.innerHTML = html;
+}
+
+function clearStudyFilters() {
+    studyState.difficulty = '';
+    studyState.roi = '';
+    studyState.chapter = null;
+    renderStudyTrackerAll();
+}
+
+function toggleStudyDiffFilter(diff) {
+    studyState.difficulty = (studyState.difficulty === diff) ? '' : diff;
+    renderStudyTrackerAll();
+}
+
+function toggleStudyRoiFilter(roi) {
+    studyState.roi = (studyState.roi === roi) ? '' : roi;
+    renderStudyTrackerAll();
+}
+
+function getFilteredStudySubtopics() {
+    if (!studyCatalog || !studyState.activeSubject) return [];
+    
+    const subject = studyCatalog.subjects.find(s => s.id === studyState.activeSubject);
+    if (!subject) return [];
+    
+    // Gather all subtopics under this subject
+    let items = [];
+    subject.topics.forEach(topic => {
+        topic.subtopics.forEach(sub => {
+            // Find its indexed details from searchIndex if available
+            const indexed = searchIndex.find(idx => idx.subtopicId === sub.id) || {};
+            items.push({
+                id: sub.id,
+                name: sub.name,
+                file: sub.file,
+                topicId: topic.id,
+                topicName: topic.name,
+                subjectId: subject.id,
+                subjectName: subject.name,
+                difficulty: indexed.difficulty || 'medium',
+                roi: indexed.roi || 'high',
+                tags: indexed.tags || []
+            });
+        });
+    });
+    
+    // Filter by search query
+    if (studyState.search) {
+        const q = studyState.search;
+        items = items.filter(it => 
+            it.name.toLowerCase().includes(q) || 
+            it.topicName.toLowerCase().includes(q) ||
+            it.tags.some(t => t.toLowerCase().includes(q))
+        );
+    }
+    
+    // Filter by Difficulty
+    if (studyState.difficulty) {
+        items = items.filter(it => it.difficulty.toLowerCase() === studyState.difficulty.toLowerCase());
+    }
+    
+    // Filter by ROI
+    if (studyState.roi) {
+        items = items.filter(it => it.roi.toLowerCase() === studyState.roi.toLowerCase());
+    }
+    
+    // Filter by active chapter (for drill-down)
+    if (studyState.chapter) {
+        items = items.filter(it => it.topicId === studyState.chapter);
+    }
+    
+    // Sort items
+    items.sort((a, b) => {
+        let valA = a.name;
+        let valB = b.name;
+        
+        if (studyState.sortBy === 'difficulty') {
+            const weights = { easy: 1, medium: 2, moderate: 2, hard: 3 };
+            valA = weights[a.difficulty.toLowerCase()] || 2;
+            valB = weights[b.difficulty.toLowerCase()] || 2;
+        } else if (studyState.sortBy === 'roi') {
+            const weights = { low: 1, medium: 2, high: 3 };
+            valA = weights[a.roi.toLowerCase()] || 2;
+            valB = weights[b.roi.toLowerCase()] || 2;
+        }
+        
+        if (typeof valA === 'string') {
+            return studyState.sortDir * valA.localeCompare(valB);
+        }
+        return studyState.sortDir * (valA - valB);
+    });
+    
+    return items;
+}
+
+function renderStudyTree(items) {
+    // Group items by topic
+    const groups = {};
+    items.forEach(it => {
+        if (!groups[it.topicId]) {
+            groups[it.topicId] = { name: it.topicName, list: [] };
+        }
+        groups[it.topicId].list.push(it);
+    });
+    
+    return `
+    <div class="space-y-3">
+        ${Object.keys(groups).map(topicId => {
+            const gp = groups[topicId];
+            return `
+            <div class="border border-white/5 rounded-2xl overflow-hidden bg-white/2px">
+                <div class="flex items-center justify-between p-4 bg-white/5 cursor-pointer font-heading font-extrabold text-xs text-white uppercase tracking-wider select-none border-b border-white/5">
+                    <span>${gp.name}</span>
+                    <span class="text-[10px] text-gray-500 font-mono">${gp.list.length} Notes</span>
+                </div>
+                <div class="divide-y divide-white/5">
+                    ${gp.list.map(sub => `
+                        <div class="flex items-center justify-between p-3.5 hover:bg-white/5 cursor-pointer transition select-none" onclick="openStudyViewer('${sub.id}')">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-gray-300 font-semibold">${sub.name}</span>
+                                <div class="flex gap-1.5">
+                                    <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
+                                        sub.difficulty.toLowerCase() === 'easy' ? 'bg-accentGreen/10 text-accentGreen border border-accentGreen/20' :
+                                        sub.difficulty.toLowerCase() === 'hard' ? 'bg-accentRose/10 text-accentRose border border-accentRose/20' :
+                                        'bg-accentAmber/10 text-accentAmber border border-accentAmber/20'
+                                    }">${sub.difficulty}</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase bg-white/5 text-gray-400 border border-white/5">${sub.roi} ROI</span>
+                                </div>
+                            </div>
+                            <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/2px px-2 py-0.5 border border-white/5 rounded-full hover:text-white transition">Read →</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        }).join('')}
+    </div>`;
+}
+
+function renderStudyExplorer(items) {
+    if (studyState.chapter) {
+        return `
+        <div class="space-y-4">
+            <div class="divide-y divide-white/5 bg-white/2px border border-white/5 rounded-2xl">
+                ${items.map(sub => `
+                    <div class="flex items-center justify-between p-3.5 hover:bg-white/5 cursor-pointer transition select-none" onclick="openStudyViewer('${sub.id}')">
+                        <div class="flex items-center gap-3">
                             <span class="text-xs text-gray-300 font-semibold">${sub.name}</span>
-                            <div class="flex items-center gap-0.5 text-[10px]">
-                                ${starIcon}${learnedIcon}${bookmarkIcon}
+                            <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
+                                sub.difficulty.toLowerCase() === 'easy' ? 'bg-accentGreen/10 text-accentGreen border border-accentGreen/20' :
+                                sub.difficulty.toLowerCase() === 'hard' ? 'bg-accentRose/10 text-accentRose border border-accentRose/20' :
+                                'bg-accentAmber/10 text-accentAmber border border-accentAmber/20'
+                            }">${sub.difficulty}</span>
+                        </div>
+                        <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/2px px-2 py-0.5 border border-white/5 rounded-full">Read →</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>`;
+    }
+    
+    // Show folders of topics
+    const topics = {};
+    items.forEach(it => {
+        topics[it.topicId] = { name: it.topicName, count: (topics[it.topicId]?.count || 0) + 1 };
+    });
+    
+    return `
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        ${Object.keys(topics).map(tId => `
+            <div class="cursor-pointer bg-white/2px border border-white/5 hover:border-accentCyan/30 p-4 rounded-xl flex items-center gap-3 hover:bg-white/5 transition" onclick="setStudyExplorerChapter('${tId}')">
+                <span class="text-2xl text-accentCyan">📂</span>
+                <div class="truncate">
+                    <h5 class="text-xs font-bold text-gray-200 truncate">${topics[tId].name}</h5>
+                    <span class="text-[9px] text-gray-500 font-mono">${topics[tId].count} subtopics</span>
+                </div>
+            </div>
+        `).join('')}
+    </div>`;
+}
+
+function renderStudyExplorerBreadcrumb() {
+    const breadcrumbEl = document.getElementById("study-breadcrumb");
+    if (!breadcrumbEl) return;
+    
+    if (studyState.chapter) {
+        const subject = studyCatalog.subjects.find(s => s.id === studyState.activeSubject);
+        const topic = subject.topics.find(t => t.id === studyState.chapter);
+        breadcrumbEl.innerHTML = `
+            <span class="cursor-pointer hover:text-white" onclick="setStudyExplorerChapter(null)">${subject.name}</span>
+            <span class="text-gray-600 mx-1.5">/</span>
+            <span class="text-white font-bold">${topic.name}</span>
+        `;
+        breadcrumbEl.classList.remove("hidden");
+    } else {
+        breadcrumbEl.classList.add("hidden");
+    }
+}
+
+function setStudyExplorerChapter(tId) {
+    studyState.chapter = tId;
+    renderStudyTrackerAll();
+}
+
+function renderStudyCompact(items) {
+    return `
+    <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
+        <ul class="space-y-2.5">
+            ${items.map(sub => `
+                <li class="flex items-center justify-between text-xs border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                    <span class="cursor-pointer font-medium text-gray-300 hover:text-accentCyan transition" onclick="openStudyViewer('${sub.id}')">${sub.name}</span>
+                    <span class="text-[9px] font-mono text-gray-500">${sub.topicName}</span>
+                </li>
+            `).join('')}
+        </ul>
+    </div>`;
+}
+
+function renderStudyGrid(items) {
+    return `
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+        ${items.map(sub => `
+            <div class="bg-bgCard border border-white/5 hover:border-accentCyan/30 rounded-xl p-4 shadow-md flex flex-col justify-between cursor-pointer hover:-translate-y-0.5 transition duration-200" onclick="openStudyViewer('${sub.id}')">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[9px] text-gray-500 font-bold uppercase truncate max-w-[150px]">${sub.topicName}</span>
+                        <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
+                            sub.difficulty.toLowerCase() === 'easy' ? 'bg-accentGreen/10 text-accentGreen border border-accentGreen/20' :
+                            sub.difficulty.toLowerCase() === 'hard' ? 'bg-accentRose/10 text-accentRose border border-accentRose/20' :
+                            'bg-accentAmber/10 text-accentAmber border border-accentAmber/20'
+                        }">${sub.difficulty}</span>
+                    </div>
+                    <h4 class="text-xs font-bold text-white leading-relaxed mb-3">${sub.name}</h4>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-gray-500 pt-2 border-t border-white/5 mt-2">
+                    <span>ROI: <strong class="text-gray-400">${sub.roi.toUpperCase()}</strong></span>
+                    <span class="text-accentCyan font-bold uppercase text-[9px]">Read Note →</span>
+                </div>
+            </div>
+        `).join('')}
+    </div>`;
+}
+
+function renderStudyKanban(items) {
+    const columns = {
+        easy: { name: 'Easy Core', list: [] },
+        moderate: { name: 'Moderate/Medium', list: [] },
+        hard: { name: 'Hard Advanced', list: [] }
+    };
+    
+    items.forEach(it => {
+        const d = it.difficulty.toLowerCase();
+        const colKey = d === 'moderate' || d === 'medium' ? 'moderate' : d === 'easy' ? 'easy' : 'hard';
+        columns[colKey].list.push(it);
+    });
+    
+    return `
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        ${Object.keys(columns).map(colKey => {
+            const col = columns[colKey];
+            return `
+            <div class="bg-white/2px border border-white/5 rounded-2xl p-3 flex flex-col min-h-[300px]">
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-white/5">
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">${col.name}</h4>
+                    <span class="px-2 py-0.5 bg-white/5 border border-white/5 text-[9px] font-mono text-gray-400 rounded-full">${col.list.length}</span>
+                </div>
+                <div class="space-y-2 flex-grow overflow-y-auto scrollbar-thin">
+                    ${col.list.length === 0 ? `
+                        <div class="text-center text-[10px] text-gray-600 italic py-6">No notes here</div>
+                    ` : col.list.map(sub => `
+                        <div class="bg-bgCard border border-white/5 hover:border-accentCyan/30 rounded-xl p-3 cursor-pointer hover:bg-white/5 transition" onclick="openStudyViewer('${sub.id}')">
+                            <p class="text-xs font-bold text-gray-200 leading-normal mb-1.5">${sub.name}</p>
+                            <div class="flex justify-between items-center text-[9px] text-gray-500">
+                                <span class="truncate max-w-[120px]">${sub.topicName}</span>
+                                <span class="text-accentCyan uppercase font-bold">Read →</span>
                             </div>
                         </div>
-                        <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/2px px-2 py-0.5 border border-white/5 rounded-full">Study →</span>
-                    </div>
-                `;
-            });
-            
-            accordion.innerHTML = `
-                <div class="flex items-center justify-between p-4 bg-white/5 cursor-pointer font-heading font-extrabold text-xs text-white uppercase tracking-wider select-none border-b border-white/5 transition" onclick="toggleAccordion(this)">
-                    <span>${topic.name}</span>
-                    <i class="fa-solid fa-chevron-down transition duration-200"></i>
+                    `).join('')}
                 </div>
-                <div class="accordion-content transition-all duration-300 ease-in-out" style="max-height: 0px; overflow: hidden;">
-                    ${subtopicsHtml}
-                </div>
-            `;
-            
-            topicsList.appendChild(accordion);
-        });
+            </div>`;
+        }).join('')}
+    </div>`;
+}
+
+function renderStudyTable(items) {
+    return `
+    <div class="overflow-x-auto rounded-2xl border border-white/5 bg-white/2px">
+        <table class="w-full text-left divide-y divide-white/5 border-collapse">
+            <thead>
+                <tr class="bg-white/5 text-[9.5px] font-extrabold uppercase text-gray-400 tracking-wider">
+                    <th class="px-4 py-3">Topic / Subtopic</th>
+                    <th class="px-4 py-3">Chapter</th>
+                    <th class="px-4 py-3">Difficulty</th>
+                    <th class="px-4 py-3">ROI</th>
+                    <th class="px-4 py-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 text-xs">
+                ${items.map(sub => `
+                    <tr class="hover:bg-white/[0.02] transition">
+                        <td class="px-4 py-2.5 font-bold text-white cursor-pointer hover:text-accentCyan" onclick="openStudyViewer('${sub.id}')">${sub.name}</td>
+                        <td class="px-4 py-2.5 text-gray-400">${sub.topicName}</td>
+                        <td class="px-4 py-2.5">
+                            <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
+                                sub.difficulty.toLowerCase() === 'easy' ? 'bg-accentGreen/10 text-accentGreen border border-accentGreen/20' :
+                                sub.difficulty.toLowerCase() === 'hard' ? 'bg-accentRose/10 text-accentRose border border-accentRose/20' :
+                                'bg-accentAmber/10 text-accentAmber border border-accentAmber/20'
+                            }">${sub.difficulty}</span>
+                        </td>
+                        <td class="px-4 py-2.5 text-gray-400 font-mono text-[10px]">${sub.roi.toUpperCase()}</td>
+                        <td class="px-4 py-2.5 text-right">
+                            <button class="text-accentCyan hover:text-cyan-400 font-bold uppercase text-[9px] bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded" onclick="openStudyViewer('${sub.id}')">Read</button>
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    </div>`;
+}
+
+function renderStudyTrackerAll() {
+    const mount = document.getElementById('study-view-mount');
+    const emptyState = document.getElementById('study-empty-state');
+    if (!mount) return;
+    
+    initStudyToolbar();
+    buildStudyFilterRow();
+    
+    const items = getFilteredStudySubtopics();
+    const hasItems = items.length > 0;
+    
+    if (emptyState) {
+        if (!hasItems) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+        }
     }
+    
+    let html = "";
+    if (hasItems) {
+        switch (studyState.view) {
+            case 'explorer':
+                html = renderStudyExplorer(items);
+                renderStudyExplorerBreadcrumb();
+                break;
+            case 'compact':
+                html = renderStudyCompact(items);
+                break;
+            case 'grid':
+                html = renderStudyGrid(items);
+                break;
+            case 'kanban':
+                html = renderStudyKanban(items);
+                break;
+            case 'table':
+                html = renderStudyTable(items);
+                break;
+            default: // 'tree'
+                html = renderStudyTree(items);
+                break;
+        }
+    }
+    
+    mount.innerHTML = html;
+    
+    // Re-trigger Math typesetting
+    setTimeout(triggerMathTypesetting, 50);
 }
 
 // Show Custom notes form
@@ -338,9 +824,10 @@ async function openStudyViewer(subtopicId) {
             await loadChapterScript(subtopic.file);
             
             const rawText = window.studyChapters[subtopicId] || "";
+            const cleanText = rawText.trim();
             
             // Slice off frontmatter block
-            const bodyText = rawText.startsWith("---") ? rawText.split("---").slice(2).join("---").trim() : rawText;
+            const bodyText = cleanText.startsWith("---") ? cleanText.split("---").slice(2).join("---").trim() : cleanText;
             
             // Render via speed.js compiler
             container.innerHTML = parseMarkdown(bodyText);
@@ -645,20 +1132,7 @@ function renderToolkitSubTab(targetPanelId) {
     setTimeout(triggerMathTypesetting, 50);
 }
 
-// Typeset Math rendering
-function triggerMathTypesetting() {
-    if (window.renderMathInElement) {
-        window.renderMathInElement(document.body, {
-            delimiters: [
-                {left: "$$", right: "$$", display: true},
-                {left: "$", right: "$", display: false}
-            ],
-            throwOnError: false
-        });
-    } else if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
-    }
-}
+
 
 // Expose elements globally
 window.renderToolkit = renderToolkit;
@@ -666,3 +1140,5 @@ window.renderToolkitSubTab = renderToolkitSubTab;
 window.deleteNote = deleteNote;
 window.openStudyViewer = openStudyViewer;
 window.initStudyPage = initStudyPage;
+window.closeStudyViewer = closeStudyViewer;
+window.navigateViewer = navigateViewer;
