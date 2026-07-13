@@ -1216,8 +1216,16 @@ function initCustomTooltips() {
 }
 
 function triggerMathTypesetting() {
-    if (window.triggerMathTypesetting) {
-        window.triggerMathTypesetting();
+    if (window.renderMathInElement) {
+        window.renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError: false
+        });
     } else if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
     }

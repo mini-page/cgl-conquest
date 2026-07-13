@@ -14,9 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initExamTargetEditor();
     initSessionTimer();
     initPomoTimer();
-    initSearchAndFilters();
     initForms();
-    initModals();
     initToolkitTabs();
     
     // Initial Render

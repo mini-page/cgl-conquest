@@ -192,8 +192,40 @@ function initNavigation() {
         });
     }
 
-    // Global Keyboard Shortcuts for Page Navigation
+    // Automatically lock body scroll when any modal is open
+    const modalObserver = new MutationObserver(() => {
+        const activeModal = document.querySelector('.modal.active, .modal:not(.opacity-0):not(.pointer-events-none)');
+        if (activeModal) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+    });
+    document.querySelectorAll('.modal').forEach(modal => {
+        modalObserver.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    });
+
     window.addEventListener("keydown", (e) => {
+        // Intercept navigation keys if study viewer modal is active
+        const studyModal = document.getElementById("modal-study-viewer");
+        if (studyModal && studyModal.classList.contains("active")) {
+            if (e.key === "Escape" || e.key === "x" || e.key === "X") {
+                if (window.closeStudyViewer) window.closeStudyViewer();
+                e.preventDefault();
+                return;
+            }
+            if (e.key === "ArrowLeft") {
+                if (window.navigateViewer) window.navigateViewer(-1);
+                e.preventDefault();
+                return;
+            }
+            if (e.key === "ArrowRight") {
+                if (window.navigateViewer) window.navigateViewer(1);
+                e.preventDefault();
+                return;
+            }
+        }
+
         // Double shift key press listener
         if (e.key === "Shift") {
             if (e.repeat) return;
@@ -341,10 +373,32 @@ function initNavigation() {
             }
         }
 
+        if (e.key === "3") {
+            const activePage = document.querySelector('.content-page:not(.hidden)');
+            const activeId = activePage ? activePage.id : '';
+            
+            if (activeId !== 'page-syllabus') {
+                const navBtn = document.querySelector(`.nav-item[data-target="page-syllabus"]`);
+                if (navBtn) {
+                    navBtn.click();
+                }
+                if (window.syllabusState) {
+                    window.syllabusState.studyMode = true;
+                    if (window.renderSyllabus) window.renderSyllabus();
+                }
+            } else {
+                if (window.syllabusState) {
+                    window.syllabusState.studyMode = !window.syllabusState.studyMode;
+                    if (window.renderSyllabus) window.renderSyllabus();
+                }
+            }
+            e.preventDefault();
+            return;
+        }
+
         let targetPage = "";
         if (e.key === "1") targetPage = "page-dashboard";
         else if (e.key === "2") targetPage = "page-syllabus";
-        else if (e.key === "3") targetPage = "page-toolkit";
         else if (e.key === "4") targetPage = "page-speed";
         else if (e.key === "5") targetPage = "page-plan";
         else if (e.key === "6") targetPage = "page-mocks";
@@ -367,6 +421,25 @@ function initNavigation() {
     });
 }
 
+function updateThemeToggleUI(theme) {
+    const themeBtn = document.getElementById("theme-toggle");
+    if (!themeBtn) return;
+    const knob = themeBtn.querySelector("#theme-toggle-knob");
+    if (!knob) return;
+    
+    if (theme === "light") {
+        themeBtn.classList.remove("bg-white/5", "border-white/5");
+        themeBtn.classList.add("bg-indigo-600/20", "border-indigo-600/40");
+        knob.style.transform = "translateX(20px)";
+        knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500"></i>';
+    } else {
+        themeBtn.classList.remove("bg-indigo-600/20", "border-indigo-600/40");
+        themeBtn.classList.add("bg-white/5", "border-white/5");
+        knob.style.transform = "translateX(0px)";
+        knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900"></i>';
+    }
+}
+
 function initTheme() {
     const themeBtn = document.getElementById("theme-toggle");
     
@@ -375,38 +448,47 @@ function initTheme() {
     if (btnShortcutsClose) {
         btnShortcutsClose.onclick = () => closeShortcutsHelpModal();
     }
+
+    // Bind help shortcuts island trigger button
+    const btnShortcutsTrigger = document.getElementById("btn-shortcuts-island-trigger");
+    if (btnShortcutsTrigger) {
+        btnShortcutsTrigger.onclick = (e) => {
+            e.stopPropagation();
+            openShortcutsHelpModal();
+        };
+    }
     
     // Apply theme classes
     updateMetaThemeColor(appState.theme);
     if (appState.theme === "light") {
         document.body.classList.add("light-theme");
         document.documentElement.classList.remove("dark");
-        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     } else {
         document.body.classList.remove("light-theme");
         document.documentElement.classList.add("dark");
-        themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
     }
+    updateThemeToggleUI(appState.theme);
     
-    themeBtn.addEventListener("click", () => {
-        appState.theme = appState.theme === "dark" ? "light" : "dark";
-        updateMetaThemeColor(appState.theme);
-        if (appState.theme === "light") {
-            document.body.classList.add("light-theme");
-            document.documentElement.classList.remove("dark");
-            themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-        } else {
-            document.body.classList.remove("light-theme");
-            document.documentElement.classList.add("dark");
-            themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-        }
-        saveStateToStorage();
-        
-        // Re-render SVG Mindmap if visible to adjust colors
-        if (!document.getElementById("view-mindmap").classList.contains("hidden")) {
-            renderMindMap();
-        }
-    });
+    if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+            appState.theme = appState.theme === "dark" ? "light" : "dark";
+            updateMetaThemeColor(appState.theme);
+            if (appState.theme === "light") {
+                document.body.classList.add("light-theme");
+                document.documentElement.classList.remove("dark");
+            } else {
+                document.body.classList.remove("light-theme");
+                document.documentElement.classList.add("dark");
+            }
+            updateThemeToggleUI(appState.theme);
+            saveStateToStorage();
+            
+            // Re-render SVG Mindmap if visible to adjust colors
+            if (!document.getElementById("view-mindmap").classList.contains("hidden")) {
+                renderMindMap();
+            }
+        });
+    }
 }
 
 // Meta Theme-Color updater to sync browser layout shell and tabs
