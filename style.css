@@ -797,4 +797,179 @@ body.light-theme .scrollbar-thin::-webkit-scrollbar-thumb:hover {
 tr.zebra:nth-child(even) { background: rgba(255,255,255,0.012); }
 thead.sticky-head th { position: sticky; top: 0; background: #0e1322; z-index: 5; }
 
+/* Color Scheme integration for themed native scrollbars/spinners/datepickers */
+input, select, textarea {
+    color-scheme: dark;
+}
+body.light-theme input, body.light-theme select, body.light-theme textarea {
+    color-scheme: light;
+}
 
+/* Custom Calendar Component Styling */
+.custom-calendar-dropdown {
+    background: #111422;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(6, 182, 212, 0.05);
+    border-radius: 12px;
+    padding: 12px;
+    width: 240px;
+    z-index: 100;
+}
+.custom-calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.custom-calendar-header button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    border-radius: 6px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.custom-calendar-header button:hover {
+    background: rgba(6, 182, 212, 0.15);
+    color: #06b6d4;
+    border-color: rgba(6, 182, 212, 0.3);
+}
+.custom-calendar-header select {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    outline: none !important;
+    padding: 2px 4px !important;
+}
+.custom-calendar-header select option {
+    background: #111422 !important;
+    color: #ffffff !important;
+}
+.custom-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+}
+.custom-calendar-day-name {
+    font-size: 8px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+.custom-calendar-day {
+    font-size: 10px;
+    padding: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #cbd5e1;
+    transition: all 0.15s ease;
+}
+.custom-calendar-day:hover {
+    background: rgba(6, 182, 212, 0.15);
+    color: #06b6d4;
+}
+.custom-calendar-day.empty {
+    cursor: default;
+}
+.custom-calendar-day.selected {
+    background: #06b6d4;
+    color: #ffffff;
+    font-weight: 700;
+}
+.custom-calendar-day.today {
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    color: #06b6d4;
+}
+
+/* Custom Floating Chart Tooltip */
+.custom-chart-tooltip {
+    position: absolute;
+    background: rgba(13, 16, 28, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #e2e8f0;
+    font-size: 10px;
+    pointer-events: none;
+    z-index: 200;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 0 20px rgba(6, 182, 212, 0.1);
+    transition: opacity 0.15s ease;
+    line-height: 1.5;
+}
+
+/* === LIGHT THEME CONTRAST & ACCESSIBILITY OVERRIDES === */
+body.light-theme .text-zinc-100 { color: #0f172a !important; }
+body.light-theme .text-zinc-200 { color: #1e293b !important; }
+body.light-theme .text-zinc-300 { color: #334155 !important; }
+body.light-theme .text-zinc-400 { color: #475569 !important; }
+body.light-theme .text-zinc-500 { color: #64748b !important; }
+
+body.light-theme .text-teal { color: #0d9488 !important; }
+body.light-theme .text-violet { color: #7c3aed !important; }
+body.light-theme .text-amber { color: #b45309 !important; }
+body.light-theme .text-rose { color: #be123c !important; }
+body.light-theme .text-blue-400 { color: #1d4ed8 !important; }
+
+body.light-theme .view-btn { color: #334155 !important; }
+body.light-theme .view-btn:hover { background-color: rgba(0, 0, 0, 0.04) !important; }
+body.light-theme .view-btn.active { background-color: rgba(6, 182, 212, 0.08) !important; color: #0d9488 !important; }
+
+/* Custom Calendar Dropdown Light Mode overrides */
+body.light-theme .custom-calendar-dropdown {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 0 15px rgba(0, 0, 0, 0.02) !important;
+}
+body.light-theme .custom-calendar-header select {
+    color: #0f172a !important;
+}
+body.light-theme .custom-calendar-header select option {
+    background: #ffffff !important;
+    color: #0f172a !important;
+}
+body.light-theme .custom-calendar-title {
+    color: #0f172a !important;
+}
+body.light-theme .custom-calendar-day {
+    color: #334155 !important;
+}
+body.light-theme .custom-calendar-day:hover {
+    background: rgba(6, 182, 212, 0.08) !important;
+    color: #0d9488 !important;
+}
+body.light-theme .custom-calendar-day.selected {
+    background: #06b6d4 !important;
+    color: #ffffff !important;
+}
+body.light-theme .custom-calendar-day.today {
+    border-color: rgba(6, 182, 212, 0.4) !important;
+    color: #0d9488 !important;
+}
+body.light-theme .custom-calendar-header button {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    color: #334155 !important;
+}
+body.light-theme .custom-calendar-header button:hover {
+    background: rgba(6, 182, 212, 0.08) !important;
+    color: #0d9488 !important;
+    border-color: rgba(6, 182, 212, 0.2) !important;
+}
+
+/* Subtopics container light-theme background and border contrast overrides */
+body.light-theme .bg-panel2\/60 { background-color: rgba(248, 250, 252, 0.95) !important; }
+body.light-theme .text-accentCyan { color: #0891b2 !important; }
+body.light-theme .border-accentCyan\/20 { border-color: rgba(8, 145, 178, 0.25) !important; }
+body.light-theme .bg-accentCyan\/15 { background-color: rgba(8, 145, 178, 0.12) !important; }

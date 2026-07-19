@@ -1,0 +1,14 @@
+{
+  "name": "ssc-cgl-conquest-dashboard",
+  "version": "1.0.0",
+  "description": "SSC CGL 40-Day Rank-Maker Dashboard",
+  "scripts": {
+    "build:css": "node build-tailwind.js",
+    "build:data": "node compile_data.js",
+    "build": "npm run build:css && npm run build:data",
+    "watch:css": "node build-tailwind.js --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

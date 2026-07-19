@@ -8,6 +8,10 @@ function initExamTargetEditor() {
     const btnSave = document.getElementById("btn-save-exam-target");
     const btnCancel = document.getElementById("btn-cancel-exam-target");
 
+    if (inputDate && window.initCustomCalendar) {
+        window.initCustomCalendar(inputDate);
+    }
+
     function updateDisplay() {
         const displayName = document.getElementById("display-exam-name");
         const displayDate = document.getElementById("display-exam-date");
@@ -56,7 +60,11 @@ function initExamTargetEditor() {
             const dateVal = inputDate.value;
 
             if (!nameVal || !dateVal) {
-                alert("Please enter both target exam name and date.");
+                if (window.showToast) {
+                    window.showToast("Please enter both target exam name and date.", "warning");
+                } else {
+                    alert("Please enter both target exam name and date.");
+                }
                 return;
             }
 
@@ -68,6 +76,7 @@ function initExamTargetEditor() {
             editPanel.classList.add("hidden");
             viewPanel.classList.remove("hidden");
             if (btnToggle) btnToggle.innerText = "Edit";
+            if (window.showToast) window.showToast("Target settings saved successfully!", "success");
         };
     }
 
@@ -326,7 +335,7 @@ function renderTodayMissions() {
                             <span class="bg-white/5 border border-white/5 px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 uppercase">${subFound.weightage} Weight</span>
                         </div>
                     </div>
-                    <h4 class="text-xs font-bold text-white mb-3">${subFound.name}</h4>
+                    <h4 class="text-xs font-bold text-white mb-3">${subFound.name}${appState.weakAlerts && appState.weakAlerts[subFound.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1.5 animate-pulse">🚨 Weak</span>' : ''}</h4>
                     
                     <div class="flex gap-4 border-t border-white/5 pt-3">
                         <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-400 hover:text-white select-none">
@@ -605,8 +614,9 @@ function initPomoTimer() {
                 appState.pomoActive = false;
                 if (btnStart) btnStart.disabled = false;
                 if (btnPause) btnPause.disabled = true;
-                
-                speakText("Focus timer completed. Great job, soldier! Take a rest break.");
+                const msg = "Focus timer completed. Great job, soldier! Take a rest break.";
+                speakText(msg);
+                if (window.showToast) window.showToast(msg, "success");
                 appState.pomoTime = initialTime;
                 updatePomoDisplay();
             }
@@ -708,13 +718,4 @@ function initPomoTimer() {
     });
 
     updatePomoDisplay();
-}
-
-function speakText(txt) {
-    if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(txt);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        window.speechSynthesis.speak(utterance);
-    }
 }

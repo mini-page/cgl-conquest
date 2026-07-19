@@ -90,10 +90,98 @@ function initHeaderScroll() {
 }
 
 
+// Reusable programmatic navigation controller
+function navigateToPage(target, updateHash = true) {
+    const navItems = document.querySelectorAll(".nav-item, .mobile-nav-item");
+    const pages = document.querySelectorAll(".content-page");
+    const mobileMenu = document.getElementById("mobile-menu");
+    
+    if (window.drillIsPlaying) {
+        const pauseBtn = document.getElementById("btn-drill-pause");
+        if (pauseBtn) {
+            const span = pauseBtn.querySelector("span");
+            if (span && span.innerText.trim() === "Pause") {
+                pauseBtn.click();
+            }
+        }
+        if (window.startIdleTimer) {
+            window.startIdleTimer();
+        }
+    }
+    
+    navItems.forEach(ni => ni.classList.remove("active-nav"));
+    pages.forEach(p => p.classList.add("hidden"));
+    
+    // Highlight both desktop and mobile items matching target
+    document.querySelectorAll(`[data-target="${target}"]`).forEach(ni => ni.classList.add("active-nav"));
+    
+    const targetPage = document.getElementById(target);
+    if (targetPage) {
+        targetPage.classList.remove("hidden");
+    }
+    
+    // Dynamically update the global sticky top bar header page title and icon
+    const globalPageTitle = document.getElementById("global-page-title");
+    const globalPageIcon = document.getElementById("global-page-icon");
+    if (globalPageTitle) {
+        let friendlyName = "Dashboard";
+        let iconClass = '<i class="fa-solid fa-chart-line text-accentCyan"></i>';
+        
+        if (target === "page-syllabus") {
+            friendlyName = "Syllabus";
+            iconClass = '<i class="fa-solid fa-list-check text-accentGreen"></i>';
+        } else if (target === "page-plan") {
+            friendlyName = "Plan";
+            iconClass = '<i class="fa-solid fa-calendar-days text-accentAmber"></i>';
+        } else if (target === "page-mocks") {
+            friendlyName = "Analysis";
+            iconClass = '<i class="fa-solid fa-square-poll-vertical text-accentCyan"></i>';
+        } else if (target === "page-toolkit") {
+            friendlyName = "Study";
+            iconClass = '<i class="fa-solid fa-toolbox text-accentPurple"></i>';
+        } else if (target === "page-speed") {
+            friendlyName = "Drills";
+            iconClass = '<i class="fa-solid fa-bolt text-accentRose"></i>';
+        }
+        
+        globalPageTitle.innerText = friendlyName;
+        if (globalPageIcon) globalPageIcon.innerHTML = iconClass;
+    }
+    
+    // Close mobile menu dropdown
+    if (mobileMenu) {
+        mobileMenu.classList.add("hidden");
+    }
+    
+    // Trigger specific page renders
+    if (target === "page-syllabus") {
+        renderSyllabus();
+    } else if (target === "page-plan") {
+        renderStudyPlan();
+    } else if (target === "page-mocks") {
+        renderMockAnalytics();
+    } else if (target === "page-toolkit") {
+        const activeTkTab = document.querySelector(".toolkit-tab-btn.active-nav-tab");
+        const activePanelId = activeTkTab ? activeTkTab.getAttribute("data-target") : "tk-quant";
+        if (typeof renderToolkitSubTab === "function") {
+            renderToolkitSubTab(activePanelId);
+        } else {
+            renderToolkit();
+        }
+    } else if (target === "page-speed") {
+        resetDrillSession();
+        setTimeout(triggerMathTypesetting, 50);
+    }
+    
+    if (updateHash) {
+        window.location.hash = target;
+    }
+}
+window.navigateToPage = navigateToPage;
+
 // 4. NAVIGATION & THEME LOGIC
 function initNavigation() {
     const navItems = document.querySelectorAll(".nav-item, .mobile-nav-item");
-    const pages = document.querySelectorAll(".content-page");
     const mobileMenu = document.getElementById("mobile-menu");
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
 
@@ -102,88 +190,20 @@ function initNavigation() {
         item.addEventListener("click", (e) => {
             e.preventDefault();
             const target = item.getAttribute("data-target");
-            
-            if (window.drillIsPlaying) {
-                const pauseBtn = document.getElementById("btn-drill-pause");
-                if (pauseBtn) {
-                    const span = pauseBtn.querySelector("span");
-                    if (span && span.innerText.trim() === "Pause") {
-                        pauseBtn.click();
-                    }
-                }
-                if (window.startIdleTimer) {
-                    window.startIdleTimer();
-                }
-            }
-            
-            navItems.forEach(ni => ni.classList.remove("active-nav"));
-            pages.forEach(p => p.classList.add("hidden"));
-            
-            // Highlight both desktop and mobile items matching target
-            document.querySelectorAll(`[data-target="${target}"]`).forEach(ni => ni.classList.add("active-nav"));
-            
-            const targetPage = document.getElementById(target);
-            if (targetPage) {
-                targetPage.classList.remove("hidden");
-            }
-            
-            // Dynamically update the global sticky top bar header page title and icon
-            const globalPageTitle = document.getElementById("global-page-title");
-            const globalPageIcon = document.getElementById("global-page-icon");
-            if (globalPageTitle) {
-                let friendlyName = "Dashboard";
-                let iconClass = '<i class="fa-solid fa-chart-line text-accentCyan"></i>';
-                
-                if (target === "page-syllabus") {
-                    friendlyName = "Syllabus";
-                    iconClass = '<i class="fa-solid fa-list-check text-accentGreen"></i>';
-                } else if (target === "page-plan") {
-                    friendlyName = "Plan";
-                    iconClass = '<i class="fa-solid fa-calendar-days text-accentAmber"></i>';
-                } else if (target === "page-mocks") {
-                    friendlyName = "Analysis";
-                    iconClass = '<i class="fa-solid fa-square-poll-vertical text-accentCyan"></i>';
-                } else if (target === "page-toolkit") {
-                    friendlyName = "Study";
-                    iconClass = '<i class="fa-solid fa-toolbox text-accentPurple"></i>';
-                } else if (target === "page-speed") {
-                    friendlyName = "Drills";
-                    iconClass = '<i class="fa-solid fa-bolt text-accentRose"></i>';
-                }
-                
-                globalPageTitle.innerText = friendlyName;
-                if (globalPageIcon) globalPageIcon.innerHTML = iconClass;
-            }
-            
-            // Close mobile menu dropdown
-            if (mobileMenu) {
-                mobileMenu.classList.add("hidden");
-            }
-            
-            // Trigger specific page renders
-            if (target === "page-syllabus") {
-                renderSyllabus();
-            } else if (target === "page-plan") {
-                renderStudyPlan();
-            } else if (target === "page-mocks") {
-                renderMockAnalytics();
-            } else if (target === "page-toolkit") {
-                const activeTkTab = document.querySelector(".toolkit-tab-btn.active-nav-tab");
-                const activePanelId = activeTkTab ? activeTkTab.getAttribute("data-target") : "tk-quant";
-                if (typeof renderToolkitSubTab === "function") {
-                    renderToolkitSubTab(activePanelId);
-                } else {
-                    renderToolkit();
-                }
-            } else if (target === "page-speed") {
-                resetDrillSession();
-                setTimeout(triggerMathTypesetting, 50);
-            }
+            navigateToPage(target, true);
         });
     });
 
-    // Highlight active page on startup (default page-dashboard)
-    document.querySelectorAll('[data-target="page-dashboard"]').forEach(ni => ni.classList.add("active-nav"));
+    // Hash change event listener for browser history support
+    window.addEventListener("hashchange", () => {
+        const hash = window.location.hash || "#page-dashboard";
+        const target = hash.replace("#", "");
+        navigateToPage(target, false);
+    });
+
+    // Highlight active page on startup based on current hash
+    const initialHash = window.location.hash || "#page-dashboard";
+    navigateToPage(initialHash.replace("#", ""), false);
 
     // Mobile Hamburger Menu Toggle
     if (mobileMenuBtn && mobileMenu) {
@@ -410,6 +430,22 @@ function initNavigation() {
             }
             return;
         }
+        else if (e.key === "v" || e.key === "V") {
+            const speechBtn = document.getElementById("speech-toggle");
+            if (speechBtn) {
+                speechBtn.click();
+                e.preventDefault();
+            }
+            return;
+        }
+        else if (e.key === "n" || e.key === "N") {
+            const toastBtn = document.getElementById("toast-toggle");
+            if (toastBtn) {
+                toastBtn.click();
+                e.preventDefault();
+            }
+            return;
+        }
 
         if (targetPage) {
             const navBtn = document.querySelector(`.nav-item[data-target="${targetPage}"]`);
@@ -423,25 +459,110 @@ function initNavigation() {
 
 function updateThemeToggleUI(theme) {
     const themeBtn = document.getElementById("theme-toggle");
-    if (!themeBtn) return;
-    const knob = themeBtn.querySelector("#theme-toggle-knob");
-    if (!knob) return;
-    
-    if (theme === "light") {
-        themeBtn.classList.remove("bg-white/5", "border-white/5");
-        themeBtn.classList.add("bg-indigo-600/20", "border-indigo-600/40");
-        knob.style.transform = "translateX(20px)";
-        knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500"></i>';
+    if (themeBtn) {
+        const knob = themeBtn.querySelector("#theme-toggle-knob");
+        if (knob) {
+            if (theme === "light") {
+                themeBtn.classList.remove("bg-white/5", "border-white/5");
+                themeBtn.classList.add("bg-indigo-600/20", "border-indigo-600/40");
+                knob.style.transform = "translateX(20px)";
+                knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500"></i>';
+            } else {
+                themeBtn.classList.remove("bg-indigo-600/20", "border-indigo-600/40");
+                themeBtn.classList.add("bg-white/5", "border-white/5");
+                knob.style.transform = "translateX(0px)";
+                knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900"></i>';
+            }
+        }
+    }
+}
+
+function updateSpeechToggleUI() {
+    const speechBtn = document.getElementById("speech-toggle");
+    if (speechBtn) {
+        const knob = speechBtn.querySelector("#speech-toggle-knob");
+        if (knob) {
+            if (appState.speechEnabled !== false) {
+                speechBtn.classList.remove("bg-white/5", "border-white/5");
+                speechBtn.classList.add("bg-emerald-600/20", "border-emerald-600/40");
+                knob.style.transform = "translateX(20px)";
+                knob.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-500"></i>';
+                speechBtn.title = "Mute Voice Announcements [V]";
+            } else {
+                speechBtn.classList.remove("bg-emerald-600/20", "border-emerald-600/40");
+                speechBtn.classList.add("bg-white/5", "border-white/5");
+                knob.style.transform = "translateX(0px)";
+                knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-900"></i>';
+                speechBtn.title = "Enable Voice Announcements [V]";
+            }
+        }
+    }
+}
+
+function updateToastToggleUI() {
+    const toastBtn = document.getElementById("toast-toggle");
+    if (toastBtn) {
+        const knob = toastBtn.querySelector("#toast-toggle-knob");
+        if (knob) {
+            if (appState.toastEnabled !== false) {
+                toastBtn.classList.remove("bg-white/5", "border-white/5");
+                toastBtn.classList.add("bg-amber-600/20", "border-amber-600/40");
+                knob.style.transform = "translateX(20px)";
+                knob.innerHTML = '<i class="fa-solid fa-bell text-amber-500"></i>';
+                toastBtn.title = "Disable Toast Notifications [N]";
+            } else {
+                toastBtn.classList.remove("bg-amber-600/20", "border-amber-600/40");
+                toastBtn.classList.add("bg-white/5", "border-white/5");
+                knob.style.transform = "translateX(0px)";
+                knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-900"></i>';
+                toastBtn.title = "Enable Toast Notifications [N]";
+            }
+        }
+    }
+}
+
+function toggleThemeMode() {
+    appState.theme = appState.theme === "dark" ? "light" : "dark";
+    updateMetaThemeColor(appState.theme);
+    if (appState.theme === "light") {
+        document.body.classList.add("light-theme");
+        document.documentElement.classList.remove("dark");
     } else {
-        themeBtn.classList.remove("bg-indigo-600/20", "border-indigo-600/40");
-        themeBtn.classList.add("bg-white/5", "border-white/5");
-        knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900"></i>';
+        document.body.classList.remove("light-theme");
+        document.documentElement.classList.add("dark");
+    }
+    updateThemeToggleUI(appState.theme);
+    saveStateToStorage();
+    
+    // Re-render SVG Mindmap if visible to adjust colors
+    const mindmap = document.getElementById("view-mindmap");
+    if (mindmap && !mindmap.classList.contains("hidden") && typeof renderMindMap === "function") {
+        renderMindMap();
+    }
+}
+
+function toggleSpeechMode() {
+    appState.speechEnabled = !appState.speechEnabled;
+    saveStateToStorage();
+    updateSpeechToggleUI();
+    if (appState.speechEnabled) {
+        speakText("Voice announcements enabled");
+    }
+}
+
+function toggleToastMode() {
+    appState.toastEnabled = !appState.toastEnabled;
+    saveStateToStorage();
+    updateToastToggleUI();
+    if (window.showToast) {
+        window.showToast(appState.toastEnabled ? "Toast notifications enabled" : "Toast notifications disabled", "info");
     }
 }
 
 function initTheme() {
     const themeBtn = document.getElementById("theme-toggle");
+    const speechBtn = document.getElementById("speech-toggle");
+    const toastBtn = document.getElementById("toast-toggle");
     
     // Bind help shortcuts close button
     const btnShortcutsClose = document.getElementById("btn-shortcuts-close");
@@ -468,26 +589,17 @@ function initTheme() {
         document.documentElement.classList.add("dark");
     }
     updateThemeToggleUI(appState.theme);
+    updateSpeechToggleUI();
+    updateToastToggleUI();
     
     if (themeBtn) {
-        themeBtn.addEventListener("click", () => {
-            appState.theme = appState.theme === "dark" ? "light" : "dark";
-            updateMetaThemeColor(appState.theme);
-            if (appState.theme === "light") {
-                document.body.classList.add("light-theme");
-                document.documentElement.classList.remove("dark");
-            } else {
-                document.body.classList.remove("light-theme");
-                document.documentElement.classList.add("dark");
-            }
-            updateThemeToggleUI(appState.theme);
-            saveStateToStorage();
-            
-            // Re-render SVG Mindmap if visible to adjust colors
-            if (!document.getElementById("view-mindmap").classList.contains("hidden")) {
-                renderMindMap();
-            }
-        });
+        themeBtn.addEventListener("click", toggleThemeMode);
+    }
+    if (speechBtn) {
+        speechBtn.addEventListener("click", toggleSpeechMode);
+    }
+    if (toastBtn) {
+        toastBtn.addEventListener("click", toggleToastMode);
     }
 }
 

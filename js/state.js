@@ -2986,7 +2986,9 @@ let appState = {
     pomoTime: 1500,       // Default 25m study
     pomoActive: false,
     pomoMode: "study",    // "study", "short-break", "long-break"
-    dailyRituals: { drill: false, vocab: false, ca: false, computer: false }
+    dailyRituals: { drill: false, vocab: false, ca: false, computer: false },
+    speechEnabled: true,  // Default speech enabled
+    toastEnabled: true    // Default toasts enabled
 };
 
 // Timer Intervals
@@ -3006,8 +3008,26 @@ function triggerMathTypesetting() {
             ],
             throwOnError: false
         });
+    } else if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
     }
 }
+
+// Global Text-to-Speech announcer with queue clearing and toggle check
+function speakText(txt) {
+    if ('speechSynthesis' in window && appState.speechEnabled !== false) {
+        try {
+            window.speechSynthesis.cancel(); // Stop current speech to be responsive
+            const utterance = new SpeechSynthesisUtterance(txt);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            window.speechSynthesis.speak(utterance);
+        } catch (e) {
+            console.warn("Speech synthesis error:", e);
+        }
+    }
+}
+window.speakText = speakText;
 
 
 // Load state from local storage
@@ -3019,6 +3039,8 @@ function loadStateFromStorage() {
             if (!appState.weakAlerts) appState.weakAlerts = {};
             if (!appState.examName) appState.examName = "Conquest";
             if (!appState.examDate) appState.examDate = "2026-08-15";
+            if (appState.speechEnabled === undefined) appState.speechEnabled = true;
+            if (appState.toastEnabled === undefined) appState.toastEnabled = true;
         } catch (e) {
             console.error("Error loading localStorage state:", e);
         }
@@ -3038,8 +3060,107 @@ function loadStateFromStorage() {
 
 // Save state to local storage
 function saveStateToStorage() {
-    localStorage.setItem("ssc_cgl_state", JSON.stringify(appState));
+    try {
+        localStorage.setItem("ssc_cgl_state", JSON.stringify(appState));
+    } catch (e) {
+        console.error("Failed to save state to localStorage:", e);
+    }
 }
+
+// Global Markdown Parsing Utility
+function parseMarkdown(text) {
+    if (!text) return "";
+    
+    let html = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Headings
+    html = html.replace(/^### (.*?)$/gm, '<h5 class="text-xs font-bold text-white mt-2 mb-1">$1</h5>');
+    html = html.replace(/^## (.*?)$/gm, '<h4 class="text-sm font-bold text-white mt-3 mb-1">$1</h4>');
+    html = html.replace(/^# (.*?)$/gm, '<h3 class="text-base font-extrabold text-white mt-4 mb-2">$1</h3>');
+
+    // Bold (**text**)
+    html = html.replace(/\*\*(.*?)\*\"/g, '<strong class="text-white font-extrabold">$1</strong>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-extrabold">$1</strong>');
+
+    // Italic (*text*)
+    html = html.replace(/\*(.*?)\*/g, '<em class="text-gray-200 italic">$1</em>');
+
+    // Links ([text](url))
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+        const cleanUrl = url.trim();
+        if (cleanUrl.toLowerCase().startsWith('javascript:')) {
+            return `<span class="text-accentRose font-bold font-mono">[Unsafe Link Blocked]</span>`;
+        }
+        if (cleanUrl.endsWith('.jpg') || cleanUrl.endsWith('.jpeg') || cleanUrl.endsWith('.png') || cleanUrl.endsWith('.gif') || cleanUrl.endsWith('.svg')) {
+            return `<div class="my-3 overflow-hidden rounded-xl border border-white/5 bg-black/10"><img src="${cleanUrl}" alt="${text}" class="w-full h-auto block" loading="lazy"></div>`;
+        }
+        return `<a href="${cleanUrl}" target="_blank" class="text-accentCyan hover:underline font-bold">${text}</a>`;
+    });
+
+    // Blockquotes
+    html = html.replace(/^&gt; (.*?)$/gm, '<blockquote class="border-l-2 border-accentPurple pl-2 text-gray-400 my-1.5 italic bg-white/2px p-1 rounded">$1</blockquote>');
+
+    // Code blocks / Inline code
+    html = html.replace(/`(.*?)`/g, '<code class="bg-black/40 px-1 py-0.5 rounded font-mono text-accentCyan text-[10px]">$1</code>');
+
+    // Horizontal Rule
+    html = html.replace(/^---$/gm, '<hr class="border-white/5 my-2">');
+
+    // Parse tables
+    const lines = html.split('\n');
+    let inTable = false;
+    let tableHtml = '';
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (line.startsWith('|') && line.endsWith('|')) {
+            const cells = line.split('|').map(c => c.trim()).filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
+            if (!inTable) {
+                inTable = true;
+                tableHtml = '<div class="overflow-x-auto my-3"><table class="w-full text-left text-[11px] border-collapse"><thead>';
+                tableHtml += '<tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">';
+                cells.forEach(c => tableHtml += `<th class="pb-1">${c}</th>`);
+                tableHtml += '</tr></thead><tbody class="text-gray-300 font-mono">';
+            } else {
+                if (cells.every(c => c.match(/^:-*:-*$|^-+$|^:-+$|^-+:$/))) {
+                    lines[i] = '';
+                    continue;
+                }
+                tableHtml += '<tr class="border-b border-white/5">';
+                cells.forEach(c => tableHtml += `<td class="py-1">${c}</td>`);
+                tableHtml += '</tr>';
+            }
+            lines[i] = '';
+        } else {
+            if (inTable) {
+                inTable = false;
+                tableHtml += '</tbody></table></div>';
+                lines[i] = tableHtml + '\n' + lines[i];
+                tableHtml = '';
+            }
+        }
+    }
+    if (inTable) {
+        tableHtml += '</tbody></table></div>';
+        lines.push(tableHtml);
+    }
+    html = lines.filter(l => l !== '').join('\n');
+
+    // Bullet Lists (- or *)
+    html = html.replace(/^\s*[-*]\s+(.*?)$/gm, '<li class="list-disc list-inside ml-2 text-gray-300">$1</li>');
+
+    // Lists wrapper
+    html = html.replace(/(<li.*?>.*?<\/li>)+/gs, '<ul>$&</ul>');
+
+    // Newlines mapping
+    html = html.replace(/\n\n/g, '<p class="my-2"></p>');
+    html = html.replace(/\n/g, '<br>');
+
+    return html;
+}
+window.parseMarkdown = parseMarkdown;
 
 
 // === GK STATIC DATA (INLINE COMPILED) ===
@@ -3566,7 +3687,7 @@ const TOOLKIT_STATIC_DATA = {
 
     "title": "Quantitative Aptitude Core Strategy",
 
-    "content": "**Arithmetic (40-50%):** Percentage (Direct & successive), Profit & Loss (CP/MP ratio, faulty weights), Average, SI & CI (2/3 yr difference), and Mixture & Alligation.\n**Algebra:** Linear equations (2 variables), Quadratic roots/coefficients, Algebraic identities (like $x+1/x=k$), and Surds/Indices.\n**Geometry:** Master triangle properties (centers, circumradius, inradius equations) instead of spending days on complex proofs.\n**Mensuration:** Rotating shapes (Cube, Cuboid, Cone, Sphere, Hemisphere). Learn formulas cold.\n\n### Visual Reference Sheets:\n\n[** Topic Pyramid](ssc_patterns/quant_topic_pyramid.png)\n[** Arithmetic Pillars](ssc_patterns/quant_arithmetic_core_pillars.png)\n[** Algebra Targets](ssc_patterns/quant_algebra_core_targets.png)\n[** Geometry Properties](ssc_patterns/quant_geometry_properties_strategy.png)"
+    "content": "**Arithmetic (40-50%):** Percentage (Direct & successive), Profit & Loss (CP/MP ratio, faulty weights), Average, SI & CI (2/3 yr difference), and Mixture & Alligation.\n**Algebra:** Linear equations (2 variables), Quadratic roots/coefficients, Algebraic identities (like $x+1/x=k$), and Surds/Indices.\n**Geometry:** Master triangle properties (centers, circumradius, inradius equations) instead of spending days on complex proofs.\n**Mensuration:** Rotating shapes (Cube, Cuboid, Cone, Sphere, Hemisphere). Learn formulas cold.\n\n### Visual Reference Sheets:\n\n[** Topic Pyramid](ssc_patterns/quant_topic_pyramid.jpg)\n[** Arithmetic Pillars](ssc_patterns/quant_arithmetic_core_pillars.jpg)\n[** Algebra Targets](ssc_patterns/quant_algebra_core_targets.jpg)\n[** Geometry Properties](ssc_patterns/quant_geometry_properties_strategy.jpg)"
 
   },
 
@@ -3574,7 +3695,7 @@ const TOOLKIT_STATIC_DATA = {
 
     "title": "General Intelligence &amp; Reasoning",
 
-    "content": "**Series (Number & Alphabet):** Requires pattern recognition practice (do 200 questions). Jumps, alternations, prime numbers, etc.\n**Coding-Decoding:** Letter shifts, alphabetical position, and number coding rules. Looks complex but is highly logical.\n**Direction & Blood Relations:** Always draw tree diagrams and paths. Solve in under 2 minutes combined.\n**Non-Verbal Reasoning:** Mirror image (left-right flip), Water image (top-bottom flip), Paper folding, Embedded figures. Zero memorization, only spatial thinking.\n\n### Visual Reference Sheets:\n\n[** Series Patterns](ssc_patterns/reasoning_series_patterns.png)\n[** Coding-Decoding](ssc_patterns/reasoning_coding_decoding.png)\n[** Direction & Family](ssc_patterns/reasoning_direction_blood_relations.png)\n[** Floor/Box Puzzles](ssc_patterns/reasoning_floor_box_puzzles.png)"
+    "content": "**Series (Number & Alphabet):** Requires pattern recognition practice (do 200 questions). Jumps, alternations, prime numbers, etc.\n**Coding-Decoding:** Letter shifts, alphabetical position, and number coding rules. Looks complex but is highly logical.\n**Direction & Blood Relations:** Always draw tree diagrams and paths. Solve in under 2 minutes combined.\n**Non-Verbal Reasoning:** Mirror image (left-right flip), Water image (top-bottom flip), Paper folding, Embedded figures. Zero memorization, only spatial thinking.\n\n### Visual Reference Sheets:\n\n[** Series Patterns](ssc_patterns/reasoning_series_patterns.jpg)\n[** Coding-Decoding](ssc_patterns/reasoning_coding_decoding.jpg)\n[** Direction & Family](ssc_patterns/reasoning_direction_blood_relations.jpg)\n[** Floor/Box Puzzles](ssc_patterns/reasoning_floor_box_puzzles.jpg)"
 
   },
 
@@ -3582,7 +3703,7 @@ const TOOLKIT_STATIC_DATA = {
 
     "title": "English Language &amp; Comprehension",
 
-    "content": "**The Grammar Test:** English score is heavily dependent on learning 8 core pillars (Subject-Verb agreement, Tenses, Pronouns, Voice, Narration, Prepositions, Articles, Conjunctions).\n**Error Detection:** Mechanical. SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, and Subject-Verb agreement.\n**Cloze Test & Passages:** Cloze test is 80% grammar context. Passages are straightforward (not literary masterpieces)—read slowly, mark details, answer directly.\n**Vocabulary:** Master the PYQ bullseye first (clear preferences and repeating patterns). Do not blindly memorize random words.\n\n### Visual Reference Sheets:\n\n[** Grammar Weight](ssc_patterns/english_biggest_shortcut.png)\n[** Score Pillars](ssc_patterns/english_score_8_pillars.png)\n[** Error Detection](ssc_patterns/english_error_detection_mechanical.png)\n[** Cloze Test](ssc_patterns/english_cloze_comprehension.png)"
+    "content": "**The Grammar Test:** English score is heavily dependent on learning 8 core pillars (Subject-Verb agreement, Tenses, Pronouns, Voice, Narration, Prepositions, Articles, Conjunctions).\n**Error Detection:** Mechanical. SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, and Subject-Verb agreement.\n**Cloze Test & Passages:** Cloze test is 80% grammar context. Passages are straightforward (not literary masterpieces)—read slowly, mark details, answer directly.\n**Vocabulary:** Master the PYQ bullseye first (clear preferences and repeating patterns). Do not blindly memorize random words.\n\n### Visual Reference Sheets:\n\n[** Grammar Weight](ssc_patterns/english_biggest_shortcut.jpg)\n[** Score Pillars](ssc_patterns/english_score_8_pillars.jpg)\n[** Error Detection](ssc_patterns/english_error_detection_mechanical.jpg)\n[** Cloze Test](ssc_patterns/english_cloze_comprehension.jpg)"
 
   },
 
@@ -3590,7 +3711,7 @@ const TOOLKIT_STATIC_DATA = {
 
     "title": "General Awareness (GK/GS)",
 
-    "content": "**Ancient & Medieval History:** Buddhism & Jainism (councils, teachings), Mauryan Empire (Ashoka, edicts, Kautilya), Gupta Empire (literature, science), and Mughals (Akbar's Mansabdari/Din-i-Ilahi, Jizya tax rules). Ignore obscure regional dates.\n**Modern History:** INC Swadeshi, Quit India movements, important personalities (Gandhi, Bose, Tilak, Bhagat), Acts (1773-1935), and Revolt of 1857 (causes, leaders).\n**Polity:** Fundamental Rights, Parliament (bills, sessions, committees), DPSP, and Amendments (42nd, 44th, 73rd, 74th, 86th).\n**Economics & Current Affairs:** GDP vs GNP, RBI rate mechanics (Repo, Reverse Repo, CRR, SLR). Current affairs focus strictly on 5 areas: Awards, Govt Schemes, Sports, Days, and Int. Orgs.\n\n### Visual Reference Sheets:\n\n[** History Core](ssc_patterns/history_ancient_medieval_clusters.png)\n[** Modern History](ssc_patterns/history_modern_big_6_checklist.png)\n[** Polity Goldmine](ssc_patterns/polity_predictable_goldmine.png)\n[** Current Affairs](ssc_patterns/current_affairs_key_categories.png)"
+    "content": "**Ancient & Medieval History:** Buddhism & Jainism (councils, teachings), Mauryan Empire (Ashoka, edicts, Kautilya), Gupta Empire (literature, science), and Mughals (Akbar's Mansabdari/Din-i-Ilahi, Jizya tax rules). Ignore obscure regional dates.\n**Modern History:** INC Swadeshi, Quit India movements, important personalities (Gandhi, Bose, Tilak, Bhagat), Acts (1773-1935), and Revolt of 1857 (causes, leaders).\n**Polity:** Fundamental Rights, Parliament (bills, sessions, committees), DPSP, and Amendments (42nd, 44th, 73rd, 74th, 86th).\n**Economics & Current Affairs:** GDP vs GNP, RBI rate mechanics (Repo, Reverse Repo, CRR, SLR). Current affairs focus strictly on 5 areas: Awards, Govt Schemes, Sports, Days, and Int. Orgs.\n\n### Visual Reference Sheets:\n\n[** History Core](ssc_patterns/history_ancient_medieval_clusters.jpg)\n[** Modern History](ssc_patterns/history_modern_big_6_checklist.jpg)\n[** Polity Goldmine](ssc_patterns/polity_predictable_goldmine.jpg)\n[** Current Affairs](ssc_patterns/current_affairs_key_categories.jpg)"
 
   }
 

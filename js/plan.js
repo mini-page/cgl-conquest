@@ -191,7 +191,9 @@ function completeActiveDay() {
         saveStateToStorage();
         renderAll();
 
-        speakText(`Success! Day ${appState.currentDay - 1} completed. Welcome to Day ${appState.currentDay}!`);
+        const successMsg = `Day ${appState.currentDay - 1} completed! Welcome to Day ${appState.currentDay}.`;
+        speakText(successMsg);
+        if (window.showToast) window.showToast(successMsg, "success");
 
         const nextDayData = PLAN_DATA.find(d => d.day === appState.currentDay);
         if (nextDayData) {
@@ -204,6 +206,7 @@ function completeActiveDay() {
         renderStudyPlan();
     } else {
         speakText("Congratulations! You have completed the 40-day course!");
+        if (window.showToast) window.showToast("Congratulations! You have completed the 40-day course!", "success");
     }
 }
 
@@ -214,10 +217,14 @@ function resetActiveDayTo(dayNum) {
         saveStateToStorage();
         renderAll();
         renderStudyPlan();
+        if (window.showToast) window.showToast(`Preparation progress reset back to Day ${dayNum}`, "warning");
     }
 }
 
 // Complete day trigger in Dashboard view
-document.getElementById("btn-complete-day").onclick = () => {
-    completeActiveDay();
-};
+const btnCompleteDay = document.getElementById("btn-complete-day");
+if (btnCompleteDay) {
+    btnCompleteDay.onclick = () => {
+        completeActiveDay();
+    };
+}

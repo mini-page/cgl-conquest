@@ -3,7 +3,12 @@ let studyCatalog = null;
 let activeSubjectId = null;
 let searchIndex = [];
 let currentReadingSubtopic = null;
-let progressStore = JSON.parse(localStorage.getItem("studyProgress") || "{}");
+let progressStore = {};
+try {
+    progressStore = JSON.parse(localStorage.getItem("studyProgress") || "{}");
+} catch (e) {
+    console.error("localStorage disabled/inaccessible for studyProgress:", e);
+}
 
 // Setup DOM content listeners
 document.addEventListener("DOMContentLoaded", () => {
@@ -921,7 +926,11 @@ function toggleViewerProgress(type) {
 }
 
 function saveProgress() {
-    localStorage.setItem("studyProgress", JSON.stringify(progressStore));
+    try {
+        localStorage.setItem("studyProgress", JSON.stringify(progressStore));
+    } catch (e) {
+        console.error("Failed to save studyProgress to localStorage:", e);
+    }
 }
 
 function closeStudyViewer() {
@@ -1119,6 +1128,7 @@ function deleteNote(id) {
         appState.notes = appState.notes.filter(n => n.id !== id);
         saveStateToStorage();
         renderToolkit();
+        if (window.showToast) window.showToast("Note deleted successfully", "error");
     }
 }
 

@@ -968,89 +968,6 @@ function isHighWeightTopic(topicName) {
     return highWeight.some(hw => name.includes(hw) || hw.includes(name));
 }
 
-function parseMarkdown(text) {
-    if (!text) return "";
-    
-    let html = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-
-    // Headings
-    html = html.replace(/^### (.*?)$/gm, '<h5 class="text-xs font-bold text-white mt-2 mb-1">$1</h5>');
-    html = html.replace(/^## (.*?)$/gm, '<h4 class="text-sm font-bold text-white mt-3 mb-1">$1</h4>');
-    html = html.replace(/^# (.*?)$/gm, '<h3 class="text-base font-extrabold text-white mt-4 mb-2">$1</h3>');
-
-    // Bold (**text**)
-    html = html.replace(/\*\*(.*?)\*\"/g, '<strong class="text-white font-extrabold">$1</strong>');
-    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-extrabold">$1</strong>');
-
-    // Italic (*text*)
-    html = html.replace(/\*(.*?)\*/g, '<em class="text-gray-200 italic">$1</em>');
-
-    // Links ([text](url))
-    html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" class="text-accentCyan hover:underline font-bold">$1</a>');
-
-    // Blockquotes
-    html = html.replace(/^&gt; (.*?)$/gm, '<blockquote class="border-l-2 border-accentPurple pl-2 text-gray-400 my-1.5 italic bg-white/2px p-1 rounded">$1</blockquote>');
-
-    // Code blocks / Inline code
-    html = html.replace(/`(.*?)`/g, '<code class="bg-black/40 px-1 py-0.5 rounded font-mono text-accentCyan text-[10px]">$1</code>');
-
-    // Horizontal Rule
-    html = html.replace(/^---$/gm, '<hr class="border-white/5 my-2">');
-
-    // Parse tables
-    const lines = html.split('\n');
-    let inTable = false;
-    let tableHtml = '';
-    for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trim();
-        if (line.startsWith('|') && line.endsWith('|')) {
-            const cells = line.split('|').map(c => c.trim()).filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
-            if (!inTable) {
-                inTable = true;
-                tableHtml = '<div class="overflow-x-auto my-3"><table class="w-full text-left text-[11px] border-collapse"><thead>';
-                tableHtml += '<tr class="border-b border-white/10 text-gray-400 font-bold text-[9px] uppercase">';
-                cells.forEach(c => tableHtml += `<th class="pb-1">${c}</th>`);
-                tableHtml += '</tr></thead><tbody class="text-gray-300 font-mono">';
-            } else {
-                if (cells.every(c => c.match(/^:-*:-*$|^-+$|^:-+$|^-+:$/))) {
-                    lines[i] = '';
-                    continue;
-                }
-                tableHtml += '<tr class="border-b border-white/5">';
-                cells.forEach(c => tableHtml += `<td class="py-1">${c}</td>`);
-                tableHtml += '</tr>';
-            }
-            lines[i] = '';
-        } else {
-            if (inTable) {
-                inTable = false;
-                tableHtml += '</tbody></table></div>';
-                lines[i] = tableHtml + '\n' + lines[i];
-                tableHtml = '';
-            }
-        }
-    }
-    if (inTable) {
-        tableHtml += '</tbody></table></div>';
-        lines.push(tableHtml);
-    }
-    html = lines.filter(l => l !== '').join('\n');
-
-    // Bullet Lists (- or *)
-    html = html.replace(/^\s*[-*]\s+(.*?)$/gm, '<li class="list-disc list-inside ml-2 text-gray-300">$1</li>');
-
-    // Lists wrapper
-    html = html.replace(/(<li.*?>.*?<\/li>)+/gs, '<ul>$&</ul>');
-
-    // Newlines mapping
-    html = html.replace(/\n\n/g, '<p class="my-2"></p>');
-    html = html.replace(/\n/g, '<br>');
-
-    return html;
-}
 
 // === CUSTOM TOOLTIP ENGINE ===
 let tooltipTimeout = null;
@@ -1215,21 +1132,6 @@ function initCustomTooltips() {
     }
 }
 
-function triggerMathTypesetting() {
-    if (window.renderMathInElement) {
-        window.renderMathInElement(document.body, {
-            delimiters: [
-                {left: '$$', right: '$$', display: true},
-                {left: '$', right: '$', display: false},
-                {left: '\\(', right: '\\)', display: false},
-                {left: '\\[', right: '\\]', display: true}
-            ],
-            throwOnError: false
-        });
-    } else if (window.MathJax && window.MathJax.typesetPromise) {
-        window.MathJax.typesetPromise().catch(err => console.log('MathJax error:', err));
-    }
-}
 
 // Expose functions globally
 window.initCustomTooltips = initCustomTooltips;

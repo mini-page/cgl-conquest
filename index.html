@@ -59,7 +59,7 @@
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- Sticky Pomodoro & Theme Toggler Shared Island Capsule -->
+    <!-- Sticky Pomodoro & Shared Island Capsule -->
     <div class="fixed top-4 right-4 sm:right-12 z-50 flex items-center bg-bgCard/90 backdrop-blur-md border border-white/10 hover:border-white/20 rounded-full p-1 shadow-2xl transition select-none">
         <!-- Pomodoro Indicator Part -->
         <div id="pomo-capsule" class="flex items-center gap-2 pl-3 pr-2 py-0.5 cursor-pointer rounded-full transition" data-tooltip="Pomodoro Focus Timer">
@@ -286,7 +286,7 @@
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-[9px] text-gray-400 font-bold uppercase">Exam Date</label>
-                                <input type="date" id="input-exam-date" class="w-full bg-white/5 border border-white/10 rounded px-2.5 py-1 text-xs text-white outline-none focus:border-accentRose">
+                                <input type="text" id="input-exam-date" class="w-full bg-white/5 border border-white/10 rounded px-2.5 py-1 text-xs text-white outline-none focus:border-accentRose cursor-pointer" placeholder="YYYY-MM-DD" readonly>
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button id="btn-save-exam-target" class="flex-grow bg-accentRose hover:bg-rose-500 text-white font-bold py-1.5 rounded text-[10px] uppercase tracking-wide transition">Save Settings</button>
@@ -397,7 +397,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                 <!-- Input log form -->
                 <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg lg:col-span-2 space-y-4 flex flex-col justify-between">
-                    <h2 class="font-heading font-bold text-sm text-white uppercase tracking-wider mb-2"><i class="fa-solid fa-pen-ruler mr-1.5 text-accentCyan"></i> Log Mock Test Score</h2>
+                    <h2 id="mock-form-header" class="font-heading font-bold text-sm text-white uppercase tracking-wider mb-2"><i class="fa-solid fa-pen-ruler mr-1.5 text-accentCyan"></i> Log Mock Test Score</h2>
                     <form id="form-mock" class="space-y-4">
                         <div class="grid grid-cols-2 gap-3">
                             <div>
@@ -406,14 +406,15 @@
                             </div>
                             <div>
                                 <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Date Taken *</label>
-                                <input type="date" id="mock-date" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg px-3 py-2 text-xs text-white outline-none transition" required>
+                                <input type="text" id="mock-date" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg px-3 py-2 text-xs text-white outline-none transition cursor-pointer" placeholder="YYYY-MM-DD" readonly required>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-3 gap-3">
-                            <div>
-                                <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Total Score *</label>
-                                <input type="number" id="mock-score" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg px-3 py-2 text-xs text-white outline-none transition" min="0" max="200" step="0.01" placeholder="Max 200" required>
+                            <div class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 flex flex-col justify-center select-none">
+                                <span class="text-[8px] font-bold text-gray-400 uppercase tracking-wider">Calculated Total</span>
+                                <span id="mock-score-display" class="text-xs font-extrabold text-accentCyan">0.00 / 200</span>
+                                <input type="hidden" id="mock-score" value="0">
                             </div>
                             <div>
                                 <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Accuracy (%)</label>
@@ -430,28 +431,45 @@
                             <div class="grid grid-cols-4 gap-2">
                                 <div>
                                     <label class="block text-[8px] text-gray-400 font-semibold mb-1">Quant (50)</label>
-                                    <input type="number" id="score-quant" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50">
+                                    <input type="number" id="score-quant" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50" step="any">
                                 </div>
                                 <div>
                                     <label class="block text-[8px] text-gray-400 font-semibold mb-1">Reason (50)</label>
-                                    <input type="number" id="score-reasoning" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50">
+                                    <input type="number" id="score-reasoning" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50" step="any">
                                 </div>
                                 <div>
                                     <label class="block text-[8px] text-gray-400 font-semibold mb-1">English (50)</label>
-                                    <input type="number" id="score-english" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50">
+                                    <input type="number" id="score-english" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50" step="any">
                                 </div>
                                 <div>
                                     <label class="block text-[8px] text-gray-400 font-semibold mb-1">Gen Aw. (50)</label>
-                                    <input type="number" id="score-ga" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50">
+                                    <input type="number" id="score-ga" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50" step="any">
                                 </div>
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Flag Weak Subtopic (Triggers Red Alert 🚨)</label>
-                            <select id="mock-weak-topic" class="w-full bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-gray-300 outline-none focus:border-accentCyan cursor-pointer">
-                                <option value="">-- No Weak Topic Selected --</option>
-                            </select>
+                        <!-- Searchable Multi-select Dropdown for Weak Topics -->
+                        <div class="relative space-y-1.5" id="custom-weak-topics-widget">
+                            <label class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Flag Weak Subtopics (Triggers Red Alert 🚨)</label>
+                            
+                            <!-- Selected tags container -->
+                            <div id="mock-weak-tags-container" class="flex flex-wrap gap-1.5 min-h-[32px] bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-gray-400 select-none">
+                                No topics selected (Optional)
+                            </div>
+
+                            <!-- Selected list hidden input -->
+                            <input type="hidden" id="mock-weak-topics-list" value="">
+
+                            <!-- Search bar with icon -->
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-[10px]"></i>
+                                <input type="text" id="mock-weak-search" placeholder="Search & add weak topics..." class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg pl-8 pr-3 py-1.5 text-xs text-white outline-none transition">
+                            </div>
+
+                            <!-- Dropdown options panel -->
+                            <div id="mock-weak-dropdown-options" class="absolute left-0 w-full bg-[#151526] border border-white/10 shadow-2xl z-50 rounded-lg p-2 max-h-48 overflow-y-auto hidden divide-y divide-white/5 scrollbar-thin">
+                                <!-- Dynamically populated list -->
+                            </div>
                         </div>
 
                         <div>
@@ -459,9 +477,14 @@
                             <textarea id="mock-notes" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg px-3 py-2 text-xs text-white outline-none transition resize-none" rows="2" placeholder="Key mistakes, formulas to add, weak topics..."></textarea>
                         </div>
 
-                        <button type="submit" class="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-heading font-semibold py-2 rounded-lg text-xs uppercase tracking-wider transition duration-200">
-                            <i class="fa-solid fa-circle-plus mr-1"></i> Save Mock Record
-                        </button>
+                        <div class="flex gap-2">
+                            <button id="mock-cancel-edit-btn" type="button" class="hidden flex-1 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 hover:border-white/20 font-heading font-semibold py-2 rounded-lg text-xs uppercase tracking-wider transition duration-200" onclick="window.cancelMockEdit()">
+                                Cancel
+                            </button>
+                            <button id="mock-submit-btn" type="submit" class="flex-[2] bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-heading font-semibold py-2 rounded-lg text-xs uppercase tracking-wider transition duration-200">
+                                <i class="fa-solid fa-circle-plus mr-1"></i> Save Mock Record
+                            </button>
+                        </div>
                     </form>
                 </div>
 
@@ -504,6 +527,26 @@
                                 <!-- JS Inject -->
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Analytics Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <!-- Sectional Strength Breakdown -->
+                <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg space-y-4">
+                    <h2 class="font-heading font-bold text-sm text-white uppercase tracking-wider"><i class="fa-solid fa-chart-pie mr-1.5 text-accentPurple"></i> Sectional Strengths & Benchmarks</h2>
+                    <div id="sectional-bars-container" class="space-y-3.5">
+                        <!-- Dynamically populated progress bars -->
+                    </div>
+                </div>
+
+                <!-- Flagged Weak Topics & Action Center -->
+                <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg space-y-4">
+                    <h2 class="font-heading font-bold text-sm text-white uppercase tracking-wider"><i class="fa-solid fa-triangle-exclamation mr-1.5 text-accentRose"></i> Revision Radar (Weak Topics)</h2>
+                    <div class="text-[10px] text-gray-400 mb-2">The topics below were flagged during mock tests. Click on any topic to jump directly to its study content.</div>
+                    <div id="weak-topics-radar" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                        <!-- Dynamically populated weak topics -->
                     </div>
                 </div>
             </div>
@@ -852,7 +895,7 @@
             <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-syllabus" data-tooltip="Track [2]" aria-label="Syllabus">
                 <i class="fa-solid fa-list-check text-sm"></i>
             </a>
-            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200 hidden" data-target="page-toolkit" data-tooltip="Study [3]" aria-label="Study">
+            <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-toolkit" data-tooltip="Study [3]" aria-label="Study">
                 <i class="fa-solid fa-toolbox text-sm"></i>
             </a>
             <a href="#" class="nav-item w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-white/5 transition duration-200" data-target="page-speed" data-tooltip="Drills [4]" aria-label="Drills">
@@ -993,6 +1036,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2 items-center">
+                    <div>Toggle Voice Announcements</div>
+                    <div class="flex items-center gap-3">
+                        <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">V</kbd>
+                        <div id="speech-toggle" class="w-11 h-6 rounded-full bg-white/5 border border-white/5 relative transition duration-300 cursor-pointer" title="Toggle Voice Announcements" role="button">
+                            <span class="absolute left-0.5 top-[1px] w-5 h-5 rounded-full bg-white flex items-center justify-center text-[10px] text-zinc-950 transition-all duration-300 transform" id="speech-toggle-knob">
+                                <i class="fa-solid fa-volume-high text-emerald-500"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2 items-center">
+                    <div>Toggle Toast Notifications</div>
+                    <div class="flex items-center gap-3">
+                        <kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">N</kbd>
+                        <div id="toast-toggle" class="w-11 h-6 rounded-full bg-white/5 border border-white/5 relative transition duration-300 cursor-pointer" title="Toggle Toast Notifications" role="button">
+                            <span class="absolute left-0.5 top-[1px] w-5 h-5 rounded-full bg-white flex items-center justify-center text-[10px] text-zinc-950 transition-all duration-300 transform" id="toast-toggle-knob">
+                                <i class="fa-solid fa-bell text-amber-500"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-2 gap-2 border-b border-white/5 pb-2">
                     <div>Toggle Study Mode (Syllabus)</div>
                     <div><kbd class="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white font-mono">3</kbd></div>
@@ -1032,6 +1097,10 @@
 
     <!-- App Scripts -->
     <script src="study/subjects.js"></script>
+    <!-- App Components -->
+    <script src="js/components/calendar.js"></script>
+    <script src="js/components/tooltip.js"></script>
+    <script src="js/components/dropdown.js"></script>
     <script src="js/state.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/dashboard.js"></script>

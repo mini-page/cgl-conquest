@@ -465,9 +465,13 @@ try {
       searchInput.value = syllabusState.search || '';
       if (!searchInput.dataset.bound) {
         searchInput.dataset.bound = "true";
+        let debounceTimer;
         searchInput.addEventListener('input', e => {
-          syllabusState.search = e.target.value.toLowerCase();
-          renderAll();
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            syllabusState.search = e.target.value.toLowerCase();
+            renderAll();
+          }, 300);
         });
       }
     }
@@ -675,7 +679,7 @@ try {
     if (syllabusState.studyMode) {
       return `
       <div class="px-4 py-3 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition cursor-pointer" onclick="tryOpenStudyNote('${it.id}')">
-        <p class="text-sm text-zinc-100 mb-1.5 font-medium hover:text-accentCyan transition">${it.name}</p>
+        <p class="text-sm text-zinc-100 mb-1.5 font-medium hover:text-accentCyan transition">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
         <div class="flex items-center flex-wrap gap-2 mb-1.5">${diffPill(it.difficulty)}${weightPill(it.weight)}${effortLabel(it.effort)}</div>
         <div class="flex justify-between items-center text-[10px] text-gray-500">
           <span class="text-accentCyan font-bold uppercase text-[9px]">Read Note →</span>
@@ -685,7 +689,7 @@ try {
     const f = flags(it.id);
     return `
     <div class="px-4 py-3 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition">
-      <p class="text-sm text-zinc-100 mb-1.5 font-medium">${it.name}</p>
+      <p class="text-sm text-zinc-100 mb-1.5 font-medium">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
       <div class="flex items-center flex-wrap gap-2 mb-2.5">${diffPill(it.difficulty)}${weightPill(it.weight)}${effortLabel(it.effort)}</div>
       <div class="flex items-center gap-4">
         <label class="flex items-center gap-1.5 cursor-pointer select-none">
@@ -902,13 +906,13 @@ try {
                     return `
                     <div class="flex items-center gap-2 py-1 cursor-pointer" onclick="tryOpenStudyNote('${it.id}')">
                       <span class="text-[9px] text-accentCyan font-bold">Read →</span>
-                      <span class="text-[11px] text-zinc-300 hover:text-accentCyan transition">${it.name}</span>
+                      <span class="text-[11px] text-zinc-300 hover:text-accentCyan transition">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</span>
                     </div>`;
                   }
                   return `
                   <div class="flex items-center gap-2 py-1">
                     <span data-toggle-all="${it.id}" title="Marks Learned + Practiced + Mastered together" class="tri-box m ${fullyDone(it.id)?'on m':''}">${fullyDone(it.id)?'✓':''}</span>
-                    <span class="text-[11px] ${fullyDone(it.id)?'text-zinc-600 line-through':'text-zinc-400'}">${it.name}</span>
+                    <span class="text-[11px] ${fullyDone(it.id)?'text-zinc-600 line-through':'text-zinc-400'}">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</span>
                   </div>`;
                 }).join('')}</div>` : ''}
               </div>`;
@@ -977,7 +981,7 @@ try {
           ${sortItems(g.items).map(it => `
             <div class="flex items-center justify-between gap-2 border-b border-white/5 pb-1.5 last:border-0">
               <div class="min-w-0">
-                <p class="text-xs text-zinc-300 truncate font-medium">${it.name}</p>
+                <p class="text-xs text-zinc-300 truncate font-medium" title="${it.name}">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' 🚨' : ''}</p>
                 <div class="mt-0.5">${diffPill(it.difficulty)}</div>
               </div>
               ${miniTri(it)}
@@ -1042,7 +1046,7 @@ try {
           <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin">
             ${list.slice(0,60).map(it => `
               <div class="kanban-card bg-panel2 border border-line rounded-xl p-3 shadow-sm hover:border-teal/30 hover:bg-white/5 transition cursor-pointer" onclick="tryOpenStudyNote('${it.id}')">
-                <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium hover:text-accentCyan transition">${it.name}</p>
+                <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium hover:text-accentCyan transition">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
                 <p class="text-[9px] text-zinc-500 font-mono mb-2">${it.topicName} &bull; ${it.subjectName.split(' ')[0]}</p>
                 <div class="flex gap-1 justify-between items-center">
                   ${diffPill(it.difficulty)}
@@ -1067,7 +1071,7 @@ try {
         <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin">
           ${list.slice(0,60).map(it => `
             <div draggable="true" data-kitem="${it.id}" class="kanban-card bg-panel2 border border-line rounded-xl p-3 shadow-sm hover:border-teal/30 transition">
-              <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium">${it.name}</p>
+              <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
               <p class="text-[9px] text-zinc-500 font-mono mb-2">${it.topicName} &bull; ${it.subjectName.split(' ')[0]}</p>
               <div class="flex gap-1">${diffPill(it.difficulty)}</div>
             </div>`).join('')}
@@ -1132,7 +1136,7 @@ try {
           ${rows.map(it => `
             <tr class="zebra border-b border-line/60 last:border-0 hover:bg-white/[0.03] transition">
               <td class="px-4 py-2.5">
-                <p class="text-zinc-200 font-medium">${it.name}</p>
+                <p class="text-zinc-200 font-medium">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
                 <p class="text-[9.5px] text-zinc-500 font-mono mt-0.5">${it.chapterName} &bull; ${it.topicName}</p>
               </td>
               <td class="px-4 py-2.5 text-zinc-400 text-xs whitespace-nowrap">${it.subjectName.split(' ').slice(0,2).join(' ')}</td>
@@ -1246,6 +1250,7 @@ try {
     }
   };
   window.syllabusState = syllabusState;
+  window.findStudyNoteForSyllabus = findStudyNoteForSyllabus;
 
   // Initial triggers
   document.addEventListener("DOMContentLoaded", () => {
