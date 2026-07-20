@@ -222,7 +222,21 @@ function renderSubjectGrid(subjects) {
     `;
     notesCard.onclick = () => showCustomNotes();
     grid.appendChild(notesCard);
+
+    // Append Quick Reference Tables Card
+    const refCard = document.createElement("div");
+    refCard.className = "cursor-pointer bg-bgCard border border-white/5 hover:border-accentAmber/30 hover:shadow-amber-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px]";
+    refCard.innerHTML = `
+        <span class="w-12 h-12 rounded-xl bg-accentAmber/10 text-accentAmber flex items-center justify-center text-xl">
+            <i class="fa-solid fa-table-list"></i>
+        </span>
+        <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider">Quick Reference Tables</h3>
+        <span class="text-[10px] text-gray-500">Tables · Trig · Fractions · Triplets</span>
+    `;
+    refCard.onclick = () => showQuickRefTables();
+    grid.appendChild(refCard);
 }
+
 
 // View state for Study Notes Tracker
 let studyState = {
@@ -780,6 +794,98 @@ function showCustomNotes() {
     renderToolkit();
 }
 
+// Load and render all Quick Reference Tables from tables.json
+async function showQuickRefTables() {
+    // Show topic area, hide others
+    document.getElementById("study-subject-grid").classList.add("hidden");
+    document.getElementById("study-custom-notes-area").classList.add("hidden");
+
+    const topicArea = document.getElementById("study-topic-area");
+    topicArea.classList.remove("hidden");
+
+    // Update header
+    const titleEl = document.getElementById("study-active-subject-title");
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-table-list text-accentAmber mr-2"></i> Quick Reference Tables`;
+
+    // Hook back button
+    const backBtn = document.getElementById("btn-study-back-grid");
+    if (backBtn) backBtn.onclick = backToSubjects;
+
+    // Hide filter/search/breadcrumb UI — not needed for static tables
+    const filterRow = document.getElementById("study-filter-row");
+    if (filterRow) filterRow.innerHTML = "";
+    const breadcrumb = document.getElementById("study-breadcrumb");
+    if (breadcrumb) breadcrumb.classList.add("hidden");
+    const sortWrap = document.getElementById("study-sort-dropdown-wrap");
+    if (sortWrap) sortWrap.innerHTML = "";
+    const viewWrap = document.getElementById("study-view-dropdown-wrap");
+    if (viewWrap) viewWrap.innerHTML = "";
+    const searchInput = document.getElementById("study-search");
+    if (searchInput) searchInput.style.display = "none";
+
+    const mount = document.getElementById("study-view-mount");
+    if (!mount) return;
+
+    mount.innerHTML = `<div class="flex items-center justify-center py-12 text-gray-500 text-xs"><i class="fa-solid fa-spinner animate-spin mr-2"></i>Loading tables...</div>`;
+
+    try {
+        const resp = await fetch("data/toolkit/tables.json");
+        const tables = await resp.json();
+
+        let html = `<div class="space-y-5 pb-4">`;
+
+        tables.forEach((item, idx) => {
+            const colors = [
+                "border-accentCyan text-accentCyan bg-accentCyan/10",
+                "border-accentAmber text-accentAmber bg-accentAmber/10",
+                "border-accentGreen text-accentGreen bg-accentGreen/10",
+                "border-accentPurple text-accentPurple bg-accentPurple/10",
+                "border-accentRose text-accentRose bg-accentRose/10",
+            ];
+            const colorClass = colors[idx % colors.length];
+            const [borderCol, textCol, bgCol] = colorClass.split(" ");
+
+            html += `
+            <div class="bg-bgCard border border-white/5 rounded-2xl overflow-hidden shadow-md">
+                <div class="flex items-center gap-3 px-4 py-3 border-b border-white/5 bg-white/2">
+                    <span class="w-7 h-7 rounded-lg ${bgCol} ${borderCol} border flex items-center justify-center text-xs ${textCol} font-extrabold">${idx + 1}</span>
+                    <h4 class="font-heading font-extrabold text-sm text-white">${item.title}</h4>
+                </div>
+                <div class="p-4 text-xs text-gray-300 overflow-x-auto study-note-content ref-table-body" data-idx="${idx}">
+                    ${parseMarkdown(item.content)}
+                </div>
+            </div>`;
+        });
+
+        html += `</div>`;
+        mount.innerHTML = html;
+
+        // Style all tables inside the rendered content
+        mount.querySelectorAll("table").forEach(table => {
+            table.className = "w-full text-xs border-collapse min-w-[320px]";
+            table.querySelectorAll("th").forEach(th => {
+                th.className = "bg-white/5 text-accentCyan font-bold text-left px-3 py-2 border border-white/10";
+            });
+            table.querySelectorAll("td").forEach(td => {
+                td.className = "px-3 py-1.5 border border-white/5 text-gray-200";
+            });
+            table.querySelectorAll("tr:nth-child(even) td").forEach(td => {
+                td.classList.add("bg-white/2");
+            });
+        });
+
+        // Bold the "n²" / "n³" value cells
+        mount.querySelectorAll("td strong").forEach(el => {
+            el.className = "text-accentAmber font-bold";
+        });
+
+        setTimeout(triggerMathTypesetting, 100);
+
+    } catch (err) {
+        if (mount) mount.innerHTML = `<div class="text-center text-xs text-accentRose py-8"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Failed to load reference tables: ${err.message}</div>`;
+    }
+}
+
 // Reset views back to subject cards grid
 function backToSubjects() {
     const topicArea = document.getElementById("study-topic-area");
@@ -796,6 +902,10 @@ function backToSubjects() {
     
     const searchInput = document.getElementById("study-global-search");
     if (searchInput) searchInput.value = "";
+
+    // Restore study-search input in case it was hidden by Quick Ref Tables view
+    const studySearch = document.getElementById("study-search");
+    if (studySearch) studySearch.style.display = "";
 }
 
 // Accordion toggle animation
@@ -1168,6 +1278,7 @@ window.renderToolkit = renderToolkit;
 window.renderToolkitSubTab = renderToolkitSubTab;
 window.deleteNote = deleteNote;
 window.openStudyViewer = openStudyViewer;
+window.showQuickRefTables = showQuickRefTables;
 window.initStudyPage = initStudyPage;
 window.closeStudyViewer = closeStudyViewer;
 window.navigateViewer = navigateViewer;
