@@ -36,6 +36,7 @@ const reasoning = fs.readFileSync(path.join(tkDir, 'reasoning.json'), 'utf8');
 const computer = fs.readFileSync(path.join(tkDir, 'computer.json'), 'utf8');
 const laws = fs.readFileSync(path.join(tkDir, 'laws.json'), 'utf8');
 const patterns = fs.readFileSync(path.join(tkDir, 'patterns.json'), 'utf8');
+const tables = fs.readFileSync(path.join(tkDir, 'tables.json'), 'utf8');
 
 // 4. Compile primary databases
 const primaryRegex = /\/\/ 1\. SYLLABUS DATABASE \(INLINE COMPILED\)[\s\S]*?async function loadApplicationData\(\) \{[\s\S]*?\}/;
@@ -91,7 +92,8 @@ const tkReplace = '// === TOOLKIT STATIC DATA (INLINE COMPILED) ===\n' +
   '  reasoning: ' + reasoning.trim() + ',\n' +
   '  computer: ' + computer.trim() + ',\n' +
   '  laws: ' + laws.trim() + ',\n' +
-  '  patterns: ' + patterns.trim() + '\n};';
+  '  patterns: ' + patterns.trim() + ',\n' +
+  '  tables: ' + tables.trim() + '\n};';
 
 if (tkRegex.test(stateJs)) {
     stateJs = stateJs.replace(tkRegex, () => tkReplace);

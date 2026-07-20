@@ -794,8 +794,8 @@ function showCustomNotes() {
     renderToolkit();
 }
 
-// Load and render all Quick Reference Tables from tables.json
-async function showQuickRefTables() {
+// Load and render all Quick Reference Tables from TOOLKIT_STATIC_DATA.tables
+function showQuickRefTables() {
     // Show topic area, hide others
     document.getElementById("study-subject-grid").classList.add("hidden");
     document.getElementById("study-custom-notes-area").classList.add("hidden");
@@ -826,64 +826,62 @@ async function showQuickRefTables() {
     const mount = document.getElementById("study-view-mount");
     if (!mount) return;
 
-    mount.innerHTML = `<div class="flex items-center justify-center py-12 text-gray-500 text-xs"><i class="fa-solid fa-spinner animate-spin mr-2"></i>Loading tables...</div>`;
+    // Read from pre-compiled inline data — no fetch() needed (file:// compatible)
+    const tables = (typeof TOOLKIT_STATIC_DATA !== "undefined" && TOOLKIT_STATIC_DATA.tables)
+        ? TOOLKIT_STATIC_DATA.tables
+        : null;
 
-    try {
-        const resp = await fetch("data/toolkit/tables.json");
-        const tables = await resp.json();
-
-        let html = `<div class="space-y-5 pb-4">`;
-
-        tables.forEach((item, idx) => {
-            const colors = [
-                "border-accentCyan text-accentCyan bg-accentCyan/10",
-                "border-accentAmber text-accentAmber bg-accentAmber/10",
-                "border-accentGreen text-accentGreen bg-accentGreen/10",
-                "border-accentPurple text-accentPurple bg-accentPurple/10",
-                "border-accentRose text-accentRose bg-accentRose/10",
-            ];
-            const colorClass = colors[idx % colors.length];
-            const [borderCol, textCol, bgCol] = colorClass.split(" ");
-
-            html += `
-            <div class="bg-bgCard border border-white/5 rounded-2xl overflow-hidden shadow-md">
-                <div class="flex items-center gap-3 px-4 py-3 border-b border-white/5 bg-white/2">
-                    <span class="w-7 h-7 rounded-lg ${bgCol} ${borderCol} border flex items-center justify-center text-xs ${textCol} font-extrabold">${idx + 1}</span>
-                    <h4 class="font-heading font-extrabold text-sm text-white">${item.title}</h4>
-                </div>
-                <div class="p-4 text-xs text-gray-300 overflow-x-auto study-note-content ref-table-body" data-idx="${idx}">
-                    ${parseMarkdown(item.content)}
-                </div>
-            </div>`;
-        });
-
-        html += `</div>`;
-        mount.innerHTML = html;
-
-        // Style all tables inside the rendered content
-        mount.querySelectorAll("table").forEach(table => {
-            table.className = "w-full text-xs border-collapse min-w-[320px]";
-            table.querySelectorAll("th").forEach(th => {
-                th.className = "bg-white/5 text-accentCyan font-bold text-left px-3 py-2 border border-white/10";
-            });
-            table.querySelectorAll("td").forEach(td => {
-                td.className = "px-3 py-1.5 border border-white/5 text-gray-200";
-            });
-            table.querySelectorAll("tr:nth-child(even) td").forEach(td => {
-                td.classList.add("bg-white/2");
-            });
-        });
-
-        // Bold the "n²" / "n³" value cells
-        mount.querySelectorAll("td strong").forEach(el => {
-            el.className = "text-accentAmber font-bold";
-        });
-
-        setTimeout(triggerMathTypesetting, 100);
-
-    } catch (err) {
-        if (mount) mount.innerHTML = `<div class="text-center text-xs text-accentRose py-8"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Failed to load reference tables: ${err.message}</div>`;
+    if (!tables || tables.length === 0) {
+        mount.innerHTML = `<div class="text-center text-xs text-accentRose py-8"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i>Reference tables not compiled yet. Run: <code class="bg-white/10 px-1 rounded">node compile_data.js</code></div>`;
+        return;
     }
+
+    const accentCycle = [
+        { border: "border-accentCyan",   text: "text-accentCyan",   bg: "bg-accentCyan/10"   },
+        { border: "border-accentAmber",  text: "text-accentAmber",  bg: "bg-accentAmber/10"  },
+        { border: "border-accentGreen",  text: "text-accentGreen",  bg: "bg-accentGreen/10"  },
+        { border: "border-accentPurple", text: "text-accentPurple", bg: "bg-accentPurple/10" },
+        { border: "border-accentRose",   text: "text-accentRose",   bg: "bg-accentRose/10"   },
+    ];
+
+    let html = `<div class="space-y-5 pb-4">`;
+    tables.forEach((item, idx) => {
+        const col = accentCycle[idx % accentCycle.length];
+        html += `
+        <div class="bg-bgCard border border-white/5 rounded-2xl overflow-hidden shadow-md">
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+                <span class="w-7 h-7 rounded-lg ${col.bg} ${col.border} border flex items-center justify-center text-xs ${col.text} font-extrabold">${idx + 1}</span>
+                <h4 class="font-heading font-extrabold text-sm text-white">${item.title}</h4>
+            </div>
+            <div class="p-4 text-xs text-gray-300 overflow-x-auto">
+                ${parseMarkdown(item.content)}
+            </div>
+        </div>`;
+    });
+    html += `</div>`;
+    mount.innerHTML = html;
+
+    // Style all rendered tables
+    mount.querySelectorAll("table").forEach(table => {
+        table.className = "w-full text-xs border-collapse min-w-[320px]";
+        table.querySelectorAll("th").forEach(th => {
+            th.className = "bg-white/5 text-accentCyan font-bold text-left px-3 py-2 border border-white/10 whitespace-nowrap";
+        });
+        table.querySelectorAll("td").forEach(td => {
+            td.className = "px-3 py-1.5 border border-white/5 text-gray-200 whitespace-nowrap";
+        });
+        // Alternating row shading
+        table.querySelectorAll("tr:nth-child(even)").forEach(tr => {
+            tr.querySelectorAll("td").forEach(td => td.classList.add("bg-white/[0.02]"));
+        });
+    });
+
+    // Highlight bold values (n², n³, answers) in amber
+    mount.querySelectorAll("td strong").forEach(el => {
+        el.className = "text-accentAmber font-bold";
+    });
+
+    setTimeout(triggerMathTypesetting, 100);
 }
 
 // Reset views back to subject cards grid
