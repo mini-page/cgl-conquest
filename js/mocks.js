@@ -130,6 +130,7 @@ function initForms() {
     const sReason = document.getElementById("score-reasoning");
     const sEnglish = document.getElementById("score-english");
     const sGa = document.getElementById("score-ga");
+    const sComp = document.getElementById("score-computer");
     const totalScoreInput = document.getElementById("mock-score");
 
     if (sQuant && sReason && sEnglish && sGa && totalScoreInput) {
@@ -146,8 +147,8 @@ function initForms() {
                 displayScore.innerText = `${sum.toFixed(2)} / ${maxTotal}`;
             }
         };
-        [sQuant, sReason, sEnglish, sGa].forEach(el => {
-            el.addEventListener("input", updateSum);
+        [sQuant, sReason, sEnglish, sGa, sComp].forEach(el => {
+            if (el) el.addEventListener("input", updateSum);
         });
     }
 
@@ -156,23 +157,36 @@ function initForms() {
 
 function updateMockFormLimits() {
     const isTier2 = appState.examTier === 2;
-    const maxScores = isTier2 ? { q: 90, r: 90, e: 135, ga: 75, total: 390 } : { q: 50, r: 50, e: 50, ga: 50, total: 200 };
+    const maxScores = isTier2 ? { q: 90, r: 90, e: 135, ga: 75, comp: 60, total: 390 } : { q: 50, r: 50, e: 50, ga: 50, comp: 60, total: 200 };
     
     const sQuant = document.getElementById("score-quant");
     const sReason = document.getElementById("score-reasoning");
     const sEnglish = document.getElementById("score-english");
     const sGa = document.getElementById("score-ga");
+    const sComp = document.getElementById("score-computer");
+    const wrapComp = document.getElementById("wrapper-score-computer");
+    const grid = document.getElementById("mock-sections-grid");
     
     if (sQuant) sQuant.max = maxScores.q;
     if (sReason) sReason.max = maxScores.r;
     if (sEnglish) sEnglish.max = maxScores.e;
     if (sGa) sGa.max = maxScores.ga;
+    if (sComp) sComp.max = maxScores.comp;
+    
+    if (wrapComp) {
+        if (isTier2) wrapComp.classList.remove("hidden");
+        else wrapComp.classList.add("hidden");
+    }
+    if (grid) {
+        grid.className = isTier2 ? "grid grid-cols-5 gap-2" : "grid grid-cols-4 gap-2";
+    }
     
     const labels = {
         "score-quant": isTier2 ? `Math (${maxScores.q})` : `Quant (${maxScores.q})`,
-        "score-reasoning": `Reasoning (${maxScores.r})`,
+        "score-reasoning": `Reason (${maxScores.r})`,
         "score-english": `English (${maxScores.e})`,
-        "score-ga": `Gen Aw. (${maxScores.ga})`
+        "score-ga": `Gen Aw. (${maxScores.ga})`,
+        "score-computer": `Comp (${maxScores.comp})`
     };
     
     Object.keys(labels).forEach(id => {

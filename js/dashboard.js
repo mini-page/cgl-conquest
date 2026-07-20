@@ -65,6 +65,7 @@ function initExamTargetEditor() {
             appState.examDate = dateVal;
             saveStateToStorage();
             updateDisplay();
+            startExamCountdown();
 
             editPanel.classList.add("hidden");
             viewPanel.classList.remove("hidden");

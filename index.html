@@ -435,7 +435,7 @@
 
                         <div>
                             <span class="block text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-white/5 pb-1 mb-2">Sectional Breakdowns (Optional)</span>
-                            <div class="grid grid-cols-4 gap-2">
+                            <div id="mock-sections-grid" class="grid grid-cols-4 gap-2">
                                 <div>
                                     <label class="block text-[8px] text-gray-400 font-semibold mb-1">Quant (50)</label>
                                     <input type="number" id="score-quant" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50" step="any">
@@ -451,6 +451,10 @@
                                 <div>
                                     <label class="block text-[8px] text-gray-400 font-semibold mb-1">Gen Aw. (50)</label>
                                     <input type="number" id="score-ga" class="w-full bg-white/5 border border-white/10 focus:border-accentCyan rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="50" step="any">
+                                </div>
+                                <div id="wrapper-score-computer" class="hidden">
+                                    <label class="block text-[8px] text-blue-400 font-semibold mb-1">Comp (60)</label>
+                                    <input type="number" id="score-computer" class="w-full bg-white/5 border border-white/10 focus:border-blue-500 rounded-lg p-1.5 text-center text-xs text-white outline-none transition" min="0" max="60" step="any">
                                 </div>
                             </div>
                         </div>

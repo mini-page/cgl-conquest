@@ -49,15 +49,15 @@ class CustomCalendar {
 
     createDropdown() {
         this.dropdown = document.createElement("div");
-        this.dropdown.className = "custom-calendar-dropdown absolute";
+        this.dropdown.className = "custom-calendar-dropdown fixed z-[99999]";
         
-        // Position below input
+        // Position below input using viewport bounding rect
         const rect = this.input.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
         
-        this.dropdown.style.top = `${rect.bottom + scrollTop + 4}px`;
-        this.dropdown.style.left = `${rect.left + scrollLeft}px`;
+        this.dropdown.style.position = "fixed";
+        this.dropdown.style.top = `${rect.bottom + 4}px`;
+        this.dropdown.style.left = `${rect.left}px`;
+        this.dropdown.style.zIndex = "99999";
 
         document.body.appendChild(this.dropdown);
         this.render();
