@@ -81,7 +81,52 @@ function initExamTargetEditor() {
     }
 
     updateDisplay();
+    initTierToggler();
 }
+
+function initTierToggler() {
+    const btn1 = document.getElementById("btn-tier-1-toggle");
+    const btn2 = document.getElementById("btn-tier-2-toggle");
+    
+    if (!btn1 || !btn2) return;
+    
+    function updateTogglerUI() {
+        const tier = appState.examTier || 1;
+        if (tier === 1) {
+            btn1.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-white bg-accentPurple";
+            btn2.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-gray-400 hover:text-white";
+        } else {
+            btn1.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-gray-400 hover:text-white";
+            btn2.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-white bg-accentPurple";
+        }
+    }
+    
+    btn1.onclick = () => {
+        if (appState.examTier === 1) return;
+        appState.examTier = 1;
+        saveStateToStorage();
+        updateTogglerUI();
+        if (window.updateMockFormLimits) window.updateMockFormLimits();
+        renderAll();
+        if (typeof renderMockAnalytics === "function") renderMockAnalytics();
+        if (window.showToast) window.showToast("Switched target view to SSC CGL Tier 1", "info");
+    };
+    
+    btn2.onclick = () => {
+        if (appState.examTier === 2) return;
+        appState.examTier = 2;
+        saveStateToStorage();
+        updateTogglerUI();
+        if (window.updateMockFormLimits) window.updateMockFormLimits();
+        renderAll();
+        if (typeof renderMockAnalytics === "function") renderMockAnalytics();
+        if (window.showToast) window.showToast("Switched target view to SSC CGL Tier 2", "info");
+    };
+    
+    updateTogglerUI();
+    if (window.updateMockFormLimits) window.updateMockFormLimits();
+}
+window.initTierToggler = initTierToggler;
 
 
 // 5. TOOLKIT SUB-TABS INTERACTIVITY

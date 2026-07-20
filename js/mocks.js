@@ -140,13 +140,57 @@ function initForms() {
             totalScoreInput.value = sum;
             const displayScore = document.getElementById("mock-score-display");
             if (displayScore) {
-                displayScore.innerText = `${sum.toFixed(2)} / 200`;
+                const maxTotal = (appState.examTier === 2) ? 390 : 200;
+                displayScore.innerText = `${sum.toFixed(2)} / ${maxTotal}`;
             }
         };
         [sQuant, sReason, sEnglish, sGa].forEach(el => {
             el.addEventListener("input", updateSum);
         });
     }
+
+    updateMockFormLimits();
+}
+
+function updateMockFormLimits() {
+    const isTier2 = appState.examTier === 2;
+    const maxScores = isTier2 ? { q: 90, r: 90, e: 135, ga: 75, total: 390 } : { q: 50, r: 50, e: 50, ga: 50, total: 200 };
+    
+    const sQuant = document.getElementById("score-quant");
+    const sReason = document.getElementById("score-reasoning");
+    const sEnglish = document.getElementById("score-english");
+    const sGa = document.getElementById("score-ga");
+    
+    if (sQuant) sQuant.max = maxScores.q;
+    if (sReason) sReason.max = maxScores.r;
+    if (sEnglish) sEnglish.max = maxScores.e;
+    if (sGa) sGa.max = maxScores.ga;
+    
+    const labels = {
+        "score-quant": isTier2 ? `Math (${maxScores.q})` : `Quant (${maxScores.q})`,
+        "score-reasoning": `Reasoning (${maxScores.r})`,
+        "score-english": `English (${maxScores.e})`,
+        "score-ga": `Gen Aw. (${maxScores.ga})`
+    };
+    
+    Object.keys(labels).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            const label = el.previousElementSibling;
+            if (label && label.tagName === "LABEL") {
+                label.innerText = labels[id];
+            }
+        }
+    });
+    
+    const displayScore = document.getElementById("mock-score-display");
+    const totalScoreInput = document.getElementById("mock-score");
+    if (displayScore && totalScoreInput) {
+        const sum = parseFloat(totalScoreInput.value) || 0;
+        displayScore.innerText = `${sum.toFixed(2)} / ${maxScores.total}`;
+    }
+}
+window.updateMockFormLimits = updateMockFormLimits;
 
     const mockForm = document.getElementById("form-mock");
     mockForm.onsubmit = (e) => {

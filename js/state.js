@@ -2988,7 +2988,8 @@ let appState = {
     pomoMode: "study",    // "study", "short-break", "long-break"
     dailyRituals: { drill: false, vocab: false, ca: false, computer: false },
     speechEnabled: true,  // Default speech enabled
-    toastEnabled: true    // Default toasts enabled
+    toastEnabled: true,   // Default toasts enabled
+    examTier: 1           // Default exam tier target (1 = Tier 1, 2 = Tier 2)
 };
 
 // Timer Intervals
@@ -3041,6 +3042,7 @@ function loadStateFromStorage() {
             if (!appState.examDate) appState.examDate = "2026-08-15";
             if (appState.speechEnabled === undefined) appState.speechEnabled = true;
             if (appState.toastEnabled === undefined) appState.toastEnabled = true;
+            if (appState.examTier === undefined) appState.examTier = 1;
         } catch (e) {
             console.error("Error loading localStorage state:", e);
         }

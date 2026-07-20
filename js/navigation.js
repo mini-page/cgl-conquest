@@ -601,6 +601,65 @@ function initTheme() {
     if (toastBtn) {
         toastBtn.addEventListener("click", toggleToastMode);
     }
+
+    // Bind Backup & Restore Data Management buttons
+    const btnExport = document.getElementById("btn-export-backup");
+    const btnRestore = document.getElementById("btn-restore-backup");
+    const inputRestore = document.getElementById("input-restore-file");
+
+    if (btnExport) {
+        btnExport.onclick = () => {
+            try {
+                const backupData = JSON.stringify(appState, null, 2);
+                const blob = new Blob([backupData], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                const dateStr = new Date().toISOString().substring(0, 10);
+                a.download = `cgl_conquest_backup_${dateStr}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                if (window.showToast) window.showToast("Backup exported successfully!", "success");
+            } catch (e) {
+                console.error("Export backup error:", e);
+                if (window.showToast) window.showToast("Failed to export backup JSON", "error");
+            }
+        };
+    }
+
+    if (btnRestore && inputRestore) {
+        btnRestore.onclick = () => inputRestore.click();
+        
+        inputRestore.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (typeof data !== "object" || data === null || !data.syllabusProgress) {
+                        throw new Error("Invalid backup JSON structure.");
+                    }
+                    appState = { ...appState, ...data };
+                    saveStateToStorage();
+                    if (window.initTierToggler) window.initTierToggler();
+                    if (window.updateMockFormLimits) window.updateMockFormLimits();
+                    renderAll();
+                    if (typeof renderMockAnalytics === "function") renderMockAnalytics();
+                    if (window.showToast) window.showToast("Backup restored successfully!", "success");
+                    closeShortcutsHelpModal();
+                } catch (err) {
+                    console.error("Backup restore error:", err);
+                    if (window.showToast) window.showToast("Invalid backup JSON file", "error");
+                    else alert("Failed to restore backup: Invalid JSON structure.");
+                }
+            };
+            reader.readAsText(file);
+        };
+    }
 }
 
 // Meta Theme-Color updater to sync browser layout shell and tabs
