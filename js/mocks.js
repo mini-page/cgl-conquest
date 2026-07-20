@@ -355,42 +355,46 @@ function renderMockAnalytics() {
     const tbody = document.getElementById("mock-table-body");
     
     if (appState.mocks.length === 0) {
-        appState.mocks = [
-            {
-                id: "mock-demo-1",
-                name: "PYQ Mock 01 (Prelims)",
-                date: new Date().toISOString().substring(0, 10),
-                score: 142.5,
-                accuracy: 88,
-                rank: "142 / 12,500",
-                breakdown: { quant: 42.5, reasoning: 45.0, english: 40.0, ga: 15.0 },
-                weakTopicIds: ["quant-percentage-sub1"]
-            },
-            {
-                id: "mock-demo-2",
-                name: "Full Length Mock 02",
-                date: new Date().toISOString().substring(0, 10),
-                score: 155.0,
-                accuracy: 92,
-                rank: "85 / 14,200",
-                breakdown: { quant: 47.5, reasoning: 46.0, english: 42.5, ga: 19.0 },
-                weakTopicIds: ["reasoning-coding-sub1"]
-            }
-        ];
-        saveStateToStorage();
+        // Show a styled empty-state row — do NOT inject or save demo data
+        if (tbody) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-4 py-10 text-center">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="w-12 h-12 rounded-2xl bg-accentCyan/10 border border-accentCyan/20 flex items-center justify-center">
+                                <i class="fa-solid fa-clipboard-list text-accentCyan text-lg"></i>
+                            </div>
+                            <p class="text-xs font-bold text-white uppercase tracking-wider">No Mock Tests Logged Yet</p>
+                            <p class="text-[10px] text-gray-500">Use the form on the left to log your first mock test score and unlock analytics.</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        const avgEl = document.getElementById("metric-avg-score");
+        const maxEl = document.getElementById("metric-max-score");
+        const accEl = document.getElementById("metric-avg-accuracy");
+        if (avgEl) avgEl.innerText = "—";
+        if (maxEl) maxEl.innerText = "—";
+        if (accEl) accEl.innerText = "—";
+
+        renderSvgMockChart([]);
+        renderSectionalBenchmarks();
+        renderRevisionRadar();
+        return;
     }
 
     let html = "";
     appState.mocks.forEach(m => {
-        const accuracyText = m.accuracy ? m.accuracy + "%" : "N/A";
-        const bd = m.breakdown;
+        const bd = m.breakdown || {};
         const breakupText = (bd.quant || bd.reasoning || bd.english || bd.ga) ? 
-                            `${bd.quant}/${bd.reasoning}/${bd.english}/${bd.ga}` : "N/A";
+                            `${bd.quant||0}/${bd.reasoning||0}/${bd.english||0}/${bd.ga||0}` : "N/A";
 
         html += `
             <tr class="hover:bg-white/2px transition">
                 <td class="px-3 py-2 text-gray-400">${formatDateReadable(m.date)}</td>
-                <td class="px-3 py-2"><strong class="text-white">${m.name}</strong><br><span class="text-[9px] text-gray-500 font-bold uppercase">Rank: ${m.rank}</span></td>
+                <td class="px-3 py-2"><strong class="text-white">${m.name}</strong><br><span class="text-[9px] text-gray-500 font-bold uppercase">Rank: ${m.rank || 'N/A'}</span></td>
                 <td class="px-3 py-2 font-heading font-extrabold text-accentCyan">${m.score}</td>
                 <td class="px-3 py-2 text-center text-gray-400">${breakupText}</td>
                 <td class="px-3 py-2 text-right">
@@ -407,22 +411,25 @@ function renderMockAnalytics() {
         `;
     });
 
-    tbody.innerHTML = html;
+    if (tbody) tbody.innerHTML = html;
 
-    const totalScore = appState.mocks.reduce((acc, m) => acc + parseFloat(m.score), 0);
-    const maxScore = appState.mocks.reduce((max, m) => Math.max(max, parseFloat(m.score)), 0);
+    const totalScore = appState.mocks.reduce((acc, m) => acc + parseFloat(m.score || 0), 0);
+    const maxScore = appState.mocks.reduce((max, m) => Math.max(max, parseFloat(m.score || 0)), 0);
     const avgScore = (totalScore / appState.mocks.length).toFixed(1);
 
-    const loggedAccuracies = appState.mocks.filter(m => m.accuracy !== null);
+    const loggedAccuracies = appState.mocks.filter(m => m.accuracy != null);
     let avgAccuracy = 0;
     if (loggedAccuracies.length > 0) {
         const sumAcc = loggedAccuracies.reduce((acc, m) => acc + parseFloat(m.accuracy), 0);
         avgAccuracy = Math.round(sumAcc / loggedAccuracies.length);
     }
 
-    document.getElementById("metric-avg-score").innerText = avgScore;
-    document.getElementById("metric-max-score").innerText = maxScore.toFixed(1);
-    document.getElementById("metric-avg-accuracy").innerText = avgAccuracy + "%";
+    const avgEl = document.getElementById("metric-avg-score");
+    const maxEl = document.getElementById("metric-max-score");
+    const accEl = document.getElementById("metric-avg-accuracy");
+    if (avgEl) avgEl.innerText = avgScore;
+    if (maxEl) maxEl.innerText = maxScore.toFixed(1);
+    if (accEl) accEl.innerText = avgAccuracy + "%";
 
     renderSvgMockChart(appState.mocks);
     renderSectionalBenchmarks();

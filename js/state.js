@@ -3036,13 +3036,27 @@ function loadStateFromStorage() {
     const saved = localStorage.getItem("ssc_cgl_state");
     if (saved) {
         try {
-            appState = { ...appState, ...JSON.parse(saved) };
+            const parsed = JSON.parse(saved);
+            appState = { ...appState, ...parsed };
+            // Guard all required fields
             if (!appState.weakAlerts) appState.weakAlerts = {};
             if (!appState.examName) appState.examName = "Conquest";
             if (!appState.examDate) appState.examDate = "2026-08-15";
             if (appState.speechEnabled === undefined) appState.speechEnabled = true;
             if (appState.toastEnabled === undefined) appState.toastEnabled = true;
             if (appState.examTier === undefined) appState.examTier = 1;
+            if (!appState.mocks) appState.mocks = [];
+            if (!appState.notes) appState.notes = [];
+            if (!appState.dailyRituals) appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
+            if (!appState.syllabusProgress) appState.syllabusProgress = {};
+            // Hydrate any new syllabus entries not yet in saved state
+            SYLLABUS_DATA.forEach(topic => {
+                topic.subtopics.forEach(sub => {
+                    if (!appState.syllabusProgress[sub.id]) {
+                        appState.syllabusProgress[sub.id] = { learned: false, practiced: false, mastered: false };
+                    }
+                });
+            });
         } catch (e) {
             console.error("Error loading localStorage state:", e);
         }

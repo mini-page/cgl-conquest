@@ -828,7 +828,12 @@ async function openStudyViewer(subtopicId) {
     modal.classList.add("active");
     modal.classList.remove("opacity-0", "pointer-events-none");
     
-    document.getElementById("viewer-path-label").innerText = `${subtopic.subjectName} → ${subtopic.topicName}`;
+    // Build clean breadcrumb: strip emoji from subject name, deduplicate if topic == subject
+    const cleanSubjectName = subtopic.subjectName.replace(/^[\p{Emoji}\s]+/u, "").trim();
+    const pathParts = cleanSubjectName === subtopic.topicName
+        ? cleanSubjectName
+        : `${cleanSubjectName} → ${subtopic.topicName}`;
+    document.getElementById("viewer-path-label").innerText = pathParts;
     document.getElementById("viewer-title-label").innerText = subtopic.name;
     
     updateViewerActionButtons(subtopicId);
