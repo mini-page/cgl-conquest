@@ -170,14 +170,7 @@ function navigateToPage(target, updateHash = true) {
         }
     } else if (target === "page-speed") {
         resetDrillSession();
-        // Simulate clicking the first tab so drillMode is set and question is generated
-        setTimeout(() => {
-            const firstTab = document.querySelector(".speed-tab-btn");
-            if (firstTab && !window.isChallengeActive) {
-                firstTab.click();
-            }
-            triggerMathTypesetting();
-        }, 60);
+        setTimeout(triggerMathTypesetting, 50);
     }
     
     if (updateHash) {

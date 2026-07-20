@@ -776,11 +776,21 @@ function initSpeedDrillsPage() {
             modeTabs.forEach(t => t.classList.remove("active-nav-tab"));
             tab.classList.add("active-nav-tab");
             drillMode = tab.getAttribute("data-mode");
-            resetDrillSession();
-            drillIsPlaying = true;
-            generateDrillQuestion();
+
+            // If already playing, restart with new mode immediately
+            if (drillIsPlaying) {
+                resetDrillSession();
+                drillIsPlaying = true;
+                generateDrillQuestion();
+            } else {
+                // Not playing — just show mode-ready idle state
+                const qLabel = document.getElementById("drill-question-label");
+                const modeLabel = DRILL_MODE_LABELS[drillMode] || drillMode;
+                if (qLabel) qLabel.innerText = `${modeLabel} — press Start to begin`;
+            }
         };
     });
+
 
     // 2. Start / Pause toggle
     const pauseBtn = document.getElementById("btn-drill-pause");
