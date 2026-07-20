@@ -373,7 +373,7 @@ function generateDrillQuestion() {
 
     // Toggle Difficulty Dropdown VS Close button in header
     const selectLevel = document.getElementById("select-maths-level");
-    if (selectLevel) selectLevel.classList.add("hidden");
+    if (selectLevel) window.setDropdownVisible(selectLevel, false);
     const stopBtn = document.getElementById("btn-drill-stop");
     if (stopBtn) stopBtn.classList.remove("hidden");
 
@@ -519,7 +519,7 @@ function resetDrillSession() {
 
     // Restore difficulty dropdown and hide close button in header
     const selectLevel = document.getElementById("select-maths-level");
-    if (selectLevel) selectLevel.classList.remove("hidden");
+    if (selectLevel) window.setDropdownVisible(selectLevel, true);
     const stopBtn = document.getElementById("btn-drill-stop");
     if (stopBtn) stopBtn.classList.add("hidden");
     const activeBadge = document.getElementById("conquest-active-badge");
@@ -562,7 +562,7 @@ function startChallengeRun() {
 
     // Hide difficulty dropdown, show active badge and close button in card header
     const selectLevel = document.getElementById("select-maths-level");
-    if (selectLevel) selectLevel.classList.add("hidden");
+    if (selectLevel) window.setDropdownVisible(selectLevel, false);
     const activeBadge = document.getElementById("conquest-active-badge");
     if (activeBadge) activeBadge.classList.remove("hidden");
     const stopBtn = document.getElementById("btn-drill-stop");
@@ -827,7 +827,7 @@ function initSpeedDrillsPage() {
                 
                 // Hide difficulty dropdown and show close button in header
                 const selectLevel = document.getElementById("select-maths-level");
-                if (selectLevel) selectLevel.classList.add("hidden");
+                if (selectLevel) window.setDropdownVisible(selectLevel, false);
                 const stopBtn = document.getElementById("btn-drill-stop");
                 if (stopBtn) stopBtn.classList.remove("hidden");
                 

@@ -122,6 +122,14 @@ class CustomDropdown {
         this.updateButtonText();
         this.renderOptions();
     }
+
+    // Show/hide the entire dropdown widget (wrapper + button)
+    hide() {
+        if (this.wrapper) this.wrapper.classList.add("hidden");
+    }
+    show() {
+        if (this.wrapper) this.wrapper.classList.remove("hidden");
+    }
 }
 
 // Global initialization helper
@@ -139,6 +147,18 @@ window.initCustomDropdown = function(selectEl) {
     return instance;
 };
 
+// Helper: show or hide a custom dropdown (and its wrapper) by the native select element
+window.setDropdownVisible = function(selectEl, visible) {
+    if (!selectEl) return;
+    const instance = selectEl.customDropdownInstance;
+    if (instance) {
+        visible ? instance.show() : instance.hide();
+    } else {
+        // Fallback for non-upgraded selects
+        selectEl.classList.toggle("hidden", !visible);
+    }
+};
+
 // Scan and upgrade all standard select elements on load
 window.upgradeAllSelectDropdowns = function() {
     const selects = document.querySelectorAll("select:not(.hidden)");
@@ -146,3 +166,4 @@ window.upgradeAllSelectDropdowns = function() {
         window.initCustomDropdown(select);
     });
 };
+
