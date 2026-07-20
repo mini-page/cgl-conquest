@@ -64,292 +64,298 @@ function clearIdleTimer() {
 
 // Math Options Generator (creates distractors)
 function generateMathOptions(correct) {
-    const options = new Set([correct]);
-    
-    if (typeof correct === "string") {
-        if (correct.length === 1 && correct >= "A" && correct <= "Z") {
-            while (options.size < 4) {
-                const charCode = correct.charCodeAt(0);
-                const offset = Math.floor(Math.random() * 9) - 4; // -4 to +4
-                const distractorCode = charCode + offset;
-                if (distractorCode >= 65 && distractorCode <= 90 && distractorCode !== charCode) {
-                    options.add(String.fromCharCode(distractorCode));
-                }
-            }
-        } else if (correct.includes("/") || correct.includes("√") || correct === "Not Defined" || correct.includes("θ") || correct.includes("sec") || correct.includes("cosec") || correct.includes("sin") || correct.includes("cos")) {
-            const allFracs = ["1/2", "1/3", "2/3", "1/4", "3/4", "1/5", "2/5", "3/5", "4/5", "1/6", "5/6", "1/8", "3/8", "5/8", "7/8", "1/12", "1/15", "1/16", "1/10", "1/√2", "√3/2", "1/1.414", "1/√3", "√3", "Not Defined", "sec²θ", "cosec²θ", "cot θ", "cos θ", "sin θ"];
-            while (options.size < 4) {
-                const rand = allFracs[Math.floor(Math.random() * allFracs.length)];
-                if (rand !== correct) options.add(rand);
-            }
-        } else if (correct.includes("%")) {
-            const allPercs = ["50%", "33.33%", "66.67%", "25%", "75%", "20%", "40%", "60%", "80%", "16.67%", "83.33%", "12.5%", "37.5%", "62.5%", "87.5%", "8.33%", "6.67%", "6.25%", "10%"];
-            while (options.size < 4) {
-                const rand = allPercs[Math.floor(Math.random() * allPercs.length)];
-                if (rand !== correct) options.add(rand);
-            }
-        } else if (correct.includes(":")) {
-            return [correct, "1:2", "3:1", "1:1"].sort(() => Math.random() - 0.5);
+    const options = new Set([String(correct)]);
+    const correctStr = String(correct);
+
+    // Detect answer type by content
+    const isSingleAlpha = correctStr.length === 1 && correctStr >= "A" && correctStr <= "Z";
+    const isTrigOrFrac = correctStr.includes("/") || correctStr.includes("√") || correctStr.includes("Not Defined")
+        || correctStr.includes("θ") || correctStr.includes("sec") || correctStr.includes("cosec")
+        || correctStr.includes("sin") || correctStr.includes("cos") || correctStr.includes("cot");
+    const isPercentage = correctStr.includes("%");
+    const isRatio = correctStr.includes(":");
+
+    if (isSingleAlpha) {
+        while (options.size < 4) {
+            const charCode = correctStr.charCodeAt(0);
+            const offset = Math.floor(Math.random() * 9) - 4;
+            const dc = charCode + offset;
+            if (dc >= 65 && dc <= 90 && dc !== charCode) options.add(String.fromCharCode(dc));
+        }
+    } else if (isTrigOrFrac) {
+        // Rich pool of trig/fraction values using real Unicode √
+        const pool = [
+            "0", "1", "1/2", "1/3", "2/3", "1/4", "3/4", "1/5", "2/5", "3/5", "4/5",
+            "1/6", "5/6", "1/8", "3/8", "5/8", "7/8",
+            "1/√2", "√2", "√3", "√3/2", "1/√3", "2/√3", "√5",
+            "Not Defined", "sec²θ", "cosec²θ", "cot θ", "cos θ", "sin θ",
+            "tan θ", "sec θ", "cosec θ"
+        ];
+        while (options.size < 4) {
+            const rand = pool[Math.floor(Math.random() * pool.length)];
+            if (rand !== correctStr) options.add(rand);
+        }
+    } else if (isPercentage) {
+        const pool = ["50%", "33.33%", "66.67%", "25%", "75%", "20%", "40%", "60%", "80%",
+            "16.67%", "83.33%", "12.5%", "37.5%", "62.5%", "87.5%", "8.33%",
+            "6.67%", "6.25%", "10%", "14.28%", "11.11%", "9.09%"];
+        while (options.size < 4) {
+            const rand = pool[Math.floor(Math.random() * pool.length)];
+            if (rand !== correctStr) options.add(rand);
+        }
+    } else if (isRatio) {
+        const pool = ["2:1", "1:2", "3:1", "1:1", "2:3", "3:2", "1:3", "4:1", "1:4"];
+        while (options.size < 4) {
+            const rand = pool[Math.floor(Math.random() * pool.length)];
+            if (rand !== correctStr) options.add(rand);
         }
     } else {
-        while (options.size < 4) {
-            const offsets = [-3, -2, -1, 1, 2, 3, -10, 10, -5, 5, -20, 20];
-            const offset = offsets[Math.floor(Math.random() * offsets.length)];
-            const distractor = correct + offset;
-            if (distractor > 0 && distractor !== correct) {
-                options.add(distractor);
+        // Numeric answer — generate close distractors relative to magnitude
+        const num = parseFloat(correctStr);
+        const magnitude = Math.max(1, Math.abs(num));
+        const tried = new Set();
+        let safetyValve = 0;
+        while (options.size < 4 && safetyValve < 200) {
+            safetyValve++;
+            // Use percentage offsets so large numbers get proportional distractors
+            const pctOffsets = [-0.05, -0.1, -0.15, 0.05, 0.1, 0.15, -0.2, 0.2, -0.3, 0.3];
+            const smallOffsets = [-3, -2, -1, 1, 2, 3, -5, 5, -10, 10];
+            let distractor;
+            if (magnitude > 100) {
+                const pct = pctOffsets[Math.floor(Math.random() * pctOffsets.length)];
+                distractor = Math.round(num + num * pct);
+            } else {
+                distractor = num + smallOffsets[Math.floor(Math.random() * smallOffsets.length)];
+            }
+            const key = String(distractor);
+            if (distractor !== num && distractor > 0 && !tried.has(key)) {
+                tried.add(key);
+                options.add(key);
             }
         }
     }
-    return Array.from(options).sort(() => Math.random() - 0.5);
+    // Always return exactly 4 shuffled options as strings
+    return Array.from(options).slice(0, 4).sort(() => Math.random() - 0.5);
 }
 
 // Core Math Drills Question & Answer Generator
 function generateQuestionTextAndAnswer(mode, level) {
     let questionText = "";
-    let answer = 0;
+    let answer = "";
 
     if (mode === "squares") {
         let min = 1, max = 10;
         if (level === "medium") { min = 11; max = 20; }
         else if (level === "advance") { min = 21; max = 30; }
-        const num = Math.floor(Math.random() * (max - min + 1)) + min; 
+        const num = Math.floor(Math.random() * (max - min + 1)) + min;
         questionText = `${num}² = ?`;
-        answer = num * num;
+        answer = String(num * num);
+
     } else if (mode === "cubes") {
         let min = 1, max = 7;
         if (level === "medium") { min = 8; max = 14; }
         else if (level === "advance") { min = 15; max = 20; }
-        const num = Math.floor(Math.random() * (max - min + 1)) + min; 
+        const num = Math.floor(Math.random() * (max - min + 1)) + min;
         questionText = `${num}³ = ?`;
-        answer = num * num * num;
+        answer = String(num * num * num);
+
     } else if (mode === "tables") {
         let n1Min = 2, n1Max = 12, n2Min = 1, n2Max = 10;
-        if (level === "medium") {
-            n1Min = 13; n1Max = 25;
-        } else if (level === "advance") {
-            n1Min = 26; n1Max = 40;
-            n2Max = 12;
-        }
-        const n1 = Math.floor(Math.random() * (n1Max - n1Min + 1)) + n1Min; 
-        const n2 = Math.floor(Math.random() * (n2Max - n2Min + 1)) + n2Min; 
+        if (level === "medium") { n1Min = 13; n1Max = 25; }
+        else if (level === "advance") { n1Min = 26; n1Max = 40; n2Max = 15; }
+        const n1 = Math.floor(Math.random() * (n1Max - n1Min + 1)) + n1Min;
+        const n2 = Math.floor(Math.random() * (n2Max - n2Min + 1)) + n2Min;
         questionText = `${n1} × ${n2} = ?`;
-        answer = n1 * n2;
+        answer = String(n1 * n2);
+
     } else if (mode === "fracPerc") {
         const fracPercPairs = [
-            { f: "1/2", p: "50%" }, { f: "1/3", p: "33.33%" }, { f: "2/3", p: "66.67%" },
-            { f: "1/4", p: "25%" }, { f: "3/4", p: "75%" }, { f: "1/5", p: "20%" },
-            { f: "2/5", p: "40%" }, { f: "3/5", p: "60%" }, { f: "4/5", p: "80%" },
-            { f: "1/6", p: "16.67%" }, { f: "5/6", p: "83.33%" }, { f: "1/7", p: "14.28%" },
-            { f: "1/8", p: "12.5%" }, { f: "3/8", p: "37.5%" }, { f: "5/8", p: "62.5%" },
-            { f: "7/8", p: "87.5%" }, { f: "1/9", p: "11.11%" }, { f: "1/11", p: "9.09%" },
-            { f: "1/12", p: "8.33%" }, { f: "1/15", p: "6.67%" }, { f: "1/16", p: "6.25%" }
+            { f: "1/2",  p: "50%" },   { f: "1/3",  p: "33.33%" }, { f: "2/3",  p: "66.67%" },
+            { f: "1/4",  p: "25%" },   { f: "3/4",  p: "75%" },   { f: "1/5",  p: "20%" },
+            { f: "2/5",  p: "40%" },   { f: "3/5",  p: "60%" },   { f: "4/5",  p: "80%" },
+            { f: "1/6",  p: "16.67%"}, { f: "5/6",  p: "83.33%"}, { f: "1/7",  p: "14.28%"},
+            { f: "1/8",  p: "12.5%" }, { f: "3/8",  p: "37.5%" }, { f: "5/8",  p: "62.5%" },
+            { f: "7/8",  p: "87.5%" }, { f: "1/9",  p: "11.11%"}, { f: "1/11", p: "9.09%" },
+            { f: "1/12", p: "8.33%" }, { f: "1/15", p: "6.67%" }, { f: "1/16", p: "6.25%" },
+            { f: "1/10", p: "10%" },   { f: "3/10", p: "30%" },   { f: "7/10", p: "70%" }
         ];
-        let minIdx = 0, maxIdx = 6;
-        if (level === "medium") { minIdx = 7; maxIdx = 13; }
-        else if (level === "advance") { minIdx = 14; maxIdx = 20; }
-        const subList = fracPercPairs.slice(minIdx, maxIdx + 1);
-        const item = subList[Math.floor(Math.random() * subList.length)];
-        const type = Math.floor(Math.random() * 2); 
-        if (type === 0) {
-            questionText = `Percentage value of fraction '${item.f}' = ?`;
+        let pool;
+        if (level === "easy")    pool = fracPercPairs.slice(0, 8);
+        else if (level === "medium") pool = fracPercPairs.slice(8, 16);
+        else                     pool = fracPercPairs.slice(16);
+        const item = pool[Math.floor(Math.random() * pool.length)];
+        if (Math.random() < 0.5) {
+            questionText = `Percentage of '${item.f}' = ?`;
             answer = item.p;
         } else {
-            questionText = `Fraction value of percentage '${item.p}' = ?`;
+            questionText = `Fraction of '${item.p}' = ?`;
             answer = item.f;
         }
+
     } else if (mode === "triplets") {
         const baseTriplets = [
-            [3, 4, 5], [5, 12, 13], [8, 15, 17], [7, 24, 25],
-            [9, 40, 41], [11, 60, 61], [12, 35, 37], [20, 21, 29]
+            [3,4,5], [5,12,13], [8,15,17], [7,24,25], [9,40,41],
+            [11,60,61], [12,35,37], [20,21,29], [9,12,15], [10,24,26],
+            [6,8,10], [15,20,25], [20,48,52], [28,45,53], [33,56,65]
         ];
         const base = baseTriplets[Math.floor(Math.random() * baseTriplets.length)];
         let mult = 1;
-        if (level === "medium") mult = Math.floor(Math.random() * 2) + 2; 
-        else if (level === "advance") mult = Math.floor(Math.random() * 3) + 4; 
-        const trip = base.map(val => val * mult);
-
+        if (level === "medium") mult = Math.floor(Math.random() * 2) + 2;
+        else if (level === "advance") mult = Math.floor(Math.random() * 3) + 4;
+        const trip = base.map(v => v * mult);
         const blankIdx = Math.floor(Math.random() * 3);
-        answer = trip[blankIdx];
+        answer = String(trip[blankIdx]);
+        const display = trip.map((v, i) => i === blankIdx ? "?" : v);
+        questionText = `Triplet: ${display.join(", ")}`;
 
-        const displayArr = trip.map((val, idx) => idx === blankIdx ? "?" : val);
-        questionText = `Triplet: ${displayArr.join(", ")}`;
     } else if (mode === "algebra") {
-        const a = Math.floor(Math.random() * 6) + 3; 
-        const b = Math.floor(Math.random() * 2) + 1; 
-        let type = 0;
-        if (level === "easy") {
-            type = Math.floor(Math.random() * 2); 
-        } else if (level === "medium") {
-            const choices = [2, 4]; 
-            type = choices[Math.floor(Math.random() * choices.length)];
-        } else {
-            const choices = [3, 5]; 
-            type = choices[Math.floor(Math.random() * choices.length)];
-        }
+        const a = Math.floor(Math.random() * 8) + 3;
+        const b = Math.floor(Math.random() * 4) + 1;
+        let types;
+        if (level === "easy")         types = [0, 1, 2];
+        else if (level === "medium")  types = [2, 3, 4];
+        else                          types = [3, 4, 5, 6, 7];
+        const type = types[Math.floor(Math.random() * types.length)];
 
-        if (type === 0) {
-            questionText = `If a = ${a}, b = ${b}, find value of a + b`;
-            answer = a + b;
-        } else if (type === 1) {
-            questionText = `If a = ${a}, b = ${b}, find value of a - b`;
-            answer = a - b;
-        } else if (type === 2) {
-            questionText = `If a = ${a}, b = ${b}, find value of ab`;
-            answer = a * b;
-        } else if (type === 3) {
-            questionText = `If a = ${a}, b = ${b}, find value of a² - b²`;
-            answer = (a * a) - (b * b);
-        } else if (type === 4) {
-            questionText = `If a = ${a}, b = ${b}, find value of a² + b²`;
-            answer = (a * a) + (b * b);
-        } else {
-            questionText = `If a = ${a}, b = ${b}, find value of (a-b)²`;
-            answer = (a - b) * (a - b);
-        }
+        if (type === 0) { questionText = `If a=${a}, b=${b}: a + b = ?`; answer = String(a + b); }
+        else if (type === 1) { questionText = `If a=${a}, b=${b}: a - b = ?`; answer = String(a - b); }
+        else if (type === 2) { questionText = `If a=${a}, b=${b}: a × b = ?`; answer = String(a * b); }
+        else if (type === 3) { questionText = `If a=${a}, b=${b}: a² - b² = ?`; answer = String(a*a - b*b); }
+        else if (type === 4) { questionText = `If a=${a}, b=${b}: a² + b² = ?`; answer = String(a*a + b*b); }
+        else if (type === 5) { questionText = `If a=${a}, b=${b}: (a-b)² = ?`; answer = String((a-b)*(a-b)); }
+        else if (type === 6) { questionText = `If a=${a}, b=${b}: (a+b)² = ?`; answer = String((a+b)*(a+b)); }
+        else                 { questionText = `If a=${a}, b=${b}: a³ - b³ = ?`; answer = String(a*a*a - b*b*b); }
+
     } else if (mode === "lcm") {
         const list = [
-            { n: [2, 3, 4], a: 12 }, { n: [3, 4, 6], a: 12 }, { n: [4, 6, 8], a: 24 },
-            { n: [6, 8, 12], a: 24 }, { n: [5, 10, 15], a: 30 }, { n: [6, 9, 12], a: 36 },
-            { n: [8, 12, 16], a: 48 }, { n: [10, 12, 15], a: 60 }, { n: [12, 15, 20], a: 60 },
-            { n: [8, 12, 15], a: 120 }, { n: [12, 16, 24], a: 48 }, { n: [15, 20, 30], a: 60 },
-            { n: [9, 12, 18], a: 36 }
+            // Easy
+            { n:[2,3,4],   a:12  }, { n:[3,4,6],   a:12  }, { n:[4,6,8],   a:24  }, { n:[2,4,6],   a:12 },
+            { n:[3,6,9],   a:18  }, { n:[4,8,12],  a:24  },
+            // Medium
+            { n:[5,10,15], a:30  }, { n:[6,9,12],  a:36  }, { n:[8,12,16], a:48  }, { n:[10,12,15],a:60 },
+            { n:[12,15,20],a:60  }, { n:[6,10,15], a:30  }, { n:[9,12,18], a:36  }, { n:[10,15,20],a:60 },
+            // Advance
+            { n:[8,12,15], a:120 }, { n:[12,16,24],a:48  }, { n:[15,20,30],a:60  }, { n:[16,24,32],a:96 },
+            { n:[18,24,36],a:72  }, { n:[20,25,30],a:300 }, { n:[14,21,35],a:210 }, { n:[12,18,27],a:108}
         ];
-        let minIdx = 0, maxIdx = 3;
-        if (level === "medium") { minIdx = 4; maxIdx = 8; }
-        else if (level === "advance") { minIdx = 9; maxIdx = 12; }
-        const subList = list.slice(minIdx, maxIdx + 1);
-        const item = subList[Math.floor(Math.random() * subList.length)];
+        let pool;
+        if (level === "easy")    pool = list.slice(0, 6);
+        else if (level === "medium") pool = list.slice(6, 14);
+        else                     pool = list.slice(14);
+        const item = pool[Math.floor(Math.random() * pool.length)];
         const shuffled = [...item.n].sort(() => Math.random() - 0.5);
         questionText = `LCM of (${shuffled.join(", ")}) = ?`;
-        answer = item.a;
+        answer = String(item.a);
+
     } else if (mode === "hcf") {
         let minF = 2, maxF = 6;
-        if (level === "medium") { minF = 7; maxF = 12; }
-        else if (level === "advance") { minF = 13; maxF = 20; }
+        if (level === "medium") { minF = 7; maxF = 15; }
+        else if (level === "advance") { minF = 13; maxF = 25; }
         const f = Math.floor(Math.random() * (maxF - minF + 1)) + minF;
-        const multipliers = [
-            [2, 3, 5], [2, 5, 7], [3, 4, 5], [3, 5, 7], [2, 3, 7], [4, 5, 7]
+        const multiplierSets = [
+            [2,3,5], [2,5,7], [3,4,5], [3,5,7], [2,3,7], [4,5,7],
+            [2,3,11],[3,4,7],[5,6,7],[2,7,9],[4,5,9],[3,7,8]
         ];
-        const mults = multipliers[Math.floor(Math.random() * multipliers.length)];
-        questionText = `HCF of (${f * mults[0]}, ${f * mults[1]}, ${f * mults[2]}) = ?`;
-        answer = f;
+        const mults = multiplierSets[Math.floor(Math.random() * multiplierSets.length)];
+        questionText = `HCF of (${f*mults[0]}, ${f*mults[1]}, ${f*mults[2]}) = ?`;
+        answer = String(f);
+
     } else if (mode === "alphabets") {
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let chosenChar = "";
-        let type = 0;
-        
-        if (level === "easy") {
-            const lettersSub = "ABCDEFGHIJ";
-            chosenChar = lettersSub[Math.floor(Math.random() * lettersSub.length)];
-            type = 0;
-        } else if (level === "medium") {
-            const lettersSub = "KLMNOPQRSTUVWXYZ";
-            chosenChar = lettersSub[Math.floor(Math.random() * lettersSub.length)];
-            type = Math.floor(Math.random() * 2); 
-        } else {
-            chosenChar = letters[Math.floor(Math.random() * letters.length)];
-            type = 2; 
-        }
-        
-        if (type === 0) {
-            questionText = `Position of Letter '${chosenChar}' = ?`;
-            answer = chosenChar.charCodeAt(0) - 64; 
-        } else if (type === 1) {
-            questionText = `Reverse Position of '${chosenChar}' (A=26) = ?`;
-            answer = 27 - (chosenChar.charCodeAt(0) - 64); 
-        } else {
-            questionText = `Opposite Letter of '${chosenChar}' = ?`;
-            answer = String.fromCharCode(155 - chosenChar.charCodeAt(0)); 
-        }
+        let types;
+        if (level === "easy")        types = [0];
+        else if (level === "medium") types = [0, 1];
+        else                         types = [0, 1, 2];
+        const type = types[Math.floor(Math.random() * types.length)];
+        let pool;
+        if (level === "easy")        pool = "ABCDEFGHIJ";
+        else if (level === "medium") pool = "KLMNOPQRST";
+        else                         pool = letters;
+        const chosenChar = pool[Math.floor(Math.random() * pool.length)];
+        const pos = chosenChar.charCodeAt(0) - 64;
+
+        if (type === 0) { questionText = `Position of Letter '${chosenChar}' = ?`; answer = String(pos); }
+        else if (type === 1) { questionText = `Reverse position of '${chosenChar}' (A=26) = ?`; answer = String(27 - pos); }
+        else { questionText = `Opposite letter of '${chosenChar}' = ?`; answer = String.fromCharCode(155 - chosenChar.charCodeAt(0)); }
+
     } else if (mode === "geomCenters") {
-        let type = 0;
-        if (level === "easy") {
-            const choices = [0, 1, 5];
-            type = choices[Math.floor(Math.random() * choices.length)];
-        } else if (level === "medium") {
-            const choices = [0, 1, 2];
-            type = choices[Math.floor(Math.random() * choices.length)];
-        } else {
-            const choices = [3, 4];
-            type = choices[Math.floor(Math.random() * choices.length)];
-        }
+        // Expanded: more type variety and all levels
+        let types;
+        if (level === "easy")        types = [0, 1, 5];
+        else if (level === "medium") types = [0, 1, 2, 5];
+        else                         types = [0, 1, 2, 3, 4, 5];
+        const type = types[Math.floor(Math.random() * types.length)];
 
         if (type === 0) {
-            const a = (Math.floor(Math.random() * 9) + 4) * 10; 
-            questionText = `In △ABC, I is Incenter. If ∠A = ${a}°, find ∠BIC.`;
-            answer = 90 + (a / 2);
+            const a = (Math.floor(Math.random() * 9) + 4) * 10;
+            questionText = `In △ABC, I=Incenter, ∠A=${a}°. Find ∠BIC.`;
+            answer = String(90 + a / 2);
         } else if (type === 1) {
-            const a = (Math.floor(Math.random() * 10) + 4) * 10; 
-            questionText = `In △ABC, O is Orthocenter. If ∠A = ${a}°, find ∠BOC.`;
-            answer = 180 - a;
+            const a = (Math.floor(Math.random() * 10) + 4) * 10;
+            questionText = `In △ABC, O=Orthocenter, ∠A=${a}°. Find ∠BOC.`;
+            answer = String(180 - a);
         } else if (type === 2) {
-            const a = (Math.floor(Math.random() * 6) + 3) * 10; 
-            questionText = `In △ABC, C is Circumcenter. If ∠A = ${a}°, find ∠BOC.`;
-            answer = 2 * a;
+            const a = (Math.floor(Math.random() * 6) + 3) * 10;
+            questionText = `In △ABC, C=Circumcenter, ∠A=${a}°. Find ∠BOC.`;
+            answer = String(2 * a);
         } else if (type === 3) {
-            const triplets = [
-                [3, 4, 5], [5, 12, 13], [8, 15, 17], [6, 8, 10], [9, 12, 15]
-            ];
+            const triplets = [[3,4,5],[5,12,13],[8,15,17],[6,8,10],[9,12,15]];
             const rip = triplets[Math.floor(Math.random() * triplets.length)];
-            questionText = `In right △ABC (sides ${rip[0]}, ${rip[1]}, ${rip[2]}), find Inradius.`;
-            answer = (rip[0] + rip[1] - rip[2]) / 2;
+            questionText = `Right △ABC (sides ${rip[0]},${rip[1]},${rip[2]}). Inradius = ?`;
+            answer = String((rip[0] + rip[1] - rip[2]) / 2);
         } else if (type === 4) {
-            const triplets = [
-                [3, 4, 5], [5, 12, 13], [8, 15, 17], [6, 8, 10], [10, 24, 26]
-            ];
+            const triplets = [[3,4,5],[5,12,13],[8,15,17],[6,8,10],[10,24,26]];
             const rip = triplets[Math.floor(Math.random() * triplets.length)];
-            questionText = `In right △ABC (hypotenuse ${rip[2]}), find Circumradius.`;
-            answer = rip[2] / 2;
+            questionText = `Right △ABC (hypotenuse ${rip[2]}). Circumradius = ?`;
+            answer = String(rip[2] / 2);
         } else {
-            questionText = `Centroid G divides median AD from vertex (AG:GD) in ratio = ?`;
+            questionText = `Centroid G divides median AD (vertex A). Ratio AG:GD = ?`;
             answer = "2:1";
         }
-    } else if (mode === "trigReflex") {
-        let type = 0;
-        if (level === "easy") {
-            type = Math.floor(Math.random() * 2); 
-        } else if (level === "medium") {
-            const choices = [1, 2]; 
-            type = choices[Math.floor(Math.random() * choices.length)];
-        } else {
-            type = 3; 
-        }
 
-        if (type === 0) {
-            const list = [
-                { q: "sin(0°)", a: "0" }, { q: "sin(30°)", a: "1/2" },
-                { q: "sin(45°)", a: "1/&radic;2" }, { q: "sin(60°)", a: "&radic;3/2" }, { q: "sin(90°)", a: "1" }
-            ];
-            const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `Evaluate: ${item.q} = ?`;
-            answer = item.a;
-        } else if (type === 1) {
-            const list = [
-                { q: "cos(0°)", a: "1" }, { q: "cos(30°)", a: "&radic;3/2" },
-                { q: "cos(45°)", a: "1/&radic;2" }, { q: "cos(60°)", a: "1/2" }, { q: "cos(90°)", a: "0" }
-            ];
-            const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `Evaluate: ${item.q} = ?`;
-            answer = item.a;
-        } else if (type === 2) {
-            const list = [
-                { q: "tan(0°)", a: "0" }, { q: "tan(30°)", a: "1/&radic;3" },
-                { q: "tan(45°)", a: "1" }, { q: "tan(60°)", a: "&radic;3" }, { q: "tan(90°)", a: "Not Defined" }
-            ];
-            const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `Evaluate: ${item.q} = ?`;
-            answer = item.a;
-        } else {
-            const list = [
-                { q: "sin²θ + cos²θ", a: "1" }, { q: "1 + tan²θ", a: "sec²θ" },
-                { q: "1 + cot²θ", a: "cosec²θ" }, { q: "sin(90° - θ)", a: "cos θ" },
-                { q: "cos(90° - θ)", a: "sin θ" }, { q: "tan(90° - θ)", a: "cot θ" }
-            ];
-            const item = list[Math.floor(Math.random() * list.length)];
-            questionText = `Identity: ${item.q} = ?`;
-            answer = item.a;
-        }
+    } else if (mode === "trigReflex") {
+        // Only exam-standard angles: 0°, 30°, 45°, 60°, 90°
+        const sinCos = [
+            { q:"sin(0°)",    a:"0" },     { q:"sin(30°)",   a:"1/2" },
+            { q:"sin(45°)",   a:"1/√2" },  { q:"sin(60°)",   a:"√3/2" }, { q:"sin(90°)",   a:"1" },
+            { q:"cos(0°)",    a:"1" },     { q:"cos(30°)",   a:"√3/2" },
+            { q:"cos(45°)",   a:"1/√2" },  { q:"cos(60°)",   a:"1/2" },  { q:"cos(90°)",   a:"0" },
+        ];
+        const tanCot = [
+            { q:"tan(0°)",    a:"0" },     { q:"tan(30°)",   a:"1/√3" },
+            { q:"tan(45°)",   a:"1" },     { q:"tan(60°)",   a:"√3" },   { q:"tan(90°)",   a:"Not Defined" },
+            { q:"cot(0°)",    a:"Not Defined" },  { q:"cot(30°)",   a:"√3" },
+            { q:"cot(45°)",   a:"1" },     { q:"cot(60°)",   a:"1/√3" }, { q:"cot(90°)",   a:"0" },
+        ];
+        const secCosec = [
+            { q:"sec(0°)",    a:"1" },     { q:"sec(30°)",   a:"2/√3" },
+            { q:"sec(45°)",   a:"√2" },   { q:"sec(60°)",   a:"2" },    { q:"sec(90°)",   a:"Not Defined" },
+            { q:"cosec(0°)",  a:"Not Defined" },  { q:"cosec(30°)", a:"2" },
+            { q:"cosec(45°)", a:"√2" },   { q:"cosec(60°)", a:"2/√3" },{ q:"cosec(90°)", a:"1" },
+        ];
+        const identities = [
+            { q:"sin²θ + cos²θ",   a:"1" },
+            { q:"1 + tan²θ",       a:"sec²θ" },
+            { q:"1 + cot²θ",       a:"cosec²θ" },
+            { q:"sec²θ - tan²θ",   a:"1" },
+            { q:"cosec²θ - cot²θ", a:"1" },
+            { q:"sin(90° - θ)",    a:"cos θ" },
+            { q:"cos(90° - θ)",    a:"sin θ" },
+            { q:"tan(90° - θ)",    a:"cot θ" },
+            { q:"cot(90° - θ)",    a:"tan θ" },
+            { q:"sec(90° - θ)",    a:"cosec θ" },
+            { q:"cosec(90° - θ)",  a:"sec θ" },
+        ];
+
+        let pool;
+        if (level === "easy")        pool = sinCos;                                         // sin + cos
+        else if (level === "medium") pool = [...sinCos, ...tanCot];                        // + tan + cot
+        else                         pool = [...sinCos, ...tanCot, ...secCosec, ...identities]; // all 6 + identities
+
+        const item = pool[Math.floor(Math.random() * pool.length)];
+        const isIdentity = !item.q.match(/^(sin|cos|tan|cot|sec|cosec)\(\d/);
+        questionText = isIdentity ? `Identity: ${item.q} = ?` : `Evaluate: ${item.q} = ?`;
+        answer = item.a;
     }
     return { q: questionText, a: answer };
 }
