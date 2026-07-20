@@ -153,7 +153,143 @@ function initForms() {
     }
 
     updateMockFormLimits();
+
+    const mockForm = document.getElementById("form-mock");
+    if (mockForm) {
+        mockForm.onsubmit = (e) => {
+            e.preventDefault();
+            const isEdit = !!editingMockId;
+            
+            const name = document.getElementById("mock-name").value;
+            const date = document.getElementById("mock-date").value;
+            const score = parseFloat(document.getElementById("mock-score").value);
+            const accuracy = parseFloat(document.getElementById("mock-accuracy").value) || null;
+            const rank = document.getElementById("mock-rank").value || "N/A";
+            
+            const qScore = parseFloat(document.getElementById("score-quant").value) || 0;
+            const rScore = parseFloat(document.getElementById("score-reasoning").value) || 0;
+            const eScore = parseFloat(document.getElementById("score-english").value) || 0;
+            const gaScore = parseFloat(document.getElementById("score-ga").value) || 0;
+            
+            const notes = document.getElementById("mock-notes").value;
+            
+            const weakTopicIdsVal = document.getElementById("mock-weak-topics-list").value;
+            const weakTopicIds = weakTopicIdsVal ? JSON.parse(weakTopicIdsVal) : [];
+
+            if (editingMockId) {
+                const mockIndex = appState.mocks.findIndex(m => m.id === editingMockId);
+                if (mockIndex !== -1) {
+                    appState.mocks[mockIndex] = {
+                        id: editingMockId,
+                        name, date, score, accuracy, rank,
+                        breakdown: { quant: qScore, reasoning: rScore, english: eScore, ga: gaScore },
+                        notes,
+                        weakTopicIds,
+                        weakTopicId: weakTopicIds[0] || ""
+                    };
+                }
+                editingMockId = null;
+            } else {
+                const newMock = {
+                    id: "mock-" + Date.now(),
+                    name, date, score, accuracy, rank,
+                    breakdown: { quant: qScore, reasoning: rScore, english: eScore, ga: gaScore },
+                    notes,
+                    weakTopicIds,
+                    weakTopicId: weakTopicIds[0] || ""
+                };
+                appState.mocks.push(newMock);
+            }
+
+            appState.mocks.sort((a,b) => new Date(a.date) - new Date(b.date));
+            
+            appState.weakAlerts = {};
+            appState.mocks.forEach(m => {
+                const ids = m.weakTopicIds || (m.weakTopicId ? [m.weakTopicId] : []);
+                ids.forEach(id => {
+                    if (id) appState.weakAlerts[id] = true;
+                });
+            });
+
+            saveStateToStorage();
+            mockForm.reset();
+
+            const formHeader = document.getElementById("mock-form-header");
+            if (formHeader) formHeader.innerHTML = `<i class="fa-solid fa-pen-ruler mr-1.5 text-accentCyan"></i> Log Mock Test Score`;
+            const submitBtn = document.getElementById("mock-submit-btn");
+            if (submitBtn) submitBtn.innerHTML = `<i class="fa-solid fa-circle-plus mr-1"></i> Save Mock Record`;
+            const cancelBtn = document.getElementById("mock-cancel-edit-btn");
+            if (cancelBtn) cancelBtn.classList.add("hidden");
+            
+            const displayScore = document.getElementById("mock-score-display");
+            if (displayScore) displayScore.innerText = "0.00 / 200";
+            
+            selectedWeakTopicIds = [];
+            renderSelectedWeakTags();
+            if (searchInput) searchInput.value = "";
+            
+            if (mockDateInput) {
+                mockDateInput.value = new Date().toISOString().substring(0, 10);
+            }
+            
+            renderAll();
+            renderMockAnalytics();
+            const successMsg = isEdit ? "Mock record updated successfully!" : "Mock score logged successfully!";
+            speakText(successMsg);
+            if (window.showToast) window.showToast(successMsg, "success");
+        };
+    }
+
+    // Note logs form inside Study toolkit Custom Notes tab
+    const noteForm = document.getElementById("form-note");
+    const noteContentInput = document.getElementById("note-content");
+    const latexPreview = document.getElementById("latex-preview");
+
+    if (noteContentInput && latexPreview) {
+        noteContentInput.addEventListener("input", () => {
+            const val = noteContentInput.value.trim();
+            latexPreview.innerHTML = parseMarkdown(val) || "Type math formulas inside $...$ to preview render...";
+            if (window.renderMathInElement && val) {
+                window.renderMathInElement(latexPreview, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+    }
+
+    if (noteForm) {
+        noteForm.onsubmit = (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById("note-title").value;
+            const category = document.getElementById("note-category").value;
+            const subject = document.getElementById("note-subject").value;
+            const content = noteContentInput ? noteContentInput.value : "";
+
+            const newNote = {
+                id: "note-" + Date.now(),
+                title, category, subject, content,
+                date: new Date().toLocaleDateString()
+            };
+
+            appState.notes.push(newNote);
+            saveStateToStorage();
+            noteForm.reset();
+            if (latexPreview) {
+                latexPreview.innerText = "Type math formulas inside $...$ to preview render...";
+            }
+            
+            renderToolkit();
+            speakText("Note saved to toolkit.");
+            if (window.showToast) window.showToast("Note saved to study toolkit", "success");
+        };
+    }
 }
+
 
 function updateMockFormLimits() {
     const isTier2 = appState.examTier === 2;
@@ -208,148 +344,6 @@ function updateMockFormLimits() {
 }
 window.updateMockFormLimits = updateMockFormLimits;
 
-    const mockForm = document.getElementById("form-mock");
-    mockForm.onsubmit = (e) => {
-        e.preventDefault();
-        const isEdit = !!editingMockId;
-        
-        const name = document.getElementById("mock-name").value;
-        const date = document.getElementById("mock-date").value;
-        const score = parseFloat(document.getElementById("mock-score").value);
-        const accuracy = parseFloat(document.getElementById("mock-accuracy").value) || null;
-        const rank = document.getElementById("mock-rank").value || "N/A";
-        
-        const qScore = parseFloat(document.getElementById("score-quant").value) || 0;
-        const rScore = parseFloat(document.getElementById("score-reasoning").value) || 0;
-        const eScore = parseFloat(document.getElementById("score-english").value) || 0;
-        const gaScore = parseFloat(document.getElementById("score-ga").value) || 0;
-        
-        const notes = document.getElementById("mock-notes").value;
-        
-        // Read multi-select weak topic IDs
-        const weakTopicIdsVal = document.getElementById("mock-weak-topics-list").value;
-        const weakTopicIds = weakTopicIdsVal ? JSON.parse(weakTopicIdsVal) : [];
-
-        if (editingMockId) {
-            const mockIndex = appState.mocks.findIndex(m => m.id === editingMockId);
-            if (mockIndex !== -1) {
-                appState.mocks[mockIndex] = {
-                    id: editingMockId,
-                    name, date, score, accuracy, rank,
-                    breakdown: { quant: qScore, reasoning: rScore, english: eScore, ga: gaScore },
-                    notes,
-                    weakTopicIds,
-                    weakTopicId: weakTopicIds[0] || ""
-                };
-            }
-            editingMockId = null;
-        } else {
-            const newMock = {
-                id: "mock-" + Date.now(),
-                name, date, score, accuracy, rank,
-                breakdown: { quant: qScore, reasoning: rScore, english: eScore, ga: gaScore },
-                notes,
-                weakTopicIds,
-                weakTopicId: weakTopicIds[0] || "" // backward compatibility
-            };
-            appState.mocks.push(newMock);
-        }
-
-        appState.mocks.sort((a,b) => new Date(a.date) - new Date(b.date));
-        
-        // Recalculate weak alerts
-        appState.weakAlerts = {};
-        appState.mocks.forEach(m => {
-            const ids = m.weakTopicIds || (m.weakTopicId ? [m.weakTopicId] : []);
-            ids.forEach(id => {
-                if (id) {
-                    appState.weakAlerts[id] = true;
-                }
-            });
-        });
-
-        saveStateToStorage();
-        mockForm.reset();
-
-        // Restore Form Title and Button text
-        const formHeader = document.getElementById("mock-form-header");
-        if (formHeader) {
-            formHeader.innerHTML = `<i class="fa-solid fa-pen-ruler mr-1.5 text-accentCyan"></i> Log Mock Test Score`;
-        }
-        const submitBtn = document.getElementById("mock-submit-btn");
-        if (submitBtn) {
-            submitBtn.innerHTML = `<i class="fa-solid fa-circle-plus mr-1"></i> Save Mock Record`;
-        }
-        const cancelBtn = document.getElementById("mock-cancel-edit-btn");
-        if (cancelBtn) cancelBtn.classList.add("hidden");
-        
-        const displayScore = document.getElementById("mock-score-display");
-        if (displayScore) displayScore.innerText = "0.00 / 200";
-        
-        // Reset custom widget
-        selectedWeakTopicIds = [];
-        renderSelectedWeakTags();
-        if (searchInput) searchInput.value = "";
-        
-        // Reset date to today
-        if (mockDateInput) {
-            mockDateInput.value = new Date().toISOString().substring(0, 10);
-        }
-        
-        renderAll();
-        renderMockAnalytics();
-        const successMsg = isEdit ? "Mock record updated successfully!" : "Mock score logged successfully!";
-        speakText(successMsg);
-        if (window.showToast) window.showToast(successMsg, "success");
-    };
-
-    // Note logs form inside Study toolkit Custom Notes tab
-    const noteForm = document.getElementById("form-note");
-    const noteContentInput = document.getElementById("note-content");
-    const latexPreview = document.getElementById("latex-preview");
-
-    if (noteContentInput && latexPreview) {
-        noteContentInput.addEventListener("input", () => {
-            const val = noteContentInput.value.trim();
-            latexPreview.innerHTML = parseMarkdown(val) || "Type math formulas inside $...$ to preview render...";
-            if (window.renderMathInElement && val) {
-                window.renderMathInElement(latexPreview, {
-                    delimiters: [
-                        {left: '$$', right: '$$', display: true},
-                        {left: '$', right: '$', display: false}
-                    ],
-                    throwOnError: false
-                });
-            }
-        });
-    }
-
-    noteForm.onsubmit = (e) => {
-        e.preventDefault();
-        
-        const title = document.getElementById("note-title").value;
-        const category = document.getElementById("note-category").value;
-        const subject = document.getElementById("note-subject").value;
-        const content = noteContentInput.value;
-
-        const newNote = {
-            id: "note-" + Date.now(),
-            title, category, subject, content,
-            date: new Date().toLocaleDateString()
-        };
-
-        appState.notes.push(newNote);
-        saveStateToStorage();
-        noteForm.reset();
-        if (latexPreview) {
-            latexPreview.innerText = "Type math formulas inside $...$ to preview render...";
-        }
-        
-        renderToolkit();
-        speakText("Note saved to toolkit.");
-        if (window.showToast) window.showToast("Note saved to study toolkit", "success");
-    };
-}
 
 function renderMockAnalytics() {
     const tbody = document.getElementById("mock-table-body");
