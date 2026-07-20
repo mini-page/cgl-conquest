@@ -34,6 +34,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.getElementById("btn-viewer-next");
     if (nextBtn) nextBtn.onclick = () => navigateViewer(1);
     
+    const tocToggleBtn = document.getElementById("btn-viewer-toc-toggle");
+    const tocSidebar = document.getElementById("viewer-toc-sidebar");
+    if (tocToggleBtn && tocSidebar) {
+        tocToggleBtn.onclick = () => {
+            tocSidebar.classList.toggle("hidden");
+            tocSidebar.classList.toggle("absolute");
+            tocSidebar.classList.toggle("inset-y-0");
+            tocSidebar.classList.toggle("left-0");
+            tocSidebar.classList.toggle("shadow-2xl");
+        };
+    }
+    
     // Bind back grid buttons
     const backBtn = document.getElementById("btn-study-back-grid");
     if (backBtn) backBtn.onclick = backToSubjects;
@@ -832,9 +844,11 @@ async function openStudyViewer(subtopicId) {
             const cleanText = rawText.trim();
             
             // Slice off frontmatter block
-            const bodyText = cleanText.startsWith("---") ? cleanText.split("---").slice(2).join("---").trim() : cleanText;
+            let bodyText = cleanText.startsWith("---") ? cleanText.split("---").slice(2).join("---").trim() : cleanText;
+            // Remove duplicate top-level heading title matching subtopic name
+            bodyText = bodyText.replace(/^#+\s+.*$/m, "").trim();
             
-            // Render via speed.js compiler
+            // Render via markdown compiler
             container.innerHTML = parseMarkdown(bodyText);
             
             // Build outlines table of contents sidebar

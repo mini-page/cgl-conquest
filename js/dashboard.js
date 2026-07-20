@@ -17,16 +17,20 @@ function initExamTargetEditor() {
         const displayDate = document.getElementById("display-exam-date");
         const headerLabel = document.getElementById("countdown-label");
 
-        if (displayName) displayName.innerText = appState.examName;
+        if (displayName) {
+            const tierSuffix = (appState.examTier === 2) ? "Tier 2 Mains (390 Marks)" : "Tier 1 Prelims (200 Marks)";
+            displayName.innerText = `${appState.examName || "Conquest"} • ${tierSuffix}`;
+        }
         if (displayDate) {
-            const dateObj = new Date(appState.examDate);
-            if (!isNaN(dateObj)) {
+            const dateParts = (appState.examDate || "2026-08-15").split("T")[0].split("-");
+            if (dateParts.length === 3) {
+                const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
                 displayDate.innerText = dateObj.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
             } else {
                 displayDate.innerText = appState.examDate;
             }
         }
-        if (headerLabel) headerLabel.innerText = `${appState.examName}:`;
+        if (headerLabel) headerLabel.innerText = `${appState.examName || "Conquest"}:`;
     }
 
     if (btnToggle) {
@@ -541,13 +545,13 @@ function startExamCountdown() {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
-        const formatStr = `${days}d : ${hours.toString().padStart(2, "0")}h : ${minutes.toString().padStart(2, "0")}m`;
+        const formatStr = `${days}d : ${hours.toString().padStart(2, "0")}h : ${minutes.toString().padStart(2, "0")}m : ${seconds.toString().padStart(2, "0")}s`;
         const timerEl = document.getElementById("countdown-timer");
         if (timerEl) timerEl.innerText = formatStr;
         
         const mobTimer = document.getElementById("countdown-timer-mobile");
         if (mobTimer) {
-            mobTimer.innerText = `${formatStr} : ${seconds.toString().padStart(2, "0")}s`;
+            mobTimer.innerText = formatStr;
         }
     }
     

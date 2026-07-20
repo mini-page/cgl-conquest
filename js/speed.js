@@ -403,6 +403,7 @@ function generateDrillQuestion() {
             const btn = document.createElement("button");
             btn.className = "math-opt-btn p-3 rounded-xl border border-white/5 bg-white/2px hover:bg-cyan-500/10 hover:border-accentCyan transition text-sm font-bold text-gray-200";
             btn.innerText = val;
+            btn.setAttribute("data-val", String(val));
             btn.onclick = () => checkDrillAnswer(val);
             optionsGrid.appendChild(btn);
         });
@@ -437,7 +438,8 @@ function generateDrillQuestion() {
             const buttons = document.querySelectorAll("#drill-options button");
             buttons.forEach(b => {
                 b.disabled = true;
-                if (b.innerText === String(drillAnswerVal)) {
+                const val = b.getAttribute("data-val") || b.innerText.trim();
+                if (val === String(drillAnswerVal)) {
                     b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
                 }
             });
@@ -459,7 +461,7 @@ function checkDrillAnswer(chosenVal) {
 
     buttons.forEach(b => {
         b.disabled = true;
-        const val = b.innerText;
+        const val = b.getAttribute("data-val") || b.innerText.trim();
         if (val === String(drillAnswerVal)) {
             b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
         } else if (val === String(chosenVal)) {
@@ -775,6 +777,7 @@ function initSpeedDrillsPage() {
             tab.classList.add("active-nav-tab");
             drillMode = tab.getAttribute("data-mode");
             resetDrillSession();
+            drillIsPlaying = true;
             generateDrillQuestion();
         };
     });

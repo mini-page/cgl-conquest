@@ -100,6 +100,8 @@ function initForms() {
     };
 
     if (searchInput && optionsPanel) {
+        renderWeakDropdownOptions("");
+        
         searchInput.addEventListener("focus", () => {
             optionsPanel.classList.remove("hidden");
             renderWeakDropdownOptions(searchInput.value);
