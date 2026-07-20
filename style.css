@@ -114,6 +114,122 @@ a.active-nav-tab,
 
 body.light-theme button.active-nav-tab,
 body.light-theme a.active-nav-tab,
+/* ==========================================================================
+   SSC CGL Rank-Maker Dashboard - Premium Custom Overrides (XPensa Edition)
+   ========================================================================== */
+
+/* Theme Variables */
+:root {
+    --bg-app: #09090f;
+    --bg-card: #121221;
+    --text-main: #f8fafc;
+    --text-sub: #94a3b8;
+    --border-main: rgba(255, 255, 255, 0.04);
+    --bg-panel: #0e1322;
+    --bg-panel2: #131a2c;
+    --border-line: #1e2740;
+}
+
+body.light-theme {
+    --bg-app: #f1f5f9; /* Slate 100 - clean high-contrast base */
+    --bg-card: #ffffff;
+    --text-main: #0f172a; /* Slate 900 */
+    --text-sub: #475569; /* Slate 600 */
+    --border-main: rgba(99, 102, 241, 0.1); /* Soft indigo tint border */
+    --bg-panel: #ffffff;
+    --bg-panel2: #f8fafc;
+    --border-line: rgba(99, 102, 241, 0.1);
+    background-image: linear-gradient(rgba(99, 102, 241, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.02) 1px, transparent 1px);
+}
+
+/* Bind theme utility variables to classes */
+.bg-panel { background-color: var(--bg-panel) !important; }
+.bg-panel2 { background-color: var(--bg-panel2) !important; }
+.border-line { border-color: var(--border-line) !important; }
+.border-b.border-line { border-bottom-color: var(--border-line) !important; }
+.border-t.border-line { border-top-color: var(--border-line) !important; }
+.border-l.border-line { border-left-color: var(--border-line) !important; }
+.border-r.border-line { border-right-color: var(--border-line) !important; }
+
+/* Custom Base Styles */
+body {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-image: linear-gradient(rgba(45, 212, 191, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(45, 212, 191, 0.02) 1px, transparent 1px);
+    background-size: 34px 34px;
+}
+
+/* Custom global element rounded token overrides */
+.rounded-xl {
+    border-radius: 1rem !important; /* 16px */
+}
+.rounded-2xl {
+    border-radius: 1.5rem !important; /* 24px */
+}
+.rounded-3xl {
+    border-radius: 2rem !important; /* 32px */
+}
+
+/* Light Theme Card Shadows and Borders to stand out from background */
+body.light-theme .bg-bgCard {
+    box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(99, 102, 241, 0.03) !important;
+    border: 1px solid rgba(99, 102, 241, 0.06) !important;
+}
+
+/* Modal States */
+.modal {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal.active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+.modal.active > div {
+    transform: scale(1) !important;
+}
+
+/* XPensa Floating Pill Navigation Active States */
+.nav-item.active-nav {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.light-theme .nav-item.active-nav {
+    background-color: #ffffff !important;
+    color: #6d28d9 !important;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.12) !important;
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+}
+
+.mobile-nav-item.active-nav {
+    background-color: rgba(139, 92, 246, 0.12) !important;
+    color: #a78bfa !important;
+    border-left: 3px solid #8b5cf6;
+}
+
+body.light-theme .mobile-nav-item.active-nav {
+    background-color: rgba(109, 40, 217, 0.06) !important;
+    color: #6d28d9 !important;
+    border-left: 3px solid #6d28d9;
+}
+
+/* Toolkit Active Subtabs */
+button.active-nav-tab,
+a.active-nav-tab,
+.active-nav-tab {
+    background-color: rgba(139, 92, 246, 0.15) !important;
+    color: #c084fc !important;
+    border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+body.light-theme button.active-nav-tab,
+body.light-theme a.active-nav-tab,
 body.light-theme .active-nav-tab {
     background-color: rgba(109, 40, 217, 0.08) !important;
     color: #6d28d9 !important;
@@ -121,13 +237,17 @@ body.light-theme .active-nav-tab {
 }
 
 /* Active Calculation Drill Mode highlight in Cyan */
-button.drill-mode-btn.active-nav-tab {
+button.drill-mode-btn.active-nav-tab,
+button.speed-tab-btn.active-nav-tab,
+.speed-tab-btn.active-nav-tab {
     background-color: rgba(6, 182, 212, 0.2) !important;
     color: #22d3ee !important;
     border-color: rgba(6, 182, 212, 0.5) !important;
 }
 
-body.light-theme button.drill-mode-btn.active-nav-tab {
+body.light-theme button.drill-mode-btn.active-nav-tab,
+body.light-theme button.speed-tab-btn.active-nav-tab,
+body.light-theme .speed-tab-btn.active-nav-tab {
     background-color: rgba(8, 145, 178, 0.12) !important;
     color: #0891b2 !important;
     border-color: rgba(8, 145, 178, 0.3) !important;
@@ -973,3 +1093,26 @@ body.light-theme .bg-panel2\/60 { background-color: rgba(248, 250, 252, 0.95) !i
 body.light-theme .text-accentCyan { color: #0891b2 !important; }
 body.light-theme .border-accentCyan\/20 { border-color: rgba(8, 145, 178, 0.25) !important; }
 body.light-theme .bg-accentCyan\/15 { background-color: rgba(8, 145, 178, 0.12) !important; }
+
+/* Study Viewer Markdown Table and Responsive Container Overrides */
+#viewer-document-body table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    word-break: break-word;
+}
+
+#viewer-document-body table th,
+#viewer-document-body table td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: normal;
+}
+
+body.light-theme #viewer-document-body table th,
+body.light-theme #viewer-document-body table td {
+    border-color: rgba(0, 0, 0, 0.1);
+}

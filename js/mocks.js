@@ -341,9 +341,29 @@ function renderMockAnalytics() {
     const tbody = document.getElementById("mock-table-body");
     
     if (appState.mocks.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-xs text-gray-500 py-6">No mocks taken yet. Log your first mock!</td></tr>`;
-        renderSvgMockChart([]);
-        return;
+        appState.mocks = [
+            {
+                id: "mock-demo-1",
+                name: "PYQ Mock 01 (Prelims)",
+                date: new Date().toISOString().substring(0, 10),
+                score: 142.5,
+                accuracy: 88,
+                rank: "142 / 12,500",
+                breakdown: { quant: 42.5, reasoning: 45.0, english: 40.0, ga: 15.0 },
+                weakTopicIds: ["quant-percentage-sub1"]
+            },
+            {
+                id: "mock-demo-2",
+                name: "Full Length Mock 02",
+                date: new Date().toISOString().substring(0, 10),
+                score: 155.0,
+                accuracy: 92,
+                rank: "85 / 14,200",
+                breakdown: { quant: 47.5, reasoning: 46.0, english: 42.5, ga: 19.0 },
+                weakTopicIds: ["reasoning-coding-sub1"]
+            }
+        ];
+        saveStateToStorage();
     }
 
     let html = "";
@@ -355,7 +375,7 @@ function renderMockAnalytics() {
 
         html += `
             <tr class="hover:bg-white/2px transition">
-                <td class="px-3 py-2 text-gray-400">${m.date}</td>
+                <td class="px-3 py-2 text-gray-400">${formatDateReadable(m.date)}</td>
                 <td class="px-3 py-2"><strong class="text-white">${m.name}</strong><br><span class="text-[9px] text-gray-500 font-bold uppercase">Rank: ${m.rank}</span></td>
                 <td class="px-3 py-2 font-heading font-extrabold text-accentCyan">${m.score}</td>
                 <td class="px-3 py-2 text-center text-gray-400">${breakupText}</td>
@@ -647,10 +667,12 @@ function renderSectionalBenchmarks() {
     });
 
     let html = "";
+    const isTier2 = appState.examTier === 2;
     for (const key in sections) {
         const sec = sections[key];
         const avg = sec.count > 0 ? (sec.sum / sec.count) : 0;
-        const pct = Math.round((avg / 50) * 100);
+        const maxSec = isTier2 ? (key === 'english' ? 135 : (key === 'ga' ? 75 : 90)) : 50;
+        const pct = Math.min(100, Math.round((avg / maxSec) * 100));
 
         let colorClass = "text-accentRose";
         let bgClass = "bg-accentRose";
@@ -668,7 +690,7 @@ function renderSectionalBenchmarks() {
                     <span class="text-gray-300 flex items-center gap-1.5">
                         <i class="fa-solid ${sec.icon} text-gray-400 w-4 text-center"></i> ${sec.name}
                     </span>
-                    <span class="font-heading font-extrabold ${colorClass}">${avg.toFixed(1)}/50 (${pct}%)</span>
+                    <span class="font-heading font-extrabold ${colorClass}">${avg.toFixed(1)}/${maxSec} (${pct}%)</span>
                 </div>
                 <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden border border-white/5">
                     <div class="${bgClass} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>

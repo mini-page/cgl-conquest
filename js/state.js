@@ -3164,6 +3164,21 @@ function parseMarkdown(text) {
 }
 window.parseMarkdown = parseMarkdown;
 
+// Readable Date Formatter (DD MMM, YYYY)
+function formatDateReadable(dateStr) {
+    if (!dateStr) return "N/A";
+    const cleanStr = dateStr.split("T")[0];
+    const parts = cleanStr.split("-");
+    if (parts.length !== 3) return dateStr;
+    const year = parseInt(parts[0]);
+    const monthIdx = parseInt(parts[1]) - 1;
+    const day = parseInt(parts[2]);
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    if (isNaN(year) || isNaN(monthIdx) || isNaN(day) || !months[monthIdx]) return dateStr;
+    return `${day.toString().padStart(2, "0")} ${months[monthIdx]}, ${year}`;
+}
+window.formatDateReadable = formatDateReadable;
+
 
 // === GK STATIC DATA (INLINE COMPILED) ===
 const GK_STATIC_DATA = {

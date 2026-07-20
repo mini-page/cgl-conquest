@@ -17,19 +17,8 @@ function initExamTargetEditor() {
         const displayDate = document.getElementById("display-exam-date");
         const headerLabel = document.getElementById("countdown-label");
 
-        if (displayName) {
-            const tierSuffix = (appState.examTier === 2) ? "Tier 2 Mains (390 Marks)" : "Tier 1 Prelims (200 Marks)";
-            displayName.innerText = `${appState.examName || "Conquest"} • ${tierSuffix}`;
-        }
-        if (displayDate) {
-            const dateParts = (appState.examDate || "2026-08-15").split("T")[0].split("-");
-            if (dateParts.length === 3) {
-                const dateObj = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
-                displayDate.innerText = dateObj.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
-            } else {
-                displayDate.innerText = appState.examDate;
-            }
-        }
+        if (displayName) displayName.innerText = appState.examName || "Conquest";
+        if (displayDate) displayDate.innerText = formatDateReadable(appState.examDate || "2026-08-15");
         if (headerLabel) headerLabel.innerText = `${appState.examName || "Conquest"}:`;
     }
 
