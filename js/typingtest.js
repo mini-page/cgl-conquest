@@ -1,26 +1,20 @@
 // ============================================================
-// Typing Test — integrated into unified-drill-card
-// State machine: IDLE → RUNNING → PAUSED → FINISHED
-// Properly hooks speed.js's onclick system; cleans up on tab switch
+// Typing Test — unified-drill-card integration
+// Tweaks: tab highlight, no badge, controls↔stats swap,
+//         larger text, line-by-line scroll, Enter=start,
+//         Alt+Space=pause, Alt+X=close
 // ============================================================
 (function () {
     'use strict';
 
-    // ════════════════════════════════════════════════════════
-    // GLOBAL FLAGS (read by navigation.js to block shortcuts)
-    // ════════════════════════════════════════════════════════
-    window.typingTestActive   = false; // true while typing tab is selected
-    window.inputCaptureLocked = false; // true only while RUNNING (keys go to typing test)
+    window.typingTestActive   = false;
+    window.inputCaptureLocked = false;
 
     // ════════════════════════════════════════════════════════
-    // CURATED SSC CGL / COMPETITIVE EXAM WORD DATASET
-    // Sources: Merriam-Webster misspelled list (public domain),
-    //          Oxford 3000/5000, GRE high-frequency, SAT vocab,
-    //          SSC CGL/CHSL/CPO, Banking, UPSC, editorial vocab
+    // DATASET (SSC CGL / GRE / Banking / Govt / Editorial)
     // ════════════════════════════════════════════════════════
     const WORD_DATA = {
         words: [
-            // — Commonly misspelled (Merriam-Webster public list) —
             "absence","accidentally","accommodate","acknowledgment","acquire",
             "address","amateur","argument","assassination","auxiliary",
             "believe","calendar","camouflage","cemetery","changeable",
@@ -36,95 +30,79 @@
             "responsible","rhythm","schedule","separate","sergeant",
             "supersede","temperature","threshold","tyranny","unanimous",
             "unnecessary","vacuum","vegetable","vicious","weather","weird",
-            // — SSC CGL / CHSL / CPO vocabulary —
             "abdicate","abridge","abscond","abstain","abundance","accelerate",
             "accessible","accomplice","accountable","accumulate","acquaintance",
             "acquiesce","acquit","adamant","adherence","adjacent","administer",
             "admissible","adolescent","adverse","affidavit","aggravate",
-            "aggression","aggrieve","alacrity","allegiance","alleviate",
-            "allude","ambiguous","amendment","amicable","amnesty","analogous",
-            "anarchy","annotate","annihilate","anonymous","antagonize",
-            "antiquated","apparatus","apprehend","approximate","arbitrary",
-            "arduous","articulate","ascertain","assessment","assiduous",
-            "audacious","auspicious","autonomous","avarice",
-            "bankruptcy","benevolent","bureaucracy","bilateral","benchmark",
-            "beneficiary","belligerent","bequeath","blasphemy","brazenness",
+            "aggression","alacrity","allegiance","alleviate","ambiguous",
+            "amendment","amicable","amnesty","analogous","anarchy","annihilate",
+            "anonymous","antagonize","antiquated","apparatus","apprehend",
+            "approximate","arbitrary","arduous","articulate","ascertain",
+            "assessment","assiduous","audacious","auspicious","autonomous",
+            "avarice","bankruptcy","benevolent","bureaucracy","bilateral",
+            "benchmark","beneficiary","belligerent","bequeath","blasphemy",
             "catastrophe","categorical","cautious","circumspect","clemency",
             "coalition","coercion","coherent","collaborate","commemorate",
             "commission","commitment","committee","competence","complacent",
-            "complement","compliance","conscience","consecutive","consolidate",
-            "conspire","constituency","contemptuous","contentious","contradict",
-            "conviction","corruption","counterfeit","cynicism",
-            "declaration","deliberately","democracy","denomination","deferential",
-            "deficiency","delinquent","despondent","detention","deteriorate",
-            "devastation","dilapidated","diligently","diplomacy","discipline",
-            "discrepancy","discrimination","disparity","disposition","disseminate",
-            "distortion","documentation","dominance","duration",
-            "eccentric","economy","egregious","elaborately","eligible",
+            "compliance","conscience","consecutive","consolidate","conspire",
+            "constituency","contemptuous","contentious","contradict","conviction",
+            "corruption","counterfeit","cynicism","declaration","deliberately",
+            "democracy","denomination","deferential","deficiency","delinquent",
+            "despondent","detention","deteriorate","devastation","dilapidated",
+            "diligently","diplomacy","discipline","discrepancy","discrimination",
+            "disparity","disposition","disseminate","distortion","documentation",
+            "dominance","duration","eccentric","economy","egregious","eligible",
             "eloquent","embarrassment","embezzlement","eminent","empathy",
             "emphasis","enumerate","entrepreneur","ephemeral","equivocal",
             "essential","exaggerate","exonerate","expenditure","exploitation",
             "facilitate","feasibility","fervent","fiduciary","flourishing",
-            "formidable","fraudulent","fundamental","fiscal",
-            "governance","grievance","guarantee","government","gratuitous",
-            "gregarious","gullible",
-            "harassment","hierarchy","hypothesis","heinous","hesitant",
+            "formidable","fraudulent","fundamental","fiscal","governance",
+            "grievance","guarantee","government","gratuitous","gregarious",
+            "gullible","harassment","hierarchy","hypothesis","heinous",
             "ignorance","illegitimate","impartial","impeccable","implication",
-            "impunity","inadvertent","indispensable","indigenous","inevitable",
-            "infrastructure","innuendo","integrity","intelligible","irrelevant",
-            "jeopardize","journalism","judiciary","justification",
-            "laudable","legislation","legitimate","lucrative","litigant",
-            "malicious","mandatory","manipulation","menace","miscellaneous",
-            "misdemeanor","monopoly","municipal",
-            "negotiation","negligence","nuisance","notorious",
+            "impunity","inadvertent","indigenous","inevitable","infrastructure",
+            "innuendo","integrity","intelligible","irrelevant","jeopardize",
+            "journalism","judiciary","justification","laudable","legislation",
+            "legitimate","lucrative","litigant","malicious","mandatory",
+            "manipulation","menace","miscellaneous","misdemeanor","monopoly",
+            "municipal","negotiation","negligence","nuisance","notorious",
             "obsequious","omnipotent","ominous","opposition","ordinance",
-            "parliament","perseverance","plausible","prejudice","preliminary",
-            "prerogative","prohibition","proliferation","propaganda","proprietor",
-            "prosecution","protocol","provocation","provisional",
-            "questionnaire","quintessential",
+            "parliament","plausible","preliminary","prerogative","prohibition",
+            "proliferation","propaganda","proprietor","prosecution","protocol",
+            "provocation","provisional","questionnaire","quintessential",
             "ratification","recklessness","reconcile","referendum","relevance",
             "remuneration","reputation","resilience","retaliation","revelation",
-            "rhetoric","rigorous",
-            "sabotage","scrutiny","sovereignty","stringent","subordinate",
-            "subsidy","surveillance","susceptible","sustainable","systematic",
-            "transparency","tribunal","tyranny",
-            "unanimous","undermining","unforeseen","unilateral","unprecedented",
-            "vandalism","vigilance","vulnerable","vindictive","warranted",
-            "widespread","zealous",
-            // — GRE high-frequency (public domain) —
-            "aberrant","abeyance","abhorrent","abjure","abstemious",
-            "accolade","acrimony","adulterate","adumbrate","affable",
-            "amalgam","ameliorate","amiable","amorphous","anachronism",
-            "apathy","approbation","arcane","ardor","arid","ascetic",
-            "assuage","atrophy","austere","axiomatic",
-            "bellicose","bombastic","burgeon",
-            "cacophony","capricious","censure","chicanery","circuitous",
-            "cogent","commensurate","convoluted","credulity","culpable",
-            "decorum","deference","denigrate","desultory","didactic",
+            "rhetoric","rigorous","sabotage","scrutiny","sovereignty","stringent",
+            "subordinate","subsidy","surveillance","susceptible","sustainable",
+            "systematic","transparency","tribunal","unanimous","undermining",
+            "unforeseen","unilateral","unprecedented","vandalism","vigilance",
+            "vulnerable","vindictive","warranted","widespread","zealous",
+            "aberrant","abeyance","abhorrent","abstemious","accolade","acrimony",
+            "adulterate","affable","amalgam","ameliorate","amiable","amorphous",
+            "anachronism","apathy","approbation","arcane","ardor","arid",
+            "ascetic","assuage","atrophy","austere","axiomatic","bellicose",
+            "bombastic","burgeon","cacophony","capricious","censure","chicanery",
+            "circuitous","cogent","commensurate","convoluted","credulity",
+            "culpable","decorum","deference","denigrate","desultory","didactic",
             "diffident","dilatory","discern","disparate","dogmatic","dubious",
             "ebullience","effrontery","elusive","enervate","enigmatic",
-            "equanimity","erroneous","esoteric","ethereal","evasion",
-            "exacerbate","exorbitant","expedient","exuberance",
-            "fallacious","fastidious","flagrant","fortuitous","frugality",
-            "garrulous","guile","hackneyed","hamper","harangue","hegemony","hubris",
-            "idiosyncrasy","ignominious","impertinent","implacable","impudence",
-            "incisive","incongruous","indelible","indolent","ineffable",
-            "ingenious","inimical","insidious","insipid","intrepid",
-            "lament","languid","laud","loquacious","lucid",
+            "equanimity","erroneous","esoteric","ethereal","exacerbate",
+            "exorbitant","expedient","exuberance","fallacious","fastidious",
+            "flagrant","fortuitous","frugality","garrulous","guile","hackneyed",
+            "harangue","hegemony","hubris","idiosyncrasy","ignominious",
+            "impertinent","implacable","impudence","incisive","incongruous",
+            "indelible","indolent","ineffable","ingenious","inimical","insidious",
+            "insipid","intrepid","lament","languid","laud","loquacious","lucid",
             "magnanimous","malevolent","meticulous","mitigate","mundane",
-            "nefarious","nostalgia","nonchalant",
-            "obdurate","oblivion","obstinate","ostentatious",
-            "panacea","paradox","parochial","partisan","pedantic","perfidious",
-            "perfunctory","perspicacious","pertinent","philanthropy","placid",
-            "poignant","pragmatic","precipitate","presumptuous","prodigal",
-            "profligate","profound","prudent",
-            "querulous","quixotic",
-            "reticent","sagacious","sanctimonious","sardonic","skeptical",
-            "solicit","somnolent","spurious","stagnant","steadfast",
-            "stoic","submissive","superficial","taciturn","tenacious",
-            "tirade","trite","turbulent","ubiquitous","unequivocal",
-            "verbose","veracious","volatile","waver","whimsical",
-            // — Banking / Finance / Economy —
+            "nefarious","nostalgia","nonchalant","obdurate","obstinate",
+            "ostentatious","panacea","paradox","parochial","partisan","pedantic",
+            "perfidious","perfunctory","perspicacious","pertinent","philanthropy",
+            "placid","poignant","pragmatic","presumptuous","prodigal","profligate",
+            "profound","prudent","querulous","quixotic","reticent","sagacious",
+            "sanctimonious","sardonic","skeptical","somnolent","spurious",
+            "stagnant","steadfast","stoic","superficial","taciturn","tenacious",
+            "tirade","trite","turbulent","ubiquitous","verbose","veracious",
+            "volatile","waver","whimsical",
             "amortization","arbitrage","collateral","commodity","consortium",
             "covenant","depreciation","derivative","divestiture","dividend",
             "embezzle","equilibrium","foreclosure","hypothecation","inflation",
@@ -132,36 +110,14 @@
             "moratorium","mortgage","nationalization","privatization","recession",
             "refinancing","remittance","securitization","speculation","stagflation",
             "subvention","solvency","underwriting","valuation","withholding",
-            // — Government / Legal / Constitutional —
             "abdication","adjudication","affirmative","allegation","annexation",
-            "arbitration","benevolence","bureaucrat","centralization","charter",
-            "codification","compulsion","confederation","contempt","dissolution",
-            "emolument","extradition","federation","felony","franchise",
-            "gubernatorial","habeas","immunity","impeachment","incarceration",
-            "indemnity","injunction","intestate","misappropriation","ordinance",
+            "arbitration","centralization","charter","codification","compulsion",
+            "confederation","contempt","dissolution","emolument","extradition",
+            "federation","felony","franchise","immunity","impeachment",
+            "incarceration","indemnity","injunction","intestate","misappropriation",
             "perjury","promulgate","ratify","reprimand","sanction","sedition",
             "statute","subpoena","suffrage","testimony","treason","verdict",
-            // — Academic / Editorial —
-            "absolutism","accreditation","advocacy","affluence","alienation",
-            "ambivalence","archeology","assimilation","authoritarian","capitulation",
-            "catalyst","chronological","circumvent","civilization","coexistence",
-            "colonialism","compromise","connotation","contemporary","correlation",
-            "cosmopolitan","credibility","critique","culmination","deforestation",
-            "deliberation","demographic","diaspora","discourse","dissension",
-            "diversification","dogmatism","egalitarian","elitism","empirical",
-            "endorsement","enumeration","epidemic","erosion","evaluation",
-            "exclusion","exploitation","extremism","globalization","ideology",
-            "illiteracy","imbalance","implementation","incitement","indoctrination",
-            "inequality","insurgency","intervention","liberalization",
-            "marginalization","migration","militarism","mobilization","modernization",
-            "nationalism","neutrality","objectivity","oppression","polarization",
-            "pragmatism","progressivism","protectionism","radicalism","rationalism",
-            "reconciliation","reformation","regionalism","rehabilitation",
-            "secularism","segregation","solidarity","suppression","symbolism",
-            "terrorism","tolerance","totalitarianism","traditionalism","tribalism",
-            "universalism","urbanization","utilitarianism",
         ],
-
         sentences: [
             "the committee submitted its recommendation to the parliament yesterday",
             "the judiciary is the guardian of the constitution and fundamental rights",
@@ -190,8 +146,7 @@
             "the parliamentary committee recommended stringent measures against financial fraud",
             "surveillance technologies must be regulated to protect civil liberties",
             "the ordinance was promulgated to address the immediate legislative vacuum",
-            "documentation of historical records is vital for archival and research purposes",
-            "meticulous planning and coordinated implementation led to the project completion on schedule",
+            "meticulous planning and coordinated implementation led to successful project completion",
             "sedition laws have historically been used to suppress legitimate political dissent",
             "vocabulary and comprehension skills are assessed in the english language section",
             "general awareness encompasses current affairs economics history and general knowledge",
@@ -201,11 +156,9 @@
             "the candidates must demonstrate proficiency in quantitative aptitude and logical reasoning",
             "diplomatic channels were activated to resolve the bilateral boundary disagreement",
         ],
-
         numbers: [
             "144","256","625","1024","2048","3375","4096","6561","8000","9801",
             "10000","12321","14400","15625","17689","19600","20736","22500",
-            "1 2 3","4 5 6","7 8 9","12 15 18","16 20 24","21 28 35",
             "3 4 5","5 12 13","7 24 25","8 15 17","9 40 41","11 60 61",
             "20 21 29","12 35 37","13 84 85","28 45 53","33 56 65",
             "1/2","1/3","1/4","1/5","1/6","1/7","1/8","1/9","1/10",
@@ -220,8 +173,7 @@
     // ════════════════════════════════════════════════════════
     // STATE
     // ════════════════════════════════════════════════════════
-    // States: 'idle' | 'running' | 'paused' | 'finished'
-    let state     = 'idle';
+    let state     = 'idle'; // 'idle' | 'running' | 'paused' | 'finished'
     let ttMode    = 'words';
     let ttTime    = 30;
     let ttWords   = [];
@@ -244,7 +196,6 @@
         }
         return a;
     }
-
     function buildWordList() {
         const bank = WORD_DATA[ttMode] || WORD_DATA.words;
         if (ttMode === 'sentences') return shuffle(bank).slice(0, 12);
@@ -252,35 +203,37 @@
         while (out.length < 100) out = out.concat(shuffle(bank));
         return out.slice(0, 100);
     }
+    function getWordEl(wi) {
+        return document.querySelector(`#tt-words-display .tt-word[data-wi="${wi}"]`);
+    }
+    function getLetter(wi, li) {
+        const w = getWordEl(wi);
+        return w ? w.querySelectorAll('.tt-letter')[li] || null : null;
+    }
 
     // ════════════════════════════════════════════════════════
-    // INJECT UI into drill-interactive-area
-    // We inject ONCE when tab is selected; clear when leaving.
+    // INJECT UI — into drill-interactive-area
     // ════════════════════════════════════════════════════════
-    const INJECT_ID = 'tt-root';
-
     function injectUI() {
         const area = document.getElementById('drill-interactive-area');
         if (!area) return;
-
-        // Clear previous
-        const old = document.getElementById(INJECT_ID);
+        const old = document.getElementById('tt-root');
         if (old) old.remove();
 
         area.innerHTML = `
-        <div id="${INJECT_ID}">
+        <div id="tt-root">
 
-          <!-- Mode + Time row -->
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <!-- ── IDLE controls: mode + time pills (visible only in IDLE) -->
+          <div id="tt-controls-row" class="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div class="flex items-center gap-0.5 bg-white/5 border border-white/5 rounded-xl p-0.5">
               <button class="tt-mode-btn ${ttMode==='words'?'tt-mode-active':''}" data-tt-mode="words">
-                <i class="fa-solid fa-font mr-1 text-[10px]"></i>Words
+                <i class="fa-solid fa-font mr-1 opacity-70"></i>Words
               </button>
               <button class="tt-mode-btn ${ttMode==='sentences'?'tt-mode-active':''}" data-tt-mode="sentences">
-                <i class="fa-solid fa-align-left mr-1 text-[10px]"></i>Sentences
+                <i class="fa-solid fa-align-left mr-1 opacity-70"></i>Sentences
               </button>
               <button class="tt-mode-btn ${ttMode==='numbers'?'tt-mode-active':''}" data-tt-mode="numbers">
-                <i class="fa-solid fa-hashtag mr-1 text-[10px]"></i>Numbers
+                <i class="fa-solid fa-hashtag mr-1 opacity-70"></i>Numbers
               </button>
             </div>
             <div class="flex items-center gap-0.5 bg-white/5 border border-white/5 rounded-xl p-0.5">
@@ -291,26 +244,28 @@
             </div>
           </div>
 
-          <!-- Live stats strip -->
-          <div class="flex items-center justify-center gap-8 font-mono text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
-            <span><span id="tt-wpm" class="text-accentCyan text-sm font-extrabold">—</span> WPM</span>
-            <span class="text-lg font-extrabold text-accentAmber" id="tt-timer-val">${ttTime}</span>
-            <span><span id="tt-acc" class="text-accentGreen text-sm font-extrabold">—</span> ACC</span>
+          <!-- ── RUNNING stats: WPM · timer · ACC (hidden in IDLE) -->
+          <div id="tt-stats-row" class="hidden flex items-center justify-center gap-8 font-mono text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3">
+            <span><span id="tt-wpm" class="text-accentCyan text-base font-extrabold">0</span> WPM</span>
+            <span class="text-xl font-extrabold text-accentAmber" id="tt-timer-val">${ttTime}</span>
+            <span><span id="tt-acc" class="text-accentGreen text-base font-extrabold">100%</span> ACC</span>
           </div>
 
-          <!-- Fixed-height viewport — shows ~3 lines, programmatic scroll -->
+          <!-- ── Fixed viewport — 3 lines visible, scrolls line-by-line -->
           <div class="tt-viewport" id="tt-viewport">
-            <!-- Word display (scrolled via marginTop) -->
-            <div id="tt-words-display" class="tt-words-wrap font-mono text-lg sm:text-xl leading-loose tracking-wide"></div>
+            <div id="tt-words-display" class="tt-words-wrap"></div>
 
             <!-- IDLE overlay -->
             <div id="tt-idle-overlay" class="tt-overlay">
-              <i class="fa-solid fa-keyboard text-2xl text-accentAmber opacity-60"></i>
-              <p class="text-xs text-gray-300 font-bold uppercase tracking-widest">Start typing to begin</p>
-              <p class="text-[10px] text-gray-500">or click <strong>Start</strong> · <kbd class="bg-white/10 px-1 py-0.5 rounded border border-white/10 text-white font-mono text-[9px]">Enter</kbd> to restart</p>
+              <i class="fa-solid fa-keyboard text-2xl text-accentAmber opacity-50 mb-1"></i>
+              <p class="text-xs text-gray-300 font-bold uppercase tracking-widest">Start typing or press Enter</p>
+              <p class="text-[10px] text-gray-500 mt-0.5">
+                <kbd class="tt-kbd">Alt+Space</kbd> pause &nbsp;·&nbsp;
+                <kbd class="tt-kbd">Alt+X</kbd> stop
+              </p>
             </div>
 
-            <!-- RESULTS overlay (hidden until finished) -->
+            <!-- RESULT overlay -->
             <div id="tt-result-overlay" class="tt-overlay hidden">
               <div class="flex gap-8 text-center">
                 <div>
@@ -326,21 +281,21 @@
                   <p id="tt-res-correct" class="text-4xl font-heading font-extrabold text-white">—</p>
                 </div>
               </div>
-              <p class="text-[10px] text-gray-500 mt-1">
-                <kbd class="bg-white/10 px-1 py-0.5 rounded border border-white/10 text-white font-mono text-[9px]">Enter</kbd> restart ·
-                <kbd class="bg-white/10 px-1 py-0.5 rounded border border-white/10 text-white font-mono text-[9px]">X</kbd> close
+              <p class="text-[10px] text-gray-500 mt-2">
+                <kbd class="tt-kbd">Enter</kbd> restart &nbsp;·&nbsp;
+                <kbd class="tt-kbd">Alt+X</kbd> close
               </p>
             </div>
           </div>
 
         </div>`;
 
-        // Wire mode/time buttons
+        // Wire mode/time pills
         document.querySelectorAll('.tt-mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (ttMode === btn.dataset.ttMode) return;
                 ttMode = btn.dataset.ttMode;
-                initTest(); // rebuild words + reset
+                initTest();
             });
         });
         document.querySelectorAll('.tt-time-btn').forEach(btn => {
@@ -349,15 +304,9 @@
                 initTest();
             });
         });
-
-        // Click anywhere in viewport while idle → focus (let keydown capture)
-        const vp = document.getElementById('tt-viewport');
-        if (vp) vp.addEventListener('click', () => {
-            if (state === 'idle' || state === 'running') document.body.focus();
-        });
     }
 
-    // Restore original drill-interactive-area HTML exactly as it was
+    // Restore original drill area (so speed.js works after tab switch)
     function restoreArea() {
         const area = document.getElementById('drill-interactive-area');
         if (!area) return;
@@ -396,45 +345,31 @@
     }
 
     // ════════════════════════════════════════════════════════
-    // CURSOR + SCROLL
-    // Keep current word always in top-half of the 200px viewport.
-    // We shift tt-words-display up via negative marginTop.
+    // CURSOR & LINE SCROLL
+    // Line-by-line: shift words-display up by -offsetTop of current word.
+    // CSS transition makes it smooth.
     // ════════════════════════════════════════════════════════
     function updateCursor() {
-        // Remove old marks
-        document.querySelectorAll('#tt-words-display .tt-letter.current').forEach(e => e.classList.remove('current'));
+        document.querySelectorAll('#tt-words-display .tt-letter.current')
+            .forEach(e => e.classList.remove('current'));
 
         const wEl = getWordEl(ttWordIdx);
         if (!wEl) return;
 
-        // Mark current letter
         const letters = wEl.querySelectorAll('.tt-letter');
         const target  = letters[ttLetIdx] || letters[letters.length - 1];
         if (target) target.classList.add('current');
 
-        // Scroll: shift words-display up so current word sits at top of viewport
-        const display  = document.getElementById('tt-words-display');
-        const viewport = document.getElementById('tt-viewport');
-        if (!display || !viewport) return;
-
-        const vpTop    = viewport.getBoundingClientRect().top;
-        const wordTop  = wEl.getBoundingClientRect().top;
-        const lineH    = wEl.getBoundingClientRect().height;
-        const currentMargin = parseInt(display.style.marginTop || '0', 10);
-        const offset   = wordTop - vpTop;
-
-        // If word is below 60px from viewport top, scroll up by one line
-        if (offset > lineH * 1.1) {
-            display.style.marginTop = (currentMargin - offset + lineH * 0.5) + 'px';
-        }
+        scrollToLine(wEl);
     }
 
-    function getWordEl(wi) {
-        return document.querySelector(`#tt-words-display .tt-word[data-wi="${wi}"]`);
-    }
-    function getLetter(wi, li) {
-        const w = getWordEl(wi);
-        return w ? w.querySelectorAll('.tt-letter')[li] || null : null;
+    function scrollToLine(wEl) {
+        const display = document.getElementById('tt-words-display');
+        if (!display || !wEl) return;
+        // wEl.offsetTop is relative to display (its offsetParent via tt-viewport)
+        // Shift display up so current word sits at top of the 220px viewport
+        const lineTop = wEl.offsetTop;
+        display.style.marginTop = (-lineTop) + 'px';
     }
 
     // ════════════════════════════════════════════════════════
@@ -454,46 +389,41 @@
         const accEl = document.getElementById('tt-acc');
         if (wpmEl) wpmEl.textContent = wpm;
         if (accEl) accEl.textContent = acc + '%';
-        // Reuse drill timer bar as countdown
+        // Repurpose drill timer fill as countdown
         const fill = document.getElementById('drill-timer-fill');
-        if (fill) fill.style.width = ((ttRemain / ttTime) * 100) + '%';
-        // Update score/feedback slots in drill card footer
-        syncScoreBar(wpm, acc);
+        if (fill) {
+            const pct = (ttRemain / ttTime) * 100;
+            fill.style.width = pct + '%';
+            fill.style.backgroundColor = pct > 50 ? '' : pct > 20 ? '#f59e0b' : '#f43f5e';
+        }
     }
 
-    function syncScoreBar(wpm, acc) {
-        const s = document.getElementById('drill-score');
-        const f = document.getElementById('drill-feedback');
-        if (s) s.textContent = wpm != null ? `WPM: ${wpm}` : 'WPM: —';
-        if (f) f.textContent = acc != null ? `ACC: ${acc}%` : 'ACC: —';
+    // ── Swap controls ↔ stats rows ──────────────────────────
+    function showControls() {
+        document.getElementById('tt-controls-row')?.classList.remove('hidden');
+        document.getElementById('tt-stats-row')?.classList.add('hidden');
     }
-
-    // ════════════════════════════════════════════════════════
-    // TIMER BAR COLOR
-    // ════════════════════════════════════════════════════════
-    function updateTimerBarColor() {
-        const fill = document.getElementById('drill-timer-fill');
-        if (!fill) return;
-        const pct = ttRemain / ttTime;
-        if (pct > 0.5)       fill.style.backgroundColor = '';          // cyan (default)
-        else if (pct > 0.2)  fill.style.backgroundColor = '#f59e0b';   // amber
-        else                 fill.style.backgroundColor = '#f43f5e';   // red
+    function showStats() {
+        document.getElementById('tt-controls-row')?.classList.add('hidden');
+        document.getElementById('tt-stats-row')?.classList.remove('hidden');
+        // Sync timer val
+        const tv = document.getElementById('tt-timer-val');
+        if (tv) tv.textContent = ttRemain;
     }
 
     // ════════════════════════════════════════════════════════
-    // BUTTON LABEL HELPER
+    // BUTTON LABEL
     // ════════════════════════════════════════════════════════
     function setPauseBtn(icon, label) {
         const btn = document.getElementById('btn-drill-pause');
-        if (!btn) return;
-        btn.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${label}</span>`;
+        if (btn) btn.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${label}</span>`;
     }
 
     // ════════════════════════════════════════════════════════
     // STATE TRANSITIONS
     // ════════════════════════════════════════════════════════
 
-    // IDLE: reset everything, show idle overlay, words rendered but not started
+    // IDLE — fresh start
     function initTest() {
         clearInterval(ttTimer);
         state     = 'idle';
@@ -503,75 +433,72 @@
         window.inputCaptureLocked = false;
 
         ttWords = buildWordList();
-
-        // Re-inject UI (cleanest way to reset all overlays & pills)
-        injectUI();
+        injectUI();       // rebuild controls/stats/viewport HTML
         renderWords();
         updateCursor();
 
-        // Reset drill timer bar
+        // Reset timer bar
         const fill = document.getElementById('drill-timer-fill');
         if (fill) { fill.style.width = '100%'; fill.style.backgroundColor = ''; }
-        const tv = document.getElementById('tt-timer-val');
-        if (tv) tv.textContent = ttTime;
+
+        // Show controls row (IDLE state)
+        showControls();
+
+        // Show idle overlay, hide result overlay
+        document.getElementById('tt-idle-overlay')?.classList.remove('hidden');
+        const ro = document.getElementById('tt-result-overlay');
+        if (ro) { ro.classList.add('hidden'); ro.style.display = ''; }
+
+        // Restore drill-paused-overlay if it was open
+        document.getElementById('drill-paused-overlay')?.classList.add('hidden');
+        document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
 
         setPauseBtn('fa-play', 'Start');
-        // Show stop button (to allow closing at any time)
-        const stopBtn = document.getElementById('btn-drill-stop');
-        if (stopBtn) stopBtn.classList.remove('hidden');
-
-        syncScoreBar(null, null);
+        document.getElementById('btn-drill-stop')?.classList.remove('hidden');
     }
 
-    // RUNNING: start or resume timer, hide idle overlay, lock keys
+    // RUNNING — start or resume
     function startRunning() {
         if (state === 'finished') return;
         state = 'running';
         window.inputCaptureLocked = true;
 
-        // Hide idle overlay
-        const io = document.getElementById('tt-idle-overlay');
-        if (io) io.classList.add('hidden');
-        // Hide result overlay in case of restart
+        // Hide idle/result overlays
+        document.getElementById('tt-idle-overlay')?.classList.add('hidden');
         const ro = document.getElementById('tt-result-overlay');
         if (ro) { ro.classList.add('hidden'); ro.style.display = ''; }
         // Hide paused overlay
-        const po = document.getElementById('drill-paused-overlay');
-        if (po) po.classList.add('hidden');
-        // Remove blur from area
-        const area = document.getElementById('drill-interactive-area');
-        if (area) area.classList.remove('blur-md');
+        document.getElementById('drill-paused-overlay')?.classList.add('hidden');
+        document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
+
+        // Swap to stats row
+        showStats();
 
         setPauseBtn('fa-pause', 'Pause');
 
-        // Start countdown
         clearInterval(ttTimer);
         ttTimer = setInterval(() => {
             ttRemain = Math.max(0, ttRemain - 1);
             const tv = document.getElementById('tt-timer-val');
             if (tv) tv.textContent = ttRemain;
             updateLiveStats();
-            updateTimerBarColor();
             if (ttRemain <= 0) finishTest();
         }, 1000);
     }
 
-    // PAUSED: freeze timer, show paused overlay, unlock keys
+    // PAUSED — freeze timer, show blur overlay
     function pauseTest() {
         if (state !== 'running') return;
         state = 'paused';
         window.inputCaptureLocked = false;
         clearInterval(ttTimer);
 
-        const po = document.getElementById('drill-paused-overlay');
-        if (po) po.classList.remove('hidden');
-        const area = document.getElementById('drill-interactive-area');
-        if (area) area.classList.add('blur-md');
-
+        document.getElementById('drill-paused-overlay')?.classList.remove('hidden');
+        document.getElementById('drill-interactive-area')?.classList.add('blur-md');
         setPauseBtn('fa-play', 'Resume');
     }
 
-    // FINISHED: show results overlay, unlock keys, reset buttons
+    // FINISHED — show results
     function finishTest() {
         if (state === 'finished') return;
         state = 'finished';
@@ -579,28 +506,28 @@
         clearInterval(ttTimer);
 
         const { wpm, acc } = computeStats();
-        const wordsTyped = Math.floor(ttCorrect / 5);
+        const words = Math.floor(ttCorrect / 5);
 
         const ro = document.getElementById('tt-result-overlay');
         if (ro) {
             document.getElementById('tt-res-wpm').textContent     = wpm;
             document.getElementById('tt-res-acc').textContent     = acc + '%';
-            document.getElementById('tt-res-correct').textContent = wordsTyped;
+            document.getElementById('tt-res-correct').textContent = words;
             ro.classList.remove('hidden');
             ro.style.display = 'flex';
         }
-        // Hide paused overlay if somehow showing
-        const po = document.getElementById('drill-paused-overlay');
-        if (po) po.classList.add('hidden');
+        // Hide paused overlay
+        document.getElementById('drill-paused-overlay')?.classList.add('hidden');
+        document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
 
+        // Stats stay visible (already showing)
         setPauseBtn('fa-rotate-right', 'Restart');
-        syncScoreBar(wpm, acc);
 
         const fill = document.getElementById('drill-timer-fill');
         if (fill) fill.style.backgroundColor = '#f43f5e';
     }
 
-    // TEARDOWN: called when leaving the typing test tab
+    // TEARDOWN — leaving typing test tab entirely
     function teardown() {
         clearInterval(ttTimer);
         state = 'idle';
@@ -610,79 +537,25 @@
         // Restore level select
         const levelSel = document.getElementById('select-maths-level');
         if (levelSel) levelSel.style.display = '';
-        // Remove typing label badge
-        const badge = document.getElementById('tt-label-badge');
-        if (badge) badge.remove();
-        // Hide stop button (speed.js manages this)
-        const stopBtn = document.getElementById('btn-drill-stop');
-        if (stopBtn) stopBtn.classList.add('hidden');
-        // Restore pause button
+
+        // Remove active class from typing test tab
+        document.querySelector('.speed-tab-btn[data-mode="typingTest"]')
+            ?.classList.remove('active-nav-tab');
+
+        // Hide stop button, reset pause btn
+        document.getElementById('btn-drill-stop')?.classList.add('hidden');
         setPauseBtn('fa-play', 'Start');
-        // Remove blur
-        const area = document.getElementById('drill-interactive-area');
-        if (area) area.classList.remove('blur-md');
-        // Hide pause overlay
-        const po = document.getElementById('drill-paused-overlay');
-        if (po) po.classList.add('hidden');
+
+        // Clean up drill-paused overlay and blur
+        document.getElementById('drill-paused-overlay')?.classList.add('hidden');
+        document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
+
         // Reset timer bar
         const fill = document.getElementById('drill-timer-fill');
         if (fill) { fill.style.width = '100%'; fill.style.backgroundColor = ''; }
-        // Restore original drill area HTML (speed.js expects drill-question-label etc.)
-        restoreArea();
+
+        restoreArea(); // speed.js needs drill-question-label etc.
     }
-
-    // ════════════════════════════════════════════════════════
-    // KEYDOWN HANDLER — capture phase (runs before navigation.js)
-    // ════════════════════════════════════════════════════════
-    document.addEventListener('keydown', function (e) {
-        if (!window.typingTestActive) return;
-
-        // Always allow Ctrl+K (command palette)
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') return;
-        // Allow Escape to pause/close (handled below)
-
-        const key = e.key;
-
-        if (key === 'Escape') {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            if (state === 'running') pauseTest();
-            else if (state === 'paused') startRunning();
-            return;
-        }
-
-        if (key === 'Enter') {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            initTest();
-            return;
-        }
-
-        // Only process typing keys when running
-        if (state !== 'running') return;
-
-        // Block space from triggering drill pause in navigation.js / speed.js
-        if (key === ' ' || key === 'Spacebar') {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            advanceWord();
-            return;
-        }
-
-        if (key === 'Backspace') {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            handleBackspace();
-            return;
-        }
-
-        if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-            e.stopImmediatePropagation();
-            // First real key auto-starts
-            if (state === 'idle') { startRunning(); }
-            handleChar(key);
-        }
-    }, true); // CAPTURE phase — runs before speed.js / navigation.js bubble handlers
 
     // ════════════════════════════════════════════════════════
     // TYPING LOGIC
@@ -714,18 +587,14 @@
     }
 
     function advanceWord() {
-        if (ttLetIdx === 0) return; // must type at least one char before advancing
+        if (ttLetIdx === 0) return;
         const wEl = getWordEl(ttWordIdx);
         if (wEl) {
-            // Mark any untyped letters as skipped-incorrect
             const letters = wEl.querySelectorAll('.tt-letter');
             let allCorrect = true;
             letters.forEach((l, i) => {
-                if (i >= ttLetIdx) {
-                    if (!l.classList.contains('correct')) {
-                        l.classList.add('incorrect');
-                        allCorrect = false;
-                    }
+                if (i >= ttLetIdx && !l.classList.contains('correct')) {
+                    l.classList.add('incorrect'); allCorrect = false;
                 } else if (!l.classList.contains('correct')) {
                     allCorrect = false;
                 }
@@ -740,36 +609,102 @@
     }
 
     // ════════════════════════════════════════════════════════
-    // HOOK INTO DRILL BUTTONS (set on the same onclick as speed.js,
-    // but only intercepted when typingTestActive)
+    // KEYDOWN — capture phase (before navigation.js / speed.js)
+    // ════════════════════════════════════════════════════════
+    document.addEventListener('keydown', function (e) {
+        if (!window.typingTestActive) return;
+
+        // Always pass Ctrl+K to command palette
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') return;
+
+        const key     = e.key;
+        const isAlt   = e.altKey;
+        const isCtrl  = e.ctrlKey || e.metaKey;
+
+        // ── Alt+Space → pause / resume ──────────────────────
+        if (isAlt && (key === ' ' || key === 'Spacebar')) {
+            e.preventDefault(); e.stopImmediatePropagation();
+            if (state === 'running')           pauseTest();
+            else if (state === 'paused')       startRunning();
+            else if (state === 'idle')         { ttWords = buildWordList(); renderWords(); startRunning(); }
+            return;
+        }
+
+        // ── Alt+X → stop / close ────────────────────────────
+        if (isAlt && (key === 'x' || key === 'X')) {
+            e.preventDefault(); e.stopImmediatePropagation();
+            if (state === 'running' || state === 'paused') finishTest();
+            else if (state === 'finished')     initTest();
+            return;
+        }
+
+        // ── Escape → pause / resume (convenience) ──────────
+        if (key === 'Escape') {
+            e.preventDefault(); e.stopImmediatePropagation();
+            if (state === 'running')     pauseTest();
+            else if (state === 'paused') startRunning();
+            return;
+        }
+
+        // ── Enter → start / resume / restart ────────────────
+        if (key === 'Enter') {
+            e.preventDefault(); e.stopImmediatePropagation();
+            if (state === 'idle')        { ttWords = buildWordList(); renderWords(); startRunning(); }
+            else if (state === 'paused') startRunning();
+            else if (state === 'finished') initTest();
+            // state === 'running' → ignore Enter (prevent accidental restart)
+            return;
+        }
+
+        // ── Only handle typing keys while RUNNING ───────────
+        if (state !== 'running') return;
+
+        if (key === ' ' || key === 'Spacebar') {
+            e.preventDefault(); e.stopImmediatePropagation();
+            advanceWord();
+            return;
+        }
+        if (key === 'Backspace') {
+            e.preventDefault(); e.stopImmediatePropagation();
+            handleBackspace();
+            return;
+        }
+        if (key === 'Tab') {
+            e.preventDefault(); e.stopImmediatePropagation();
+            advanceWord();
+            return;
+        }
+        if (key.length === 1 && !isCtrl && !isAlt) {
+            e.stopImmediatePropagation();
+            handleChar(key);
+        }
+    }, true); // capture phase
+
+    // ════════════════════════════════════════════════════════
+    // HOOK DRILL BUTTONS (capture phase — before speed.js onclick)
     // ════════════════════════════════════════════════════════
     function hookDrillButtons() {
-        const pauseBtn = document.getElementById('btn-drill-pause');
-        const stopBtn  = document.getElementById('btn-drill-stop');
+        const pauseBtn  = document.getElementById('btn-drill-pause');
+        const stopBtn   = document.getElementById('btn-drill-stop');
         const resumeBtn = document.getElementById('btn-drill-resume');
 
         if (pauseBtn) {
-            const origOnclick = pauseBtn.onclick;
             pauseBtn.addEventListener('click', (e) => {
-                if (!window.typingTestActive) return; // let speed.js handle
+                if (!window.typingTestActive) return;
                 e.stopImmediatePropagation();
-                if (state === 'idle')    { ttWords = buildWordList(); renderWords(); startRunning(); }
+                if (state === 'idle')     { ttWords = buildWordList(); renderWords(); startRunning(); }
                 else if (state === 'running')  pauseTest();
                 else if (state === 'paused')   startRunning();
                 else if (state === 'finished') initTest();
-            }, true); // capture — runs before speed.js's onclick
+            }, true);
         }
 
         if (stopBtn) {
             stopBtn.addEventListener('click', (e) => {
                 if (!window.typingTestActive) return;
                 e.stopImmediatePropagation();
-                if (state === 'running' || state === 'paused') {
-                    finishTest();
-                } else if (state === 'finished') {
-                    // Already showing results — just reset
-                    initTest();
-                }
+                if (state === 'running' || state === 'paused') finishTest();
+                else if (state === 'finished') initTest();
             }, true);
         }
 
@@ -783,51 +718,44 @@
     }
 
     // ════════════════════════════════════════════════════════
-    // TAB SWITCH — intercept BEFORE speed.js's onclick
+    // TAB SWITCH — capture phase, before speed.js bubble onclick
     // ════════════════════════════════════════════════════════
     function hookSpeedTabs() {
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.speed-tab-btn');
             if (!btn) return;
-
             const mode = btn.dataset.mode;
 
             if (mode === 'typingTest') {
-                // ENTERING typing test mode
-                // Stop any running speed drill first
+                // Stop any running drill
                 if (window.drillIsPlaying) {
                     window.drillIsPlaying = false;
                     if (window.resetDrillSession) window.resetDrillSession();
                 }
 
+                // ── Tab highlight (same as other drill tabs) ──────
+                document.querySelectorAll('.speed-tab-btn')
+                    .forEach(t => t.classList.remove('active-nav-tab'));
+                btn.classList.add('active-nav-tab');
+
                 window.typingTestActive = true;
 
-                // Swap difficulty selector with typing badge
+                // Hide level select — no badge replacement needed
                 const levelSel = document.getElementById('select-maths-level');
                 if (levelSel) levelSel.style.display = 'none';
-                const levelParent = levelSel?.parentElement;
-                if (levelParent && !document.getElementById('tt-label-badge')) {
-                    const badge = document.createElement('span');
-                    badge.id = 'tt-label-badge';
-                    badge.className = 'text-[11px] font-extrabold text-accentAmber uppercase tracking-widest flex items-center gap-1.5 select-none';
-                    badge.innerHTML = '<i class="fa-solid fa-keyboard"></i> Typing Test';
-                    levelParent.appendChild(badge);
-                } else if (document.getElementById('tt-label-badge')) {
-                    document.getElementById('tt-label-badge').style.display = '';
-                }
 
-                // Initialize test (injects UI, renders words)
+                // Init typing test
                 initTest();
 
-                // Stop propagation so speed.js doesn't also handle this click
+                // Prevent speed.js from also handling this click
                 e.stopImmediatePropagation();
 
             } else if (window.typingTestActive) {
-                // LEAVING typing test — clean up first, then let speed.js handle
+                // LEAVING typing test — clean up, then let speed.js handle
                 teardown();
-                // Don't stop propagation: let speed.js onclick fire normally
+                // Don't stop propagation — speed.js needs to process this click
             }
-        }, true); // capture — runs before speed.js bubble onclick
+        }, true);
     }
 
     // ════════════════════════════════════════════════════════
@@ -844,7 +772,6 @@
         init();
     }
 
-    // Public API
     window.typingTestTeardown = teardown;
     window.typingTestInit     = initTest;
 

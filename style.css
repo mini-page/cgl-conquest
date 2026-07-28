@@ -1345,30 +1345,34 @@ body.light-theme #viewer-document-body table td {
    TYPING TEST — within unified-drill-card
    ============================================================ */
 
-/* Fixed-height viewport — only ~3 lines visible, scroll programmatically */
+/* Fixed viewport — 3 comfortable lines visible, scroll programmatically */
 .tt-viewport {
-    height: 200px;
+    height: 240px;
     overflow: hidden;
-    position: relative;
+    position: relative;  /* offsetParent for tt-word.offsetTop */
     cursor: text;
     border-radius: 0.75rem;
+    background: rgba(255,255,255,0.015);
+    border: 1px solid rgba(255,255,255,0.04);
 }
 
 .tt-words-wrap {
-    line-height: 2em;
+    line-height: 2.2em;
     user-select: none;
     word-break: break-word;
-    padding: 4px 2px;
-    transition: margin-top 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 12px 16px;
+    font-size: 1.45rem;       /* ~23px — clearly readable, larger than before */
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    transition: margin-top 0.14s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Word & letter states */
-.tt-word { display: inline-block; margin-right: 0.55em; position: relative; }
+.tt-word { display: inline-block; margin-right: 0.5em; position: relative; }
 
-.tt-letter { color: #334155; transition: color 0.04s; }
-.tt-letter.correct  { color: #2dd4bf; }
-.tt-letter.incorrect { color: #f43f5e; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(244,63,94,0.5); }
-.tt-letter.current  { color: #f8fafc; }
+.tt-letter { color: #2d3748; transition: color 0.04s; }
+.tt-letter.correct   { color: #2dd4bf; }
+.tt-letter.incorrect { color: #f43f5e; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(244,63,94,0.45); }
+.tt-letter.current   { color: #f8fafc; }
 
 /* Blinking amber caret before current letter */
 .tt-letter.current::before {
@@ -1384,7 +1388,7 @@ body.light-theme #viewer-document-body table td {
 }
 @keyframes tt-blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-.tt-word.wrong-word > .tt-letter { color: rgba(248,113,113,0.6); }
+.tt-word.wrong-word > .tt-letter { color: rgba(248,113,113,0.55); }
 
 /* Mode / time pill buttons */
 .tt-mode-btn, .tt-time-btn {
@@ -1397,7 +1401,7 @@ body.light-theme #viewer-document-body table td {
     color: #64748b;
     cursor: pointer;
     transition: background 0.12s, color 0.12s;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
 }
 .tt-mode-btn:hover, .tt-time-btn:hover { color: #e2e8f0; background: rgba(255,255,255,0.06); }
@@ -1416,9 +1420,21 @@ body.light-theme #viewer-document-body table td {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: rgba(18,18,33,0.82);
+    background: rgba(14,14,26,0.88);
     backdrop-filter: blur(4px);
     border-radius: 0.75rem;
     z-index: 10;
 }
 .tt-overlay.hidden { display: none; }
+
+/* Inline kbd hint style */
+.tt-kbd {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: monospace;
+    font-size: 9px;
+    color: #94a3b8;
+    letter-spacing: 0.02em;
+}
