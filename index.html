@@ -737,6 +737,9 @@
                     <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="trigReflex">
                         <i class="fa-solid fa-wave-square mr-1.5 text-accentCyan"></i> Trig Reflexes
                     </button>
+                    <button class="speed-tab-btn px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition duration-200" data-mode="typingTest">
+                        <i class="fa-solid fa-keyboard mr-1.5 text-accentAmber"></i> Typing Test
+                    </button>
                 </div>
                 
                 <!-- Conquest Capsule (fixed right area with popover) -->
@@ -841,6 +844,69 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ── TYPING TEST PANEL ─────────────────────────────── -->
+            <div id="typing-test-panel" class="hidden max-w-4xl mx-auto space-y-5">
+                <!-- Header row -->
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <!-- Mode pills -->
+                    <div class="flex items-center gap-1.5 bg-white/5 border border-white/5 rounded-xl p-1">
+                        <button class="tt-mode-btn tt-mode-active" data-tt-mode="words"><i class="fa-solid fa-font mr-1"></i> Words</button>
+                        <button class="tt-mode-btn" data-tt-mode="sentences"><i class="fa-solid fa-align-left mr-1"></i> Sentences</button>
+                        <button class="tt-mode-btn" data-tt-mode="numbers"><i class="fa-solid fa-hashtag mr-1"></i> Numbers</button>
+                    </div>
+                    <!-- Timer pills -->
+                    <div class="flex items-center gap-1.5 bg-white/5 border border-white/5 rounded-xl p-1">
+                        <button class="tt-time-btn" data-tt-time="15">15s</button>
+                        <button class="tt-time-btn tt-time-active" data-tt-time="30">30s</button>
+                        <button class="tt-time-btn" data-tt-time="60">60s</button>
+                        <button class="tt-time-btn" data-tt-time="120">120s</button>
+                    </div>
+                    <!-- Restart -->
+                    <button id="tt-restart-btn" title="Restart [Enter]" class="text-xs font-bold text-gray-400 hover:text-white transition flex items-center gap-1.5 bg-white/5 border border-white/5 px-3 py-1.5 rounded-xl">
+                        <i class="fa-solid fa-rotate-right"></i> <span class="hidden sm:inline">Restart</span>
+                    </button>
+                </div>
+
+                <!-- Live stats strip -->
+                <div class="flex items-center justify-center gap-6 text-[11px] font-mono font-bold text-gray-500 uppercase tracking-widest">
+                    <span><span id="tt-wpm" class="text-accentCyan text-sm">—</span> WPM</span>
+                    <span><span id="tt-acc" class="text-accentGreen text-sm">—</span> ACC</span>
+                    <span id="tt-timer-display"><span id="tt-timer-val" class="text-accentAmber text-sm">30</span>s</span>
+                </div>
+
+                <!-- Typing arena -->
+                <div id="tt-arena" class="relative bg-bgCard border border-white/5 rounded-2xl p-6 sm:p-8 shadow-lg cursor-text select-none overflow-hidden">
+                    <!-- Words display -->
+                    <div id="tt-words-display" class="tt-words-wrap font-mono text-2xl sm:text-3xl leading-relaxed tracking-wide">
+                        <!-- Injected by JS -->
+                    </div>
+                    <!-- Idle overlay -->
+                    <div id="tt-idle-overlay" class="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bgCard/80 backdrop-blur-sm rounded-2xl">
+                        <i class="fa-solid fa-keyboard text-4xl text-accentAmber opacity-60"></i>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Click here or start typing to begin</p>
+                        <p class="text-[10px] text-gray-600">Press <kbd class="bg-white/10 px-1.5 py-0.5 rounded border border-white/10 text-white font-mono">Enter</kbd> to restart</p>
+                    </div>
+                    <!-- Results overlay -->
+                    <div id="tt-result-overlay" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4 bg-bgCard/95 backdrop-blur-sm rounded-2xl">
+                        <div class="flex gap-8 text-center">
+                            <div><p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">WPM</p><p id="tt-res-wpm" class="text-4xl font-heading font-extrabold text-accentCyan">—</p></div>
+                            <div><p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Accuracy</p><p id="tt-res-acc" class="text-4xl font-heading font-extrabold text-accentGreen">—</p></div>
+                            <div><p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Correct</p><p id="tt-res-correct" class="text-4xl font-heading font-extrabold text-white">—</p></div>
+                        </div>
+                        <p class="text-xs text-gray-500">Press <kbd class="bg-white/10 px-1.5 py-0.5 rounded border border-white/10 text-white font-mono">Enter</kbd> to try again</p>
+                    </div>
+                    <!-- Hidden real input -->
+                    <input id="tt-hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                        class="absolute opacity-0 top-0 left-0 w-0 h-0 pointer-events-none" aria-hidden="true">
+                </div>
+
+                <!-- Progress bar -->
+                <div class="w-full h-0.5 bg-white/5 rounded-full overflow-hidden">
+                    <div id="tt-progress-bar" class="h-full bg-accentAmber transition-all duration-300" style="width:0%"></div>
+                </div>
+            </div>
+
         </section>
 
     </main>
@@ -980,6 +1046,35 @@
         </div>
     </div>
 
+
+    <!-- MODAL: COMMAND PALETTE -->
+    <div id="cmd-palette-overlay" class="cmd-palette-overlay">
+        <div id="cmd-palette" class="cmd-palette">
+            <!-- Header -->
+            <div class="cmd-palette-header">
+                <div class="cmd-search-row">
+                    <i class="fa-solid fa-magnifying-glass cmd-search-icon"></i>
+                    <input id="cmd-palette-input" type="text" placeholder="Search pages, actions, topics, mocks…"
+                        autocomplete="off" autocorrect="off" spellcheck="false" class="cmd-search-input">
+                    <kbd class="cmd-esc-badge">ESC</kbd>
+                </div>
+                <button id="cmd-palette-close" class="cmd-close-btn" title="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span class="cmd-close-text">Close</span>
+                </button>
+            </div>
+            <!-- Results -->
+            <div id="cmd-palette-list" class="cmd-palette-list">
+                <!-- Injected by JS -->
+            </div>
+            <!-- Footer hint -->
+            <div class="cmd-palette-footer">
+                <span><kbd>↑↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> select</span>
+                <span><kbd>Shift Shift</kbd> toggle</span>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL: SHORTCUTS HELP -->
     <div id="modal-shortcuts-help" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
@@ -1138,5 +1233,7 @@
     <script src="js/toolkit.js"></script>
     <script src="js/speed.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/cmdpalette.js"></script>
+    <script src="js/typingtest.js"></script>
 </body>
 </html>
