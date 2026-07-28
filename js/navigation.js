@@ -246,6 +246,11 @@ function initNavigation() {
             }
         }
 
+        // ── TYPING TEST INPUT LOCK ──────────────────────────────
+        // Block ALL global shortcuts when typing test is capturing keys.
+        // typingtest.js handles its own keydown in capture phase.
+        if (window.typingTestActive) return;
+
         // Double shift key press listener
         if (e.key === "Shift") {
             if (e.repeat) return;

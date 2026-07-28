@@ -1342,54 +1342,61 @@ body.light-theme #viewer-document-body table td {
 }
 
 /* ============================================================
-   TYPING TEST
+   TYPING TEST — within unified-drill-card
    ============================================================ */
+
+/* Fixed-height viewport — only ~3 lines visible, scroll programmatically */
+.tt-viewport {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    cursor: text;
+    border-radius: 0.75rem;
+}
+
 .tt-words-wrap {
-    min-height: 140px;
-    line-height: 1.9;
+    line-height: 2em;
     user-select: none;
     word-break: break-word;
+    padding: 4px 2px;
+    transition: margin-top 0.12s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Word & letter states — monkeytype-style */
-.tt-word { display: inline-block; margin-right: 0.6em; }
+/* Word & letter states */
+.tt-word { display: inline-block; margin-right: 0.55em; position: relative; }
 
-.tt-letter { color: #334155; transition: color 0.05s; }
-.tt-letter.correct { color: #2dd4bf; }
-.tt-letter.incorrect { color: #f43f5e; text-decoration: underline; text-underline-offset: 3px; }
-.tt-letter.current {
-    color: #f8fafc;
-    border-bottom: 2px solid #f59e0b;
-    padding-bottom: 1px;
-}
+.tt-letter { color: #334155; transition: color 0.04s; }
+.tt-letter.correct  { color: #2dd4bf; }
+.tt-letter.incorrect { color: #f43f5e; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(244,63,94,0.5); }
+.tt-letter.current  { color: #f8fafc; }
 
-/* Blinking caret on the current word */
-.tt-word.active-word .tt-letter.current::before {
+/* Blinking amber caret before current letter */
+.tt-letter.current::before {
     content: '';
     display: inline-block;
     width: 2px;
-    height: 1em;
+    height: 0.85em;
     background: #f59e0b;
     border-radius: 1px;
-    vertical-align: text-bottom;
-    animation: tt-blink 1s step-start infinite;
+    vertical-align: middle;
     margin-right: 1px;
+    animation: tt-blink 0.9s step-start infinite;
 }
 @keyframes tt-blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-.tt-word.wrong-word .tt-letter { color: #7f1d1d; }
+.tt-word.wrong-word > .tt-letter { color: rgba(248,113,113,0.6); }
 
 /* Mode / time pill buttons */
 .tt-mode-btn, .tt-time-btn {
     font-size: 11px;
     font-weight: 700;
-    padding: 5px 12px;
-    border-radius: 0.6rem;
+    padding: 5px 11px;
+    border-radius: 0.55rem;
     border: none;
     background: transparent;
     color: #64748b;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.12s, color 0.12s;
     letter-spacing: 0.03em;
     text-transform: uppercase;
 }
@@ -1400,6 +1407,18 @@ body.light-theme #viewer-document-body table td {
     border: 1px solid rgba(45,212,191,0.25) !important;
 }
 
-/* Result overlay visible state */
-#tt-result-overlay { display: none; }
-#tt-result-overlay.visible { display: flex; }
+/* Overlays inside viewport */
+.tt-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(18,18,33,0.82);
+    backdrop-filter: blur(4px);
+    border-radius: 0.75rem;
+    z-index: 10;
+}
+.tt-overlay.hidden { display: none; }
