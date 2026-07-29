@@ -252,7 +252,6 @@
               </button>
             </div>
             <div class="flex items-center gap-0.5 bg-white/5 border border-white/5 rounded-xl p-0.5">
-              <button class="tt-time-btn ${ttTime===15?'tt-time-active':''}" data-tt-time="15">15s</button>
               <button class="tt-time-btn ${ttTime===30?'tt-time-active':''}" data-tt-time="30">30s</button>
               <button class="tt-time-btn ${ttTime===60?'tt-time-active':''}" data-tt-time="60">60s</button>
               <button class="tt-time-btn ${ttTime===120?'tt-time-active':''}" data-tt-time="120">120s</button>
