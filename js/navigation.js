@@ -7,6 +7,16 @@ function openShortcutsHelpModal() {
     if (modal) {
         modal.classList.add("active");
         modal.classList.remove("opacity-0", "pointer-events-none");
+        // Focus search and wire filter (once)
+        const s = document.getElementById("shortcuts-search");
+        if (s) {
+            if (!s.dataset.wired) {
+                s.dataset.wired = "1";
+                s.addEventListener("input", () => filterShortcuts(s.value));
+                s.addEventListener("keydown", e => { if (e.key === "Escape") { closeShortcutsHelpModal(); } });
+            }
+            setTimeout(() => s.focus(), 80);
+        }
     }
 }
 
@@ -15,7 +25,32 @@ function closeShortcutsHelpModal() {
     if (modal) {
         modal.classList.remove("active");
         modal.classList.add("opacity-0", "pointer-events-none");
+        // Clear search on close
+        const s = document.getElementById("shortcuts-search");
+        if (s) { s.value = ""; filterShortcuts(""); }
     }
+}
+
+function filterShortcuts(q) {
+    const lq = q.toLowerCase();
+    const sections = document.querySelectorAll("#modal-shortcuts-help .px-5.pt-3");
+    sections.forEach(section => {
+        const rows = section.querySelectorAll(".grid.grid-cols-2");
+        let anyVisible = false;
+        rows.forEach(row => {
+            const match = !lq || row.textContent.toLowerCase().includes(lq);
+            row.style.display = match ? "" : "none";
+            if (match) anyVisible = true;
+        });
+        // Hide/show section label too
+        const label = section.querySelector("p");
+        if (label) label.style.display = anyVisible || !lq ? "" : "none";
+        section.style.display = anyVisible || !lq ? "" : "none";
+    });
+    // Also show/hide the divider lines between sections
+    document.querySelectorAll("#modal-shortcuts-help .border-t.border-white\\/5.mx-5").forEach(hr => {
+        hr.style.display = lq ? "none" : "";
+    });
 }
 
 
