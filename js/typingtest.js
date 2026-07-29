@@ -1,8 +1,9 @@
 // ============================================================
 // Typing Test — unified-drill-card integration
-// Tweaks: tab highlight, no badge, controls↔stats swap,
-//         larger text, line-by-line scroll, Enter=start,
-//         Alt+Space=pause, Alt+X=close
+// Fixes: dual dropdown (use setDropdownVisible), sentence word
+//        split, scroll only on word-advance with threshold,
+//        blackout focus mode, Enter=start, Alt+Space=pause,
+//        Alt+X=stop, proper tab highlight, controls↔stats swap
 // ============================================================
 (function () {
     'use strict';
@@ -11,7 +12,7 @@
     window.inputCaptureLocked = false;
 
     // ════════════════════════════════════════════════════════
-    // DATASET (SSC CGL / GRE / Banking / Govt / Editorial)
+    // DATASET
     // ════════════════════════════════════════════════════════
     const WORD_DATA = {
         words: [
@@ -69,7 +70,7 @@
             "obsequious","omnipotent","ominous","opposition","ordinance",
             "parliament","plausible","preliminary","prerogative","prohibition",
             "proliferation","propaganda","proprietor","prosecution","protocol",
-            "provocation","provisional","questionnaire","quintessential",
+            "provocation","provisional","quintessential",
             "ratification","recklessness","reconcile","referendum","relevance",
             "remuneration","reputation","resilience","retaliation","revelation",
             "rhetoric","rigorous","sabotage","scrutiny","sovereignty","stringent",
@@ -130,12 +131,12 @@
             "fiscal discipline is crucial for maintaining a stable macroeconomic environment",
             "the sovereignty of a nation is inviolable under international conventions",
             "corruption erodes public trust and undermines democratic institutions",
-            "the defendant was acquitted due to insufficient evidence presented by the prosecution",
+            "the defendant was acquitted due to insufficient evidence by the prosecution",
             "indigenous communities deserve equitable access to educational opportunities",
             "the referendum sought to gauge public opinion on constitutional reform",
             "inflation and unemployment are interrelated economic variables in monetary theory",
             "the proliferation of misinformation poses a serious threat to democracy",
-            "perseverance and discipline are indispensable qualities for competitive examination success",
+            "perseverance and discipline are indispensable qualities for examination success",
             "the government announced a comprehensive subsidy scheme for marginal farmers",
             "the tribunal adjudicated the dispute between the two conflicting municipal bodies",
             "remuneration packages in the public sector are governed by pay commission guidelines",
@@ -145,16 +146,12 @@
             "resilience and adaptability are critical attributes for administrative officers",
             "the parliamentary committee recommended stringent measures against financial fraud",
             "surveillance technologies must be regulated to protect civil liberties",
-            "the ordinance was promulgated to address the immediate legislative vacuum",
             "meticulous planning and coordinated implementation led to successful project completion",
             "sedition laws have historically been used to suppress legitimate political dissent",
-            "vocabulary and comprehension skills are assessed in the english language section",
             "general awareness encompasses current affairs economics history and general knowledge",
             "the supreme court upheld the constitutional validity of the reservation policy",
             "monetary policy decisions by the central bank influence interest rates and inflation",
-            "the welfare scheme was restructured to ensure equitable distribution among beneficiaries",
             "the candidates must demonstrate proficiency in quantitative aptitude and logical reasoning",
-            "diplomatic channels were activated to resolve the bilateral boundary disagreement",
         ],
         numbers: [
             "144","256","625","1024","2048","3375","4096","6561","8000","9801",
@@ -184,6 +181,7 @@
     let ttTotal   = 0;
     let ttRemain  = 30;
     let ttTimer   = null;
+    let lastScrolledTop = -1;  // scroll threshold guard
 
     // ════════════════════════════════════════════════════════
     // HELPERS
@@ -196,13 +194,30 @@
         }
         return a;
     }
+
     function buildWordList() {
-        const bank = WORD_DATA[ttMode] || WORD_DATA.words;
-        if (ttMode === 'sentences') return shuffle(bank).slice(0, 12);
+        if (ttMode === 'sentences') {
+            // FIX: split each sentence into individual words so Space advances
+            // between words naturally, same as word mode
+            const sentences = shuffle(WORD_DATA.sentences).slice(0, 10);
+            const words = [];
+            sentences.forEach(s => {
+                s.split(/\s+/).forEach(w => { if (w) words.push(w); });
+            });
+            return words.slice(0, 120);
+        }
+        if (ttMode === 'numbers') {
+            let out = [];
+            const bank = WORD_DATA.numbers;
+            while (out.length < 80) out = out.concat(shuffle(bank));
+            return out.slice(0, 80);
+        }
+        // words
         let out = [];
-        while (out.length < 100) out = out.concat(shuffle(bank));
+        while (out.length < 100) out = out.concat(shuffle(WORD_DATA.words));
         return out.slice(0, 100);
     }
+
     function getWordEl(wi) {
         return document.querySelector(`#tt-words-display .tt-word[data-wi="${wi}"]`);
     }
@@ -223,7 +238,7 @@
         area.innerHTML = `
         <div id="tt-root">
 
-          <!-- ── IDLE controls: mode + time pills (visible only in IDLE) -->
+          <!-- IDLE controls: mode + time pills (visible only in IDLE) -->
           <div id="tt-controls-row" class="flex flex-wrap items-center justify-between gap-2 mb-3">
             <div class="flex items-center gap-0.5 bg-white/5 border border-white/5 rounded-xl p-0.5">
               <button class="tt-mode-btn ${ttMode==='words'?'tt-mode-active':''}" data-tt-mode="words">
@@ -244,14 +259,14 @@
             </div>
           </div>
 
-          <!-- ── RUNNING stats: WPM · timer · ACC (hidden in IDLE) -->
+          <!-- RUNNING stats: WPM · timer · ACC (hidden in IDLE) -->
           <div id="tt-stats-row" class="hidden flex items-center justify-center gap-8 font-mono text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3">
             <span><span id="tt-wpm" class="text-accentCyan text-base font-extrabold">0</span> WPM</span>
             <span class="text-xl font-extrabold text-accentAmber" id="tt-timer-val">${ttTime}</span>
             <span><span id="tt-acc" class="text-accentGreen text-base font-extrabold">100%</span> ACC</span>
           </div>
 
-          <!-- ── Fixed viewport — 3 lines visible, scrolls line-by-line -->
+          <!-- Fixed viewport — 3 lines visible, scrolls on line advance only -->
           <div class="tt-viewport" id="tt-viewport">
             <div id="tt-words-display" class="tt-words-wrap"></div>
 
@@ -290,7 +305,6 @@
 
         </div>`;
 
-        // Wire mode/time pills
         document.querySelectorAll('.tt-mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (ttMode === btn.dataset.ttMode) return;
@@ -306,7 +320,7 @@
         });
     }
 
-    // Restore original drill area (so speed.js works after tab switch)
+    // Restore original drill-interactive-area
     function restoreArea() {
         const area = document.getElementById('drill-interactive-area');
         if (!area) return;
@@ -329,6 +343,7 @@
         const display = document.getElementById('tt-words-display');
         if (!display) return;
         display.style.marginTop = '0px';
+        lastScrolledTop = 0;
         display.innerHTML = '';
         ttWords.forEach((word, wi) => {
             const wSpan = document.createElement('span');
@@ -345,31 +360,44 @@
     }
 
     // ════════════════════════════════════════════════════════
-    // CURSOR & LINE SCROLL
-    // Line-by-line: shift words-display up by -offsetTop of current word.
-    // CSS transition makes it smooth.
+    // CURSOR — update letter highlight only (NO scroll here)
+    // Scroll happens in advanceWord() only, preventing shaking
     // ════════════════════════════════════════════════════════
     function updateCursor() {
         document.querySelectorAll('#tt-words-display .tt-letter.current')
             .forEach(e => e.classList.remove('current'));
-
         const wEl = getWordEl(ttWordIdx);
         if (!wEl) return;
-
         const letters = wEl.querySelectorAll('.tt-letter');
         const target  = letters[ttLetIdx] || letters[letters.length - 1];
         if (target) target.classList.add('current');
-
-        scrollToLine(wEl);
     }
 
-    function scrollToLine(wEl) {
+    // Scroll only on word advance — with threshold guard to prevent micro-jitter
+    function scrollOnWordAdvance() {
         const display = document.getElementById('tt-words-display');
+        const wEl = getWordEl(ttWordIdx);
         if (!display || !wEl) return;
-        // wEl.offsetTop is relative to display (its offsetParent via tt-viewport)
-        // Shift display up so current word sits at top of the 220px viewport
+
         const lineTop = wEl.offsetTop;
-        display.style.marginTop = (-lineTop) + 'px';
+        // Only scroll if word moved to a new line (> 10px threshold)
+        if (Math.abs(lineTop - lastScrolledTop) > 10) {
+            lastScrolledTop = lineTop;
+            // Set marginTop to shift current word to top of viewport
+            display.style.marginTop = (-lineTop) + 'px';
+        }
+    }
+
+    // ════════════════════════════════════════════════════════
+    // BLACKOUT FOCUS MODE — same as speed.js quiz focus
+    // ════════════════════════════════════════════════════════
+    function enableFocusMode() {
+        document.documentElement.classList.add('quiz-focus-active');
+        document.body.classList.add('quiz-focus-active');
+    }
+    function disableFocusMode() {
+        document.documentElement.classList.remove('quiz-focus-active');
+        document.body.classList.remove('quiz-focus-active');
     }
 
     // ════════════════════════════════════════════════════════
@@ -389,7 +417,6 @@
         const accEl = document.getElementById('tt-acc');
         if (wpmEl) wpmEl.textContent = wpm;
         if (accEl) accEl.textContent = acc + '%';
-        // Repurpose drill timer fill as countdown
         const fill = document.getElementById('drill-timer-fill');
         if (fill) {
             const pct = (ttRemain / ttTime) * 100;
@@ -398,7 +425,6 @@
         }
     }
 
-    // ── Swap controls ↔ stats rows ──────────────────────────
     function showControls() {
         document.getElementById('tt-controls-row')?.classList.remove('hidden');
         document.getElementById('tt-stats-row')?.classList.add('hidden');
@@ -406,7 +432,6 @@
     function showStats() {
         document.getElementById('tt-controls-row')?.classList.add('hidden');
         document.getElementById('tt-stats-row')?.classList.remove('hidden');
-        // Sync timer val
         const tv = document.getElementById('tt-timer-val');
         if (tv) tv.textContent = ttRemain;
     }
@@ -420,36 +445,48 @@
     }
 
     // ════════════════════════════════════════════════════════
+    // LEVEL SELECT — FIX: use setDropdownVisible to toggle the
+    // custom dropdown WRAPPER, not the raw <select> display.
+    // This prevents the dual dropdown (native + custom both showing).
+    // ════════════════════════════════════════════════════════
+    function hideLevelSelect() {
+        const levelSel = document.getElementById('select-maths-level');
+        if (levelSel && window.setDropdownVisible) {
+            window.setDropdownVisible(levelSel, false);
+        }
+    }
+    function showLevelSelect() {
+        const levelSel = document.getElementById('select-maths-level');
+        if (levelSel && window.setDropdownVisible) {
+            window.setDropdownVisible(levelSel, true);
+        }
+    }
+
+    // ════════════════════════════════════════════════════════
     // STATE TRANSITIONS
     // ════════════════════════════════════════════════════════
-
-    // IDLE — fresh start
     function initTest() {
         clearInterval(ttTimer);
         state     = 'idle';
         ttWordIdx = 0; ttLetIdx = 0;
         ttCorrect = 0; ttErrors = 0; ttTotal  = 0;
         ttRemain  = ttTime;
+        lastScrolledTop = 0;
         window.inputCaptureLocked = false;
+        disableFocusMode();
 
         ttWords = buildWordList();
-        injectUI();       // rebuild controls/stats/viewport HTML
+        injectUI();
         renderWords();
         updateCursor();
 
-        // Reset timer bar
         const fill = document.getElementById('drill-timer-fill');
         if (fill) { fill.style.width = '100%'; fill.style.backgroundColor = ''; }
 
-        // Show controls row (IDLE state)
         showControls();
-
-        // Show idle overlay, hide result overlay
         document.getElementById('tt-idle-overlay')?.classList.remove('hidden');
         const ro = document.getElementById('tt-result-overlay');
         if (ro) { ro.classList.add('hidden'); ro.style.display = ''; }
-
-        // Restore drill-paused-overlay if it was open
         document.getElementById('drill-paused-overlay')?.classList.add('hidden');
         document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
 
@@ -457,23 +494,19 @@
         document.getElementById('btn-drill-stop')?.classList.remove('hidden');
     }
 
-    // RUNNING — start or resume
     function startRunning() {
         if (state === 'finished') return;
         state = 'running';
         window.inputCaptureLocked = true;
+        enableFocusMode();
 
-        // Hide idle/result overlays
         document.getElementById('tt-idle-overlay')?.classList.add('hidden');
         const ro = document.getElementById('tt-result-overlay');
         if (ro) { ro.classList.add('hidden'); ro.style.display = ''; }
-        // Hide paused overlay
         document.getElementById('drill-paused-overlay')?.classList.add('hidden');
         document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
 
-        // Swap to stats row
         showStats();
-
         setPauseBtn('fa-pause', 'Pause');
 
         clearInterval(ttTimer);
@@ -486,11 +519,11 @@
         }, 1000);
     }
 
-    // PAUSED — freeze timer, show blur overlay
     function pauseTest() {
         if (state !== 'running') return;
         state = 'paused';
         window.inputCaptureLocked = false;
+        disableFocusMode();
         clearInterval(ttTimer);
 
         document.getElementById('drill-paused-overlay')?.classList.remove('hidden');
@@ -498,11 +531,11 @@
         setPauseBtn('fa-play', 'Resume');
     }
 
-    // FINISHED — show results
     function finishTest() {
         if (state === 'finished') return;
         state = 'finished';
         window.inputCaptureLocked = false;
+        disableFocusMode();
         clearInterval(ttTimer);
 
         const { wpm, acc } = computeStats();
@@ -516,45 +549,37 @@
             ro.classList.remove('hidden');
             ro.style.display = 'flex';
         }
-        // Hide paused overlay
         document.getElementById('drill-paused-overlay')?.classList.add('hidden');
         document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
 
-        // Stats stay visible (already showing)
         setPauseBtn('fa-rotate-right', 'Restart');
-
         const fill = document.getElementById('drill-timer-fill');
         if (fill) fill.style.backgroundColor = '#f43f5e';
     }
 
-    // TEARDOWN — leaving typing test tab entirely
     function teardown() {
         clearInterval(ttTimer);
         state = 'idle';
         window.typingTestActive   = false;
         window.inputCaptureLocked = false;
+        disableFocusMode();
 
-        // Restore level select
-        const levelSel = document.getElementById('select-maths-level');
-        if (levelSel) levelSel.style.display = '';
+        // FIX: restore level select using setDropdownVisible (shows wrapper, not raw select)
+        showLevelSelect();
 
         // Remove active class from typing test tab
         document.querySelector('.speed-tab-btn[data-mode="typingTest"]')
             ?.classList.remove('active-nav-tab');
 
-        // Hide stop button, reset pause btn
         document.getElementById('btn-drill-stop')?.classList.add('hidden');
         setPauseBtn('fa-play', 'Start');
-
-        // Clean up drill-paused overlay and blur
         document.getElementById('drill-paused-overlay')?.classList.add('hidden');
         document.getElementById('drill-interactive-area')?.classList.remove('blur-md');
 
-        // Reset timer bar
         const fill = document.getElementById('drill-timer-fill');
         if (fill) { fill.style.width = '100%'; fill.style.backgroundColor = ''; }
 
-        restoreArea(); // speed.js needs drill-question-label etc.
+        restoreArea();
     }
 
     // ════════════════════════════════════════════════════════
@@ -573,7 +598,7 @@
             if (lEl) { lEl.classList.remove('correct'); lEl.classList.add('incorrect'); }
         }
         ttLetIdx++;
-        updateCursor();
+        updateCursor(); // cursor only — NO scroll here
         updateLiveStats();
     }
 
@@ -605,40 +630,40 @@
         ttLetIdx = 0;
         if (ttWordIdx >= ttWords.length) { finishTest(); return; }
         updateCursor();
+        // SCROLL ONLY here — not in updateCursor or handleChar
+        scrollOnWordAdvance();
         updateLiveStats();
     }
 
     // ════════════════════════════════════════════════════════
-    // KEYDOWN — capture phase (before navigation.js / speed.js)
+    // KEYDOWN — capture phase
     // ════════════════════════════════════════════════════════
     document.addEventListener('keydown', function (e) {
         if (!window.typingTestActive) return;
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') return; // pass to cmd palette
 
-        // Always pass Ctrl+K to command palette
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') return;
+        const key   = e.key;
+        const isAlt  = e.altKey;
+        const isCtrl = e.ctrlKey || e.metaKey;
 
-        const key     = e.key;
-        const isAlt   = e.altKey;
-        const isCtrl  = e.ctrlKey || e.metaKey;
-
-        // ── Alt+Space → pause / resume ──────────────────────
+        // Alt+Space → pause / resume
         if (isAlt && (key === ' ' || key === 'Spacebar')) {
             e.preventDefault(); e.stopImmediatePropagation();
-            if (state === 'running')           pauseTest();
-            else if (state === 'paused')       startRunning();
-            else if (state === 'idle')         { ttWords = buildWordList(); renderWords(); startRunning(); }
+            if (state === 'running')     pauseTest();
+            else if (state === 'paused') startRunning();
+            else if (state === 'idle')   { ttWords = buildWordList(); renderWords(); startRunning(); }
             return;
         }
 
-        // ── Alt+X → stop / close ────────────────────────────
+        // Alt+X → stop / close
         if (isAlt && (key === 'x' || key === 'X')) {
             e.preventDefault(); e.stopImmediatePropagation();
             if (state === 'running' || state === 'paused') finishTest();
-            else if (state === 'finished')     initTest();
+            else if (state === 'finished') initTest();
             return;
         }
 
-        // ── Escape → pause / resume (convenience) ──────────
+        // Escape → pause / resume
         if (key === 'Escape') {
             e.preventDefault(); e.stopImmediatePropagation();
             if (state === 'running')     pauseTest();
@@ -646,17 +671,15 @@
             return;
         }
 
-        // ── Enter → start / resume / restart ────────────────
+        // Enter → start / resume / restart
         if (key === 'Enter') {
             e.preventDefault(); e.stopImmediatePropagation();
             if (state === 'idle')        { ttWords = buildWordList(); renderWords(); startRunning(); }
             else if (state === 'paused') startRunning();
             else if (state === 'finished') initTest();
-            // state === 'running' → ignore Enter (prevent accidental restart)
             return;
         }
 
-        // ── Only handle typing keys while RUNNING ───────────
         if (state !== 'running') return;
 
         if (key === ' ' || key === 'Spacebar') {
@@ -678,10 +701,10 @@
             e.stopImmediatePropagation();
             handleChar(key);
         }
-    }, true); // capture phase
+    }, true);
 
     // ════════════════════════════════════════════════════════
-    // HOOK DRILL BUTTONS (capture phase — before speed.js onclick)
+    // HOOK DRILL BUTTONS — capture phase, before speed.js onclick
     // ════════════════════════════════════════════════════════
     function hookDrillButtons() {
         const pauseBtn  = document.getElementById('btn-drill-pause');
@@ -692,7 +715,7 @@
             pauseBtn.addEventListener('click', (e) => {
                 if (!window.typingTestActive) return;
                 e.stopImmediatePropagation();
-                if (state === 'idle')     { ttWords = buildWordList(); renderWords(); startRunning(); }
+                if (state === 'idle')          { ttWords = buildWordList(); renderWords(); startRunning(); }
                 else if (state === 'running')  pauseTest();
                 else if (state === 'paused')   startRunning();
                 else if (state === 'finished') initTest();
@@ -727,33 +750,29 @@
             const mode = btn.dataset.mode;
 
             if (mode === 'typingTest') {
-                // Stop any running drill
+                // Stop any running drill first
                 if (window.drillIsPlaying) {
                     window.drillIsPlaying = false;
                     if (window.resetDrillSession) window.resetDrillSession();
                 }
 
-                // ── Tab highlight (same as other drill tabs) ──────
+                // Highlight typing test tab
                 document.querySelectorAll('.speed-tab-btn')
                     .forEach(t => t.classList.remove('active-nav-tab'));
                 btn.classList.add('active-nav-tab');
 
                 window.typingTestActive = true;
 
-                // Hide level select — no badge replacement needed
-                const levelSel = document.getElementById('select-maths-level');
-                if (levelSel) levelSel.style.display = 'none';
+                // FIX: hide the custom dropdown WRAPPER (not raw select display)
+                hideLevelSelect();
 
-                // Init typing test
                 initTest();
-
-                // Prevent speed.js from also handling this click
-                e.stopImmediatePropagation();
+                e.stopImmediatePropagation(); // prevent speed.js from also handling
 
             } else if (window.typingTestActive) {
-                // LEAVING typing test — clean up, then let speed.js handle
+                // Leaving typing test — clean up, let speed.js handle the new tab
                 teardown();
-                // Don't stop propagation — speed.js needs to process this click
+                // No stopPropagation — speed.js onclick must fire
             }
         }, true);
     }
