@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -1054,45 +1054,50 @@
 
                 <!-- ── SECTION: Toggles ───────────────────────────── -->
                 <div class="px-5 pt-2 pb-1">
-                    <p class="text-[9px] font-extrabold text-accentGreen uppercase tracking-widest mb-2">Toggles</p>
+                    <p class="text-[10px] font-extrabold text-accentGreen uppercase tracking-widest mb-2">Toggles</p>
                     <div class="space-y-0.5">
-                        <button onclick="handleShortcutAction('toggle-theme')" class="ac-row group w-full">
-                            <span class="ac-label"><i class="fa-solid fa-moon mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Dark / Light Theme</span>
+                        <!-- Theme: only toggle switch is clickable -->
+                        <div class="ac-toggle-row">
+                            <span class="ac-label"><i class="fa-solid fa-moon mr-2.5 text-gray-500"></i>Dark / Light Theme</span>
                             <span class="ac-right">
-                                <div id="theme-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0" role="button">
+                                <div id="theme-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0 hover:border-white/20 transition" role="button" title="Toggle theme [T]">
                                     <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="theme-toggle-knob"><i class="fa-solid fa-moon"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">T</kbd>
                             </span>
-                        </button>
-                        <button onclick="handleShortcutAction('toggle-voice')" class="ac-row group w-full">
-                            <span class="ac-label"><i class="fa-solid fa-volume-high mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Voice Announcements</span>
+                        </div>
+                        <!-- Voice: only toggle switch is clickable -->
+                        <div class="ac-toggle-row">
+                            <span class="ac-label"><i class="fa-solid fa-volume-high mr-2.5 text-gray-500"></i>Voice Announcements</span>
                             <span class="ac-right">
-                                <div id="speech-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0" role="button">
+                                <div id="speech-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0 hover:border-white/20 transition" role="button" title="Toggle voice [V]">
                                     <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="speech-toggle-knob"><i class="fa-solid fa-volume-high text-emerald-500"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">V</kbd>
                             </span>
-                        </button>
-                        <button onclick="handleShortcutAction('toggle-notifications')" class="ac-row group w-full">
-                            <span class="ac-label"><i class="fa-solid fa-bell mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Toast Notifications</span>
+                        </div>
+                        <!-- Notifications: only toggle switch is clickable -->
+                        <div class="ac-toggle-row">
+                            <span class="ac-label"><i class="fa-solid fa-bell mr-2.5 text-gray-500"></i>Toast Notifications</span>
                             <span class="ac-right">
-                                <div id="toast-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0" role="button">
+                                <div id="toast-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0 hover:border-white/20 transition" role="button" title="Toggle notifications [N]">
                                     <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="toast-toggle-knob"><i class="fa-solid fa-bell text-amber-500"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">N</kbd>
                             </span>
-                        </button>
+                        </div>
+                        <!-- Pomodoro & Conquest: full-row clickable (no visual switch) -->
                         <button onclick="handleShortcutAction('toggle-pomodoro')" class="ac-row group w-full">
-                            <span class="ac-label"><i class="fa-solid fa-clock mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Pomodoro Timer</span>
+                            <span class="ac-label"><i class="fa-solid fa-clock mr-2.5 text-gray-500 group-hover:text-accentGreen transition"></i>Pomodoro Timer</span>
                             <span class="ac-right"><kbd class="sc-kbd">P</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
                         </button>
                         <button onclick="handleShortcutAction('toggle-conquest')" class="ac-row group w-full">
-                            <span class="ac-label"><i class="fa-solid fa-fire mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Conquest Challenge</span>
+                            <span class="ac-label"><i class="fa-solid fa-fire mr-2.5 text-gray-500 group-hover:text-accentGreen transition"></i>Conquest Challenge</span>
                             <span class="ac-right"><kbd class="sc-kbd">C</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
                         </button>
                     </div>
                 </div>
+
 
                 <div class="border-t border-white/5 mx-5 my-1"></div>
 
