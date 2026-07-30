@@ -639,7 +639,6 @@
     // ════════════════════════════════════════════════════════
     document.addEventListener('keydown', function (e) {
         if (!window.typingTestActive) return;
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') return; // pass to cmd palette
 
         const key   = e.key;
         const isAlt  = e.altKey;

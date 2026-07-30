@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -985,232 +985,183 @@
     </div>
 
 
-    <!-- MODAL: COMMAND PALETTE -->
-
-    <!-- MODAL: SHORTCUTS HELP -->
+    <!-- MODAL: ACTION CENTER (Double-Shift) -->
     <div id="modal-shortcuts-help" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-bgCard border border-white/10 w-full max-w-lg rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300 relative">
+        <div class="bg-bgCard border border-white/10 w-full max-w-lg rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300">
 
-            <!-- Header -->
-            <div class="flex justify-between items-center px-5 pt-5 pb-3 border-b border-white/5 gap-3">
-                <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider flex items-center gap-2 shrink-0">
-                    <i class="fa-solid fa-keyboard text-accentCyan"></i>
-                    <span class="hidden sm:inline">Keyboard Shortcuts</span>
-                    <span class="sm:hidden">Shortcuts</span>
+            <!-- Row 1: Title + Close -->
+            <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/5 shrink-0">
+                <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-accentAmber"></i>
+                    <span class="hidden sm:inline">Action Center</span>
+                    <span class="sm:hidden">Actions</span>
                 </h3>
-                <!-- Inline search bar -->
-                <div class="relative flex-1 min-w-0">
-                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 text-[10px]"></i>
-                    <input id="shortcuts-search" type="text" placeholder="Filter shortcuts…"
-                        class="w-full bg-white/5 border border-white/8 rounded-xl pl-7 pr-3 py-1.5 text-[11px] text-white placeholder-gray-500 outline-none focus:border-accentCyan/50 transition"
-                        autocomplete="off">
-                </div>
-                <!-- Close: icon-only on mobile, icon+text on sm+ -->
-                <button id="btn-shortcuts-close" class="text-gray-400 hover:text-white transition flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl px-2 py-1.5 sm:px-3 shrink-0" title="Close">
+                <button id="btn-shortcuts-close" class="text-gray-400 hover:text-white transition flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl px-2 py-1.5 sm:px-3 shrink-0" title="Close (Esc)">
                     <i class="fa-solid fa-xmark text-sm"></i>
                     <span class="hidden sm:inline text-xs font-bold uppercase tracking-wider">Close</span>
                 </button>
             </div>
 
-            <!-- Shortcuts list -->
-            <div class="space-y-0 max-h-[62vh] overflow-y-auto text-xs text-gray-300 scrollbar-thin">
+            <!-- Row 2: Search bar (own row, full width) -->
+            <div class="px-5 py-3 border-b border-white/5 shrink-0">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                    <input id="shortcuts-search" type="text" placeholder="Filter actions and shortcuts…"
+                        class="w-full bg-white/5 border border-white/8 rounded-xl pl-8 pr-4 py-2 text-xs text-white placeholder-gray-500 outline-none focus:border-accentCyan/60 transition"
+                        autocomplete="off">
+                </div>
+            </div>
 
-                <!-- SECTION: Global Navigation -->
+            <!-- Scrollable body -->
+            <div class="overflow-y-auto scrollbar-thin" style="max-height:55vh;">
+
+                <!-- ── SECTION: Global Navigation ─────────────────── -->
                 <div class="px-5 pt-3 pb-1">
-                    <p class="text-[9px] font-extrabold text-accentCyan uppercase tracking-widest mb-2">Global Navigation</p>
-                    <div class="space-y-1.5">
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Dashboard</div>
-                            <div><kbd class="sc-kbd">1</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Syllabus / Track</div>
-                            <div><kbd class="sc-kbd">2</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Toggle Study Mode</div>
-                            <div><kbd class="sc-kbd">3</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Speed Drills</div>
-                            <div><kbd class="sc-kbd">4</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Study Plan</div>
-                            <div><kbd class="sc-kbd">5</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Mock Analysis</div>
-                            <div><kbd class="sc-kbd">6</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Scroll to Top</div>
-                            <div><kbd class="sc-kbd">U</kbd></div>
-                        </div>
+                    <p class="text-[9px] font-extrabold text-accentCyan uppercase tracking-widest mb-2">Navigation</p>
+                    <div class="space-y-0.5">
+                        <button onclick="handleShortcutAction('nav:page-dashboard')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-gauge-high mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Dashboard</span>
+                            <span class="ac-right"><kbd class="sc-kbd">1</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('nav:page-syllabus')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-compass mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Syllabus / Track</span>
+                            <span class="ac-right"><kbd class="sc-kbd">2</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('nav:study-mode')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-book-open mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Toggle Study Mode</span>
+                            <span class="ac-right"><kbd class="sc-kbd">3</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('nav:page-speed')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-bolt mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Speed Drills</span>
+                            <span class="ac-right"><kbd class="sc-kbd">4</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('nav:page-plan')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-calendar-days mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Study Plan</span>
+                            <span class="ac-right"><kbd class="sc-kbd">5</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('nav:page-mocks')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-chart-bar mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Mock Analysis</span>
+                            <span class="ac-right"><kbd class="sc-kbd">6</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('scroll-top')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-arrow-up mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Scroll to Top</span>
+                            <span class="ac-right"><kbd class="sc-kbd">U</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="border-t border-white/5 mx-5"></div>
+                <div class="border-t border-white/5 mx-5 my-1"></div>
 
-                <!-- SECTION: Command Palette & Help -->
-                <div class="px-5 pt-3 pb-1">
-                    <p class="text-[9px] font-extrabold text-accentAmber uppercase tracking-widest mb-2">Command Palette &amp; Help</p>
-                    <div class="space-y-1.5">
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Open Command Palette</div>
-                            <div class="flex items-center gap-1 flex-wrap">
-                                <kbd class="sc-kbd">Ctrl</kbd><span class="text-gray-500">+</span><kbd class="sc-kbd">K</kbd>
-                                <span class="text-gray-500 text-[10px] mx-1">or</span>
-                                <kbd class="sc-kbd">Shift</kbd><kbd class="sc-kbd">Shift</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">This Shortcuts Card</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">Shift</kbd><kbd class="sc-kbd">Shift</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Close Any Modal / Overlay</div>
-                            <div><kbd class="sc-kbd">Esc</kbd></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-white/5 mx-5"></div>
-
-                <!-- SECTION: Speed Drills -->
-                <div class="px-5 pt-3 pb-1">
-                    <p class="text-[9px] font-extrabold text-accentGreen uppercase tracking-widest mb-2">Speed Drills (Math / Reasoning)</p>
-                    <div class="space-y-1.5">
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Start / Pause / Resume</div>
-                            <div><kbd class="sc-kbd">Space</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Stop &amp; Exit Drill</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">X</kbd>
-                                <span class="text-gray-500 text-[10px] mx-1">or</span>
-                                <kbd class="sc-kbd">Esc</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Select MCQ Answer</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">1</kbd><kbd class="sc-kbd">2</kbd><kbd class="sc-kbd">3</kbd><kbd class="sc-kbd">4</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Difficulty: Easy / Medium / Adv</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">E</kbd><kbd class="sc-kbd">M</kbd><kbd class="sc-kbd">A</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Cycle Difficulty</div>
-                            <div><kbd class="sc-kbd">D</kbd></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-white/5 mx-5"></div>
-
-                <!-- SECTION: Typing Test -->
-                <div class="px-5 pt-3 pb-1">
-                    <p class="text-[9px] font-extrabold text-accentPurple uppercase tracking-widest mb-2">Typing Test</p>
-                    <div class="space-y-1.5">
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Start Test</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">Enter</kbd>
-                                <span class="text-gray-500 text-[10px] mx-1">or type</span>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Advance Word</div>
-                            <div><kbd class="sc-kbd">Space</kbd></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Pause / Resume</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">Alt</kbd><span class="text-gray-500">+</span><kbd class="sc-kbd">Space</kbd>
-                                <span class="text-gray-500 text-[10px] mx-1">or</span>
-                                <kbd class="sc-kbd">Esc</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Stop &amp; See Results</div>
-                            <div class="flex items-center gap-1">
-                                <kbd class="sc-kbd">Alt</kbd><span class="text-gray-500">+</span><kbd class="sc-kbd">X</kbd>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Restart Test</div>
-                            <div><kbd class="sc-kbd">Enter</kbd> <span class="text-gray-500 text-[10px]">(after finish)</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border-t border-white/5 mx-5"></div>
-
-                <!-- SECTION: Toggles -->
-                <div class="px-5 pt-3 pb-1">
-                    <p class="text-[9px] font-extrabold text-gray-400 uppercase tracking-widest mb-2">Toggles</p>
-                    <div class="space-y-1.5">
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Dark / Light Theme</div>
-                            <div class="flex items-center gap-2">
+                <!-- ── SECTION: Toggles ───────────────────────────── -->
+                <div class="px-5 pt-2 pb-1">
+                    <p class="text-[9px] font-extrabold text-accentGreen uppercase tracking-widest mb-2">Toggles</p>
+                    <div class="space-y-0.5">
+                        <button onclick="handleShortcutAction('toggle-theme')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-moon mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Dark / Light Theme</span>
+                            <span class="ac-right">
+                                <div id="theme-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0" role="button">
+                                    <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="theme-toggle-knob"><i class="fa-solid fa-moon"></i></span>
+                                </div>
                                 <kbd class="sc-kbd">T</kbd>
-                                <div id="theme-toggle" class="w-10 h-5 rounded-full bg-white/5 border border-white/5 relative transition duration-300 cursor-pointer flex-shrink-0" title="Toggle Theme" role="button">
-                                    <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="theme-toggle-knob">
-                                        <i class="fa-solid fa-moon"></i>
-                                    </span>
+                            </span>
+                        </button>
+                        <button onclick="handleShortcutAction('toggle-voice')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-volume-high mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Voice Announcements</span>
+                            <span class="ac-right">
+                                <div id="speech-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0" role="button">
+                                    <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="speech-toggle-knob"><i class="fa-solid fa-volume-high text-emerald-500"></i></span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Voice Announcements</div>
-                            <div class="flex items-center gap-2">
                                 <kbd class="sc-kbd">V</kbd>
-                                <div id="speech-toggle" class="w-10 h-5 rounded-full bg-white/5 border border-white/5 relative transition duration-300 cursor-pointer flex-shrink-0" title="Toggle Voice" role="button">
-                                    <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="speech-toggle-knob">
-                                        <i class="fa-solid fa-volume-high text-emerald-500"></i>
-                                    </span>
+                            </span>
+                        </button>
+                        <button onclick="handleShortcutAction('toggle-notifications')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-bell mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Toast Notifications</span>
+                            <span class="ac-right">
+                                <div id="toast-toggle" class="w-9 h-5 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0" role="button">
+                                    <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="toast-toggle-knob"><i class="fa-solid fa-bell text-amber-500"></i></span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Toast Notifications</div>
-                            <div class="flex items-center gap-2">
                                 <kbd class="sc-kbd">N</kbd>
-                                <div id="toast-toggle" class="w-10 h-5 rounded-full bg-white/5 border border-white/5 relative transition duration-300 cursor-pointer flex-shrink-0" title="Toggle Toasts" role="button">
-                                    <span class="absolute left-0.5 top-[2px] w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300" id="toast-toggle-knob">
-                                        <i class="fa-solid fa-bell text-amber-500"></i>
-                                    </span>
-                                </div>
-                            </div>
+                            </span>
+                        </button>
+                        <button onclick="handleShortcutAction('toggle-pomodoro')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-clock mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Pomodoro Timer</span>
+                            <span class="ac-right"><kbd class="sc-kbd">P</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button onclick="handleShortcutAction('toggle-conquest')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-fire mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Conquest Challenge</span>
+                            <span class="ac-right"><kbd class="sc-kbd">C</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/5 mx-5 my-1"></div>
+
+                <!-- ── SECTION: Speed Drill Keys (info only) ──────── -->
+                <div class="px-5 pt-2 pb-1">
+                    <p class="text-[9px] font-extrabold text-accentPurple uppercase tracking-widest mb-2">Speed Drills (keyboard only)</p>
+                    <div class="space-y-1.5 text-xs text-gray-400">
+                        <div class="ac-info-row">
+                            <span>Start / Pause / Resume</span>
+                            <span><kbd class="sc-kbd">Space</kbd></span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Pomodoro Timer</div>
-                            <div><kbd class="sc-kbd">P</kbd></div>
+                        <div class="ac-info-row">
+                            <span>Stop &amp; Exit</span>
+                            <span class="flex gap-1"><kbd class="sc-kbd">X</kbd> <span class="text-gray-600">or</span> <kbd class="sc-kbd">Esc</kbd></span>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 items-center">
-                            <div class="text-gray-300">Conquest Challenge</div>
-                            <div><kbd class="sc-kbd">C</kbd></div>
+                        <div class="ac-info-row">
+                            <span>Select MCQ Option</span>
+                            <span class="flex gap-1"><kbd class="sc-kbd">1</kbd><kbd class="sc-kbd">2</kbd><kbd class="sc-kbd">3</kbd><kbd class="sc-kbd">4</kbd></span>
+                        </div>
+                        <div class="ac-info-row">
+                            <span>Difficulty Easy / Med / Adv</span>
+                            <span class="flex gap-1"><kbd class="sc-kbd">E</kbd><kbd class="sc-kbd">M</kbd><kbd class="sc-kbd">A</kbd></span>
+                        </div>
+                        <div class="ac-info-row">
+                            <span>Cycle Difficulty</span>
+                            <span><kbd class="sc-kbd">D</kbd></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Data Management -->
-                <div class="border-t border-white/5 mx-5 mt-1"></div>
-                <div class="grid grid-cols-2 gap-2 px-5 pt-3 pb-4 items-center">
-                    <div class="text-xs font-semibold text-gray-300">Data Management</div>
+                <div class="border-t border-white/5 mx-5 my-1"></div>
+
+                <!-- ── SECTION: Typing Test Keys (info only) ──────── -->
+                <div class="px-5 pt-2 pb-1">
+                    <p class="text-[9px] font-extrabold text-accentAmber uppercase tracking-widest mb-2">Typing Test (keyboard only)</p>
+                    <div class="space-y-1.5 text-xs text-gray-400">
+                        <div class="ac-info-row">
+                            <span>Start Test</span>
+                            <span><kbd class="sc-kbd">Enter</kbd></span>
+                        </div>
+                        <div class="ac-info-row">
+                            <span>Advance Word</span>
+                            <span><kbd class="sc-kbd">Space</kbd></span>
+                        </div>
+                        <div class="ac-info-row">
+                            <span>Pause / Resume</span>
+                            <span class="flex gap-1"><kbd class="sc-kbd">Alt</kbd>+<kbd class="sc-kbd">Space</kbd> <span class="text-gray-600">or</span> <kbd class="sc-kbd">Esc</kbd></span>
+                        </div>
+                        <div class="ac-info-row">
+                            <span>Stop &amp; Results</span>
+                            <span class="flex gap-1"><kbd class="sc-kbd">Alt</kbd>+<kbd class="sc-kbd">X</kbd></span>
+                        </div>
+                        <div class="ac-info-row">
+                            <span>Restart</span>
+                            <span><kbd class="sc-kbd">Enter</kbd> <span class="text-gray-600">(after finish)</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/5 mx-5 my-1"></div>
+
+                <!-- ── SECTION: Data Management ───────────────────── -->
+                <div class="px-5 pt-2 pb-1">
+                    <p class="text-[9px] font-extrabold text-gray-500 uppercase tracking-widest mb-2">Data</p>
                     <div class="flex items-center gap-2">
-                        <button id="btn-export-backup" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white text-[11px] font-semibold border border-white/10 transition flex items-center gap-1.5" title="Export Backup JSON">
+                        <button id="btn-export-backup" class="flex-1 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition flex items-center justify-center gap-2" title="Export Backup">
                             <i class="fa-solid fa-download text-accentCyan"></i> Backup
                         </button>
-                        <button id="btn-restore-backup" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-white text-[11px] font-semibold border border-white/10 transition flex items-center gap-1.5" title="Restore Backup JSON">
+                        <button id="btn-restore-backup" class="flex-1 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition flex items-center justify-center gap-2" title="Restore Backup">
                             <i class="fa-solid fa-upload text-accentAmber"></i> Restore
                         </button>
                         <input type="file" id="input-restore-file" class="hidden" accept=".json">
@@ -1218,20 +1169,18 @@
                 </div>
 
             </div>
-        </div>
-    </div>
 
-            <!-- Social links row -->
-            <div class="border-t border-white/5 pt-4 mt-4 flex items-center justify-between">
-                <span class="text-[10px] text-gray-500 font-extrabold uppercase">Connect with me:</span>
+            <!-- ── Social links (always at bottom, outside scroll) ── -->
+            <div class="border-t border-white/5 px-5 py-3 flex items-center justify-between shrink-0">
+                <span class="text-[9px] text-gray-500 font-extrabold uppercase tracking-wider">Connect</span>
                 <div class="flex items-center gap-4">
-                    <a href="https://www.linkedin.com/in/ug5711" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="LinkedIn">
+                    <a href="https://www.linkedin.com/in/ug5711" target="_blank" class="text-gray-400 hover:text-[#0A66C2] transition duration-200" title="LinkedIn">
                         <i class="fa-brands fa-linkedin text-lg"></i>
                     </a>
-                    <a href="https://www.instagram.com/ug_5711" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="Instagram">
+                    <a href="https://www.instagram.com/ug_5711" target="_blank" class="text-gray-400 hover:text-[#E1306C] transition duration-200" title="Instagram">
                         <i class="fa-brands fa-instagram text-lg"></i>
                     </a>
-                    <a href="http://t.me/@ug_5711" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="Telegram">
+                    <a href="http://t.me/@ug_5711" target="_blank" class="text-gray-400 hover:text-[#229ED9] transition duration-200" title="Telegram">
                         <i class="fa-brands fa-telegram text-lg"></i>
                     </a>
                     <a href="https://github.com/mini-page/" target="_blank" class="text-gray-400 hover:text-white transition duration-200" title="GitHub">
@@ -1239,6 +1188,7 @@
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 

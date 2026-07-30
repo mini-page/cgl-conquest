@@ -53,6 +53,65 @@ function filterShortcuts(q) {
     });
 }
 
+// Handle clickable action rows in the Action Center modal
+function handleShortcutAction(action) {
+    closeShortcutsHelpModal();
+    setTimeout(() => {
+        switch (action) {
+            // ── Navigation ──
+            case 'nav:page-dashboard':
+            case 'nav:page-syllabus':
+            case 'nav:page-speed':
+            case 'nav:page-plan':
+            case 'nav:page-mocks':
+            case 'nav:page-toolkit': {
+                const pageId = action.split(':')[1];
+                const navBtn = document.querySelector(`.nav-item[data-target="${pageId}"]`);
+                if (navBtn) navBtn.click();
+                break;
+            }
+            case 'nav:study-mode': {
+                const navBtn = document.querySelector('.nav-item[data-target="page-syllabus"]');
+                if (navBtn) navBtn.click();
+                if (window.syllabusState) {
+                    window.syllabusState.studyMode = true;
+                    if (window.renderSyllabus) window.renderSyllabus();
+                }
+                break;
+            }
+            case 'scroll-top':
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                break;
+            // ── Toggles ──
+            case 'toggle-theme': {
+                const btn = document.getElementById('theme-toggle');
+                if (btn) btn.click();
+                break;
+            }
+            case 'toggle-voice': {
+                const btn = document.getElementById('speech-toggle');
+                if (btn) btn.click();
+                break;
+            }
+            case 'toggle-notifications': {
+                const btn = document.getElementById('toast-toggle');
+                if (btn) btn.click();
+                break;
+            }
+            case 'toggle-pomodoro': {
+                const btn = document.getElementById('pomo-capsule');
+                if (btn) btn.click();
+                break;
+            }
+            case 'toggle-conquest': {
+                const btn = document.getElementById('btn-conquest-capsule');
+                if (btn) btn.click();
+                break;
+            }
+        }
+    }, 120); // slight delay so modal fade-out plays first
+}
+window.handleShortcutAction = handleShortcutAction;
 
 function expandNav() {
     if (navExpanded) return;
@@ -291,7 +350,13 @@ function initNavigation() {
             if (e.repeat) return;
             const now = Date.now();
             if (now - lastShiftTime < 300) {
-                openShortcutsHelpModal();
+                // Toggle: open if closed, close if open
+                const modal = document.getElementById("modal-shortcuts-help");
+                if (modal && modal.classList.contains("active")) {
+                    closeShortcutsHelpModal();
+                } else {
+                    openShortcutsHelpModal();
+                }
                 e.preventDefault();
             }
             lastShiftTime = now;
