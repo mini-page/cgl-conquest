@@ -31,27 +31,65 @@ function closeShortcutsHelpModal() {
     }
 }
 
+// Keyword aliases so single-letter/shorthand queries find the right rows
+const _SC_ALIASES = [
+    { keys: ["t", "theme", "dark", "light"],                    hint: "dark / light theme" },
+    { keys: ["v", "voice", "speech", "mute", "sound"],          hint: "voice announcements" },
+    { keys: ["n", "notif", "toast", "bell"],                    hint: "toast notifications" },
+    { keys: ["p", "pomo", "pomodoro", "timer"],                 hint: "pomodoro timer" },
+    { keys: ["c", "conquest", "challenge", "fire"],             hint: "conquest challenge" },
+    { keys: ["u", "scroll", "top"],                             hint: "scroll to top" },
+    { keys: ["1", "dashboard", "home"],                         hint: "dashboard" },
+    { keys: ["2", "syllabus", "track"],                         hint: "syllabus" },
+    { keys: ["3", "study", "mode"],                             hint: "study mode" },
+    { keys: ["4", "speed", "drill", "drills"],                  hint: "speed drills" },
+    { keys: ["5", "plan"],                                      hint: "study plan" },
+    { keys: ["6", "mock", "mocks", "analysis"],                 hint: "mock analysis" },
+    { keys: ["space", "spacebar", "start", "pause", "resume"],  hint: "start" },
+    { keys: ["esc", "escape", "exit", "stop", "close", "x"],    hint: "stop" },
+    { keys: ["enter", "restart", "typing"],                     hint: "enter" },
+    { keys: ["alt", "alt+space", "alt+x"],                      hint: "alt" },
+    { keys: ["e", "easy"],                                      hint: "easy" },
+    { keys: ["m", "medium", "med"],                             hint: "medium" },
+    { keys: ["a", "advance", "adv", "advanced"],                hint: "adv" },
+    { keys: ["d", "cycle", "difficulty"],                       hint: "cycle" },
+];
+
 function filterShortcuts(q) {
-    const lq = q.toLowerCase();
-    const sections = document.querySelectorAll("#modal-shortcuts-help .px-5.pt-3");
-    sections.forEach(section => {
-        const rows = section.querySelectorAll(".grid.grid-cols-2");
-        let anyVisible = false;
-        rows.forEach(row => {
-            const match = !lq || row.textContent.toLowerCase().includes(lq);
-            row.style.display = match ? "" : "none";
-            if (match) anyVisible = true;
-        });
-        // Hide/show section label too
-        const label = section.querySelector("p");
-        if (label) label.style.display = anyVisible || !lq ? "" : "none";
-        section.style.display = anyVisible || !lq ? "" : "none";
+    const raw = q.trim().toLowerCase();
+    const modal = document.getElementById("modal-shortcuts-help");
+    if (!modal) return;
+
+    // Expand single-key / shorthand queries via alias table
+    let lq = raw;
+    if (raw) {
+        const alias = _SC_ALIASES.find(a => a.keys.includes(raw));
+        if (alias) lq = alias.hint;
+    }
+
+    // Filter each actionable / info row
+    modal.querySelectorAll(".ac-row, .ac-toggle-row, .ac-info-row").forEach(row => {
+        const match = !lq || row.textContent.toLowerCase().includes(lq);
+        row.style.display = match ? "" : "none";
     });
-    // Also show/hide the divider lines between sections
-    document.querySelectorAll("#modal-shortcuts-help .border-t.border-white\\/5.mx-5").forEach(hr => {
+
+    // Show/hide each section container (identified by having a <p> label child)
+    modal.querySelectorAll(".px-5").forEach(section => {
+        const label = section.querySelector("p");
+        if (!label) return; // not a section block
+        if (!lq) { section.style.display = ""; return; }
+        const anyVisible = Array.from(
+            section.querySelectorAll(".ac-row, .ac-toggle-row, .ac-info-row")
+        ).some(r => r.style.display !== "none");
+        section.style.display = anyVisible ? "" : "none";
+    });
+
+    // Hide section dividers while a query is active
+    modal.querySelectorAll(".border-t.mx-5").forEach(hr => {
         hr.style.display = lq ? "none" : "";
     });
 }
+
 
 // Handle clickable action rows in the Action Center modal
 function handleShortcutAction(action) {
