@@ -747,6 +747,7 @@ function endChallengeRun(completed = false, aborted = false) {
         
         if (pass) {
             speakText("Conquest cleared");
+            if (window.triggerConfetti) window.triggerConfetti();
             alert(`🔥 CONQUEST RUN CLEARED!\nScore: ${challengeScore} / 25 correct!\nTime taken: ${timeTaken} seconds.\nRating: Super Human reflexes unlocked!`);
         } else {
             speakText("Cutoff not cleared");

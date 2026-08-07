@@ -41,7 +41,7 @@ const _SC_ALIASES = [
     { keys: ["u", "scroll", "top"],                             hint: "scroll to top" },
     { keys: ["1", "dashboard", "home"],                         hint: "dashboard" },
     { keys: ["2", "syllabus", "track"],                         hint: "syllabus" },
-    { keys: ["3", "study", "mode"],                             hint: "study mode" },
+    { keys: ["3", "study", "toolkit"],                          hint: "study / toolkit" },
     { keys: ["4", "speed", "drill", "drills"],                  hint: "speed drills" },
     { keys: ["5", "plan"],                                      hint: "study plan" },
     { keys: ["6", "mock", "mocks", "analysis"],                 hint: "mock analysis" },
@@ -106,15 +106,6 @@ function handleShortcutAction(action) {
                 const pageId = action.split(':')[1];
                 const navBtn = document.querySelector(`.nav-item[data-target="${pageId}"]`);
                 if (navBtn) navBtn.click();
-                break;
-            }
-            case 'nav:study-mode': {
-                const navBtn = document.querySelector('.nav-item[data-target="page-syllabus"]');
-                if (navBtn) navBtn.click();
-                if (window.syllabusState) {
-                    window.syllabusState.studyMode = true;
-                    if (window.renderSyllabus) window.renderSyllabus();
-                }
                 break;
             }
             case 'scroll-top':
@@ -536,32 +527,10 @@ function initNavigation() {
             }
         }
 
-        if (e.key === "3") {
-            const activePage = document.querySelector('.content-page:not(.hidden)');
-            const activeId = activePage ? activePage.id : '';
-            
-            if (activeId !== 'page-syllabus') {
-                const navBtn = document.querySelector(`.nav-item[data-target="page-syllabus"]`);
-                if (navBtn) {
-                    navBtn.click();
-                }
-                if (window.syllabusState) {
-                    window.syllabusState.studyMode = true;
-                    if (window.renderSyllabus) window.renderSyllabus();
-                }
-            } else {
-                if (window.syllabusState) {
-                    window.syllabusState.studyMode = !window.syllabusState.studyMode;
-                    if (window.renderSyllabus) window.renderSyllabus();
-                }
-            }
-            e.preventDefault();
-            return;
-        }
-
         let targetPage = "";
         if (e.key === "1") targetPage = "page-dashboard";
         else if (e.key === "2") targetPage = "page-syllabus";
+        else if (e.key === "3") targetPage = "page-toolkit";
         else if (e.key === "4") targetPage = "page-speed";
         else if (e.key === "5") targetPage = "page-plan";
         else if (e.key === "6") targetPage = "page-mocks";

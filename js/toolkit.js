@@ -200,7 +200,7 @@ function renderSubjectGrid(subjects) {
     
     subjects.forEach(sub => {
         const card = document.createElement("div");
-        card.className = "cursor-pointer bg-bgCard border border-white/5 hover:border-accentCyan/30 hover:shadow-cyan-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px]";
+        card.className = "cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 hover:shadow-cyan-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px] backdrop-blur-xl";
         card.innerHTML = `
             <span class="w-12 h-12 rounded-xl bg-accentCyan/10 text-accentCyan flex items-center justify-center text-xl">
                 <i class="fa-solid ${sub.icon || 'fa-toolbox'}"></i>
@@ -213,7 +213,7 @@ function renderSubjectGrid(subjects) {
     
     // Append Custom Notes & Mistakes Card (Mistake Book)
     const notesCard = document.createElement("div");
-    notesCard.className = "cursor-pointer bg-bgCard border border-white/5 hover:border-accentPurple/30 hover:shadow-purple-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px]";
+    notesCard.className = "cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentPurple/30 hover:shadow-purple-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px] backdrop-blur-xl";
     notesCard.innerHTML = `
         <span class="w-12 h-12 rounded-xl bg-accentPurple/10 text-accentPurple flex items-center justify-center text-xl">
             <i class="fa-solid fa-pen-to-square"></i>
@@ -225,7 +225,7 @@ function renderSubjectGrid(subjects) {
 
     // Append Quick Reference Tables Card
     const refCard = document.createElement("div");
-    refCard.className = "cursor-pointer bg-bgCard border border-white/5 hover:border-accentAmber/30 hover:shadow-amber-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px]";
+    refCard.className = "cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentAmber/30 hover:shadow-amber-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px] backdrop-blur-xl";
     refCard.innerHTML = `
         <span class="w-12 h-12 rounded-xl bg-accentAmber/10 text-accentAmber flex items-center justify-center text-xl">
             <i class="fa-solid fa-table-list"></i>
@@ -291,7 +291,7 @@ function initStudyToolbar() {
             </button>
             <div data-study-dd-panel="view" class="hidden dropdown-panel absolute right-0 mt-2 w-64 bg-panel border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin">
                 ${Object.keys(viewNames).map(vId => `
-                    <button class="w-full text-left p-2.5 rounded-xl text-xs flex items-center gap-2 hover:bg-white/5 transition font-semibold ${studyState.view === vId ? 'text-accentCyan bg-white/[0.03]' : 'text-gray-300'}" onclick="setStudyView('${vId}')">
+                    <button class="w-full text-left p-2.5 rounded-xl text-xs flex items-center gap-2 hover:bg-white/10 transition font-semibold ${studyState.view === vId ? 'text-accentCyan bg-white/[0.03]' : 'text-gray-300'}" onclick="setStudyView('${vId}')">
                         <span>${viewIcons[vId]}</span><span>${viewNames[vId]}</span>
                     </button>
                 `).join('')}
@@ -313,7 +313,7 @@ function initStudyToolbar() {
                     { id: 'difficulty', label: 'Difficulty Level' },
                     { id: 'roi', label: 'ROI (Return on Investment)' }
                 ].map(opt => `
-                    <button class="w-full text-left p-2.5 rounded-xl text-xs hover:bg-white/5 transition font-semibold ${studyState.sortBy === opt.id ? 'text-accentCyan bg-white/[0.03]' : 'text-zinc-300'}" onclick="setStudySort('${opt.id}')">
+                    <button class="w-full text-left p-2.5 rounded-xl text-xs hover:bg-white/10 transition font-semibold ${studyState.sortBy === opt.id ? 'text-accentCyan bg-white/[0.03]' : 'text-zinc-300'}" onclick="setStudySort('${opt.id}')">
                         ${opt.label}
                     </button>
                 `).join('')}
@@ -533,7 +533,7 @@ function renderStudyTree(items) {
                 </div>
                 <div class="divide-y divide-white/5">
                     ${gp.list.map(sub => `
-                        <div class="flex items-center justify-between p-3.5 hover:bg-white/5 cursor-pointer transition select-none" onclick="openStudyViewer('${sub.id}')">
+                        <div class="flex items-center justify-between p-3.5 hover:bg-white/10 cursor-pointer transition select-none backdrop-blur-xl" onclick="openStudyViewer('${sub.id}')">
                             <div class="flex items-center gap-3">
                                 <span class="text-xs text-gray-300 font-semibold">${sub.name}</span>
                                 <div class="flex gap-1.5">
@@ -545,7 +545,7 @@ function renderStudyTree(items) {
                                     <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase bg-white/5 text-gray-400 border border-white/5">${sub.roi} ROI</span>
                                 </div>
                             </div>
-                            <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/2px px-2 py-0.5 border border-white/5 rounded-full hover:text-white transition">Read →</span>
+                            <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/5 px-2 py-0.5 border border-white/10 rounded-full hover:text-white transition">Read →</span>
                         </div>
                     `).join('')}
                 </div>
@@ -558,9 +558,9 @@ function renderStudyExplorer(items) {
     if (studyState.chapter) {
         return `
         <div class="space-y-4">
-            <div class="divide-y divide-white/5 bg-white/2px border border-white/5 rounded-2xl">
+            <div class="divide-y divide-white/10 bg-bgCard/50 border border-white/10 rounded-2xl backdrop-blur-xl">
                 ${items.map(sub => `
-                    <div class="flex items-center justify-between p-3.5 hover:bg-white/5 cursor-pointer transition select-none" onclick="openStudyViewer('${sub.id}')">
+                    <div class="flex items-center justify-between p-3.5 hover:bg-white/10 cursor-pointer transition select-none backdrop-blur-xl" onclick="openStudyViewer('${sub.id}')">
                         <div class="flex items-center gap-3">
                             <span class="text-xs text-gray-300 font-semibold">${sub.name}</span>
                             <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
@@ -569,7 +569,7 @@ function renderStudyExplorer(items) {
                                 'bg-accentAmber/10 text-accentAmber border border-accentAmber/20'
                             }">${sub.difficulty}</span>
                         </div>
-                        <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/2px px-2 py-0.5 border border-white/5 rounded-full">Read →</span>
+                        <span class="text-[9px] text-gray-500 font-extrabold uppercase bg-white/5 px-2 py-0.5 border border-white/10 rounded-full">Read →</span>
                     </div>
                 `).join('')}
             </div>
@@ -585,7 +585,7 @@ function renderStudyExplorer(items) {
     return `
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         ${Object.keys(topics).map(tId => `
-            <div class="cursor-pointer bg-white/2px border border-white/5 hover:border-accentCyan/30 p-4 rounded-xl flex items-center gap-3 hover:bg-white/5 transition" onclick="setStudyExplorerChapter('${tId}')">
+            <div class="cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 p-4 rounded-xl backdrop-blur-xl flex items-center gap-3 hover:bg-white/10 transition" onclick="setStudyExplorerChapter('${tId}')">
                 <span class="text-2xl text-accentCyan">📂</span>
                 <div class="truncate">
                     <h5 class="text-xs font-bold text-gray-200 truncate">${topics[tId].name}</h5>
@@ -621,10 +621,10 @@ function setStudyExplorerChapter(tId) {
 
 function renderStudyCompact(items) {
     return `
-    <div class="bg-white/2px border border-white/5 rounded-2xl p-4">
+    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-4 backdrop-blur-xl">
         <ul class="space-y-2.5">
             ${items.map(sub => `
-                <li class="flex items-center justify-between text-xs border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                <li class="flex items-center justify-between text-xs border-b border-white/10 pb-2 last:border-0 last:pb-0">
                     <span class="cursor-pointer font-medium text-gray-300 hover:text-accentCyan transition" onclick="openStudyViewer('${sub.id}')">${sub.name}</span>
                     <span class="text-[9px] font-mono text-gray-500">${sub.topicName}</span>
                 </li>
@@ -637,7 +637,7 @@ function renderStudyGrid(items) {
     return `
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
         ${items.map(sub => `
-            <div class="bg-bgCard border border-white/5 hover:border-accentCyan/30 rounded-xl p-4 shadow-md flex flex-col justify-between cursor-pointer hover:-translate-y-0.5 transition duration-200" onclick="openStudyViewer('${sub.id}')">
+            <div class="bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 rounded-xl p-4 shadow-md backdrop-blur-xl flex flex-col justify-between cursor-pointer hover:-translate-y-0.5 transition duration-200" onclick="openStudyViewer('${sub.id}')">
                 <div>
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-[9px] text-gray-500 font-bold uppercase truncate max-w-[150px]">${sub.topicName}</span>
@@ -649,7 +649,7 @@ function renderStudyGrid(items) {
                     </div>
                     <h4 class="text-xs font-bold text-white leading-relaxed mb-3">${sub.name}</h4>
                 </div>
-                <div class="flex justify-between items-center text-[10px] text-gray-500 pt-2 border-t border-white/5 mt-2">
+                <div class="flex justify-between items-center text-[10px] text-gray-500 pt-2 border-t border-white/10 mt-2">
                     <span>ROI: <strong class="text-gray-400">${sub.roi.toUpperCase()}</strong></span>
                     <span class="text-accentCyan font-bold uppercase text-[9px]">Read Note →</span>
                 </div>
@@ -676,7 +676,7 @@ function renderStudyKanban(items) {
         ${Object.keys(columns).map(colKey => {
             const col = columns[colKey];
             return `
-            <div class="bg-white/2px border border-white/5 rounded-2xl p-3 flex flex-col min-h-[300px]">
+            <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-3 backdrop-blur-xl flex flex-col min-h-[300px]">
                 <div class="flex justify-between items-center mb-3 pb-2 border-b border-white/5">
                     <h4 class="text-xs font-bold text-white uppercase tracking-wider">${col.name}</h4>
                     <span class="px-2 py-0.5 bg-white/5 border border-white/5 text-[9px] font-mono text-gray-400 rounded-full">${col.list.length}</span>
@@ -685,7 +685,7 @@ function renderStudyKanban(items) {
                     ${col.list.length === 0 ? `
                         <div class="text-center text-[10px] text-gray-600 italic py-6">No notes here</div>
                     ` : col.list.map(sub => `
-                        <div class="bg-bgCard border border-white/5 hover:border-accentCyan/30 rounded-xl p-3 cursor-pointer hover:bg-white/5 transition" onclick="openStudyViewer('${sub.id}')">
+                        <div class="bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 rounded-xl p-3 cursor-pointer hover:bg-white/10 backdrop-blur-xl transition" onclick="openStudyViewer('${sub.id}')">
                             <p class="text-xs font-bold text-gray-200 leading-normal mb-1.5">${sub.name}</p>
                             <div class="flex justify-between items-center text-[9px] text-gray-500">
                                 <span class="truncate max-w-[120px]">${sub.topicName}</span>
@@ -701,8 +701,8 @@ function renderStudyKanban(items) {
 
 function renderStudyTable(items) {
     return `
-    <div class="overflow-x-auto rounded-2xl border border-white/5 bg-white/2px">
-        <table class="w-full text-left divide-y divide-white/5 border-collapse">
+    <div class="overflow-x-auto rounded-2xl border border-white/10 bg-bgCard/50 backdrop-blur-xl">
+        <table class="w-full text-left divide-y divide-white/10 border-collapse">
             <thead>
                 <tr class="bg-white/5 text-[9.5px] font-extrabold uppercase text-gray-400 tracking-wider">
                     <th class="px-4 py-3">Topic / Subtopic</th>
@@ -712,7 +712,7 @@ function renderStudyTable(items) {
                     <th class="px-4 py-3 text-right">Action</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-white/5 text-xs">
+            <tbody class="divide-y divide-white/10 text-xs">
                 ${items.map(sub => `
                     <tr class="hover:bg-white/[0.02] transition">
                         <td class="px-4 py-2.5 font-bold text-white cursor-pointer hover:text-accentCyan" onclick="openStudyViewer('${sub.id}')">${sub.name}</td>
@@ -1233,7 +1233,7 @@ function renderToolkit() {
         const catBorder = n.category === "mistake" ? "border-l-accentRose" : n.category === "formula" ? "border-l-accentCyan" : "border-l-accentAmber";
         
         html += `
-            <div class="bg-white/2px border-l-2 ${catBorder} border-t border-r border-b border-white/5 rounded-lg p-3 relative hover:bg-white/5 transition">
+            <div class="bg-white/2px border-l-2 ${catBorder} border-t border-r border-b border-white/5 rounded-lg p-3 relative hover:bg-white/10 transition">
                 <div class="flex justify-between items-start gap-2">
                     <h5 class="text-xs font-bold text-white">${n.title}</h5>
                     <button class="text-gray-500 hover:text-accentRose text-xs" onclick="deleteNote('${n.id}')" title="Delete Note">

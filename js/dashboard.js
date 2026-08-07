@@ -242,9 +242,18 @@ function calculateOverallStats() {
 function renderDashboardOverview() {
     const stats = calculateOverallStats();
     
-    // Prep Score card
+    // Prep Score & Exam Readiness Capsules
     document.getElementById("prep-score").innerText = stats.prepScore + "%";
     document.getElementById("prep-score-fill").style.width = stats.prepScore + "%";
+    const readinessEl = document.getElementById("readiness-score-display");
+    if (readinessEl) readinessEl.innerText = stats.prepScore + "%";
+    const readinessFillEl = document.getElementById("readiness-score-fill");
+    if (readinessFillEl) readinessFillEl.style.width = stats.prepScore + "%";
+
+    // Streak Capsule Update
+    updateStreakData();
+    const streakEl = document.getElementById("streak-count-display");
+    if (streakEl) streakEl.innerText = `${appState.streak || 1}d Streak`;
     
     // Day progress card
     document.getElementById("day-progress").innerText = `Day ${appState.currentDay} of 40`;
@@ -420,33 +429,59 @@ function renderTodayMissions() {
 }
 
 function loadRituals() {
-    const rDrill = document.getElementById("ritual-drill");
-    const rVocab = document.getElementById("ritual-vocab");
-    const rCA = document.getElementById("ritual-ca");
-    const rComp = document.getElementById("ritual-computer");
-
-    rDrill.checked = appState.dailyRituals.drill;
-    rVocab.checked = appState.dailyRituals.vocab;
-    rCA.checked = appState.dailyRituals.ca;
-    rComp.checked = appState.dailyRituals.computer;
-
-    const ritualCbs = [
-        { el: rDrill, key: "drill" },
-        { el: rVocab, key: "vocab" },
-        { el: rCA, key: "ca" },
-        { el: rComp, key: "computer" }
+    const ritualKeys = [
+        { id: "ritual-drill", key: "drill" },
+        { id: "ritual-vocab", key: "vocab" },
+        { id: "ritual-ca", key: "ca" },
+        { id: "ritual-computer", key: "computer" }
     ];
 
-    ritualCbs.forEach(item => {
-        const newEl = item.el.cloneNode(true);
-        item.el.parentNode.replaceChild(newEl, item.el);
-        
-        newEl.addEventListener("change", (e) => {
-            appState.dailyRituals[item.key] = e.target.checked;
+    ritualKeys.forEach(({ id, key }) => {
+        const cb = document.getElementById(id);
+        if (!cb) return;
+
+        const isChecked = appState.dailyRituals[key] === true;
+        cb.checked = isChecked;
+        syncRitualVisual(cb, isChecked);
+
+        cb.onchange = (e) => {
+            const checked = e.target.checked;
+            appState.dailyRituals[key] = checked;
+            syncRitualVisual(cb, checked);
             saveStateToStorage();
             updateTodayGoalsRatio();
-        });
+            updateRitualProgress();
+        };
     });
+
+    updateRitualProgress();
+}
+
+function syncRitualVisual(cb, checked) {
+    const label = cb.closest(".ritual-checkbox");
+    if (!label) return;
+
+    const circle = label.querySelector("div.w-4");
+    const icon = label.querySelector("i.fa-check");
+    if (!circle || !icon) return;
+
+    if (checked) {
+        circle.classList.remove("border-white/20");
+        circle.classList.add("border-accentAmber/50", "bg-accentAmber/10");
+        icon.classList.remove("opacity-0");
+        icon.classList.add("opacity-100");
+    } else {
+        circle.classList.remove("border-accentAmber/50", "bg-accentAmber/10");
+        circle.classList.add("border-white/20");
+        icon.classList.remove("opacity-100");
+        icon.classList.add("opacity-0");
+    }
+}
+
+function updateRitualProgress() {
+    const completed = Object.values(appState.dailyRituals).filter(Boolean).length;
+    const labelEl = document.getElementById("ritual-progress-label");
+    if (labelEl) labelEl.innerText = `${completed}/4`;
 }
 
 function renderSubjectProgressBars() {
@@ -758,3 +793,99 @@ function initPomoTimer() {
 
     updatePomoDisplay();
 }
+
+// Update Daily Streak Calculation
+function updateStreakData() {
+    const today = new Date().toISOString().split('T')[0];
+    if (!appState.lastActiveDate) {
+        appState.lastActiveDate = today;
+        appState.streak = 1;
+        saveStateToStorage();
+        return;
+    }
+
+    if (appState.lastActiveDate === today) {
+        return; // Already active today
+    }
+
+    const lastDate = new Date(appState.lastActiveDate);
+    const currentDate = new Date(today);
+    const diffTime = Math.abs(currentDate - lastDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) {
+        appState.streak = (appState.streak || 1) + 1;
+    } else if (diffDays > 1) {
+        appState.streak = 1;
+    }
+    appState.lastActiveDate = today;
+    saveStateToStorage();
+}
+
+// Global Lightweight Canvas Confetti Engine
+window.triggerConfetti = function() {
+    try {
+        const canvas = document.createElement("canvas");
+        canvas.style.position = "fixed";
+        canvas.style.top = "0";
+        canvas.style.left = "0";
+        canvas.style.width = "100vw";
+        canvas.style.height = "100vh";
+        canvas.style.pointerEvents = "none";
+        canvas.style.zIndex = "99999";
+        document.body.appendChild(canvas);
+
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ["#06b6d4", "#8b5cf6", "#f43f5e", "#f59e0b", "#10b981", "#ec4899", "#3b82f6"];
+        const particles = [];
+        const particleCount = 75;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: canvas.width / 2 + (Math.random() * 240 - 120),
+                y: canvas.height * 0.35 + (Math.random() * 100 - 50),
+                vx: (Math.random() - 0.5) * 14,
+                vy: (Math.random() - 0.8) * 14,
+                size: Math.random() * 9 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * 360,
+                rSpeed: (Math.random() - 0.5) * 12,
+                opacity: 1
+            });
+        }
+
+        const startTime = Date.now();
+        function animate() {
+            const elapsed = Date.now() - startTime;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.28; // Gravity
+                p.rotation += p.rSpeed;
+                p.opacity = Math.max(0, 1 - elapsed / 2200);
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+            });
+
+            if (elapsed < 2200) {
+                requestAnimationFrame(animate);
+            } else {
+                canvas.remove();
+            }
+        }
+        requestAnimationFrame(animate);
+    } catch (e) {
+        console.warn("Confetti trigger failed:", e);
+    }
+};

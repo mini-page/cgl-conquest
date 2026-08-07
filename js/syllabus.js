@@ -80,112 +80,6 @@ try {
     return appState.syllabusProgress[id];
   }
 
-  function findStudyNoteForSyllabus(subtopicId) {
-    const directMap = {
-      'q-1-1': 'percentage_product_constancy',
-      'q-1-2': 'percentage_product_constancy',
-      'q-1-3': 'percentage_product_constancy',
-      'q-2-2': 'profit_loss_successive_discounts',
-      'q-3-3': 'simple_compound_interest',
-      'q-4-1': 'algebraic_identities_roots',
-      'q-5-1': 'geometry_centers_theorems',
-      'q-5-2': 'geometry_centers_theorems',
-      'q-6-1': 'mensuration_3d_surfaces_volumes',
-      'q-7-1': 'time_speed_distance_boats',
-      'q-7-2': 'time_speed_distance_boats',
-      'q-8-1': 'time_work_equivalence',
-      'q-9-1': 'trigonometric_values_amp_formulas_table',
-      'q-10-1': 'coordinate_geometry',
-      
-      'r-1-1': 'alphabet_code_map_ejoty',
-      'r-2-1': 'clock_hands_angle_equation',
-      'r-3-1': 'calendar_odd_days_rules',
-      'r-4-1': 'syllogism_truth_matrix',
-      'r-5-1': 'direction_sense_shadows_triplets',
-      'r-5-2': 'direction_sense_shadows_triplets',
-      'r-6-1': 'dice_closed_open_rules',
-      
-      'e-1-1': 'subject-verb_agreement_core_cases',
-      'e-2-1': 'conditional_clauses_structure',
-      'e-3-1': 'active_passive_transformations',
-      'e-4-1': 'direct_indirect_speech_rules',
-      'e-5-1': 'plural_vs_singular_noun_traps',
-      'e-6-1': 'pronoun_order_cases',
-      'e-7-1': 'fixed_prepositions_combinations',
-      
-      'g-1-1': 'top_15_articles_to_memorize_first',
-      'g-1-2': 'tier_1_constitutional_articles_must_know',
-      'g-1-3': 'tier_2_articles_very_high_frequency',
-      'g-1-4': 'tier_3_articles_frequently_asked',
-      'g-1-5': 'constitution_articles_memory_roadmap',
-      'g-1-6': 'daily_micro_trick_the_5-point_memory_chain',
-      'g-2-1': 'rivers',
-      'g-2-2': 'mountains',
-      'g-2-3': 'dams',
-      'g-2-4': 'passes',
-      'g-3-1': 'crucial_battles_timelines',
-      'g-4-1': 'units',
-      'g-4-2': 'facts',
-      
-      'c-1-1': 'keyboard_shortcut_commands',
-      'c-1-2': 'keyboard_shortcut_commands',
-      'c-2-2': 'keyboard_shortcut_commands',
-      'c-2-3': 'ms_excel_formulas_cell_referencing',
-      'c-3-1': 'internet_protocols_network_port_mappings',
-      'c-3-2': 'internet_protocols_network_port_mappings',
-      'c-4-1': 'cybersecurity_malwares_safeguards',
-      'c-4-2': 'cybersecurity_malwares_safeguards'
-    };
-
-    const directId = directMap[subtopicId];
-    if (directId) return directId;
-
-    let syllabusName = "";
-    if (global.SYLLABUS_DATA) {
-      for (const topic of global.SYLLABUS_DATA) {
-        const sub = topic.subtopics.find(s => s.id === subtopicId);
-        if (sub) {
-          syllabusName = sub.name.toLowerCase();
-          break;
-        }
-      }
-    }
-
-    if (!syllabusName || !window.studySubjects) return null;
-
-    const words = syllabusName.split(/[^a-z0-9]+/);
-    let bestId = null;
-    let maxMatches = 0;
-
-    for (const subject of window.studySubjects.subjects) {
-      for (const topic of subject.topics) {
-        for (const sub of topic.subtopics) {
-          const subName = sub.name.toLowerCase();
-          let matches = 0;
-          words.forEach(w => {
-            if (w.length > 2 && subName.includes(w)) matches++;
-          });
-          if (matches > maxMatches) {
-            maxMatches = matches;
-            bestId = sub.id;
-          }
-        }
-      }
-    }
-
-    return bestId;
-  }
-
-  function tryOpenStudyNote(subtopicId) {
-    const noteId = findStudyNoteForSyllabus(subtopicId);
-    if (noteId && typeof window.openStudyViewer === 'function') {
-      window.openStudyViewer(noteId);
-    } else {
-      alert("Study guide for this topic is currently being compiled! Keep practicing.");
-    }
-  }
-  window.tryOpenStudyNote = tryOpenStudyNote;
-
   function setStage(id, stage) {
     const map = {
       new:{learned:false,practiced:false,mastered:false},
@@ -253,7 +147,6 @@ try {
     compactPath: new Set(),
     expandedGroups: new Set(),
     openDropdown: null,
-    studyMode: false,
   };
 
   // Sorting Options
@@ -505,25 +398,6 @@ try {
       </div>`;
     }
     
-    // Bind Study Mode Toggle Button
-    const toggleBtn = document.getElementById('btn-toggle-study-mode');
-    if (toggleBtn) {
-      if (syllabusState.studyMode) {
-        toggleBtn.className = "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition bg-accentCyan/15 border-accentCyan/40 text-accentCyan hover:bg-accentCyan/20 shrink-0 font-bold";
-        toggleBtn.innerHTML = `<i class="fa-solid fa-book-open"></i> <span>Study Mode: ON</span>`;
-      } else {
-        toggleBtn.className = "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition bg-panel2 border-line text-zinc-400 hover:text-white shrink-0 font-bold";
-        toggleBtn.innerHTML = `<i class="fa-solid fa-book-open"></i> <span>Study Mode: OFF</span>`;
-      }
-      
-      toggleBtn.onclick = (e) => {
-        e.stopPropagation();
-        syllabusState.studyMode = !syllabusState.studyMode;
-        initToolbar();
-        renderAll();
-      };
-    }
-    
     // Bind events
     document.querySelectorAll('[data-dd-btn]').forEach(btn => {
       btn.onclick = (e) => {
@@ -616,13 +490,15 @@ try {
       const active = syllabusState.subject === s.id;
       return `
       <button data-subj="${s.id}" class="subj-ring shrink-0 snap-start w-[190px] md:w-auto text-left ${active ? c.soft+' '+c.border : 'bg-panel border-line'} border rounded-2xl p-3 flex items-center gap-3 hover:border-${s.color==='blue'?'blue-400':s.color}/40 transition">
-        <svg width="52" height="52" viewBox="0 0 52 52" class="shrink-0 -rotate-90">
+        <div class="relative shrink-0">
+          <svg width="52" height="52" viewBox="0 0 52 52" class="-rotate-90">
           <circle class="ring-track" cx="26" cy="26" r="${r}" stroke-width="4"></circle>
           <circle class="ring-progress" cx="26" cy="26" r="${r}" stroke-width="4" stroke="${c.ring}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"></circle>
-        </svg>
+            <text x="26" y="26" text-anchor="middle" dominant-baseline="middle" class="text-[7px] font-mono font-bold fill-current ${c.text}" transform="rotate(90 26 26)">${pct}%</text>
+          </svg>
+        </div>
         <div class="min-w-0">
-          <div class="text-[11px] font-mono ${c.text}">${pct}%</div>
-          <div class="text-xs font-semibold text-zinc-200 truncate">${s.icon} ${s.name.split(' ')[0]}</div>
+          <div class="text-sm font-bold text-zinc-200 truncate">${s.icon} ${s.name.split(' ')[0]}</div>
           <div class="text-[10px] text-zinc-500 font-mono">${done}/${total} mastered</div>
         </div>
       </button>`;
@@ -664,9 +540,6 @@ try {
   function effortLabel(e){ return `<span class="text-[10px] font-mono text-zinc-500">EFFORT: ${e.toUpperCase()}</span>`; }
 
   function miniTri(it) {
-    if (syllabusState.studyMode) {
-      return `<button class="text-accentCyan hover:text-cyan-400 font-bold uppercase text-[9px] bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded transition" onclick="tryOpenStudyNote('${it.id}')">Read</button>`;
-    }
     const f = flags(it.id);
     return `<div class="flex items-center gap-1" title="L / P / M">
       <span data-tri="${it.id}" data-flag="learned" title="Learned" class="tri-box ${f.learned?'on':''}">${f.learned?'✓':''}</span>
@@ -676,16 +549,6 @@ try {
   }
 
   function triStateRow(it) {
-    if (syllabusState.studyMode) {
-      return `
-      <div class="px-4 py-3 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition cursor-pointer" onclick="tryOpenStudyNote('${it.id}')">
-        <p class="text-sm text-zinc-100 mb-1.5 font-medium hover:text-accentCyan transition">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
-        <div class="flex items-center flex-wrap gap-2 mb-1.5">${diffPill(it.difficulty)}${weightPill(it.weight)}${effortLabel(it.effort)}</div>
-        <div class="flex justify-between items-center text-[10px] text-gray-500">
-          <span class="text-accentCyan font-bold uppercase text-[9px]">Read Note →</span>
-        </div>
-      </div>`;
-    }
     const f = flags(it.id);
     return `
     <div class="px-4 py-3 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition">
@@ -902,13 +765,6 @@ try {
                   <span class="ml-auto text-[10px] font-mono text-zinc-700">${gs.done}/${gs.total}</span>
                 </button>
                 ${gOpen ? `<div class="pl-8 pb-1">${sortItems(g.items).map(it => {
-                  if (syllabusState.studyMode) {
-                    return `
-                    <div class="flex items-center gap-2 py-1 cursor-pointer" onclick="tryOpenStudyNote('${it.id}')">
-                      <span class="text-[9px] text-accentCyan font-bold">Read →</span>
-                      <span class="text-[11px] text-zinc-300 hover:text-accentCyan transition">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</span>
-                    </div>`;
-                  }
                   return `
                   <div class="flex items-center gap-2 py-1">
                     <span data-toggle-all="${it.id}" title="Marks Learned + Practiced + Mastered together" class="tri-box m ${fullyDone(it.id)?'on m':''}">${fullyDone(it.id)?'✓':''}</span>
@@ -1024,41 +880,6 @@ try {
 
   function renderKanban(subjects) {
     let items = subjects.flatMap(s => s.chapters.flatMap(c => c.groups.flatMap(g => g.items)));
-
-    if (syllabusState.studyMode) {
-      const columns = [
-        { id: 'easy', label: 'Easy Core', color: 'text-teal' },
-        { id: 'medium', label: 'Moderate/Medium', color: 'text-violet' },
-        { id: 'hard', label: 'Hard Advanced', color: 'text-amber' }
-      ];
-      const board = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">` + columns.map(col => {
-        const colKey = col.id;
-        const list = sortItems(items.filter(it => {
-          const diff = it.difficulty.toLowerCase();
-          return (colKey === 'medium' && (diff === 'medium' || diff === 'moderate')) || (diff === colKey);
-        }));
-        return `
-        <div class="bg-panel border border-line rounded-2xl p-3 min-h-[250px] transition">
-          <div class="flex items-center justify-between mb-3 px-1">
-            <span class="text-[10px] font-mono uppercase tracking-wider ${col.color} font-bold">${col.label}</span>
-            <span class="text-[10px] font-mono text-zinc-500">${list.length}</span>
-          </div>
-          <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin">
-            ${list.slice(0,60).map(it => `
-              <div class="kanban-card bg-panel2 border border-line rounded-xl p-3 shadow-sm hover:border-teal/30 hover:bg-white/5 transition cursor-pointer" onclick="tryOpenStudyNote('${it.id}')">
-                <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium hover:text-accentCyan transition">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
-                <p class="text-[9px] text-zinc-500 font-mono mb-2">${it.topicName} &bull; ${it.subjectName.split(' ')[0]}</p>
-                <div class="flex gap-1 justify-between items-center">
-                  ${diffPill(it.difficulty)}
-                  <span class="text-accentCyan uppercase font-bold text-[9px]">Read →</span>
-                </div>
-              </div>`).join('')}
-            ${list.length===0 ? `<p class="text-[9px] text-zinc-600 font-mono text-center pt-1 select-none">no matches</p>` : ''}
-          </div>
-        </div>`;
-      }).join('') + `</div>`;
-      return board;
-    }
 
     const board = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">` + KANBAN_STAGES.map(st => {
       const list = sortItems(items.filter(it => itemStage(it.id) === st.id));
@@ -1250,7 +1071,6 @@ try {
     }
   };
   window.syllabusState = syllabusState;
-  window.findStudyNoteForSyllabus = findStudyNoteForSyllabus;
 
   // Initial triggers
   document.addEventListener("DOMContentLoaded", () => {

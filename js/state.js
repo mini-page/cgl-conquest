@@ -3354,6 +3354,8 @@ function loadStateFromStorage() {
             if (appState.speechEnabled === undefined) appState.speechEnabled = true;
             if (appState.toastEnabled === undefined) appState.toastEnabled = true;
             if (appState.examTier === undefined) appState.examTier = 1;
+            if (appState.streak === undefined) appState.streak = 1;
+            if (!appState.lastActiveDate) appState.lastActiveDate = new Date().toISOString().split('T')[0];
             if (!appState.mocks) appState.mocks = [];
             if (!appState.notes) appState.notes = [];
             if (!appState.dailyRituals) appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };

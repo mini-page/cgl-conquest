@@ -80,7 +80,8 @@
     </div>
 
     <!-- POMODORO TIMER PANEL POPOVER -->
-    <div id="pomo-drawer" class="fixed top-16 right-4 w-72 bg-bgCard border border-white/10 shadow-2xl z-50 rounded-3xl p-5 select-none opacity-0 pointer-events-none transform -translate-y-2 transition-all duration-200 ease-out backdrop-blur-lg flex flex-col justify-between">
+    <div id="pomo-drawer" class="fixed top-16 right-4 w-72 bg-white/5 border border-white/10 shadow-2xl z-50 rounded-3xl select-none opacity-0 pointer-events-none transform -translate-y-2 transition-all duration-200 ease-out backdrop-blur-xl flex flex-col justify-between">
+        <div class="bg-bgCard/60 rounded-2xl p-5 flex flex-col flex-grow h-full overflow-hidden">
         <div>
             <!-- Header -->
             <div class="flex justify-between items-center border-b border-white/5 pb-3 mb-4">
@@ -104,9 +105,9 @@
             
             <!-- Mode Selection pills -->
             <div class="flex justify-center gap-1.5 mb-4">
-                <button class="btn-pomo-mode px-2.5 py-1.5 rounded-full border border-white/5 text-[8px] font-extrabold text-gray-400 bg-white/2px hover:text-white transition duration-200 active-pomo-mode" data-time="1500" data-mode="study">Study (25m)</button>
-                <button class="btn-pomo-mode px-2.5 py-1.5 rounded-full border border-white/5 text-[8px] font-extrabold text-gray-400 bg-white/2px hover:text-white transition duration-200" data-time="300" data-mode="short-break">Break (5m)</button>
-                <button class="btn-pomo-mode px-2.5 py-1.5 rounded-full border border-white/5 text-[8px] font-extrabold text-gray-400 bg-white/2px hover:text-white transition duration-200" data-time="900" data-mode="long-break">Break (15m)</button>
+                <button class="btn-pomo-mode px-4 py-1.5 rounded-full border border-white/10 text-[8px] font-extrabold text-gray-400 bg-white/3 hover:text-white transition-all duration-200 hover:scale-105 active-pomo-mode" data-time="1500" data-mode="study">Study (25m)</button>
+                <button class="btn-pomo-mode px-4 py-1.5 rounded-full border border-white/10 text-[8px] font-extrabold text-gray-400 bg-white/3 hover:text-white transition-all duration-200 hover:scale-105" data-time="300" data-mode="short-break">Break (5m)</button>
+                <button class="btn-pomo-mode px-4 py-1.5 rounded-full border border-white/10 text-[8px] font-extrabold text-gray-400 bg-white/3 hover:text-white transition-all duration-200 hover:scale-105" data-time="900" data-mode="long-break">Break (15m)</button>
             </div>
         </div>
         
@@ -115,6 +116,7 @@
             <button id="btn-pomo-start" class="flex-grow bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-lg shadow-rose-500/10 transition">Start</button>
             <button id="btn-pomo-pause" class="bg-white/5 hover:bg-white/10 text-gray-300 px-3 py-2 rounded-xl text-[10px] font-extrabold border border-white/5 transition" disabled>Pause</button>
             <button id="btn-pomo-reset" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-3 py-2 rounded-xl text-[10px] border border-white/5 transition"><i class="fa-solid fa-arrows-rotate"></i></button>
+        </div>
         </div>
     </div>
 
@@ -130,57 +132,93 @@
                 <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-chart-line text-accentCyan mr-2"></i> Dashboard</h2>
                 
             </div>
-            <!-- Stats Grid -->
-            <div class="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory scrollbar-none gap-4 pb-4 lg:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
-                <div class="w-[82vw] sm:w-[calc(50%-1rem)] lg:w-auto flex-shrink-0 lg:flex-shrink snap-start bg-bgCard border border-white/5 rounded-xl p-4 shadow-lg hover:border-accentCyan/30 transition-all duration-300">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-lg"><i class="fa-solid fa-percent"></i></div>
-                        <div>
-                            <span class="block text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Preparation Score</span>
-                            <span id="prep-score" class="text-2xl font-heading font-extrabold text-white">0%</span>
+            <!-- Dashboard Stats Capsules (2 Rows Layout) -->
+            <div class="space-y-4">
+                <!-- Row 1: Primary Progress Capsules -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Capsule 1: Preparation Score -->
+                    <div class="bg-bgCard/90 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-full px-5 py-3.5 shadow-xl hover:border-accentCyan/40 transition-all duration-300 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-accentCyan/15 text-accentCyan flex items-center justify-center text-base shadow-inner"><i class="fa-solid fa-percent"></i></div>
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Preparation Score</span>
+                                <span id="prep-score" class="text-xl font-heading font-extrabold text-white">0%</span>
+                            </div>
+                        </div>
+                        <div class="w-20 bg-white/5 h-2 rounded-full overflow-hidden">
+                            <div id="prep-score-fill" class="bg-accentCyan h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-                    <div class="w-full bg-white/5 h-1.5 rounded-full mt-3 overflow-hidden">
-                        <div id="prep-score-fill" class="bg-accentCyan h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+
+                    <!-- Capsule 2: Plan Progress -->
+                    <div class="bg-bgCard/90 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-full px-5 py-3.5 shadow-xl hover:border-accentPurple/40 transition-all duration-300 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-accentPurple/15 text-accentPurple flex items-center justify-center text-base shadow-inner"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Plan Progress</span>
+                                <span id="day-progress" class="text-base font-heading font-extrabold text-white">Day 1 of 40</span>
+                            </div>
+                        </div>
+                        <div class="w-20 bg-white/5 h-2 rounded-full overflow-hidden">
+                            <div id="day-progress-fill" class="bg-accentPurple h-full rounded-full transition-all duration-500" style="width: 2.5%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Capsule 3: Mocks Taken -->
+                    <div class="bg-bgCard/90 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-full px-5 py-3.5 shadow-xl hover:border-accentRose/40 transition-all duration-300 flex items-center justify-between sm:col-span-2 lg:col-span-1">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-accentRose/15 text-accentRose flex items-center justify-center text-base shadow-inner"><i class="fa-solid fa-trophy"></i></div>
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Mocks Taken</span>
+                                <span id="mocks-taken-count" class="text-xl font-heading font-extrabold text-white">0</span>
+                            </div>
+                        </div>
+                        <div class="w-20 bg-white/5 h-2 rounded-full overflow-hidden">
+                            <div id="mocks-fill" class="bg-accentRose h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="w-[82vw] sm:w-[calc(50%-1rem)] lg:w-auto flex-shrink-0 lg:flex-shrink snap-start bg-bgCard border border-white/5 rounded-xl p-4 shadow-lg hover:border-accentPurple/30 transition-all duration-300">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-accentPurple/10 text-accentPurple flex items-center justify-center text-lg"><i class="fa-solid fa-calendar-check"></i></div>
-                        <div>
-                            <span class="block text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Plan Progress</span>
-                            <span id="day-progress" class="text-lg sm:text-xl font-heading font-extrabold text-white">Day 1 of 40</span>
+                <!-- Row 2: Focus, Streak & Readiness Capsules -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Capsule 4: Today's Mission -->
+                    <div class="bg-bgCard/90 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-full px-5 py-3.5 shadow-xl hover:border-accentAmber/40 transition-all duration-300 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-accentAmber/15 text-accentAmber flex items-center justify-center text-base shadow-inner"><i class="fa-solid fa-bolt"></i></div>
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Today's Mission</span>
+                                <span id="daily-goals-ratio" class="text-base font-heading font-extrabold text-white">0/3 Completed</span>
+                            </div>
+                        </div>
+                        <div class="w-20 bg-white/5 h-2 rounded-full overflow-hidden">
+                            <div id="daily-goals-fill" class="bg-accentAmber h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-                    <div class="w-full bg-white/5 h-1.5 rounded-full mt-3 overflow-hidden">
-                        <div id="day-progress-fill" class="bg-accentPurple h-full rounded-full transition-all duration-500" style="width: 2.5%"></div>
-                    </div>
-                </div>
 
-                <div class="w-[82vw] sm:w-[calc(50%-1rem)] lg:w-auto flex-shrink-0 lg:flex-shrink snap-start bg-bgCard border border-white/5 rounded-xl p-4 shadow-lg hover:border-accentRose/30 transition-all duration-300">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-accentRose/10 text-accentRose flex items-center justify-center text-lg"><i class="fa-solid fa-trophy"></i></div>
-                        <div>
-                            <span class="block text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Mocks Taken</span>
-                            <span id="mocks-taken-count" class="text-2xl font-heading font-extrabold text-white">0</span>
+                    <!-- Capsule 5: Daily Study Streak -->
+                    <div class="bg-bgCard/90 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-full px-5 py-3.5 shadow-xl hover:border-amber-500/40 transition-all duration-300 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-amber-500/15 text-amber-400 flex items-center justify-center text-base shadow-inner"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Study Streak</span>
+                                <span id="streak-count-display" class="text-xl font-heading font-extrabold text-amber-400">1d Streak</span>
+                            </div>
                         </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-amber-500/10 text-amber-400 border border-amber-500/20">🔥 Active</span>
                     </div>
-                    <div class="w-full bg-white/5 h-1.5 rounded-full mt-3 overflow-hidden">
-                        <div id="mocks-fill" class="bg-accentRose h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
 
-                <div class="w-[82vw] sm:w-[calc(50%-1rem)] lg:w-auto flex-shrink-0 lg:flex-shrink snap-start bg-bgCard border border-white/5 rounded-xl p-4 shadow-lg hover:border-accentAmber/30 transition-all duration-300">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-accentAmber/10 text-accentAmber flex items-center justify-center text-lg"><i class="fa-solid fa-bolt"></i></div>
-                        <div>
-                            <span class="block text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Today's Mission</span>
-                            <span id="daily-goals-ratio" class="text-2xl font-heading font-extrabold text-white">0/3 Completed</span>
+                    <!-- Capsule 6: Exam Readiness -->
+                    <div class="bg-bgCard/90 backdrop-blur-md border border-white/10 rounded-2xl sm:rounded-full px-5 py-3.5 shadow-xl hover:border-emerald-500/40 transition-all duration-300 flex items-center justify-between sm:col-span-2 lg:col-span-1">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-base shadow-inner"><i class="fa-solid fa-bullseye"></i></div>
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Exam Readiness</span>
+                                <span id="readiness-score-display" class="text-xl font-heading font-extrabold text-emerald-400">0%</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="w-full bg-white/5 h-1.5 rounded-full mt-3 overflow-hidden">
-                        <div id="daily-goals-fill" class="bg-accentAmber h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                        <div class="w-20 bg-white/5 h-2 rounded-full overflow-hidden">
+                            <div id="readiness-score-fill" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,8 +226,8 @@
             <!-- Two Column Dashboard Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Today's Missions List (Core Focus) -->
-                <div class="bg-bgCard border border-white/5 rounded-xl shadow-xl lg:col-span-2 overflow-hidden flex flex-col">
-                    <div class="bg-white/2px px-5 py-4 border-b border-white/5 flex items-center justify-between">
+                <div class="bg-bgCard/50 border border-white/10 rounded-2xl shadow-lg lg:col-span-2 overflow-hidden flex flex-col backdrop-blur-xl">
+                    <div class="bg-white/5 px-5 py-4 border-b border-white/5 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-bullseye text-accentCyan text-lg"></i>
                             <h2 class="font-heading font-bold text-sm tracking-wide text-white uppercase">Today's Target Chapters (Day <span id="mission-day-num">1</span>)</h2>
@@ -202,32 +240,9 @@
                         <div id="today-tasks-container" class="space-y-3">
                             <!-- JS Inject -->
                         </div>
-
-                        <!-- Daily Rituals and Speed drills -->
-                        <div class="bg-accentAmber/5 border border-accentAmber/10 rounded-xl p-4 mt-6">
-                            <h3 class="text-xs font-bold text-accentAmber uppercase mb-3"><i class="fa-solid fa-rotate-left mr-1"></i> Core Daily Rituals</h3>
-                            <div class="space-y-2">
-                                <label class="flex items-start gap-2.5 cursor-pointer text-xs text-gray-300">
-                                    <input type="checkbox" id="ritual-drill" class="mt-0.5 accent-accentAmber">
-                                    <span><strong>Speed Drill (20m):</strong> Tables 1-30, Squares up to 30, Cubes up to 20, Percentage fractions recall.</span>
-                                </label>
-                                <label class="flex items-start gap-2.5 cursor-pointer text-xs text-gray-300">
-                                    <input type="checkbox" id="ritual-vocab" class="mt-0.5 accent-accentAmber">
-                                    <span><strong>Vocab Capsule (15m):</strong> Read 15 Synonyms/Antonyms & 10 Idioms/Phrases from Toolkit.</span>
-                                </label>
-                                <label class="flex items-start gap-2.5 cursor-pointer text-xs text-gray-300">
-                                    <input type="checkbox" id="ritual-ca" class="mt-0.5 accent-accentAmber">
-                                    <span><strong>Current Affairs (15m):</strong> Review past 6 months static milestones / monthly capsules.</span>
-                                </label>
-                                <label class="flex items-start gap-2.5 cursor-pointer text-xs text-gray-300">
-                                    <input type="checkbox" id="ritual-computer" class="mt-0.5 accent-accentAmber">
-                                    <span><strong>Computer Tier-2 (10m):</strong> Read keyboard shortcuts or MS Office formula list.</span>
-                                </label>
-                            </div>
-                        </div>
                     </div>
-                    <div class="p-5 bg-white/2px border-t border-white/5">
-                        <button id="btn-complete-day" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-heading font-semibold py-2.5 rounded-lg shadow-lg text-xs tracking-wide uppercase transition duration-200">
+                    <div class="p-5 bg-white/5 border-t border-white/5">
+                        <button id="btn-complete-day" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-heading font-semibold py-2.5 rounded-xl shadow-lg text-xs tracking-wide uppercase transition duration-200 hover:scale-[1.02]">
                             <i class="fa-solid fa-circle-check mr-1.5"></i> Mark Today as Complete & Advance
                         </button>
                     </div>
@@ -235,24 +250,70 @@
 
                 <!-- Side Widget Area -->
                 <div class="space-y-6">
+                    <!-- Core Daily Rituals Reminder Card -->
+                    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xs font-bold text-accentAmber uppercase flex items-center gap-1.5"><i class="fa-solid fa-rotate-left"></i> Core Daily Rituals</h3>
+                            <span class="text-[9px] text-gray-500 font-mono" id="ritual-progress-label">0/4</span>
+                        </div>
+                        <div class="space-y-2.5">
+                            <label class="ritual-checkbox flex items-start gap-2.5 cursor-pointer group">
+                                <input type="checkbox" id="ritual-drill" class="hidden">
+                                <div class="w-4 h-4 rounded-full border border-white/20 group-hover:border-accentAmber/50 flex items-center justify-center transition-all duration-200">
+                                    <i class="fa-solid fa-check text-accentAmber text-[7px] opacity-0 transition-opacity duration-200"></i>
+                                </div>
+                                <span class="text-xs text-gray-300 group-hover:text-white transition-colors">
+                                    <strong class="text-accentAmber">Speed Drill (20m):</strong> Tables 1-30, Squares up to 30, Cubes up to 20, Percentage fractions recall.
+                                </span>
+                            </label>
+                            <label class="ritual-checkbox flex items-start gap-2.5 cursor-pointer group">
+                                <input type="checkbox" id="ritual-vocab" class="hidden">
+                                <div class="w-4 h-4 rounded-full border border-white/20 group-hover:border-accentAmber/50 flex items-center justify-center transition-all duration-200">
+                                    <i class="fa-solid fa-check text-accentAmber text-[7px] opacity-0 transition-opacity duration-200"></i>
+                                </div>
+                                <span class="text-xs text-gray-300 group-hover:text-white transition-colors">
+                                    <strong class="text-accentAmber">Vocab Capsule (15m):</strong> Read 15 Synonyms/Antonyms & 10 Idioms/Phrases from Toolkit.
+                                </span>
+                            </label>
+                            <label class="ritual-checkbox flex items-start gap-2.5 cursor-pointer group">
+                                <input type="checkbox" id="ritual-ca" class="hidden">
+                                <div class="w-4 h-4 rounded-full border border-white/20 group-hover:border-accentAmber/50 flex items-center justify-center transition-all duration-200">
+                                    <i class="fa-solid fa-check text-accentAmber text-[7px] opacity-0 transition-opacity duration-200"></i>
+                                </div>
+                                <span class="text-xs text-gray-300 group-hover:text-white transition-colors">
+                                    <strong class="text-accentAmber">Current Affairs (15m):</strong> Review past 6 months static milestones / monthly capsules.
+                                </span>
+                            </label>
+                            <label class="ritual-checkbox flex items-start gap-2.5 cursor-pointer group">
+                                <input type="checkbox" id="ritual-computer" class="hidden">
+                                <div class="w-4 h-4 rounded-full border border-white/20 group-hover:border-accentAmber/50 flex items-center justify-center transition-all duration-200">
+                                    <i class="fa-solid fa-check text-accentAmber text-[7px] opacity-0 transition-opacity duration-200"></i>
+                                </div>
+                                <span class="text-xs text-gray-300 group-hover:text-white transition-colors">
+                                    <strong class="text-accentAmber">Computer Tier-2 (10m):</strong> Read keyboard shortcuts or MS Office formula list.
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
                     <!-- Session Stopwatch -->
-                    <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg flex flex-col justify-between">
+                    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl">
                         <div class="flex justify-between items-center mb-4">
                             <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider"><i class="fa-solid fa-stopwatch mr-1 text-accentCyan"></i> Active Study Stopwatch</span>
                             <span id="session-time" class="font-mono font-bold text-accentCyan text-lg">00:00:00</span>
                         </div>
                         <div class="flex gap-2">
-                            <button id="btn-toggle-session" class="flex-grow bg-white/5 hover:bg-white/10 text-white py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 border border-white/5 transition">
+                            <button id="btn-toggle-session" class="flex-grow bg-white/5 hover:bg-white/10 text-white py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 border border-white/10 transition hover:scale-[1.02]">
                                 <i class="fa-solid fa-play text-accentCyan"></i> Start Timer
                             </button>
-                            <button id="btn-reset-session" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-3 rounded-lg text-xs border border-white/5 transition">
+                            <button id="btn-reset-session" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-3 rounded-xl text-xs border border-white/10 transition hover:scale-[1.02]">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
                         </div>
                     </div>
 
                     <!-- Subject Progress Breakdown -->
-                    <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg">
+                    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl">
                         <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider mb-4"><i class="fa-solid fa-chart-pie mr-1 text-accentPurple"></i> Preparation Readiness</h3>
                         <div id="subject-progress-dashboard-container" class="space-y-3.5">
                             <!-- JS Inject -->
@@ -260,7 +321,7 @@
                     </div>
 
                     <!-- Exam Target Settings & Countdown Card -->
-                    <div class="bg-bgCard border border-white/5 rounded-xl p-5 shadow-lg space-y-4">
+                    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl space-y-4">
                         <div class="flex justify-between items-center border-b border-white/5 pb-2">
                             <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider">
                                 <i class="fa-solid fa-gear mr-1 text-accentRose"></i> Countdown Target
@@ -320,10 +381,6 @@
                     </div>
                     <div class="relative shrink-0" id="sort-dropdown-wrap"></div>
                     <div class="relative shrink-0" id="view-dropdown-wrap"></div>
-                    <button id="btn-toggle-study-mode" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition bg-panel2 border-line text-zinc-400 hover:text-white shrink-0">
-                        <i class="fa-solid fa-book-open"></i>
-                        <span class="font-bold">Study Mode: OFF</span>
-                    </button>
                 </div>
                 <div id="filter-row" class="flex flex-wrap gap-2"></div>
             </div>
@@ -575,9 +632,9 @@
                 <!-- Global Study Search -->
                 <div class="relative w-full sm:w-80">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-gray-400 text-xs"></i>
-                    <input type="text" id="study-global-search" placeholder="Search formulas, concepts, articles..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-white/5 bg-bgCard hover:bg-white/5 text-xs text-white outline-none focus:border-accentCyan transition duration-200">
+                    <input type="text" id="study-global-search" placeholder="Search formulas, concepts, articles..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-white/10 bg-bgCard/50 hover:bg-white/5 text-xs text-white outline-none focus:border-accentCyan transition duration-200 backdrop-blur-xl">
                     <!-- Search Results Dropdown -->
-                    <div id="study-search-results" class="absolute right-0 top-11 w-full sm:w-96 bg-bgCard border border-white/10 shadow-2xl z-50 rounded-2xl p-4 hidden select-none max-h-80 overflow-y-auto scrollbar-thin">
+                    <div id="study-search-results" class="absolute right-0 top-11 w-full sm:w-96 bg-bgCard/60 border border-white/10 shadow-2xl z-50 rounded-2xl p-4 hidden select-none max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
                         <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest border-b border-white/5 pb-2 mb-2">Search Results</div>
                         <div id="study-search-list" class="space-y-2">
                             <!-- Injected dynamically -->
@@ -592,18 +649,18 @@
             </div>
 
             <!-- Topic/Subtopic Accordion Panel -->
-            <div id="study-topic-area" class="bg-bgCard border border-white/5 rounded-2xl p-5 shadow-lg hidden space-y-4">
+            <div id="study-topic-area" class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl hidden space-y-4">
                 <div class="flex items-center justify-between border-b border-white/5 pb-3">
                     <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2" id="study-active-subject-title">
                         <!-- Icon and title dynamically set -->
                     </h3>
-                    <button id="btn-study-back-grid" class="text-xs text-gray-400 hover:text-white transition font-bold uppercase tracking-wider bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <button id="btn-study-back-grid" class="text-xs text-gray-400 hover:text-white transition font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 hover:border-white/20">
                         <i class="fa-solid fa-arrow-left mr-1.5"></i> Back to Subjects
                     </button>
                 </div>
                 
                 <!-- Filter Panel and View Selectors for Study Notes (Replica of Syllabus Console) -->
-                <div class="bg-panel2 rounded-2xl p-4 border border-line shadow-md flex flex-col gap-3">
+                <div class="bg-bgCard/50 rounded-2xl p-4 border border-white/10 shadow-md flex flex-col gap-3 backdrop-blur-xl">
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-grow min-w-[200px]">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
@@ -627,17 +684,17 @@
             </div>
 
             <!-- Custom Notes (Mistake Book) Area -->
-            <div id="study-custom-notes-area" class="bg-bgCard border border-white/5 rounded-2xl p-5 shadow-lg hidden space-y-5">
+            <div id="study-custom-notes-area" class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl hidden space-y-5">
                 <div class="flex items-center justify-between border-b border-white/5 pb-3">
                     <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
                         <i class="fa-solid fa-pen-to-square text-accentPurple"></i> Custom Notes & Mistake Book
                     </h3>
-                    <button id="btn-study-custom-back" class="text-xs text-gray-400 hover:text-white transition font-bold uppercase tracking-wider bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                    <button id="btn-study-custom-back" class="text-xs text-gray-400 hover:text-white transition font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 hover:border-white/20">
                         <i class="fa-solid fa-arrow-left mr-1.5"></i> Back to Subjects
                     </button>
                 </div>
                 
-                <div class="bg-white/2px border border-white/5 rounded-xl p-4">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-xl">
                     <h4 class="text-xs font-bold text-accentPurple uppercase mb-3"><i class="fa-solid fa-plus-circle mr-1"></i> Add Custom Formula / Study Trick</h4>
                     <form id="form-note" class="space-y-3">
                         <div>
@@ -680,12 +737,12 @@
                 <hr class="border-white/5">
 
                 <!-- Notes filter list -->
-                <div class="flex gap-2 flex-wrap">
-                    <button class="note-filter-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition active-nav-tab" data-category="all">All Saved Notes</button>
-                    <button class="note-filter-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition" data-category="mistake">Mistakes</button>
-                    <button class="note-filter-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition" data-category="formula">Formulas/Tricks</button>
-                    <button class="note-filter-btn px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition" data-category="gk">GK Notes</button>
-                </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition active-nav-tab border border-white/10 hover:border-white/20" data-category="all">All Saved Notes</button>
+                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="mistake">Mistakes</button>
+                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="formula">Formulas/Tricks</button>
+                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="gk">GK Notes</button>
+                    </div>
 
                 <!-- Notes container list -->
                 <div id="notes-container" class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
@@ -1027,8 +1084,8 @@
                             <span class="ac-label"><i class="fa-solid fa-compass mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Syllabus / Track</span>
                             <span class="ac-right"><kbd class="sc-kbd">2</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
                         </button>
-                        <button onclick="handleShortcutAction('nav:study-mode')" class="ac-row group w-full">
-                            <span class="ac-label"><i class="fa-solid fa-book-open mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Toggle Study Mode</span>
+                        <button onclick="handleShortcutAction('nav:page-toolkit')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-toolbox mr-2 text-gray-500 group-hover:text-accentGreen transition"></i>Study / Toolkit</span>
                             <span class="ac-right"><kbd class="sc-kbd">3</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
                         </button>
                         <button onclick="handleShortcutAction('nav:page-speed')" class="ac-row group w-full">

@@ -194,6 +194,7 @@ function completeActiveDay() {
         const successMsg = `Day ${appState.currentDay - 1} completed! Welcome to Day ${appState.currentDay}.`;
         speakText(successMsg);
         if (window.showToast) window.showToast(successMsg, "success");
+        if (window.triggerConfetti) window.triggerConfetti();
 
         const nextDayData = PLAN_DATA.find(d => d.day === appState.currentDay);
         if (nextDayData) {
