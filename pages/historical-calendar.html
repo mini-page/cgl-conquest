@@ -1,0 +1,2892 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Historical Calendar · SSC CGL/CHSL Modern Indian History</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #070a12;
+  --bg-2: #0b0f1a;
+  --bg-3: #0f1524;
+  --border: #1a2132;
+  --border-2: #252d42;
+  --text: #e5e7eb;
+  --text-dim: #94a3b8;
+  --text-faint: #5a6478;
+  --cyan: #2dd4bf;
+  --cyan-dim: #0f766e;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --purple: #a855f7;
+  --red: #ef4444;
+  --blue: #3b82f6;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ───────────── TOP BAR ───────────── */
+.topbar {
+  height: 52px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 28px;
+  background: var(--bg-2);
+  position: relative;
+  z-index: 10;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+.brand-mark {
+  width: 18px; height: 18px;
+  border: 1px solid var(--cyan);
+  position: relative;
+}
+.brand-mark::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--cyan);
+}
+.brand-name { color: var(--text); }
+.brand-tag { color: var(--cyan); margin-left: 4px; }
+.brand-dot { color: var(--text-faint); }
+
+.nav-items { display: flex; gap: 2px; }
+.nav-item {
+  padding: 8px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  cursor: pointer;
+  position: relative;
+  transition: color .15s;
+}
+.nav-item:hover { color: var(--text); }
+.nav-item.active { color: var(--cyan); }
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -14px; left: 14px; right: 14px;
+  height: 1px;
+  background: var(--cyan);
+}
+
+.search-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  width: 420px;
+  max-width: 40vw;
+  position: relative;
+}
+.search-icon {
+  color: var(--text-faint);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+}
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  width: 100%;
+}
+.search-input::placeholder { color: var(--text-faint); }
+.search-kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-faint);
+  border: 1px solid var(--border-2);
+  padding: 1px 5px;
+}
+.search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border-2);
+  max-height: 360px;
+  overflow-y: auto;
+  display: none;
+  z-index: 50;
+}
+.search-results.show { display: block; }
+.search-result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .1s;
+}
+.search-result-item:hover { background: var(--bg-3); }
+.search-result-title { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+.search-result-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  display: flex; gap: 8px;
+}
+
+.status-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green);
+}
+.close-btn {
+  width: 30px; height: 30px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text-dim);
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.close-btn:hover { color: var(--red); border-color: var(--red); }
+
+/* ───────────── MAIN GRID ───────────── */
+.main {
+  height: calc(100vh - 52px);
+  display: grid;
+  grid-template-columns: 240px 1fr 340px;
+  grid-template-rows: 1fr 120px;
+}
+
+/* ───────────── LEFT SIDEBAR ───────────── */
+.sidebar {
+  grid-row: 1 / 3;
+  border-right: 1px solid var(--border);
+  background: var(--bg-2);
+  overflow-y: auto;
+  padding: 14px 0;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-2); }
+
+.sidebar-section { padding: 8px 16px 14px; }
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-faint);
+}
+.sidebar-header-line {
+  height: 1px;
+  background: var(--border);
+  margin: 0 16px 10px;
+}
+
+.year-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+.year-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+.year-btns { display: flex; gap: 2px; }
+.year-btn {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 2px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+}
+.year-btn:hover { color: var(--cyan); border-color: var(--cyan); }
+
+.month-list { display: flex; flex-direction: column; }
+.month-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 7px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all .1s;
+}
+.month-item:hover { background: var(--bg-3); color: var(--text); }
+.month-item.active {
+  background: linear-gradient(90deg, rgba(45,212,191,.08), transparent);
+  border-left-color: var(--cyan);
+  color: var(--cyan);
+}
+.month-name { letter-spacing: 1px; }
+.month-count {
+  color: var(--text-faint);
+  font-size: 10px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+}
+.month-item.active .month-count {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+/* FILTERS */
+.filter-group { margin-bottom: 12px; }
+.filter-group-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--text-faint);
+  padding: 4px 0 6px;
+}
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 11.5px;
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.filter-item:hover { color: var(--text); }
+.filter-check {
+  width: 12px; height: 12px;
+  border: 1px solid var(--border-2);
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: transparent;
+}
+.filter-item.on .filter-check {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(45,212,191,.08);
+}
+.filter-dot {
+  width: 6px; height: 6px;
+  display: inline-block;
+}
+
+.priority-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.priority-row.on { color: var(--text); }
+.priority-row .check-box {
+  width: 11px; height: 11px;
+  border: 1px solid var(--border-2);
+  background: var(--bg-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-size: 9px;
+}
+.priority-row.on .check-box {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+.toggle-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: .5px;
+}
+.toggle-switch {
+  width: 36px; height: 16px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-2);
+  position: relative;
+  cursor: pointer;
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 10px; height: 10px;
+  background: var(--text-faint);
+  transition: all .15s;
+}
+.toggle-switch.on { border-color: var(--cyan); background: rgba(45,212,191,.1); }
+.toggle-switch.on::after {
+  left: 22px;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+}
+
+.legend-section { padding-top: 10px; border-top: 1px solid var(--border); }
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+.legend-dot { width: 6px; height: 6px; }
+
+/* ───────────── CENTER CALENDAR ───────────── */
+.center {
+  grid-column: 2;
+  grid-row: 1;
+  background: var(--bg);
+  padding: 16px 22px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.center::-webkit-scrollbar { width: 6px; }
+.center::-webkit-scrollbar-track { background: transparent; }
+.center::-webkit-scrollbar-thumb { background: var(--border-2); }
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.cal-nav { display: flex; align-items: center; gap: 12px; }
+.cal-arrow {
+  width: 28px; height: 28px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+.cal-arrow:hover { color: var(--cyan); border-color: var(--cyan); }
+.cal-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--text);
+}
+.cal-today-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  padding: 5px 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  cursor: pointer;
+}
+.cal-today-btn:hover { background: rgba(45,212,191,.1); }
+
+.cal-stats {
+  display: flex;
+  gap: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 1px;
+}
+.cal-stats span b { color: var(--text); font-weight: 500; }
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.weekday {
+  padding: 8px 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.weekday.sun { color: var(--red); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(86px, auto);
+  gap: 4px;
+  flex: 1;
+}
+.day-cell {
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  padding: 6px 8px;
+  position: relative;
+  cursor: pointer;
+  transition: all .12s;
+  display: flex;
+  flex-direction: column;
+}
+.day-cell:hover {
+  border-color: var(--border-2);
+  background: var(--bg-3);
+  transform: translateY(-1px);
+}
+.day-cell.other-month { opacity: .35; }
+.day-cell.today {
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 0 1px rgba(45,212,191,.25);
+}
+.day-cell.selected {
+  border-color: var(--cyan);
+  background: rgba(45,212,191,.06);
+  box-shadow: 0 0 0 1px var(--cyan);
+}
+.day-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.day-cell.other-month .day-num { color: var(--text-faint); }
+.day-cell.today .day-num { color: var(--cyan); }
+.day-cell.today .day-num::after {
+  content: ' •';
+  color: var(--cyan);
+}
+.day-dots {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+.day-dot {
+  width: 5px; height: 5px;
+  display: inline-block;
+}
+.day-count {
+  position: absolute;
+  top: 4px; right: 6px;
+  font-family: 'JetBrains Mono', monospace
+; font-size: 9px;
+  color: var(--text-faint);
+}
+.day-priority-tag {
+  position: absolute;
+  bottom: 4px; right: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 1px 4px;
+  letter-spacing: .5px;
+}
+
+.dot-important { background: var(--cyan); }
+.dot-history { background: var(--green); }
+.dot-revolt { background: var(--red); }
+.dot-act { background: var(--amber); }
+.dot-person { background: var(--purple); }
+.dot-battle { background: #f43f5e; }
+.dot-priority { background: var(--cyan); box-shadow: 0 0 4px var(--cyan); }
+
+.tag-very-high { background: rgba(239,68,68,.15); color: var(--red); }
+.tag-high { background: rgba(245,158,11,.15); color: var(--amber); }
+.tag-medium { background: rgba(59,130,246,.15); color: var(--blue); }
+.tag-low { background: rgba(148,163,184,.15); color: var(--text-dim); }
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  background: var(--bg-2);
+  border: 1px solid var(--border-2);
+  padding: 10px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  z-index: 100;
+  pointer-events: none;
+  min-width: 240px;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  display: none;
+}
+.tooltip.show { display: block; }
+.tooltip-head {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+}
+.tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+.tooltip-row .dot { width: 5px; height: 5px; }
+.tooltip-year { color: var(--text-faint); font-size: 10px; margin-left: auto; }
+.tooltip-priority {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  font-size: 9.5px;
+  letter-spacing: 1px;
+}
+
+/* ───────────── RIGHT PANEL ───────────── */
+.right {
+  grid-column: 3;
+  grid-row: 1;
+  border-left: 1px solid var(--border);
+  background: var(--bg-2);
+  overflow-y: auto;
+  padding: 0;
+}
+.right::-webkit-scrollbar { width: 6px; }
+.right::-webkit-scrollbar-track { background: transparent; }
+.right::-webkit-scrollbar-thumb { background: var(--border-2); }
+
+.right-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--bg-2);
+  z-index: 5;
+}
+.right-head-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+}
+.right-head-actions { display: flex; gap: 6px; }
+.right-head-action {
+  width: 22px; height: 22px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+.right-head-action:hover { color: var(--cyan); border-color: var(--cyan); }
+
+.date-hero {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(45,212,191,.04), transparent);
+}
+.date-hero-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+.date-hero-day {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: -2px;
+}
+.date-hero-month {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--cyan);
+  margin-top: 4px;
+}
+.date-hero-weekday {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+.date-events { padding: 12px 18px; }
+.battle-list-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #f43f5e;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.battle-card { cursor: pointer; }
+.event-year-group { margin-bottom: 14px; }
+.event-year-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+}
+.event-year-head::before, .event-year-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.event-year-head span { padding: 0 8px; }
+
+.event-card {
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-left-color: var(--border-2);
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  background: var(--bg-3);
+  transition: all .12s;
+}
+.event-card:hover {
+  border-color: var(--border-2);
+  transform: translateX(2px);
+}
+.event-card.active {
+  border-color: var(--cyan);
+  background: rgba(45,212,191,.05);
+}
+.event-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.event-cat-dot { width: 6px; height: 6px; }
+.event-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+}
+.event-year-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-faint);
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+}
+.event-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.event-sub .sub-cat { color: var(--cyan); }
+.event-sub .sub-loc { color: var(--green); }
+.event-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.event-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: .5px;
+  padding: 2px 5px;
+  border: 1px solid transparent;
+}
+.event-tag.cat-important { background: rgba(45,212,191,.12); color: #2dd4bf; border-color: rgba(45,212,191,.3); }
+.event-tag.cat-history   { background: rgba(16,185,129,.12); color: #10b981; border-color: rgba(16,185,129,.3); }
+.event-tag.cat-revolt    { background: rgba(239,68,68,.12);  color: #ef4444; border-color: rgba(239,68,68,.3); }
+.event-tag.cat-act       { background: rgba(245,158,11,.12); color: #f59e0b; border-color: rgba(245,158,11,.3); }
+.event-tag.cat-person    { background: rgba(168,85,247,.12); color: #a855f7; border-color: rgba(168,85,247,.3); }
+.event-tag.cat-battle    { background: rgba(244,63,94,.12); color: #f43f5e; border-color: rgba(244,63,94,.3); }
+
+/* Event detail view */
+.detail-view { padding: 14px 18px; display: none; }
+.detail-view.show { display: block; }
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  cursor: pointer;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.detail-back:hover { color: var(--cyan); }
+.detail-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.detail-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.detail-meta span { display: inline-flex; align-items: center; gap: 4px; }
+.detail-section {
+  margin-bottom: 12px;
+}
+.detail-section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--text-faint);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+.detail-text {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.detail-text b { color: var(--text); font-weight: 500; }
+.detail-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.detail-person {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.detail-related {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.detail-related-item {
+  font-size: 11px;
+  padding: 4px 8px;
+  background: var(--bg-3);
+  border-left: 2px solid var(--cyan);
+  cursor: pointer;
+  color: var(--text-dim);
+}
+.detail-related-item:hover { color: var(--cyan); }
+.detail-source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-faint);
+  padding: 6px 0;
+  border-top: 1px dashed var(--border);
+  margin-top: 8px;
+}
+
+.empty-state {
+  padding: 24px 18px;
+  text-align: center;
+  color: var(--text-faint);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 1px;
+}
+.empty-state-icon {
+  font-size: 24px;
+  color: var(--border-2);
+  margin-bottom: 8px;
+}
+
+/* ───────────── BOTTOM TIMELINE ───────────── */
+.bottom {
+  grid-column: 2 / 4;
+  grid-row: 2;
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+  padding: 10px 22px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bottom-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+}
+.bottom-head-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  margin: 0 12px;
+}
+.bottom-head-actions { display: flex; gap: 4px; }
+
+.timeline {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+.timeline::-webkit-scrollbar { height: 5px; }
+.timeline::-webkit-scrollbar-track { background: transparent; }
+.timeline::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+.timeline-track {
+  position: absolute;
+  left: 20px; right: 20px;
+  height: 1px;
+  background: var(--border-2);
+  top: 50%;
+}
+.timeline-track::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: -1px;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--border-2) 0, var(--border-2) 2px, transparent 2px, transparent 6px);
+}
+.timeline-markers {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 34px;
+  padding: 0 30px 0 0;
+  min-width: max-content;
+  height: 60px;
+}
+.timeline-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: transform .15s;
+  flex-shrink: 0;
+}
+.timeline-point:hover { transform: translateY(-2px); }
+.timeline-point.active .tp-dot { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+.timeline-point.active .tp-year { color: var(--cyan); }
+.tp-year {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+.tp-dot {
+  width: 10px; height: 10px;
+  background: var(--bg-3);
+  border: 1.5px solid var(--border-2);
+  position: relative;
+}
+.tp-dot::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--text-dim);
+}
+.timeline-point:hover .tp-dot { border-color: var(--cyan); }
+.tp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+  max-width: 80px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* scrollbar general */
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--border-2); }
+
+/* mobile */
+@media (max-width: 1100px) {
+  .main { grid-template-columns: 200px 1fr 280px; }
+  .search-wrap { width: 280px; }
+}
+@media (max-width: 900px) {
+  .main { grid-template-columns: 180px 1fr; }
+  .right { display: none; }
+  .bottom { grid-column: 2; }
+  .nav-items { display: none; }
+}
+
+/* ═══════════════ QUIZ MODAL ═══════════════ */
+#quizOverlay {
+  position: fixed; inset: 0; background: rgba(3,5,10,0.85); backdrop-filter: blur(6px);
+  z-index: 500; display: none; align-items: center; justify-content: center;
+}
+#quizOverlay.show { display: flex; }
+.quiz-box {
+  width: 100%; max-width: 560px; background: var(--bg-2); border: 1px solid var(--border-2);
+  border-radius: 14px; padding: 26px 28px; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+.quiz-box-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.quiz-box-title { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--cyan); font-weight: 700; }
+.quiz-close { cursor: pointer; color: var(--text-faint); font-size: 20px; line-height: 1; }
+.quiz-close:hover { color: var(--text); }
+.quiz-score-row { display: flex; gap: 10px; margin-bottom: 18px; }
+.quiz-score-box { flex: 1; text-align: center; padding: 10px; border-radius: 8px; background: var(--bg-3); border: 1px solid var(--border); }
+.quiz-score-box .n { font-size: 20px; font-weight: 800; font-family: monospace; }
+.quiz-score-box .l { font-size: 9.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.5px; }
+.quiz-q-label { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.quiz-q-text { font-size: 16px; font-weight: 600; line-height: 1.5; margin-bottom: 18px; color: var(--text); }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  padding: 12px 14px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  background: var(--bg-3); border: 1px solid var(--border); color: var(--text-dim); transition: .12s;
+}
+.quiz-opt:hover { border-color: var(--cyan); }
+.quiz-opt.correct { background: rgba(45,212,191,0.15); border-color: var(--cyan); color: var(--cyan); }
+.quiz-opt.wrong { background: rgba(239,68,68,0.15); border-color: #ef4444; color: #ef4444; }
+.quiz-next-btn {
+  width: 100%; padding: 12px; margin-top: 16px; border-radius: 8px; border: none; cursor: pointer;
+  background: var(--cyan); color: #04201c; font-weight: 700; font-size: 12.5px; letter-spacing: 0.5px;
+}
+
+/* ═══════════════ REVISION LIST VIEW ═══════════════ */
+#revisionOverlay {
+  position: fixed; inset: 0; background: rgba(3,5,10,0.85); backdrop-filter: blur(6px);
+  z-index: 500; display: none; align-items: flex-start; justify-content: center; padding: 4vh 20px;
+}
+#revisionOverlay.show { display: flex; }
+.revision-box {
+  width: 100%; max-width: 760px; max-height: 92vh; overflow-y: auto; background: var(--bg-2);
+  border: 1px solid var(--border-2); border-radius: 14px; padding: 26px 28px;
+}
+.revision-month-group { margin-bottom: 22px; }
+.revision-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.revision-tab {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: .12s;
+}
+.revision-tab:hover { border-color: var(--cyan); color: var(--text); }
+.revision-tab.on { border-color: var(--cyan); color: var(--cyan); background: rgba(45,212,191,.08); }
+.revision-tab .cnt { opacity: .6; margin-left: 4px; }
+.revision-month-h {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cyan); font-weight: 700;
+  margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.revision-item { display: flex; gap: 12px; padding: 7px 0; font-size: 12.5px; align-items: baseline; }
+.revision-item .rd { font-family: monospace; color: var(--text-faint); width: 40px; flex-shrink: 0; }
+.revision-item .rt { color: var(--text-dim); }
+.revision-item .ry { color: var(--text-faint); font-family: monospace; font-size: 11px; }
+.revision-item.rev-click { cursor: pointer; }
+.revision-item.rev-click:hover .rt { color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <span class="brand-name">HISTORICAL</span>
+    <span class="brand-dot">/</span>
+    <span class="brand-tag">CALENDAR</span>
+  </div>
+  <div class="nav-items">
+    <div class="nav-item" id="navRevision">REVISION</div>
+    <div class="nav-item" id="navQuiz">QUIZ</div>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search event, person, year, movement...">
+    <span class="search-kbd">⌘K</span>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <div class="close-btn" id="pageCloseBtn" title="Close (B)">✕</div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">CALENDAR<span id="eventCount">—</span></div>
+    <div class="sidebar-header-line"></div>
+
+    <div class="year-display">
+      <span class="year-number" id="yearDisplay">2026</span>
+      <div class="year-btns">
+        <div class="year-btn" id="yearPrev">‹</div>
+        <div class="year-btn" id="yearNext">›</div>
+      </div>
+    </div>
+
+    <div class="month-list" id="monthList"></div>
+
+    <div style="height:14px"></div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-header">FILTERS</div>
+      <div class="sidebar-header-line"></div>
+      <div id="filterList"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-header">SSC PRIORITY</div>
+      <div class="sidebar-header-line"></div>
+      <div id="priorityList"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-header">TOOLS</div>
+      <div class="sidebar-header-line"></div>
+      <div class="toggle-row">
+        <span class="toggle-label">BATTLES ONLY</span>
+        <span class="toggle-switch" id="battlesToggle"></span>
+      </div>
+      <div class="toggle-row">
+        <span class="toggle-label">PYQ ONLY</span>
+        <span class="toggle-switch" id="pyqToggle"></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CENTER CALENDAR -->
+  <main class="center">
+    <div class="cal-head">
+      <div class="cal-nav">
+        <div class="cal-arrow" id="calPrev">‹</div>
+        <div class="cal-title" id="calTitle">MARCH 2026</div>
+        <div class="cal-arrow" id="calNext">›</div>
+      </div>
+      <div class="cal-stats">
+        <span>EVENTS <b id="statEvents">0</b></span>
+        <span>PYQ <b id="statPyq">0</b></span>
+        <span>VERY HIGH <b id="statVh">0</b></span>
+      </div>
+      <div class="cal-today-btn" id="calToday">TODAY</div>
+    </div>
+    <div class="weekdays">
+      <div class="weekday sun">SUN</div>
+      <div class="weekday">MON</div>
+      <div class="weekday">TUE</div>
+      <div class="weekday">WED</div>
+      <div class="weekday">THU</div>
+      <div class="weekday">FRI</div>
+      <div class="weekday">SAT</div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right" id="rightPanel">
+    <div class="right-head">
+      <span class="right-head-title">THIS DATE IN HISTORY</span>
+    </div>
+    <div class="date-hero" id="dateHero">
+      <div class="date-hero-label">SELECTED DATE</div>
+      <div class="date-hero-day" id="heroDay">—</div>
+      <div class="date-hero-month" id="heroMonth">—</div>
+      <div class="date-hero-weekday" id="heroWeekday">—</div>
+    </div>
+    <div class="date-events" id="dateEvents">
+      <div class="empty-state">
+        <div class="empty-state-icon">◇</div>
+        SELECT A DATE TO VIEW<br>HISTORICAL EVENTS
+      </div>
+    </div>
+    <div class="detail-view" id="detailView"></div>
+  </aside>
+
+  <!-- BOTTOM TIMELINE -->
+  <section class="bottom">
+    <div class="bottom-head">
+      <span>HISTORY TIMELINE</span>
+      <div class="bottom-head-line"></div>
+      <span id="timelineContext">1191 → 1947</span>
+    </div>
+    <div class="timeline">
+      <div class="timeline-track"></div>
+      <div class="timeline-markers" id="timelineMarkers"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip"></div>
+
+<div id="quizOverlay">
+  <div class="quiz-box">
+    <div class="quiz-box-head">
+      <span class="quiz-box-title">Quick Quiz — Dates &amp; Events</span>
+      <span class="quiz-close" id="quizCloseBtn">✕</span>
+    </div>
+    <div class="quiz-score-row">
+      <div class="quiz-score-box"><div class="n" id="quizRightN" style="color:var(--cyan)">0</div><div class="l">Correct</div></div>
+      <div class="quiz-score-box"><div class="n" id="quizWrongN" style="color:#ef4444">0</div><div class="l">Missed</div></div>
+    </div>
+    <div id="quizArea"></div>
+  </div>
+</div>
+
+<div id="revisionOverlay">
+  <div class="revision-box" id="revisionBox"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DATA LAYER
+   ═══════════════════════════════════════════════════════ */
+
+const MONTHS = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+
+const CATEGORIES = {
+  important: { label: 'Important Days', dot: 'dot-important', color: '#2dd4bf' },
+  history:   { label: 'Modern History', dot: 'dot-history',   color: '#10b981' },
+  revolt:    { label: 'Revolts & Movements', dot: 'dot-revolt', color: '#ef4444' },
+  act:       { label: 'Acts & Constitutional', dot: 'dot-act',  color: '#f59e0b' },
+  person:    { label: 'Personalities', dot: 'dot-person',      color: '#a855f7' },
+  battle:    { label: 'Battles', dot: 'dot-battle',            color: '#f43f5e' }
+};
+
+// Historical Events — SSC CGL/CHSL focused
+const events = [
+  // ──────── JANUARY ────────
+  { id:'jan09-1', title:'Non-Resident Indian Day (Pravasi Bharatiya Divas)', date:'01-09', year:null, category:'important', subcategory:'National Observance',
+    location:'India', people:['Ministry of External Affairs'], description:'Celebrates the contribution of the Indian diaspora. Held biennially since 2003; annually since 2015.', significance:'Marks the return of Mahatma Gandhi from South Africa on 9 January 1915.', sscRelevance:'HIGH', pyq:true, tags:['diaspora','gandhi'], relatedEvents:['jan30-1'], source:'MEA, Government of India' },
+
+  { id:'jan12-1', title:'Birth of Swami Vivekananda / National Youth Day', date:'01-12', year:1863, category:'person', subcategory:'Social Reformer',
+    location:'Kolkata, Bengal', people:['Swami Vivekananda','Ramakrishna Paramahansa'], description:'Born Narendranath Datta. Founded Ramakrishna Mission (1897). Famous Chicago Parliament of Religions speech (11 Sep 1893).', significance:'Represented Hinduism at the World Parliament of Religions; inspired Indian nationalism and youth.', sscRelevance:'VERY HIGH', pyq:true, tags:['religious reform','ramakrishna mission','vedanta'], relatedEvents:['sep11-1'], source:'Ramakrishna Math Archives' },
+
+  { id:'jan12-2', title:'National Youth Day', date:'01-12', year:1984, category:'important', subcategory:'National Observance',
+    location:'India', people:['Government of India'], description:'Declared by GoI in 1984 to honour Swami Vivekananda\'s birth anniversary.', significance:'Promotes youth engagement; theme changes annually. Common PYQ topic.', sscRelevance:'HIGH', pyq:true, tags:['vivekananda','youth'], relatedEvents:['jan12-1'], source:'Ministry of Youth Affairs' },
+
+  { id:'jan15-1', title:'Army Day', date:'01-15', year:1949, category:'important', subcategory:'National Observance',
+    location:'India', people:['Gen. K. M. Cariappa'], description:'Marks the day Gen. Cariappa took over as first Indian Commander-in-Chief from Gen. Butcher.', significance:'Commemorates Indianisation of the Army; Cariappa became first Indian C-in-C.', sscRelevance:'HIGH', pyq:true, tags:['army','cariappa'], relatedEvents:[], source:'Indian Army Archives' },
+
+  { id:'jan23-1', title:'Birth of Subhas Chandra Bose / Parakram Diwas', date:'01-23', year:1897, category:'person', subcategory:'Revolutionary Leader',
+    location:'Cuttack, Odisha', people:['Subhas Chandra Bose','Janakinath Bose'], description:'Founded Forward Bloc (1939), INA (revived 1943). Gave slogan "Give me blood, I shall give you freedom." Title "Netaji" given by German Indian Legion.', significance:'Central figure in militant nationalism; INA trials (1945-46) galvanised public opinion against British rule.', sscRelevance:'VERY HIGH', pyq:true, tags:['ina','forward bloc','netaji','azad hind'], relatedEvents:['oct21-1'], source:'Netaji Research Bureau' },
+
+  { id:'jan23-2', title:'Parakram Diwas', date:'01-23', year:2021, category:'important', subcategory:'National Observance',
+    location:'India', people:['Government of India'], description:'Declared by GoI in 2021 to mark Netaji Subhas Chandra Bose\'s birth anniversary; means "Day of Courage".', significance:'Honours Bose\'s contribution to the freedom struggle.', sscRelevance:'MEDIUM', pyq:false, tags:['netaji'], relatedEvents:['jan23-1'], source:'GoI notification 2021' },
+
+  { id:'jan25-1', title:'National Voters\' Day', date:'01-25', year:2011, category:'important', subcategory:'National Observance',
+    location:'India', people:['Election Commission of India'], description:'Celebrates the foundation day of ECI (25 Jan 1950). Launched in 2011 to promote voter enrolment.', significance:'Article 324 — Election Commission of India. Key constitutional body.', sscRelevance:'HIGH', pyq:true, tags:['eci','voting','article 324'], relatedEvents:[], source:'Election Commission of India' },
+
+  { id:'jan26-1', title:'Republic Day', date:'01-26', year:1950, category:'important', subcategory:'National Observance',
+    location:'New Delhi', people:['Dr. Rajendra Prasad','Dr. B. R. Ambedkar'], description:'The Constitution of India came into force, replacing the GoI Act 1935. India became a sovereign republic.', significance:'Purna Swaraj was also declared on 26 January 1930 (Lahore Session). Dr. Prasad became first President.', sscRelevance:'VERY HIGH', pyq:true, tags:['constitution','purna swaraj','republic'], relatedEvents:['jan26-2','nov26-1','dec29-2'], source:'Constitution of India' },
+
+  { id:'jan26-2', title:'Purna Swaraj Declaration', date:'01-26', year:1930, category:'history', subcategory:'Indian National Movement',
+    location:'Lahore Session, INC', people:['Jawaharlal Nehru','Mahatma Gandhi'], description:'INC under Nehru\'s presidentship declared "Purna Swaraj" (Complete Independence) as goal. 26 Jan chosen as Independence Day.', significance:'Directly led to Civil Disobedience Movement and Dandi March. 26 Jan later chosen as Republic Day for this symbolic reason.', sscRelevance:'VERY HIGH', pyq:true, tags:['lahore session','nehru','complete independence'], relatedEvents:['mar12-1','jan26-1'], source:'INC Archives' },
+
+  { id:'jan28-1', title:'Birth of Lala Lajpat Rai', date:'01-28', year:1865, category:'person', subcategory:'Revolutionary Leader',
+    location:'Dhudike, Punjab', people:['Lala Lajpat Rai'], description:'Known as "Lion of Punjab" / Punjab Kesari. Part of Lal-Bal-Pal trio. Died after lathi charge during Simon Commission protest (30 Oct 1928).', significance:'Founded Punjab National Bank (1894), Servants of the People Society (1921).', sscRelevance:'VERY HIGH', pyq:true, tags:['lal bal pal','simon commission','punjab'], relatedEvents:['feb03-1','nov17-1'], source:'National Archives' },
+
+  { id:'jan30-1', title:'Assassination of Mahatma Gandhi / Martyrs\' Day', date:'01-30', year:1948, category:'person', subcategory:'National Leader',
+    location:'Birla House, New Delhi', people:['Mahatma Gandhi','Nathuram Godse'], description:'Gandhi shot by Nathuram Godse while walking to prayer meeting. Observed as Martyrs\' Day (Shaheed Diwas).', significance:'End of an era; Gandhi was called "Father of the Nation" by Subhas Chandra Bose (1944).', sscRelevance:'VERY HIGH', pyq:true, tags:['gandhi','assassination','martyrs day'], relatedEvents:['oct02-1'], source:'National Archives' },
+
+  { id:'jan30-2', title:'Martyrs\' Day (Shaheed Diwas)', date:'01-30', year:null, category:'important', subcategory:'National Observance',
+    location:'India', people:[], description:'National observance honouring freedom fighters. Another Martyrs\' Day observed on 23 March (Bhagat Singh, Rajguru, Sukhdev).', significance:'Commemoration of sacrifice for independence.', sscRelevance:'HIGH', pyq:true, tags:['shaheed','martyrs'], relatedEvents:['mar23-1','jan30-1'], source:'Government of India' },
+
+  // ──────── FEBRUARY ────────
+  { id:'feb03-1', title:'Simon Commission Arrival', date:'02-03', year:1928, category:'act', subcategory:'Constitutional Reform',
+    location:'Bombay', people:['Sir John Simon','Lala Lajpat Rai','Nehru'], description:'7-member all-British commission arrived to review GoI Act 1919. Boycotted with "Simon Go Back" slogan across India.', significance:'No Indian member → massive protest. Lajpat Rai fatally injured. Led to Nehru Report (1928).', sscRelevance:'VERY HIGH', pyq:true, tags:['simon','nehru report','nationalism'], relatedEvents:['aug10-1','jan28-1'], source:'Constitutional History of India' },
+
+  { id:'feb14-1', title:'Valentine\'s Day (not SSC relevant)', date:'02-14', year:null, category:'important', subcategory:'International',
+    location:'Worldwide', people:[], description:'International cultural observance. Not SSC-relevant.', significance:'None for SSC.', sscRelevance:'LOW', pyq:false, tags:[], relatedEvents:[], source:'' },
+
+  { id:'feb20-1', title:'Arunachal Pradesh Statehood Day', date:'02-20', year:1987, category:'important', subcategory:'National Observance',
+    location:'Arunachal Pradesh', people:[], description:'Arunachal Pradesh became full state on 20 Feb 1987 (along with Mizoram). Previously a UT.', significance:'8th Schedule languages & statehood topics are PYQ territory.', sscRelevance:'MEDIUM', pyq:false, tags:['statehood','northeast'], relatedEvents:[], source:'GoI' },
+
+  { id:'feb28-1', title:'Birth of C. V. Raman / National Science Day', date:'02-28', year:1888, category:'person', subcategory:'Scientist',
+    location:'Tiruchirappalli', people:['C. V. Raman'], description:'Discovered "Raman Effect" (1928). Nobel Prize in Physics 1930 — first Asian in science.', significance:'National Science Day observed 28 Feb each year; theme varies annually.', sscRelevance:'VERY HIGH', pyq:true, tags:['raman effect','nobel','science day'], relatedEvents:['feb28-2'], source:'Indian Academy of Sciences' },
+
+  { id:'feb28-2', title:'National Science Day', date:'02-28', year:1986, category:'important', subcategory:'National Observance',
+    location:'India', people:['NCSTC','Department of S&T'], description:'Marks discovery of Raman Effect (28 Feb 1928). First celebrated in 1987.', significance:'Theme changes yearly — common current affairs PYQ.', sscRelevance:'HIGH', pyq:true, tags:['science','raman'], relatedEvents:['feb28-1'], source:'NCSTC' },
+
+  // ──────── MARCH ────────
+  { id:'mar08-1', title:'International Women\'s Day', date:'03-08', year:1911, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN Women'], description:'Celebrates women\'s achievements. First observed 1911; UN recognition 1975. Theme varies annually.', significance:'Common PYQ for theme & organization (UN Women).', sscRelevance:'HIGH', pyq:true, tags:['women','un'], relatedEvents:[], source:'UN' },
+
+  { id:'mar12-1', title:'Dandi March (Salt Satyagraha) Begins', date:'03-12', year:1930, category:'history', subcategory:'Civil Disobedience Movement',
+    location:'Sabarmati → Dandi (385 km)', people:['Mahatma Gandhi','78 volunteers'], description:'Gandhi with 78 Satyagrahis marched 24 days to break salt law. Reached Dandi on 6 April 1930 and made salt from seawater.', significance:'Launched the Civil Disobedience Movement. Sparked nationwide defiance of salt tax. Turning point in Indian nationalism.', sscRelevance:'VERY HIGH', pyq:true, tags:['gandhi','salt march','cdm','civil disobedience'], relatedEvents:['apr06-1','jan26-2'], source:'Sabarmati Ashram Archives' },
+
+  { id:'mar15-1', title:'World Consumer Rights Day', date:'03-15', year:1983, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['Consumers International'], description:'First observed 1983. Marks JFK\'s 1962 speech on consumer rights. In India: Consumer Protection Act 1986, updated 2019.', significance:'COPRA is a common PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['consumer','copra'], relatedEvents:[], source:'Consumers International' },
+
+  { id:'mar18-1', title:'National Ordnance Factories Day', date:'03-18', year:1802, category:'important', subcategory:'National Observance',
+    location:'India', people:['Ministry of Defence'], description:'Marks establishment of first ordnance factory at Cossipore (1802).', significance:'Defence-related static GK.', sscRelevance:'LOW', pyq:false, tags:['defence'], relatedEvents:[], source:'MoD' },
+
+  { id:'mar21-1', title:'International Day of Forests', date:'03-21', year:2012, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN / FAO'], description:'UNGA resolution 2012. Theme changes yearly.', significance:'Environment-related PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['environment','un'], relatedEvents:['jun05-1'], source:'UN/FAO' },
+
+  { id:'mar22-1', title:'World Water Day', date:'03-22', year:1993, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN Water'], description:'UNGA declared in 1993. Theme changes annually (e.g. "Water for Peace" 2024, "Glacier Preservation" 2025).', significance:'Annual theme is frequent PYQ.', sscRelevance:'HIGH', pyq:true, tags:['water','un'], relatedEvents:[], source:'UN Water' },
+
+  { id:'mar23-1', title:'Martyrdom of Bhagat Singh, Rajguru, Sukhdev', date:'03-23', year:1931, category:'person', subcategory:'Revolutionary',
+    location:'Lahore Jail', people:['Bhagat Singh','Shivaram Rajguru','Sukhdev Thapar'], description:'Executed for Saunders murder and Assembly bombing case. Bhagat Singh (born 28 Sep 1907) was founder of HSRA (with Chandrashekhar Azad).', significance:'Observed as Shaheed Diwas (one of two). Bhagat Singh threw bombs in Central Legislative Assembly (8 Apr 1929) with Batukeshwar Dutt.', sscRelevance:'VERY HIGH', pyq:true, tags:['bhagat singh','hsra','revolutionary','shaheed'], relatedEvents:['apr08-1','jan30-2'], source:'National Archives' },
+
+  { id:'mar24-1', title:'World Tuberculosis Day', date:'03-24', year:1982, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WHO'], description:'Commemorates Koch\'s discovery of TB bacterium (1882). Theme changes yearly.', significance:'Health-related PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['health','who','tb'], relatedEvents:['apr07-1'], source:'WHO' },
+
+  // ──────── APRIL ────────
+  { id:'apr05-1', title:'National Maritime Day', date:'04-05', year:1964, category:'important', subcategory:'National Observance',
+    location:'India', people:['Ministry of Shipping'], description:'Commemorates SS Loyalty, first Indian-owned ship to sail under Indian flag (5 Apr 1919) from Bombay to London.', significance:'Maritime history PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['maritime','shipping'], relatedEvents:[], source:'MoS' },
+
+  { id:'apr06-1', title:'Dandi March Concludes / Salt Law Broken', date:'04-06', year:1930, category:'history', subcategory:'Civil Disobedience Movement',
+    location:'Dandi, Gujarat', people:['Mahatma Gandhi'], description:'Gandhi broke salt law by picking up natural salt and boiling seawater. Sparked mass salt satyagraha across India.', significance:'Symbolic defiance; ~60,000 arrested including Gandhi (5 May 1930).', sscRelevance:'VERY HIGH', pyq:true, tags:['dandi','gandhi','salt'], relatedEvents:['mar12-1'], source:'Sabarmati Archives' },
+
+  { id:'apr07-1', title:'World Health Day', date:'04-07', year:1950, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WHO'], description:'Marks founding of WHO (7 Apr 1948). Theme changes annually.', significance:'WHO HQ Geneva; annual theme PYQ.', sscRelevance:'HIGH', pyq:true, tags:['who','health'], relatedEvents:['mar24-1'], source:'WHO' },
+
+  { id:'apr08-1', title:'Assembly Bomb Case — Bhagat Singh & Dutt', date:'04-08', year:1929, category:'history', subcategory:'Revolutionary Movement',
+    location:'Central Legislative Assembly, Delhi', people:['Bhagat Singh','Batukeshwar Dutt'], description:'Threw non-lethal bombs and shouted "Inquilab Zindabad" to protest Public Safety Bill & Trade Disputes Bill. Surrendered voluntarily.', significance:'Used trial as platform to publicize revolutionary ideology. Iconic slogan "Inquilab Zindabad".', sscRelevance:'VERY HIGH', pyq:true, tags:['bhagat singh','revolutionary','inquilab'], relatedEvents:['mar23-1'], source:'National Archives' },
+
+  { id:'apr13-1', title:'Jallianwala Bagh Massacre', date:'04-13', year:1919, category:'history', subcategory:'British Repression',
+    location:'Amritsar, Punjab', people:['Gen. Reginald Dyer','Dr. Saifuddin Kitchlew','Dr. Satyapal'], description:'Peaceful Baisakhi crowd fired upon by Dyer\'s troops for ~10 min. Official toll: 379 dead; Indian figures: 1000+. No warning given.', significance:'Turning point in Indian nationalism. Led to Non-Cooperation Movement. Tagore renounced knighthood. Hunter Commission (1920) censured Dyer.', sscRelevance:'VERY HIGH', pyq:true, tags:['amritsar','dyer','rowlatt','baishakhi'], relatedEvents:['mar18-2','aug01-1'], source:'Hunter Committee Report' },
+
+  { id:'apr13-2', title:'Khalsa Panth Foundation Day (Baisakhi)', date:'04-13', year:1699, category:'important', subcategory:'Religious Observance',
+    location:'Anandpur Sahib', people:['Guru Gobind Singh Ji'], description:'Guru Gobind Singh founded Khalsa Panth on Baisakhi day.', significance:'Cultural & religious significance; Punjab festival.', sscRelevance:'MEDIUM', pyq:false, tags:['sikh','baisakhi'], relatedEvents:[], source:'Sikh Archives' },
+
+  { id:'apr14-1', title:'Birth of B. R. Ambedkar / Ambedkar Jayanti', date:'04-14', year:1891, category:'person', subcategory:'Constitution Maker',
+    location:'Mhow, Madhya Pradesh', people:['B. R. Ambedkar'], description:'Chief architect of Indian Constitution. Chairman of Drafting Committee. First Law Minister. Bharat Ratna 1990 (posthumous).', significance:'Called "Father of Indian Constitution". Founded Bahishkrit Hitakarini Sabha (1924), Independent Labour Party (1936), Scheduled Castes Federation (1942). Embraced Buddhism (14 Oct 1956).', sscRelevance:'VERY HIGH', pyq:true, tags:['ambedkar','constitution','drafting committee'], relatedEvents:['nov26-1','dec06-1'], source:'Constituent Assembly Records' },
+
+  { id:'mar18-2', title:'Rowlatt Act Passed', date:'03-18', year:1919, category:'act', subcategory:'Repressive Legislation',
+    location:'India (Imperial Legislative Council)', people:['Sidney Rowlatt','Mahatma Gandhi'], description:'The Anarchical and Revolutionary Crimes Act 1919 allowed detention without trial. Gandhi launched the Rowlatt Satyagraha (6 Apr 1919) in response — the first all-India satyagraha.', significance:'Protests against the Act culminated in the Jallianwala Bagh Massacre (13 Apr 1919).', sscRelevance:'VERY HIGH', pyq:true, tags:['rowlatt','gandhi','satyagraha'], relatedEvents:['apr13-1','aug01-1'], source:'National Archives' },
+
+  { id:'apr22-1', title:'Earth Day', date:'04-22', year:1970, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'First observed 1970 (USA). Theme changes annually.', significance:'Environment PYQ.', sscRelevance:'HIGH', pyq:true, tags:['earth','environment','un'], relatedEvents:['jun05-1'], source:'UNEP' },
+
+  // ──────── MAY ────────
+  { id:'may01-1', title:'International Labour Day / Maharashtra Day', date:'05-01', year:1889, category:'important', subcategory:'International Observance',
+    location:'Worldwide / Maharashtra, Gujarat', people:['Second International'], description:'Workers\' Day. Also formation day of Maharashtra & Gujarat (1960) from bilingual Bombay State.', significance:'State reorganisation on linguistic basis (1956 → 1960 bifurcation).', sscRelevance:'HIGH', pyq:true, tags:['labour','maharashtra','gujarat'], relatedEvents:[], source:'States Reorganisation Act' },
+
+  { id:'may03-1', title:'World Press Freedom Day', date:'05-03', year:1993, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNESCO'], description:'UNGA 1993. World Press Freedom Index by Reporters Without Borders.', significance:'Article 19(1)(a) — Freedom of speech & expression.', sscRelevance:'HIGH', pyq:true, tags:['press','article 19','unesco'], relatedEvents:[], source:'UNESCO' },
+
+  { id:'may08-1', title:'World Red Cross Day', date:'05-08', year:1948, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['ICRC'], description:'Birth anniversary of Henry Dunant (founder of Red Cross). First celebrated 1948.', significance:'Humanitarian law PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['red cross','icrc'], relatedEvents:[], source:'ICRC' },
+
+  { id:'may10-1', title:'Revolt of 1857 begins at Meerut', date:'05-10', year:1857, category:'revolt', subcategory:'First War of Independence',
+    location:'Meerut, UP', people:['Mangal Pandey','Bahadur Shah Zafar','Nana Saheb','Rani Laxmibai','Tatya Tope'], description:'Sepoys at Meerut revolted on 10 May; marched to Delhi and proclaimed Bahadur Shah Zafar as Emperor. Earlier spark: Barrackpore mutiny (29 Mar 1857, Mangal Pandey).', significance:'Called "Sepoy Mutiny" by British; "First War of Independence" by V. D. Savarkar. Ended Company rule; GoI Act 1858 transferred power to Crown.', sscRelevance:'VERY HIGH', pyq:true, tags:['1857','mutiny','meersut','mangal pandey','zafar'], relatedEvents:['mar29-1','nov01-1'], source:'Kaye & Malleson History' },
+
+  { id:'may12-1', title:'International Nurses Day', date:'05-12', year:1974, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['ICN'], description:'Birth anniversary of Florence Nightingale (1820).', significance:'Health-related PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['nurses','icn'], relatedEvents:[], source:'ICN' },
+
+  { id:'may17-1', title:'World Telecommunication & Info Society Day', date:'05-17', year:1969, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['ITU'], description:'Founding of ITU (17 May 1865).', significance:'ITU — oldest UN specialised agency.', sscRelevance:'MEDIUM', pyq:true, tags:['itu','telecom'], relatedEvents:[], source:'ITU' },
+
+  { id:'may22-1', title:'International Day for Biological Diversity', date:'05-22', year:2000, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'Convention on Biological Diversity (1992 Rio Summit). India\'s Biological Diversity Act 2002.', significance:'Environment PYQ.', sscRelevance:'HIGH', pyq:true, tags:['biodiversity','rio'], relatedEvents:['jun05-1'], source:'CBD/UNEP' },
+
+  // ──────── JUNE ────────
+  { id:'jun05-1', title:'World Environment Day', date:'06-05', year:1974, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNEP'], description:'Stockholm Conference (1972) led to UNEP. First WED 1974. Theme + host country change annually.', significance:'Annual theme, host country PYQ.', sscRelevance:'VERY HIGH', pyq:true, tags:['environment','unep','stockholm'], relatedEvents:['apr22-1','jun21-1'], source:'UNEP' },
+
+  { id:'jun08-1', title:'World Oceans Day', date:'06-08', year:2008, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'UNGA designated 2008. Theme varies.', significance:'Environment PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['ocean','un'], relatedEvents:[], source:'UN' },
+
+  { id:'jun14-1', title:'World Blood Donor Day', date:'06-14', year:2005, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WHO'], description:'Birth anniversary of Karl Landsteiner (discoverer of ABO blood group).', significance:'Health PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['blood','who'], relatedEvents:[], source:'WHO' },
+
+  { id:'jun21-1', title:'International Yoga Day', date:'06-21', year:2015, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN / India'], description:'UNGA resolution (11 Dec 2014) adopted on India\'s initiative; PM Modi\'s address. First observed 21 Jun 2015. Longest day in Northern Hemisphere.', significance:'Theme changes yearly (e.g. "Yoga for Self and Society" 2024). Indian initiative.', sscRelevance:'VERY HIGH', pyq:true, tags:['yoga','un','modi'], relatedEvents:[], source:'UN / AYUSH Ministry' },
+
+  { id:'jun23-1', title:'International Olympic Day', date:'06-23', year:1948, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['IOC'], description:'Founding of IOC (23 Jun 1894) by Pierre de Coubertin.', significance:'Sports PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['olympics','ioc'], relatedEvents:[], source:'IOC' },
+
+  // ──────── JULY ────────
+  { id:'jul01-1', title:'National Doctor\'s Day', date:'07-01', year:2004, category:'important', subcategory:'National Observance',
+    location:'India', people:['Dr. B. C. Roy'], description:'Birth & death anniversary (1 Jul) of Dr. Bidhan Chandra Roy, 2nd CM of West Bengal, Bharat Ratna 1961.', significance:'Medical & personalities PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['doctor','bc roy'], relatedEvents:[], source:'IMA' },
+
+  { id:'jan01-2', title:'Swaraj Party Formed', date:'01-01', year:1923, category:'history', subcategory:'Political',
+    location:'Allahabad', people:['Motilal Nehru','C. R. Das'], description:'Swaraj Party formed by C. R. Das and Motilal Nehru after the "pro-changer" faction split from Congress at the Gaya Session (Dec 1922).', significance:'Advocated council entry to wreck reforms from within, as opposed to the "no-changers" who favoured continued boycott.', sscRelevance:'HIGH', pyq:true, tags:['swaraj party','motilal nehru','cr das','gaya session'], relatedEvents:[], source:'INC Records' },
+
+  { id:'jul11-1', title:'World Population Day', date:'07-11', year:1989, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNFPA'], description:'Commemorates "Day of 5 Billion" (11 Jul 1987). Theme varies.', significance:'Population & demography PYQ.', sscRelevance:'HIGH', pyq:true, tags:['population','unfpa'], relatedEvents:[], source:'UNFPA' },
+
+  { id:'jul14-1', title:'Bastille Day (France)', date:'07-14', year:1789, category:'history', subcategory:'World Revolution',
+    location:'Paris, France', people:[], description:'Storming of Bastille prison — start of French Revolution.', significance:'Comparative revolutions in static GK.', sscRelevance:'LOW', pyq:false, tags:['french revolution'], relatedEvents:[], source:'World History' },
+
+  { id:'jul18-1', title:'Nelson Mandela International Day', date:'07-18', year:2009, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'Birth anniversary of Nelson Mandela (1918-2013).', significance:'Anti-apartheid PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['mandela','un'], relatedEvents:[], source:'UN' },
+
+  { id:'jul26-1', title:'Kargil Vijay Diwas', date:'07-26', year:1999, category:'important', subcategory:'National Observance',
+    location:'Kargil, Ladakh', people:['Indian Armed Forces'], description:'Marks end of Kargil War (Operation Vijay). India recaptured all posts from Pakistan.', significance:'Defence PYQ.', sscRelevance:'HIGH', pyq:true, tags:['kargil','defence','op vijay'], relatedEvents:[], source:'MoD' },
+
+  // ──────── AUGUST ────────
+  { id:'aug01-1', title:'Non-Cooperation & Khilafat Movement Launched', date:'08-01', year:1920, category:'history', subcategory:'Mass Movement',
+    location:'India', people:['Mahatma Gandhi','Ali Brothers','Shaukat Ali','M. A. Ansari'], description:'Launched in special Calcutta Session (Sep 1920, actually; formally from 1 Aug as anniversary of Khilafat wrong). Combined with Khilafat issue to unite Hindus-Muslims.', significance:'First mass movement led by Gandhi. Ended after Chauri Chaura (5 Feb 1922).', sscRelevance:'VERY HIGH', pyq:true, tags:['ncm','khilafat','gandhi','ali brothers'], relatedEvents:['feb05-1','apr13-1'], source:'National Archives' },
+
+  { id:'aug06-1', title:'Hiroshima Day', date:'08-06', year:1945, category:'important', subcategory:'Historical Observance',
+    location:'Hiroshima, Japan', people:[], description:'Atomic bomb "Little Boy" dropped by USA. ~140,000 deaths.', significance:'WWII history PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['wwii','hiroshima'], relatedEvents:['aug09-1'], source:'WWII Archives' },
+
+  { id:'aug08-1', title:'Quit India Movement — Gowalia Tank Maidan', date:'08-08', year:1942, category:'history', subcategory:'Mass Movement',
+    location:'Gowalia Tank Maidan, Bombay', people:['Mahatma Gandhi','Aruna Asaf Ali','Usha Mehta','Sucheta Kriplani'], description:'All India Congress Committee passed "Quit India" resolution. Gandhi gave slogan "Do or Die". Leaders arrested next day.', significance:'Mass uprising of 1942; parallel governments in Satara, Ballia, Tamluk. Aruna Asaf Ali hoisted flag.', sscRelevance:'VERY HIGH', pyq:true, tags:['quit india','do or die','gandhi'], relatedEvents:['aug09-1'], source:'AICC Archives' },
+
+  { id:'aug09-1', title:'Quit India Movement begins / August Kranti', date:'08-09', year:1942, category:'history', subcategory:'Mass Movement',
+    location:'India', people:['Aruna Asaf Ali','Jayaprakash Narayan','Ram Manohar Lohia','Usha Mehta'], description:'Following arrests of all top leaders, massive uprising. Secret radio operated by Usha Mehta.', significance:'Called "August Kranti". Largest anti-British uprising since 1857.', sscRelevance:'VERY HIGH', pyq:true, tags:['quit india','august kranti'], relatedEvents:['aug08-1'], source:'National Archives' },
+
+  { id:'aug10-1', title:'Nehru Report Submitted', date:'08-10', year:1928, category:'act', subcategory:'Constitutional',
+    location:'India', people:['Motilal Nehru','Tej Bahadur Sapru'], description:'First Indian attempt to draft a constitution. Proposed dominion status, fundamental rights, joint electorates.', significance:'Rejected by Jinnah (who proposed his 14 Points in 1929). Purna Swaraj demand grew.', sscRelevance:'VERY HIGH', pyq:true, tags:['nehru report','motilal','constitution'], relatedEvents:['feb03-1','jan26-2'], source:'Constitutional History' },
+
+  { id:'aug15-1', title:'Indian Independence Day', date:'08-15', year:1947, category:'important', subcategory:'National Day',
+    location:'New Delhi', people:['Jawaharlal Nehru','Lord Mountbatten'], description:'India became independent. Nehru gave "Tryst with Destiny" speech. Mountbatten became first Governor-General; Nehru first PM.', significance:'Partition created Pakistan (14 Aug). Indian Independence Act 1947.', sscRelevance:'VERY HIGH', pyq:true, tags:['independence','partition','nehru','tryst with destiny'], relatedEvents:['jan26-1','jul18-2'], source:'Indian Independence Act 1947' },
+
+  { id:'jul18-2', title:'Indian Independence Act Receives Royal Assent', date:'07-18', year:1947, category:'act', subcategory:'Constitutional',
+    location:'UK / India', people:['Lord Mountbatten','Clement Attlee'], description:'Based on the Mountbatten Plan (3 June 1947). Created two independent dominions — India and Pakistan — effective from 15 August 1947.', significance:'Ended British Paramountcy over the princely states, who became free to accede to either dominion.', sscRelevance:'VERY HIGH', pyq:true, tags:['independence act','partition','mountbatten'], relatedEvents:['aug15-1','jun03-1'], source:'UK Parliament' },
+
+  { id:'aug16-1', title:'Direct Action Day', date:'08-16', year:1946, category:'history', subcategory:'Communal Violence',
+    location:'Calcutta', people:['Muslim League','H. S. Suhrawardy'], description:'Muslim League called Direct Action Day demanding Pakistan. Led to Great Calcutta Killings — ~4,000 dead in 72 hrs.', significance:'Accelerated Partition.', sscRelevance:'HIGH', pyq:true, tags:['direct action','calcutta killings','partition'], relatedEvents:['aug15-1'], source:'National Archives' },
+
+  { id:'aug20-1', title:'Birth of Rajiv Gandhi / Sadbhavana Diwas', date:'08-20', year:1944, category:'person', subcategory:'Prime Minister',
+    location:'Bombay', people:['Rajiv Gandhi'], description:'6th PM of India (1984-89). Assassinated 21 May 1991 by LTTE.', significance:'Sadbhavana Diwas observed 20 Aug.', sscRelevance:'MEDIUM', pyq:false, tags:['rajiv','pm'], relatedEvents:['may21-1'], source:'PMO Archives' },
+
+  { id:'aug29-1', title:'National Sports Day / Dhyan Chand Jayanti', date:'08-29', year:2012, category:'important', subcategory:'National Observance',
+    location:'India', people:['Major Dhyan Chand'], description:'Birth anniversary of hockey legend Major Dhyan Chand (1905). National Sports Awards given by President.', significance:'Dhyan Chand awarded Bharat Ratna in 2021. Khel Ratna renamed after him.', sscRelevance:'HIGH', pyq:true, tags:['sports','dhyan chand','hockey','bharat ratna'], relatedEvents:[], source:'MoYA' },
+
+  // ──────── SEPTEMBER ────────
+  { id:'sep05-1', title:'Teachers\' Day (Birth of S. Radhakrishnan)', date:'09-05', year:1888, category:'person', subcategory:'President / Philosopher',
+    location:'Tiruttani', people:['Dr. S. Radhakrishnan'], description:'Born 5 Sep 1888. Second President of India (1962-67). Bharat Ratna 1975. Philosopher-statesman.', significance:'Teachers\' Day observed from 1962. 2024 theme: "Teachers shaping the future".', sscRelevance:'HIGH', pyq:true, tags:['radhakrishnan','teachers day','president'], relatedEvents:[], source:'President\'s Archives' },
+
+  { id:'sep08-1', title:'International Literacy Day', date:'09-08', year:1967, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNESCO'], description:'Proclaimed by UNESCO 1966. First observed 1967.', significance:'Literacy rate PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['unesco','literacy'], relatedEvents:[], source:'UNESCO' },
+
+  { id:'sep11-1', title:'Swami Vivekananda\'s Chicago Address', date:'09-11', year:1893, category:'person', subcategory:'Religious Reformer',
+    location:'Chicago, USA', people:['Swami Vivekananda'], description:'Historic address at World Parliament of Religions beginning "Sisters and Brothers of America".', significance:'Put Hinduism on world stage; 11 Sep observed as National Youth Day of some sorts.', sscRelevance:'HIGH', pyq:true, tags:['vivekananda','chicago','parliament of religions'], relatedEvents:['jan12-1'], source:'Ramakrishna Mission Archives' },
+
+  { id:'sep15-1', title:'Engineer\'s Day (Sir M. Visvesvaraya)', date:'09-15', year:1861, category:'person', subcategory:'Engineer',
+    location:'Muddenahalli, Karnataka', people:['M. Visvesvaraya'], description:'Bharat Ratna 1955. Built Krishna Raja Sagara Dam. "Father of Modern Mysore".', significance:'Engineer\'s Day observed annually.', sscRelevance:'MEDIUM', pyq:true, tags:['engineer','visvesvaraya','bharat ratna'], relatedEvents:[], source:'Karnataka Archives' },
+
+  { id:'sep16-1', title:'World Ozone Day', date:'09-16', year:1995, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'Marks Montreal Protocol signing (16 Sep 1987) on ozone-depleting substances.', significance:'Environment treaty PYQ.', sscRelevance:'HIGH', pyq:true, tags:['ozone','montreal','environment'], relatedEvents:['jun05-1'], source:'UNEP' },
+
+  { id:'sep21-1', title:'International Day of Peace', date:'09-21', year:2002, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'UNGA 1981; fixed 3rd Tuesday of September; later fixed on 21 Sep (2002).', significance:'UN observance.', sscRelevance:'LOW', pyq:false, tags:['peace','un'], relatedEvents:[], source:'UN' },
+
+  { id:'sep25-1', title:'Antyodaya Diwas (Deendayal Upadhyaya)', date:'09-25', year:1916, category:'person', subcategory:'Political Philosopher',
+    location:'Nagla Chandrabhan, UP', people:['Pandit Deendayal Upadhyaya'], description:'Birth anniversary; propounded "Integral Humanism".', significance:'Political philosophy PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['deendayal','integral humanism'], relatedEvents:[], source:'BJP Archives' },
+
+  // ──────── OCTOBER ────────
+  { id:'oct02-1', title:'Birth of Mahatma Gandhi / Gandhi Jayanti', date:'10-02', year:1869, category:'person', subcategory:'Father of Nation',
+    location:'Porbandar, Gujarat', people:['Mahatma Gandhi','Putlibai','Karamchand Gandhi'], description:'Born Mohandas Karamchand Gandhi. Called "Mahatma" by Tagore; "Father of Nation" by Subhas Bose. Assassinated 30 Jan 1948.', significance:'International Day of Non-Violence (UNGA 2007). Key movements: Champaran (1917), Kheda (1918), Ahmedabad Mill Strike (1918), NCM, CDM, Quit India.', sscRelevance:'VERY HIGH', pyq:true, tags:['gandhi','non violence','un'], relatedEvents:['oct02-2','jan30-1'], source:'Gandhi Smriti Archives' },
+
+  { id:'oct02-2', title:'International Day of Non-Violence', date:'10-02', year:2007, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'UNGA resolution on 15 Jun 2007 on India\'s initiative; marks Gandhi Jayanti.', significance:'Indian diplomatic initiative.', sscRelevance:'HIGH', pyq:true, tags:['non violence','gandhi','un'], relatedEvents:['oct02-1'], source:'UNGA' },
+
+  { id:'oct04-1', title:'World Animal Welfare Day', date:'10-04', year:1931, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:[], description:'Feast day of St. Francis of Assisi, patron saint of animals.', significance:'Environment/wildlife PYQ.', sscRelevance:'LOW', pyq:false, tags:['animal','welfare'], relatedEvents:[], source:'' },
+
+  { id:'oct10-1', title:'World Mental Health Day', date:'10-10', year:1992, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WFMH / WHO'], description:'World Federation for Mental Health initiative.', significance:'Health PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['mental health','who'], relatedEvents:[], source:'WFMH' },
+
+  { id:'oct16-1', title:'World Food Day', date:'10-16', year:1981, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['FAO'], description:'Founding of FAO (16 Oct 1945). HQ: Rome.', significance:'FAO HQ & mandate PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['fao','food'], relatedEvents:[], source:'FAO' },
+
+  { id:'oct21-1', title:'Provisional Government of Azad Hind Declared', date:'10-21', year:1943, category:'history', subcategory:'Indian National Army',
+    location:'Singapore', people:['Subhas Chandra Bose','Mohan Singh','Rash Behari Bose'], description:'The INA was originally raised by Mohan Singh (Sep 1942) from Indian POWs. Bose took command on 4 Jul 1943, and on 21 Oct 1943 proclaimed the Provisional Government of Azad Hind (Arzi Hukumat-e-Azad Hind).', significance:'Azad Hind Government was recognised by 9 Axis-aligned nations. INA soldiers were later tried at the Red Fort (1945-46).', sscRelevance:'VERY HIGH', pyq:true, tags:['ina','azad hind','netaji','singapore'], relatedEvents:['jan23-1'], source:'INA Archives' },
+
+  { id:'oct24-1', title:'United Nations Day', date:'10-24', year:1945, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'UN Charter came into force 24 Oct 1945. 51 original members.', significance:'UN Day; India one of founding members.', sscRelevance:'HIGH', pyq:true, tags:['un','charter'], relatedEvents:[], source:'UN Charter' },
+
+  { id:'oct31-1', title:'National Unity Day (Sardar Patel Jayanti)', date:'10-31', year:1875, category:'person', subcategory:'Iron Man of India',
+    location:'Nadiad, Gujarat', people:['Sardar Vallabhbhai Patel'], description:'Born 31 Oct 1875. First Home Minister. Integrated 562 princely states. "Iron Man of India". Statue of Unity (182m) unveiled 31 Oct 2018.', significance:'National Unity Day from 2014. World\'s tallest statue by Ram V. Sutar.', sscRelevance:'VERY HIGH', pyq:true, tags:['patel','integration','statue of unity'], relatedEvents:[], source:'Home Ministry' },
+
+  // ──────── NOVEMBER ────────
+  { id:'nov01-1', title:'GoI Act 1858 — Crown Takes Over', date:'11-01', year:1858, category:'act', subcategory:'Constitutional',
+    location:'India / UK', people:['Queen Victoria','Lord Canning'], description:'Proclamation at Allahabad Durbar by Canning. Company rule ended; Crown assumed direct control. Governor-General became Viceroy.', significance:'End of East India Company. Secretary of State for India created.', sscRelevance:'VERY HIGH', pyq:true, tags:['1858','crown','viceroy','canning'], relatedEvents:['may10-1'], source:'Royal Proclamation 1858' },
+
+  { id:'nov09-1', title:'National Legal Services Day', date:'11-09', year:1995, category:'important', subcategory:'National Observance',
+    location:'India', people:['NALSA'], description:'Commemorates the Legal Services Authorities Act 1987 coming into force on 9 Nov 1995, establishing NALSA to provide free legal aid.', significance:'Article 39A (Directive Principle) mandates free legal aid — implemented via this Act.', sscRelevance:'MEDIUM', pyq:true, tags:['nalsa','legal aid','article 39a'], relatedEvents:['nov09-2'], source:'NALSA' },
+
+  { id:'nov09-2', title:'Fall of the Berlin Wall', date:'11-09', year:1989, category:'history', subcategory:'World History',
+    location:'Berlin, Germany', people:[], description:'The Berlin Wall, dividing East and West Berlin since 1961, was opened and dismantled — the symbolic end of the Cold War.', significance:'Led directly to German reunification (3 Oct 1990); a common World History PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['berlin','cold war'], relatedEvents:['nov09-1'], source:'World History' },
+
+  { id:'nov11-1', title:'National Education Day (Maulana Azad)', date:'11-11', year:1888, category:'person', subcategory:'Education Minister',
+    location:'Mecca (born); India (career)', people:['Maulana Abul Kalam Azad'], description:'Born 11 Nov 1888. First Education Minister of independent India. Founded UGC, IITs, AICTE. Bharat Ratna 1992 (posthumous).', significance:'National Education Day from 2008.', sscRelevance:'HIGH', pyq:true, tags:['azad','education','ugc','iit'], relatedEvents:[], source:'Education Ministry' },
+
+  { id:'nov14-1', title:'Children\'s Day (Nehru Jayanti)', date:'11-14', year:1889, category:'person', subcategory:'Prime Minister',
+    location:'Allahabad', people:['Jawaharlal Nehru'], description:'Born 14 Nov 1889. First PM of India (1947-64). Called "Chacha Nehru". Author of "Discovery of India", "Glimpses of World History".', significance:'Children\'s Day; Nehru\'s love for children.', sscRelevance:'HIGH', pyq:true, tags:['nehru','pm','children'], relatedEvents:['may27-2'], source:'Nehru Memorial' },
+
+  { id:'nov17-1', title:'Death of Lala Lajpat Rai', date:'11-17', year:1928, category:'person', subcategory:'Revolutionary Leader',
+    location:'Lahore', people:['Lala Lajpat Rai','James Scott','Bhagat Singh'], description:'Died of injuries from lathi charge (30 Oct 1928) during Simon Commission protest, led by James A. Scott.', significance:'Bhagat Singh assassinated J. P. Saunders (mistaken for Scott) on 17 Dec 1928 to avenge this death.', sscRelevance:'VERY HIGH', pyq:true, tags:['lajpat rai','simon','saunders'], relatedEvents:['jan28-1','feb03-1'], source:'National Archives' },
+
+  { id:'nov19-1', title:'Birth of Indira Gandhi', date:'11-19', year:1917, category:'person', subcategory:'Prime Minister',
+    location:'Allahabad', people:['Indira Gandhi','Jawaharlal Nehru'], description:'First woman PM of India. Served 1966-77, 1980-84. Assassinated 31 Oct 1984.', significance:'Only woman PM till date.', sscRelevance:'HIGH', pyq:true, tags:['indira','pm','woman'], relatedEvents:['oct31-3'], source:'PMO Archives' },
+
+  { id:'nov26-1', title:'Constitution Day / Law Day (Samvidhan Divas)', date:'11-26', year:1949, category:'important', subcategory:'National Day',
+    location:'New Delhi', people:['Dr. B. R. Ambedkar','Rajendra Prasad'], description:'Constitution adopted by Constituent Assembly on 26 Nov 1949 (came into force 26 Jan 1950). Observed as Constitution Day from 2015.', significance:'Preamble reading drives; 2 yr 11 mo 18 days to draft. Dr. Ambedkar = Chairman Drafting Committee.', sscRelevance:'VERY HIGH', pyq:true, tags:['constitution','ambedkar','preamble','samvidhan'], relatedEvents:['jan26-1','dec09-1'], source:'Constituent Assembly Debates' },
+
+  { id:'nov26-2', title:'Mumbai Terror Attacks (26/11)', date:'11-26', year:2008, category:'history', subcategory:'Contemporary',
+    location:'Mumbai', people:['Lashkar-e-Taiba'], description:'10 terrorists attacked multiple sites incl. Taj Hotel, Nariman House, CST. 166 killed over 4 days.', significance:'Contemporary India — counter-terrorism.', sscRelevance:'MEDIUM', pyq:false, tags:['26/11','terrorism','mumbai'], relatedEvents:[], source:'NIA' },
+
+  // ──────── DECEMBER ────────
+  { id:'dec01-1', title:'World AIDS Day', date:'12-01', year:1988, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WHO / UNAIDS'], description:'First global health day. Theme varies annually.', significance:'Health PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['aids','who'], relatedEvents:[], source:'UNAIDS' },
+
+  { id:'dec02-1', title:'National Pollution Control Day', date:'12-02', year:1984, category:'important', subcategory:'National Observance',
+    location:'India', people:[], description:'Remembrance of Bhopal Gas Tragedy (night of 2-3 Dec 1984). Methyl Isocyanate leak from Union Carbide plant.', significance:'Worst industrial disaster in history.', sscRelevance:'MEDIUM', pyq:true, tags:['bhopal','pollution','disaster'], relatedEvents:[], source:'Environmental Archives' },
+
+  { id:'dec03-1', title:'World Disability Day', date:'12-03', year:1992, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'UNGA 1992. Theme varies.', significance:'Disability rights PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['disability','un'], relatedEvents:[], source:'UN' },
+
+  { id:'dec04-1', title:'Indian Navy Day', date:'12-04', year:1971, category:'important', subcategory:'National Observance',
+    location:'India', people:['Indian Navy'], description:'Commemorates Operation Trident (1971 Indo-Pak War) — Indian Navy attacked Karachi harbour.', significance:'Defence PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['navy','1971','trident'], relatedEvents:[], source:'Indian Navy' },
+
+  { id:'dec06-1', title:'Death of Dr. B. R. Ambedkar (Mahaparinirvan Diwas)', date:'12-06', year:1956, category:'person', subcategory:'Constitution Maker',
+    location:'Delhi', people:['B. R. Ambedkar'], description:'Died 6 Dec 1956. Mahaparinirvan Diwas observed. Embraced Buddhism on 14 Oct 1956 at Nagpur.', significance:'Ambedkar\'s legacy.', sscRelevance:'HIGH', pyq:true, tags:['ambedkar','buddhism','mahaparinirvan'], relatedEvents:['apr14-1'], source:'Ambedkar Archives' },
+
+  { id:'dec09-1', title:'Constituent Assembly First Meeting', date:'12-09', year:1946, category:'act', subcategory:'Constitutional',
+    location:'Constitution Hall, New Delhi', people:['Sachidanand Sinha','Rajendra Prasad','B. N. Rau'], description:'First meeting. Dr. Sachidanand Sinha (oldest member) was temporary chairman per French practice. Dr. Prasad elected permanent chairman 11 Dec.', significance:'299 members eventually; took 2 yr 11 mo 18 days.', sscRelevance:'VERY HIGH', pyq:true, tags:['constituent assembly','prasad','sinha'], relatedEvents:['nov26-1'], source:'CAD' },
+
+  { id:'dec10-1', title:'Human Rights Day', date:'12-10', year:1950, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN'], description:'UDHR adopted 10 Dec 1948 by UNGA. First observed 1950. Eleanor Roosevelt chaired drafting committee.', significance:'UDHR — 30 articles. Not legally binding.', sscRelevance:'HIGH', pyq:true, tags:['human rights','udhr','un'], relatedEvents:[], source:'OHCHR' },
+
+  { id:'dec16-1', title:'Victory Day (Vijay Diwas)', date:'12-16', year:1971, category:'important', subcategory:'National Observance',
+    location:'Dhaka', people:['Gen. Sam Manekshaw','Gen. Jagjit Singh Aurora','A. A. K. Niazi'], description:'Pakistan signed Instrument of Surrender; 93,000 Pakistani troops surrendered. Bangladesh born.', significance:'One of largest military surrenders since WWII.', sscRelevance:'VERY HIGH', pyq:true, tags:['1971','bangladesh','surrender'], relatedEvents:[], source:'MoD' },
+
+  { id:'dec18-1', title:'International Migrants Day', date:'12-18', year:2000, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UN / IOM'], description:'UNGA 2000.', significance:'Migration PYQ.', sscRelevance:'LOW', pyq:false, tags:['migrants','un'], relatedEvents:[], source:'IOM' },
+
+  { id:'dec22-1', title:'National Mathematics Day (Ramanujan)', date:'12-22', year:1887, category:'person', subcategory:'Mathematician',
+    location:'Erode, Tamil Nadu', people:['Srinivasa Ramanujan'], description:'Born 22 Dec 1887. Genius mathematician; Fellow of Royal Society (1918). Declared National Math Day in 2012.', significance:'Ramanujan\'s 1729 = Hardy-Ramanujan number (taxicab number).', sscRelevance:'HIGH', pyq:true, tags:['ramanujan','mathematics'], relatedEvents:[], source:'INSA' },
+
+  { id:'dec23-1', title:'Kisan Diwas (Ch. Charan Singh Jayanti)', date:'12-23', year:1902, category:'person', subcategory:'Prime Minister / Farmer Leader',
+    location:'Noorpur, UP', people:['Charan Singh'], description:'5th PM of India (Jul-Dec 1979). Champion of farmers. "Messiah of Indian farmers".', significance:'Kisan Diwas from 2001.', sscRelevance:'MEDIUM', pyq:true, tags:['kisan','charan singh','farmers'], relatedEvents:[], source:'PMO Archives' },
+
+  { id:'dec24-1', title:'National Consumer Rights Day', date:'12-24', year:1986, category:'important', subcategory:'National Observance',
+    location:'India', people:[], description:'Consumer Protection Act 1986 received Presidential assent. Replaced by COPRA 2019.', significance:'Consumer rights PYQ.', sscRelevance:'MEDIUM', pyq:true, tags:['consumer','copra'], relatedEvents:[], source:'Consumer Affairs Ministry' },
+
+  { id:'dec25-1', title:'Good Governance Day (Atal Bihari Vajpayee Jayanti)', date:'12-25', year:1924, category:'person', subcategory:'Prime Minister',
+    location:'Gwalior', people:['Atal Bihari Vajpayee'], description:'Born 25 Dec 1924. PM thrice (1996; 1998-99; 1999-2004). Bharat Ratna 2015. Good Governance Day from 2014.', significance:'First non-Congress PM to complete full term.', sscRelevance:'HIGH', pyq:true, tags:['vajpayee','pm','bharat ratna'], relatedEvents:[], source:'PMO Archives' },
+
+  // Additional major historical events without specific day focus
+  { id:'jun23-2', title:'Battle of Plassey', date:'06-23', year:1757, category:'battle', subcategory:'British Expansion',
+    location:'Plassey (Palashi), Bengal', people:['Robert Clive','Siraj-ud-Daulah','Mir Jafar'], description:'British EIC defeated Nawab Siraj-ud-Daulah through treachery of Mir Jafar. First major British victory.', significance:'Established British political control in Bengal. Start of Company rule.', sscRelevance:'VERY HIGH', pyq:true, tags:['plassey','clive','company','bengal'], relatedEvents:['oct22-1'], source:'History of British India' },
+
+  { id:'oct22-1', title:'Battle of Buxar', date:'10-22', year:1764, category:'battle', subcategory:'British Expansion',
+    location:'Buxar, Bihar', people:['Hector Munro','Mir Qasim','Shuja-ud-Daulah','Shah Alam II'], description:'British defeated combined forces of Bengal Nawab, Awadh Nawab and Mughal Emperor.', significance:'Led to Treaty of Allahabad (1765) — Diwani rights of Bengal, Bihar, Odisha to EIC. Consolidated British power.', sscRelevance:'VERY HIGH', pyq:true, tags:['buxar','diwani','munro','treaty of allahabad'], relatedEvents:['jun23-2','aug12-1'], source:'History of British India' },
+
+  { id:'aug12-1', title:'Treaty of Allahabad — Diwani Rights', date:'08-12', year:1765, category:'act', subcategory:'Treaty',
+    location:'Allahabad', people:['Robert Clive','Shah Alam II'], description:'Mughal Emperor granted Diwani (revenue) rights of Bengal, Bihar, Odisha to EIC.', significance:'Company became territorial power. Dual Government (1765-72) introduced by Clive.', sscRelevance:'VERY HIGH', pyq:true, tags:['diwani','allahabad','clive','dual govt'], relatedEvents:['oct22-1'], source:'EIC Records' },
+
+  { id:'mar29-1', title:'Mangal Pandey Mutiny at Barrackpore', date:'03-29', year:1857, category:'revolt', subcategory:'1857 Spark',
+    location:'Barrackpore, Bengal', people:['Mangal Pandey'], description:'Sepoy Mangal Pandey of 34th BNI attacked British officers. Executed 8 Apr 1857.', significance:'Preceded and inspired the 1857 revolt.', sscRelevance:'VERY HIGH', pyq:true, tags:['mangal pandey','1857','barrackpore'], relatedEvents:['may10-1'], source:'Military Archives' },
+
+  { id:'feb05-1', title:'Chauri Chaura Incident', date:'02-05', year:1922, category:'history', subcategory:'NCM End',
+    location:'Chauri Chaura, Gorakhpur', people:['Mahatma Gandhi'], description:'Violent mob burnt police station; 22 policemen died. Gandhi withdrew NCM on 12 Feb 1922.', significance:'Ended NCM; led to formation of Swaraj Party (1923).', sscRelevance:'VERY HIGH', pyq:true, tags:['chauri chaura','ncm','gandhi'], relatedEvents:['aug01-1'], source:'National Archives' },
+
+  { id:'apr09-1', title:'Poona Pact Signed', date:'09-24', year:1932, category:'act', subcategory:'Constitutional',
+    location:'Yerwada Jail, Poona', people:['B. R. Ambedkar','Mahatma Gandhi','Madan Mohan Malaviya'], description:'Replaced Communal Award\'s separate electorates for Depressed Classes with reserved seats in joint electorates. Gandhi fasted against separate electorates.', significance:'Ambedkar vs Gandhi compromise. 148 reserved seats instead of 71.', sscRelevance:'VERY HIGH', pyq:true, tags:['poona pact','ambedkar','gandhi','communal award'], relatedEvents:['aug17-1'], source:'Constitutional History' },
+
+  { id:'aug17-1', title:'Communal Award Announced', date:'08-17', year:1932, category:'act', subcategory:'Constitutional',
+    location:'UK', people:['Ramsay MacDonald'], description:'British PM MacDonald announced separate electorates for Depressed Classes, Muslims, Sikhs, Christians.', significance:'Gandhi fasted; led to Poona Pact (Sep 1932).', sscRelevance:'VERY HIGH', pyq:true, tags:['communal award','macdonald','separate electorates'], relatedEvents:['apr09-1'], source:'UK Records' },
+
+  { id:'dec23-2', title:'Government of India Act 1919 (Montagu-Chelmsford)', date:'12-23', year:1919, category:'act', subcategory:'Constitutional',
+    location:'India / UK', people:['Edwin Montagu','Lord Chelmsford'], description:'Introduced Dyarchy in provinces; bicameral legislature at Centre. Extended separate electorates.', significance:'Led to Rowlatt Act opposition; reviewed by Simon Commission (1927).', sscRelevance:'VERY HIGH', pyq:true, tags:['1919 act','dyarchy','montagu','chelmsford'], relatedEvents:['feb03-1','apr13-1'], source:'UK Parliament' },
+
+  { id:'feb06-1', title:'Government of India Act 1935', date:'08-02', year:1935, category:'act', subcategory:'Constitutional',
+    location:'UK', people:['British Parliament'], description:'Longest GoI Act. Abolished dyarchy in provinces, introduced provincial autonomy. Proposed All-India Federation. Divided powers into Federal/Provincial/Concurrent lists.', significance:'Basis of Indian Constitution. RBI established (1935) under this Act. Federal Court set up.', sscRelevance:'VERY HIGH', pyq:true, tags:['1935 act','federal court','rbi','provincial autonomy'], relatedEvents:['apr01-1'], source:'UK Parliament' },
+
+  { id:'apr01-1', title:'RBI Established', date:'04-01', year:1935, category:'history', subcategory:'Institution',
+    location:'Calcutta', people:['Hilton Young Commission','Sir Osborne Smith'], description:'Reserve Bank of India established under RBI Act 1934, started operations 1 Apr 1935. Nationalised in 1949.', significance:'First Governor: Osborne Smith. First Indian Governor: C. D. Deshmukh.', sscRelevance:'VERY HIGH', pyq:true, tags:['rbi','central bank','osborne smith'], relatedEvents:['feb06-1'], source:'RBI Archives' },
+
+  { id:'jan28-2', title:'INC Founded', date:'12-28', year:1885, category:'history', subcategory:'Political Organization',
+    location:'Bombay (Gokuldas Tejpal House)', people:['A. O. Hume','W. C. Bonnerjee','72 delegates'], description:'First session of Indian National Congress presided by W. C. Bonnerjee. Founded by A. O. Hume (retired British ICS).', significance:'Originally called "Indian National Union". Safety valve theory (extremist view) vs political awakening.', sscRelevance:'VERY HIGH', pyq:true, tags:['inc','ao hume','bonnerjee','1885'], relatedEvents:[], source:'INC Archives' },
+
+  { id:'oct16-2', title:'Partition of Bengal Announced', date:'10-16', year:1905, category:'history', subcategory:'British Policy',
+    location:'Bengal', people:['Lord Curzon'], description:'Viceroy Curzon partitioned Bengal into East Bengal (Muslim-majority) and West Bengal (Hindu-majority).', significance:'Sparked Swadeshi Movement (1905-08). Bande Mataram became slogan. Annulled in 1911.', sscRelevance:'VERY HIGH', pyq:true, tags:['curzon','partition of bengal','swadeshi'], relatedEvents:['oct16-3'], source:'British Records' },
+
+  { id:'oct16-3', title:'Partition of Bengal Annulled', date:'12-12', year:1911, category:'history', subcategory:'British Policy',
+    location:'Delhi Durbar', people:['Lord Hardinge','King George V'], description:'Annulled at Delhi Durbar. Capital shifted from Calcutta to Delhi.', significance:'End of Swadeshi era.', sscRelevance:'VERY HIGH', pyq:true, tags:['partition annulled','delhi durbar','hardinge'], relatedEvents:['oct16-2'], source:'British Records' },
+
+  { id:'dec30-1', title:'Lucknow Pact', date:'12-30', year:1916, category:'history', subcategory:'Political Alliance',
+    location:'Lucknow', people:['INC','Muslim League','Bal Gangadhar Tilak','M. A. Jinnah'], description:'INC & Muslim League agreed on joint scheme of constitutional reforms; accepted separate electorates for Muslims.', significance:'Hindu-Muslim unity; also saw Moderates-Extremists reunion (Tilak & Annie Besant effort).', sscRelevance:'VERY HIGH', pyq:true, tags:['lucknow pact','tilak','jinnah','muslim league'], relatedEvents:[], source:'INC/ML Archives' },
+
+  { id:'jan28-3', title:'Home Rule Movement Launched', date:'09-28', year:1916, category:'history', subcategory:'Political Movement',
+    location:'India', people:['Bal Gangadhar Tilak','Annie Besant'], description:'Tilak launched in Maharashtra (Apr 1916); Besant launched in rest of India (Sep 1916). Demanded self-government.', significance:'Revived nationalist movement post-Surat split.', sscRelevance:'VERY HIGH', pyq:true, tags:['home rule','tilak','besant'], relatedEvents:[], source:'National Archives' },
+
+  { id:'apr13-3', title:'Champaran Satyagraha', date:'04-10', year:1917, category:'history', subcategory:'Gandhian Movement',
+    location:'Champaran, Bihar', people:['Mahatma Gandhi','Rajkumar Shukla','Rajendra Prasad','J. B. Kripalani'], description:'Gandhi\'s first satyagraha in India against tinkathia system (forced indigo cultivation). Champaran Agrarian Act passed.', significance:'Start of Gandhian era in Indian politics.', sscRelevance:'VERY HIGH', pyq:true, tags:['champaran','gandhi','indigo'], relatedEvents:['mar12-1'], source:'Gandhi Archives' },
+
+  { id:'apr04-1', title:'Ahmedabad Mill Strike', date:'03-18', year:1918, category:'history', subcategory:'Gandhian Movement',
+    location:'Ahmedabad', people:['Mahatma Gandhi','Anasuya Sarabhai'], description:'Gandhi\'s first hunger strike. Supported mill workers demanding plague bonus. 35% wage increase granted.', significance:'Gandhi\'s second Indian satyagraha.', sscRelevance:'HIGH', pyq:true, tags:['ahmedabad','gandhi','hunger strike'], relatedEvents:['apr13-3'], source:'Gandhi Archives' },
+
+  { id:'jun15-1', title:'Kheda Satyagraha', date:'03-22', year:1918, category:'history', subcategory:'Gandhian Movement',
+    location:'Kheda, Gujarat', people:['Mahatma Gandhi','Sardar Patel','Indulal Yagnik'], description:'Peasants refused to pay land revenue after crop failure. Gandhian satyagraha.', significance:'Sardar Patel emerged as leader.', sscRelevance:'HIGH', pyq:true, tags:['kheda','gandhi','patel','peasant'], relatedEvents:['apr13-3'], source:'Gandhi Archives' },
+
+  { id:'dec02-2', title:'Bhopal Gas Tragedy', date:'12-02', year:1984, category:'history', subcategory:'Industrial Disaster',
+    location:'Bhopal, MP', people:['Union Carbide','Warren Anderson'], description:'Methyl Isocyanate gas leaked from UC plant. Thousands died immediately; lakhs affected.', significance:'Worst industrial disaster in history. Led to Environment Protection Act 1986.', sscRelevance:'HIGH', pyq:true, tags:['bhopal','disaster','ucil'], relatedEvents:['dec02-1'], source:'NIA/Environmental Records' },
+
+  { id:'apr26-1', title:'Chernobyl Disaster', date:'04-26', year:1986, category:'history', subcategory:'World Disaster',
+    location:'Chernobyl, USSR (now Ukraine)', people:[], description:'Nuclear reactor explosion — worst nuclear disaster in history.', significance:'Nuclear safety PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['chernobyl','nuclear'], relatedEvents:[], source:'IAEA' },
+
+  { id:'aug14-1', title:'Partition of India — Pakistan Independence', date:'08-14', year:1947, category:'history', subcategory:'Partition',
+    location:'Karachi', people:['Muhammad Ali Jinnah','Lord Mountbatten'], description:'Pakistan declared independent on 14 Aug 1947. Jinnah became first Governor-General.', significance:'Based on Mountbatten Plan (3 Jun 1947). Indian Independence Act.', sscRelevance:'VERY HIGH', pyq:true, tags:['pakistan','partition','jinnah'], relatedEvents:['aug15-1'], source:'Partition Archives' },
+
+  { id:'jan30-3', title:'Gandhi-Irwin Pact', date:'03-05', year:1931, category:'act', subcategory:'Constitutional',
+    location:'Delhi', people:['Mahatma Gandhi','Lord Irwin'], description:'Gandhi agreed to suspend CDM and attend 2nd Round Table Conference. Irwin released prisoners and allowed salt making.', significance:'Led to Gandhi attending 2nd RTC (Sep-Dec 1931, London).', sscRelevance:'VERY HIGH', pyq:true, tags:['gandhi irwin','cdm','rtc'], relatedEvents:['mar12-1'], source:'National Archives' },
+
+  { id:'nov03-1', title:'Second Round Table Conference', date:'09-12', year:1931, category:'act', subcategory:'Constitutional',
+    location:'London', people:['Mahatma Gandhi','Ramsay MacDonald'], description:'Gandhi attended as sole INC representative. Deadlocked on communal representation.', significance:'Gandhi returned disappointed; relaunched CDM in Jan 1932.', sscRelevance:'VERY HIGH', pyq:true, tags:['rtc','gandhi','london'], relatedEvents:['jan30-3'], source:'UK Records' },
+
+  { id:'may07-1', title:'Tagore renounces Knighthood', date:'05-31', year:1919, category:'person', subcategory:'Literary Figure',
+    location:'Santiniketan', people:['Rabindranath Tagore'], description:'Tagore returned knighthood in protest against Jallianwala Bagh massacre.', significance:'Nobel Prize 1913 (Gitanjali). First Asian Nobel laureate.', sscRelevance:'VERY HIGH', pyq:true, tags:['tagore','nobel','gitanjali','jallianwala'], relatedEvents:['apr13-1'], source:'Visva-Bharati Archives' },
+
+  { id:'aug15-3', title:'Goa Liberation', date:'12-19', year:1961, category:'history', subcategory:'Post-Independence',
+    location:'Goa', people:['Indian Armed Forces'], description:'Operation Vijay liberated Goa, Daman, Diu from Portuguese rule.', significance:'19 years after independence.', sscRelevance:'HIGH', pyq:true, tags:['goa','portuguese','op vijay'], relatedEvents:[], source:'MoD' },
+
+  { id:'feb20-2', title:'Mizoram Statehood', date:'02-20', year:1987, category:'important', subcategory:'National',
+    location:'Mizoram', people:[], description:'Mizoram became full state (along with Arunachal Pradesh).', significance:'Statehood PYQ.', sscRelevance:'MEDIUM', pyq:false, tags:['mizoram','statehood'], relatedEvents:['feb20-1'], source:'GoI' },
+
+  { id:'mar01-1', title:'Zero Discrimination Day', date:'03-01', year:2014, category:'important', subcategory:'International',
+    location:'Worldwide', people:['UNAIDS'], description:'First observed 2014. Promotes equality.', significance:'UN observance.', sscRelevance:'LOW', pyq:false, tags:['discrimination','un'], relatedEvents:[], source:'UNAIDS' },
+
+  { id:'jun05-2', title:'Revolt of 1857 — Rani Laxmibai\'s martyrdom', date:'06-17', year:1858, category:'person', subcategory:'1857 Leader',
+    location:'Gwalior', people:['Rani Laxmibai','Tatya Tope'], description:'Queen of Jhansi died fighting the British. Key leader of 1857.', significance:'"Jhansi ki Rani" — symbol of resistance.', sscRelevance:'VERY HIGH', pyq:true, tags:['laxmibai','1857','jhansi'], relatedEvents:['may10-1'], source:'Military Archives' },
+
+  // ──────── ADDITIONAL IMPORTANT DAYS ────────
+  { id:'jan24-1', title:'National Girl Child Day', date:'01-24', year:2008, category:'important', subcategory:'National Observance',
+    location:'India', people:['Ministry of Women and Child Development'], description:'Observed to promote awareness about the rights and welfare of girl children in India.', significance:'Linked to schemes like Beti Bachao Beti Padhao (launched 2015).', sscRelevance:'MEDIUM', pyq:true, tags:['girl child','women welfare'], relatedEvents:[], source:'WCD Ministry' },
+
+  { id:'feb02-1', title:'World Wetlands Day', date:'02-02', year:1997, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['Ramsar Convention'], description:'Marks the date of the Ramsar Convention on Wetlands (2 Feb 1971, Ramsar, Iran).', significance:'India has 80+ Ramsar sites — a recurring SSC GA topic.', sscRelevance:'HIGH', pyq:true, tags:['ramsar','wetlands','environment'], relatedEvents:[], source:'Ramsar Convention' },
+
+  { id:'feb12-1', title:'National Productivity Day', date:'02-12', year:1958, category:'important', subcategory:'National Observance',
+    location:'India', people:['National Productivity Council'], description:'Marks the foundation of the National Productivity Council (NPC), set up under the Ministry of Commerce & Industry.', significance:'Kicks off National Productivity Week.', sscRelevance:'LOW', pyq:false, tags:['npc','productivity'], relatedEvents:[], source:'NPC' },
+
+  { id:'feb13-1', title:'World Radio Day', date:'02-13', year:2011, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNESCO'], description:'Adopted by UNESCO in 2011 and by the UN General Assembly in 2012 to mark the founding of UN Radio in 1946.', significance:'Recognises radio\'s continuing role in information access.', sscRelevance:'MEDIUM', pyq:true, tags:['unesco','radio'], relatedEvents:[], source:'UNESCO' },
+
+  { id:'feb24-1', title:'Central Excise Day', date:'02-24', year:1944, category:'important', subcategory:'National Observance',
+    location:'India', people:['CBIC'], description:'Marks the enactment of the Central Excise and Salt Act, 1944.', significance:'Now largely subsumed into the GST framework (2017).', sscRelevance:'LOW', pyq:false, tags:['excise','cbic','tax'], relatedEvents:['jul01-2'], source:'CBIC' },
+
+  { id:'mar03-1', title:'World Wildlife Day', date:'03-03', year:1973, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['CITES'], description:'Marks the date of adoption of CITES (Convention on International Trade in Endangered Species), 3 Mar 1973.', significance:'Raises awareness of wild fauna and flora conservation.', sscRelevance:'MEDIUM', pyq:true, tags:['cites','wildlife'], relatedEvents:[], source:'UN' },
+
+  { id:'mar04-1', title:'National Security Day', date:'03-04', year:1960, category:'important', subcategory:'National Observance',
+    location:'India', people:['National Safety Council'], description:'Marks the establishment of the National Safety Council of India in 1966; observed as part of National Safety Week.', significance:'Promotes occupational health & safety awareness.', sscRelevance:'LOW', pyq:false, tags:['safety'], relatedEvents:[], source:'NSC' },
+
+  { id:'mar10-1', title:'CISF Raising Day', date:'03-10', year:1969, category:'important', subcategory:'National Observance',
+    location:'India', people:['CISF'], description:'Marks the founding of the Central Industrial Security Force, a Central Armed Police Force.', significance:'Guards critical infrastructure — airports, metro, PSUs.', sscRelevance:'MEDIUM', pyq:true, tags:['cisf','capf'], relatedEvents:[], source:'CISF' },
+
+  { id:'mar20-1', title:'International Day of Happiness', date:'03-20', year:2013, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Recognises happiness as a fundamental human goal; first observed 2013 per UN Resolution 66/281.', significance:'India ranks in the World Happiness Report annually — often an SSC GA reference point.', sscRelevance:'MEDIUM', pyq:true, tags:['un','happiness index'], relatedEvents:[], source:'UN' },
+
+  { id:'mar21-2', title:'World Poetry Day', date:'03-21', year:1999, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNESCO'], description:'Declared by UNESCO in 1999 to promote the reading, writing, and teaching of poetry worldwide.', significance:'Coincides with the vernal equinox in the Northern Hemisphere.', sscRelevance:'LOW', pyq:false, tags:['unesco','poetry'], relatedEvents:[], source:'UNESCO' },
+
+  { id:'mar27-1', title:'World Theatre Day', date:'03-27', year:1961, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['International Theatre Institute'], description:'Established by the International Theatre Institute in 1961 to celebrate the art of theatre.', significance:'Marked by an annual International Message from a theatre figure.', sscRelevance:'LOW', pyq:false, tags:['theatre','iti'], relatedEvents:[], source:'ITI' },
+
+  { id:'apr02-1', title:'World Autism Awareness Day', date:'04-02', year:2008, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Designated by the UN General Assembly in 2007, first observed 2008, to highlight autism spectrum disorders.', significance:'Part of the broader disability-rights observance calendar.', sscRelevance:'LOW', pyq:false, tags:['autism','disability'], relatedEvents:[], source:'UN' },
+
+  { id:'apr07-2', title:'World Homeopathy Day', date:'04-10', year:1755, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['Samuel Hahnemann'], description:'Observed on the birth anniversary of Dr. Samuel Hahnemann, founder of homeopathy.', significance:'India is a major centre for homeopathic practice (AYUSH Ministry).', sscRelevance:'LOW', pyq:false, tags:['homeopathy','ayush'], relatedEvents:[], source:'AYUSH Ministry' },
+
+  { id:'apr18-2', title:'World Heritage Day', date:'04-18', year:1983, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['ICOMOS'], description:'International Day for Monuments and Sites, proposed by ICOMOS in 1982, first observed 1983.', significance:'India has 40+ UNESCO World Heritage Sites — frequent SSC GA topic.', sscRelevance:'HIGH', pyq:true, tags:['icomos','unesco','heritage'], relatedEvents:[], source:'ICOMOS' },
+
+  { id:'apr21-1', title:'National Civil Services Day', date:'04-21', year:1947, category:'important', subcategory:'National Observance',
+    location:'Delhi', people:['Sardar Vallabhbhai Patel'], description:'Marks Sardar Patel\'s address to probationary IAS officers in 1947, calling civil services the "steel frame" of India.', significance:'Directly relevant to SSC candidates aspiring to government service.', sscRelevance:'HIGH', pyq:true, tags:['patel','steel frame','ias'], relatedEvents:['oct31-1'], source:'DoPT' },
+
+  { id:'apr26-2', title:'World Intellectual Property Day', date:'04-26', year:2000, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WIPO'], description:'Marks the date WIPO\'s founding convention entered into force in 1970; day designated in 2000.', significance:'India\'s IP regime includes the Patents Act 1970 and Trademarks Act 1999.', sscRelevance:'MEDIUM', pyq:true, tags:['wipo','ip rights'], relatedEvents:[], source:'WIPO' },
+
+  { id:'apr29-1', title:'International Dance Day', date:'04-29', year:1982, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['International Theatre Institute'], description:'Marks the birth anniversary of Jean-Georges Noverre, creator of modern ballet.', significance:'Celebrates dance as a universal art form.', sscRelevance:'LOW', pyq:false, tags:['dance'], relatedEvents:[], source:'ITI' },
+
+  { id:'may04-1', title:'International Firefighters\' Day', date:'05-04', year:1999, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:[], description:'Chosen to honour firefighters after five lost their lives in a bushfire in Australia in 1998.', significance:'Recognises the sacrifices of firefighting personnel.', sscRelevance:'LOW', pyq:false, tags:['firefighters'], relatedEvents:[], source:'IAFF' },
+
+  { id:'may11-1', title:'National Technology Day', date:'05-11', year:1998, category:'important', subcategory:'National Observance',
+    location:'Pokhran, Rajasthan', people:['A. P. J. Abdul Kalam','R. Chidambaram'], description:'Commemorates the Pokhran-II nuclear tests conducted on 11 May 1998.', significance:'Marked India\'s emergence as a declared nuclear power.', sscRelevance:'VERY HIGH', pyq:true, tags:['pokhran','kalam','nuclear'], relatedEvents:[], source:'DRDO' },
+
+  { id:'may15-1', title:'International Day of Families', date:'05-15', year:1994, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Proclaimed by the UN General Assembly in 1993, first observed 1994, to raise awareness of family-related issues.', significance:'Part of the UN\'s broader social development observance calendar.', sscRelevance:'LOW', pyq:false, tags:['un','family'], relatedEvents:[], source:'UN' },
+
+  { id:'may18-1', title:'International Museum Day', date:'05-18', year:1977, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['ICOM'], description:'Established by the International Council of Museums (ICOM) in 1977.', significance:'India has national museums including the National Museum, Delhi.', sscRelevance:'LOW', pyq:false, tags:['icom','museum'], relatedEvents:[], source:'ICOM' },
+
+  { id:'may21-1', title:'Anti-Terrorism Day', date:'05-21', year:1991, category:'important', subcategory:'National Observance',
+    location:'India', people:['Rajiv Gandhi'], description:'Observed on the death anniversary of former PM Rajiv Gandhi, assassinated on 21 May 1991 at Sriperumbudur.', significance:'Promotes awareness against terrorism and violence.', sscRelevance:'HIGH', pyq:true, tags:['rajiv gandhi','terrorism'], relatedEvents:[], source:'Home Ministry' },
+
+  { id:'may31-1', title:'World No Tobacco Day', date:'05-31', year:1987, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['WHO'], description:'Established by WHO Member States in 1987 to draw attention to the health risks of tobacco use.', significance:'Supports India\'s Cigarettes and Other Tobacco Products Act (COTPA), 2003.', sscRelevance:'MEDIUM', pyq:true, tags:['who','tobacco','cotpa'], relatedEvents:[], source:'WHO' },
+
+  { id:'jun03-2', title:'World Bicycle Day', date:'06-03', year:2018, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Recognised by the UN General Assembly in 2018 to promote the bicycle as a sustainable mode of transport.', significance:'Supports environmental and public health goals.', sscRelevance:'LOW', pyq:false, tags:['un','bicycle'], relatedEvents:[], source:'UN' },
+
+  { id:'jun29-1', title:'National Statistics Day', date:'06-29', year:2007, category:'important', subcategory:'National Observance',
+    location:'India', people:['P. C. Mahalanobis'], description:'Observed on the birth anniversary of Prof. P. C. Mahalanobis, father of Indian statistics, who founded the ISI Kolkata (1931).', significance:'Highlights the role of statistics in national planning.', sscRelevance:'HIGH', pyq:true, tags:['mahalanobis','isi','statistics'], relatedEvents:[], source:'MoSPI' },
+
+  { id:'jul01-2', title:'GST Day', date:'07-01', year:2017, category:'important', subcategory:'National Observance',
+    location:'India', people:['Arun Jaitley'], description:'Marks the rollout of the Goods and Services Tax across India at midnight on 1 July 2017.', significance:'Subsumed 17 indirect taxes under "One Nation, One Tax"; implemented via the 101st Constitutional Amendment.', sscRelevance:'VERY HIGH', pyq:true, tags:['gst','101st amendment','tax reform'], relatedEvents:['feb24-1'], source:'GST Council' },
+
+  { id:'jul15-1', title:'World Youth Skills Day', date:'07-15', year:2014, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Designated by the UN General Assembly in 2014 to highlight the importance of skills development for youth.', significance:'Aligned with India\'s Skill India Mission (launched 2015).', sscRelevance:'MEDIUM', pyq:true, tags:['un','skill india'], relatedEvents:[], source:'UN' },
+
+  { id:'jul28-1', title:'World Nature Conservation Day', date:'07-28', year:2010, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:[], description:'Raises awareness about protecting natural resources for sustainable development.', significance:'Complements World Environment Day (5 Jun).', sscRelevance:'LOW', pyq:false, tags:['conservation'], relatedEvents:['jun05-1'], source:'UNEP' },
+
+  { id:'jul29-1', title:'International Tiger Day', date:'07-29', year:2010, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:[], description:'Established at the 2010 Saint Petersburg Tiger Summit to promote a global tiger conservation system.', significance:'India runs "Project Tiger" (launched 1973) and holds ~75% of the world\'s wild tigers.', sscRelevance:'HIGH', pyq:true, tags:['project tiger','conservation'], relatedEvents:[], source:'NTCA' },
+
+  { id:'aug07-2', title:'National Handloom Day', date:'08-07', year:2015, category:'important', subcategory:'National Observance',
+    location:'India', people:['Narendra Modi'], description:'Commemorates the launch of the Swadeshi Movement on 7 Aug 1905, protesting the Partition of Bengal.', significance:'Links the freedom movement\'s Swadeshi spirit to promoting India\'s handloom sector today.', sscRelevance:'HIGH', pyq:true, tags:['swadeshi','handloom'], relatedEvents:['oct16-2'], source:'Ministry of Textiles' },
+
+  { id:'aug12-2', title:'International Youth Day', date:'08-12', year:2000, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Designated by the UN General Assembly in 1999, first observed 2000, following a recommendation of the World Conference of Ministers for Youth (1998).', significance:'Distinct from India\'s National Youth Day (12 Jan, Vivekananda\'s birthday).', sscRelevance:'MEDIUM', pyq:true, tags:['un','youth'], relatedEvents:['jan12-2'], source:'UN' },
+
+  { id:'aug19-1', title:'World Photography Day', date:'08-19', year:1839, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['Louis Daguerre'], description:'Marks the date the French government announced the daguerreotype photographic process as a free gift to the world.', significance:'Celebrates photography as art and documentation.', sscRelevance:'LOW', pyq:false, tags:['photography'], relatedEvents:[], source:'World History' },
+
+  { id:'sep05-2', title:'International Day of Charity', date:'09-05', year:2012, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['Mother Teresa'], description:'Marks the death anniversary of Mother Teresa (5 Sep 1997); designated by the UN in 2012.', significance:'Promotes charitable giving and volunteering worldwide.', sscRelevance:'LOW', pyq:false, tags:['mother teresa','charity'], relatedEvents:[], source:'UN' },
+
+  { id:'sep14-1', title:'Hindi Diwas', date:'09-14', year:1949, category:'important', subcategory:'National Observance',
+    location:'India', people:['Constituent Assembly'], description:'Marks the day the Constituent Assembly adopted Hindi in Devanagari script as the official language of the Union (14 Sep 1949).', significance:'Article 343 of the Constitution — a frequent SSC GA/Polity crossover topic.', sscRelevance:'VERY HIGH', pyq:true, tags:['hindi','article 343','official language'], relatedEvents:[], source:'Ministry of Home Affairs' },
+
+  { id:'sep27-1', title:'World Tourism Day', date:'09-27', year:1980, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['UNWTO'], description:'Marks the anniversary of the adoption of the UNWTO Statutes in 1970.', significance:'Highlights tourism\'s role in the Indian economy.', sscRelevance:'LOW', pyq:false, tags:['unwto','tourism'], relatedEvents:[], source:'UNWTO' },
+
+  { id:'sep29-1', title:'World Heart Day', date:'09-29', year:2000, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['World Heart Federation'], description:'Established by the World Heart Federation in 2000 to raise awareness of cardiovascular disease.', significance:'India has a high burden of cardiovascular disease — public-health relevance.', sscRelevance:'LOW', pyq:false, tags:['who','heart health'], relatedEvents:[], source:'World Heart Federation' },
+
+  { id:'oct08-1', title:'Indian Air Force Day', date:'10-08', year:1932, category:'important', subcategory:'National Observance',
+    location:'India', people:[], description:'Marks the founding of the Indian Air Force on 8 Oct 1932 as an auxiliary air force of British India.', significance:'One of the largest air forces in the world today.', sscRelevance:'HIGH', pyq:true, tags:['iaf','armed forces'], relatedEvents:[], source:'IAF' },
+
+  { id:'oct09-1', title:'World Post Day', date:'10-09', year:1969, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['Universal Postal Union'], description:'Marks the founding of the Universal Postal Union in Bern, Switzerland (1874).', significance:'India Post operates the largest postal network in the world.', sscRelevance:'MEDIUM', pyq:true, tags:['upu','india post'], relatedEvents:[], source:'UPU' },
+
+  { id:'oct15-1', title:'World Students\' Day', date:'10-15', year:2010, category:'important', subcategory:'National Observance',
+    location:'India', people:['A. P. J. Abdul Kalam'], description:'Declared by the UN in 2010 on the birth anniversary of Dr. A. P. J. Abdul Kalam (b. 15 Oct 1931), former President of India.', significance:'Honours the "Missile Man of India" and his contribution to science and education.', sscRelevance:'HIGH', pyq:true, tags:['kalam','students','missile man'], relatedEvents:[], source:'UN' },
+
+  { id:'nov16-1', title:'National Press Day', date:'11-16', year:1966, category:'important', subcategory:'National Observance',
+    location:'India', people:['Press Council of India'], description:'Marks the Press Council of India becoming operative as a moral watchdog for the press on 16 Nov 1966.', significance:'Symbolises a free and responsible press in India.', sscRelevance:'MEDIUM', pyq:true, tags:['press council','media'], relatedEvents:[], source:'Press Council of India' },
+
+  { id:'nov20-1', title:'Universal Children\'s Day', date:'11-20', year:1954, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Marks the UN General Assembly\'s adoption of the Declaration of the Rights of the Child (1959) and the Convention on the Rights of the Child (1989), both on 20 Nov.', significance:'Distinct from India\'s Children\'s Day (14 Nov, Nehru\'s birthday).', sscRelevance:'MEDIUM', pyq:true, tags:['un','children rights'], relatedEvents:['nov14-1'], source:'UNICEF' },
+
+  { id:'nov21-1', title:'World Television Day', date:'11-21', year:1996, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Declared by the UN General Assembly in 1996, marking the date of the first World Television Forum (1996).', significance:'Recognises television\'s role in shaping public opinion.', sscRelevance:'LOW', pyq:false, tags:['un','television'], relatedEvents:[], source:'UN' },
+
+  { id:'nov26-3', title:'National Milk Day', date:'11-26', year:2014, category:'important', subcategory:'National Observance',
+    location:'India', people:['Verghese Kurien'], description:'Observed on the birth anniversary of Dr. Verghese Kurien (b. 26 Nov 1921), "Father of the White Revolution" and architect of Operation Flood.', significance:'India is the world\'s largest milk producer, a direct result of Kurien\'s cooperative dairy model (Amul).', sscRelevance:'HIGH', pyq:true, tags:['kurien','white revolution','amul'], relatedEvents:['nov26-1'], source:'NDDB' },
+
+  { id:'dec07-1', title:'Armed Forces Flag Day', date:'12-07', year:1949, category:'important', subcategory:'National Observance',
+    location:'India', people:[], description:'Observed since 1949 to raise funds for the welfare of armed forces personnel, war widows, and veterans.', significance:'Funds collected support the Armed Forces Flag Day Fund.', sscRelevance:'MEDIUM', pyq:true, tags:['armed forces','veterans'], relatedEvents:[], source:'Ministry of Defence' },
+
+  { id:'dec09-2', title:'International Anti-Corruption Day', date:'12-09', year:2003, category:'important', subcategory:'International Observance',
+    location:'Worldwide', people:['United Nations'], description:'Marks the date the UN Convention Against Corruption was opened for signature in Merida, Mexico (2003).', significance:'India ratified the Convention in 2011; linked to the Lokpal & Lokayuktas Act, 2013.', sscRelevance:'MEDIUM', pyq:true, tags:['un','corruption','lokpal'], relatedEvents:[], source:'UNODC' },
+
+  { id:'dec14-1', title:'National Energy Conservation Day', date:'12-14', year:1991, category:'important', subcategory:'National Observance',
+    location:'India', people:['Bureau of Energy Efficiency'], description:'Observed by the Ministry of Power since 1991 to spread awareness on energy conservation.', significance:'Linked to the Energy Conservation Act, 2001, and the Bureau of Energy Efficiency (BEE).', sscRelevance:'MEDIUM', pyq:true, tags:['bee','energy'], relatedEvents:[], source:'Ministry of Power' },
+
+  // ──────── ADDITIONAL CONGRESS SESSIONS ────────
+  { id:'dec27-1', title:'INC Calcutta Session — "Vande Mataram" Sung', date:'12-27', year:1896, category:'history', subcategory:'Congress Session',
+    location:'Calcutta', people:['Rahimtulla M. Sayani'], description:'Bankim Chandra\'s "Vande Mataram" was sung for the first time at a Congress session, presided over by Rahimtulla M. Sayani.', significance:'"Vande Mataram" later became a rallying cry of the freedom movement and India\'s National Song.', sscRelevance:'MEDIUM', pyq:true, tags:['vande mataram','bankim chandra'], relatedEvents:[], source:'INC Archives' },
+
+  { id:'dec26-1', title:'INC Calcutta Session — Swaraj Resolution', date:'12-26', year:1906, category:'history', subcategory:'Congress Session',
+    location:'Calcutta', people:['Dadabhai Naoroji'], description:'Dadabhai Naoroji, presiding, declared "Swaraj" (self-government) as the goal of the Congress for the first time.', significance:'First formal articulation of self-rule as a Congress objective; Muslim League was also founded this same month (30 Dec 1906, Dhaka).', sscRelevance:'HIGH', pyq:true, tags:['naoroji','swaraj','1906'], relatedEvents:['dec30-2'], source:'INC Archives' },
+
+  { id:'dec30-2', title:'All India Muslim League Founded', date:'12-30', year:1906, category:'history', subcategory:'Political Organization',
+    location:'Dhaka', people:['Nawab Salimullah','Aga Khan III'], description:'Founded at the Muhammadan Educational Conference in Dhaka to safeguard Muslim political interests.', significance:'Later demanded separate electorates (granted in the Minto-Morley Reforms, 1909); central to Partition-era politics.', sscRelevance:'VERY HIGH', pyq:true, tags:['muslim league','dhaka','1906'], relatedEvents:['dec26-1'], source:'History Archives' },
+
+  { id:'dec26-2', title:'INC Surat Session — The "Surat Split"', date:'12-26', year:1907, category:'history', subcategory:'Congress Session',
+    location:'Surat', people:['Bal Gangadhar Tilak','Gopal Krishna Gokhale'], description:'Congress split into Moderates (led by Gokhale) and Extremists (led by Tilak) over methods of protest.', significance:'The two factions reunited at the 1916 Lucknow Session.', sscRelevance:'VERY HIGH', pyq:true, tags:['surat split','tilak','gokhale'], relatedEvents:['dec30-1'], source:'INC Archives' },
+
+  { id:'dec26-3', title:'INC Nagpur Session — Non-Cooperation Adopted', date:'12-26', year:1920, category:'history', subcategory:'Congress Session',
+    location:'Nagpur', people:['Mahatma Gandhi','C. Vijayaraghavachariar'], description:'Officially adopted the Non-Cooperation programme and adopted a new Congress constitution, restructuring it around linguistic provincial committees.', significance:'Marked Gandhi\'s rise to leadership of the Congress and the mass movement phase of the freedom struggle.', sscRelevance:'VERY HIGH', pyq:true, tags:['nagpur session','non-cooperation','gandhi'], relatedEvents:['aug01-1'], source:'INC Archives' },
+
+  { id:'dec26-4', title:'INC Kanpur Session — First Indian Woman President', date:'12-26', year:1925, category:'history', subcategory:'Congress Session',
+    location:'Kanpur', people:['Sarojini Naidu'], description:'Sarojini Naidu became the first Indian woman to preside over the INC (Annie Besant, a Briton, was the first woman president in 1917).', significance:'"Nightingale of India"; also a leading poet and freedom fighter.', sscRelevance:'HIGH', pyq:true, tags:['sarojini naidu','kanpur session'], relatedEvents:[], source:'INC Archives' },
+
+  { id:'dec29-2', title:'INC Lahore Session — "Purna Swaraj" Resolution', date:'12-29', year:1929, category:'history', subcategory:'Congress Session',
+    location:'Lahore', people:['Jawaharlal Nehru'], description:'Nehru, presiding for the first time, moved the resolution declaring Purna Swaraj (complete independence) as the Congress goal — effective 26 Jan 1930.', significance:'26 January was later chosen as Republic Day in honour of this declaration.', sscRelevance:'VERY HIGH', pyq:true, tags:['lahore session','nehru','purna swaraj'], relatedEvents:['jan26-1','jan26-2'], source:'INC Archives' },
+
+  { id:'mar29-2', title:'INC Karachi Session — Fundamental Rights Resolution', date:'03-29', year:1931, category:'history', subcategory:'Congress Session',
+    location:'Karachi', people:['Sardar Vallabhbhai Patel','Mahatma Gandhi'], description:'Adopted the "Fundamental Rights and Economic Policy" resolution, drafted largely by Nehru — the first Congress statement on social/economic rights.', significance:'Directly influenced the Fundamental Rights (Part III) of the Indian Constitution.', sscRelevance:'VERY HIGH', pyq:true, tags:['karachi session','fundamental rights','patel'], relatedEvents:['jan30-3'], source:'INC Archives' },
+
+  { id:'apr27-1', title:'INC Faizpur Session — First Rural Session', date:'12-27', year:1936, category:'history', subcategory:'Congress Session',
+    location:'Faizpur, Maharashtra', people:['Jawaharlal Nehru'], description:'The first Congress session held in a rural village rather than a city.', significance:'Focused attention on the agrarian and peasant question in the freedom movement.', sscRelevance:'MEDIUM', pyq:true, tags:['faizpur session','rural'], relatedEvents:[], source:'INC Archives' },
+
+  { id:'feb19-1', title:'INC Haripura Session — Bose Elected President', date:'02-19', year:1938, category:'history', subcategory:'Congress Session',
+    location:'Haripura, Gujarat', people:['Subhas Chandra Bose'], description:'Subhas Chandra Bose was elected Congress President for the first time.', significance:'Marked growing tension between Bose\'s militant approach and Gandhi\'s leadership.', sscRelevance:'HIGH', pyq:true, tags:['haripura session','bose'], relatedEvents:['mar10-2'], source:'INC Archives' },
+
+  { id:'mar10-2', title:'INC Tripuri Session — Bose–Gandhi Rift', date:'03-10', year:1939, category:'history', subcategory:'Congress Session',
+    location:'Tripuri (Jabalpur), Madhya Pradesh', people:['Subhas Chandra Bose','Mahatma Gandhi','Pattabhi Sitaramayya'], description:'Bose was re-elected President, defeating Gandhi\'s candidate Pattabhi Sitaramayya, but resigned soon after due to lack of support from the Gandhian old guard.', significance:'Bose subsequently formed the Forward Bloc (1939), splitting from Congress.', sscRelevance:'HIGH', pyq:true, tags:['tripuri session','bose','forward bloc'], relatedEvents:['feb19-1','jan23-1'], source:'INC Archives' },
+
+  // ──────── ADDITIONAL ACTS & MOVEMENTS ────────
+  { id:'may20-1', title:'Regulating Act Passed', date:'05-20', year:1773, category:'act', subcategory:'Constitutional',
+    location:'Britain', people:['Warren Hastings'], description:'First British attempt to regulate the East India Company\'s affairs; created the post of Governor-General of Bengal (Warren Hastings, first holder).', significance:'Also established a Supreme Court at Calcutta (1774) — earliest step towards British Parliamentary control over Company rule.', sscRelevance:'VERY HIGH', pyq:true, tags:['regulating act','warren hastings','1773'], relatedEvents:[], source:'Constitutional History' },
+
+  { id:'jul01-3', title:'Pitt\'s India Act Passed', date:'07-01', year:1784, category:'act', subcategory:'Constitutional',
+    location:'Britain', people:['William Pitt the Younger'], description:'Established a Board of Control in London to oversee the East India Company\'s political affairs, creating a system of dual government.', significance:'First time the British Government directly controlled Company policy, not just commerce.', sscRelevance:'HIGH', pyq:true, tags:['pitts india act','dual government'], relatedEvents:['may20-1'], source:'Constitutional History' },
+
+  { id:'jul13-1', title:'Charter Act of 1833', date:'07-13', year:1833, category:'act', subcategory:'Constitutional',
+    location:'Britain', people:['Lord William Bentinck'], description:'Made the Governor-General of Bengal into the "Governor-General of India," ending the Company\'s commercial functions and centralising legislative power.', significance:'Lord William Bentinck became the first Governor-General of India.', sscRelevance:'HIGH', pyq:true, tags:['charter act','bentinck','centralisation'], relatedEvents:[], source:'Constitutional History' },
+
+  { id:'mar16-1', title:'Vernacular Press Act', date:'03-16', year:1878, category:'act', subcategory:'Repressive Legislation',
+    location:'India', people:['Lord Lytton'], description:'Empowered the government to restrict the freedom of the vernacular (Indian-language) press, exempting English-language papers.', significance:'Nicknamed the "Gagging Act"; repealed in 1882 by Lord Ripon.', sscRelevance:'HIGH', pyq:true, tags:['vernacular press act','lytton','censorship'], relatedEvents:[], source:'Press History' },
+
+  { id:'feb02-2', title:'Ilbert Bill Controversy', date:'02-02', year:1883, category:'act', subcategory:'Judicial',
+    location:'India', people:['Courtenay Ilbert','Lord Ripon'], description:'Proposed to allow Indian judges to try British offenders — provoked fierce opposition from the European community and was ultimately diluted.', significance:'Exposed racial discrimination in colonial law; galvanised Indian political consciousness ahead of the INC\'s founding (1885).', sscRelevance:'HIGH', pyq:true, tags:['ilbert bill','ripon','racial discrimination'], relatedEvents:['jan28-2'], source:'Legal History' },
+
+  { id:'may24-1', title:'Indian Councils Act (Minto-Morley Reforms)', date:'05-24', year:1909, category:'act', subcategory:'Constitutional',
+    location:'Britain', people:['Lord Minto','John Morley'], description:'Introduced separate electorates for Muslims and expanded legislative councils — India\'s first step towards representative government.', significance:'Institutionalised communal electorates, a step widely seen as sowing seeds of eventual Partition.', sscRelevance:'VERY HIGH', pyq:true, tags:['minto-morley','separate electorates','1909'], relatedEvents:['dec30-2'], source:'Constitutional History' },
+
+  { id:'may21-2', title:'Government of India Act 1858 Passed', date:'08-02', year:1858, category:'act', subcategory:'Constitutional',
+    location:'Britain', people:['Lord Canning'], description:'Passed after the 1857 Revolt; transferred power from the East India Company directly to the British Crown. Created the post of Secretary of State for India.', significance:'Ended Company rule; Lord Canning became the first Viceroy of India.', sscRelevance:'VERY HIGH', pyq:true, tags:['goi act 1858','crown rule','canning'], relatedEvents:['nov01-1'], source:'Constitutional History' },
+
+  { id:'jan01-3', title:'Ghadar Party Founded', date:'11-01', year:1913, category:'history', subcategory:'Revolutionary Organization',
+    location:'San Francisco, USA', people:['Lala Hardayal','Sohan Singh Bhakna'], description:'Founded by Indian immigrants in the USA to organise armed revolution against British rule in India.', significance:'Linked to the Komagata Maru incident (1914) and attempted uprisings during WWI.', sscRelevance:'HIGH', pyq:true, tags:['ghadar party','hardayal','revolutionary'], relatedEvents:[], source:'Revolutionary History' },
+
+  { id:'sep29-2', title:'Komagata Maru Incident', date:'09-29', year:1914, category:'history', subcategory:'Revolutionary Movement',
+    location:'Budge Budge, Bengal', people:['Gurdit Singh'], description:'A ship carrying Punjabi (mostly Sikh) migrants was denied entry at Vancouver and forced to return to India, where police fired on the passengers on arrival.', significance:'Fuelled anti-colonial sentiment among the Indian diaspora and Ghadar Party activity.', sscRelevance:'MEDIUM', pyq:true, tags:['komagata maru','gurdit singh'], relatedEvents:['jan01-3'], source:'Revolutionary History' },
+
+  { id:'aug20-2', title:'Montagu Declaration (Responsible Government Announced)', date:'08-20', year:1917, category:'act', subcategory:'Constitutional',
+    location:'Britain', people:['Edwin Montagu'], description:'Secretary of State Edwin Montagu announced the gradual introduction of "responsible government" for India as the British policy goal.', significance:'Led directly to the Montagu-Chelmsford Reforms / Government of India Act 1919.', sscRelevance:'HIGH', pyq:true, tags:['montagu declaration','responsible government'], relatedEvents:['dec23-2'], source:'Constitutional History' },
+
+  { id:'aug01-2', title:'Death of Bal Gangadtar Tilak', date:'08-01', year:1920, category:'person', subcategory:'Extremist Leader',
+    location:'Bombay', people:['Bal Gangadhar Tilak'], description:'Died on the same day the Non-Cooperation Movement was launched. Gave the slogan "Swaraj is my birthright and I shall have it."', significance:'One of the "Lal-Bal-Pal" trio of Extremist leaders; edited "Kesari" and "Mahratta".', sscRelevance:'VERY HIGH', pyq:true, tags:['tilak','swaraj','lal bal pal'], relatedEvents:['aug01-1','dec26-2'], source:'INC Archives' },
+
+  { id:'feb21-1', title:'Moplah (Malabar) Rebellion', date:'08-20', year:1921, category:'revolt', subcategory:'Peasant Uprising',
+    location:'Malabar, Kerala', people:['Ali Musaliar'], description:'Muslim tenant farmers (Moplahs) rebelled against Hindu landlords and British authority amid Khilafat-era unrest.', significance:'Brutally suppressed; complicated the Hindu-Muslim unity of the Khilafat movement.', sscRelevance:'MEDIUM', pyq:true, tags:['moplah rebellion','malabar','khilafat'], relatedEvents:['aug01-1'], source:'Regional History' },
+
+  { id:'mar10-3', title:'Cripps Mission Arrives', date:'03-22', year:1942, category:'history', subcategory:'Constitutional Mission',
+    location:'Delhi', people:['Stafford Cripps'], description:'Sent by the British War Cabinet to secure Indian cooperation in WWII, offering Dominion Status after the war — rejected by Congress ("a post-dated cheque on a crashing bank," per Gandhi).', significance:'Its failure directly led to the launch of the Quit India Movement (Aug 1942).', sscRelevance:'HIGH', pyq:true, tags:['cripps mission','dominion status'], relatedEvents:['aug08-1'], source:'Constitutional History' },
+
+  { id:'mar24-2', title:'Cabinet Mission Arrives', date:'03-24', year:1946, category:'history', subcategory:'Constitutional Mission',
+    location:'Delhi', people:['Pethick-Lawrence','Stafford Cripps','A. V. Alexander'], description:'A three-member British mission proposed a federal structure for a united India, and the formation of a Constituent Assembly.', significance:'Rejected in practice after the Muslim League withdrew, leading directly to Direct Action Day and eventual Partition.', sscRelevance:'VERY HIGH', pyq:true, tags:['cabinet mission','constituent assembly'], relatedEvents:['dec09-1','aug16-1'], source:'Constitutional History' },
+
+  { id:'jun03-1', title:'Mountbatten Plan (3 June Plan)', date:'06-03', year:1947, category:'act', subcategory:'Constitutional',
+    location:'Delhi', people:['Lord Mountbatten'], description:'Announced the partition of British India into India and Pakistan, with the transfer of power advanced to 15 Aug 1947.', significance:'Formed the basis of the Indian Independence Act 1947.', sscRelevance:'VERY HIGH', pyq:true, tags:['mountbatten plan','partition'], relatedEvents:['jul18-1','aug15-1'], source:'Constitutional History' },
+
+  { id:'sep13-1', title:'Hyderabad — Operation Polo', date:'09-13', year:1948, category:'history', subcategory:'Integration of States',
+    location:'Hyderabad', people:['Sardar Vallabhbhai Patel','Nizam of Hyderabad'], description:'Indian Army\'s police action ("Operation Polo") annexed the princely state of Hyderabad after the Nizam refused to accede to India.', significance:'One of the last major acts of Sardar Patel\'s integration of over 560 princely states.', sscRelevance:'HIGH', pyq:true, tags:['hyderabad','operation polo','patel'], relatedEvents:['oct31-1'], source:'Integration History' },
+
+  { id:'jan26-3', title:'Constitution of India Adopted by Constituent Assembly', date:'11-26', year:1949, category:'act', subcategory:'Constitutional',
+    location:'New Delhi', people:['Dr. B. R. Ambedkar','Dr. Rajendra Prasad'], description:'The Constituent Assembly formally adopted the Constitution of India on 26 Nov 1949; it came into force on 26 Jan 1950.', significance:'26 Nov is now observed as Constitution Day (Samvidhan Divas), since 2015.', sscRelevance:'VERY HIGH', pyq:true, tags:['constitution','ambedkar','adoption'], relatedEvents:['jan26-1','nov26-1'], source:'Constituent Assembly Debates' },
+
+  { id:'oct15-2', title:'First General Elections Begin', date:'10-25', year:1951, category:'history', subcategory:'Democratic Milestone',
+    location:'India', people:['Sukumar Sen'], description:'India\'s first general elections under universal adult suffrage began (ran until Feb 1952), overseen by first Chief Election Commissioner Sukumar Sen.', significance:'World\'s largest democratic exercise at the time; Congress under Nehru won a decisive majority.', sscRelevance:'HIGH', pyq:true, tags:['general elections','sukumar sen','eci'], relatedEvents:['jan25-1'], source:'ECI Records' },
+
+  { id:'nov01-2', title:'States Reorganisation Act', date:'11-01', year:1956, category:'act', subcategory:'Constitutional',
+    location:'India', people:['Fazl Ali Commission'], description:'Reorganised Indian states largely along linguistic lines, based on the recommendations of the States Reorganisation Commission (Fazl Ali Commission).', significance:'Created Andhra Pradesh (first linguistic state, 1953, predated the Act) and reshaped state boundaries nationwide.', sscRelevance:'HIGH', pyq:true, tags:['states reorganisation','fazl ali','linguistic states'], relatedEvents:[], source:'Constitutional History' },
+
+  { id:'may27-2', title:'Death of Jawaharlal Nehru', date:'05-27', year:1964, category:'person', subcategory:'Prime Minister',
+    location:'New Delhi', people:['Jawaharlal Nehru'], description:'India\'s first Prime Minister died in office on 27 May 1964, having served since 15 Aug 1947.', significance:'Succeeded by Gulzarilal Nanda (interim) and then Lal Bahadur Shastri.', sscRelevance:'HIGH', pyq:true, tags:['nehru','pm','death'], relatedEvents:['nov14-1'], source:'PMO Archives' },
+
+  { id:'oct31-3', title:'Assassination of Indira Gandhi', date:'10-31', year:1984, category:'person', subcategory:'Prime Minister',
+    location:'New Delhi', people:['Indira Gandhi'], description:'India\'s first woman Prime Minister was assassinated by her own bodyguards, in the aftermath of Operation Blue Star (Jun 1984).', significance:'Led to the 1984 anti-Sikh riots; succeeded by her son Rajiv Gandhi.', sscRelevance:'HIGH', pyq:true, tags:['indira gandhi','assassination'], relatedEvents:['nov19-1'], source:'PMO Archives' },
+
+  // ──────── BATTLES (year-only entries have date:null — selectable by year) ────────
+  { id:'btl-tarain1', title:'First Battle of Tarain', date:null, year:1191, category:'battle', subcategory:'Medieval Battle',
+    location:'Tarain (Taraori), Haryana', people:['Prithviraj Chauhan','Muhammad Ghori'], description:'Prithviraj Chauhan defeated Muhammad Ghori, who invaded India for the first time.', significance:'First major confrontation between Indian rulers and Turkish invaders; Ghori retreated but returned.', sscRelevance:'HIGH', pyq:true, tags:['tarain','prithviraj','ghori','medieval'], relatedEvents:['btl-tarain2'], source:'Medieval History' },
+
+  { id:'btl-tarain2', title:'Second Battle of Tarain', date:null, year:1192, category:'battle', subcategory:'Medieval Battle',
+    location:'Tarain (Taraori), Haryana', people:['Muhammad Ghori','Prithviraj Chauhan'], description:'Muhammad Ghori decisively defeated Prithviraj Chauhan, breaking Rajput resistance in North India.', significance:'Opened the door to Turkish rule — foundation of the Delhi Sultanate under Qutb-ud-din Aibak (1193).', sscRelevance:'VERY HIGH', pyq:true, tags:['tarain','ghori','delhi sultanate'], relatedEvents:['btl-tarain1'], source:'Medieval History' },
+
+  { id:'btl-panipat1', title:'First Battle of Panipat', date:'04-21', year:1526, category:'battle', subcategory:'Medieval Battle',
+    location:'Panipat, Haryana', people:['Babur','Ibrahim Lodi'], description:'Babur defeated the Lodi Sultan Ibrahim Lodi using gunpowder and the Tulughma formation.', significance:'Established the Mughal Empire in India; killed Ibrahim Lodi.', sscRelevance:'VERY HIGH', pyq:true, tags:['panipat','babur','lodi','gunpowder'], relatedEvents:['btl-panipat3'], source:'Medieval History' },
+
+  { id:'btl-khanwa', title:'Battle of Khanwa', date:'03-17', year:1527, category:'battle', subcategory:'Medieval Battle',
+    location:'Khanwa, near Agra', people:['Babur','Rana Sanga'], description:'Babur defeated the Rajput confederacy led by Rana Sanga of Mewar.', significance:'Consolidated Mughal power over North India; ended major Rajput resistance to Babur.', sscRelevance:'HIGH', pyq:true, tags:['khanwa','babur','rana sanga','rajput'], relatedEvents:['btl-panipat1'], source:'Medieval History' },
+
+  { id:'btl-ghaghra', title:'Battle of Ghaghra', date:null, year:1529, category:'battle', subcategory:'Medieval Battle',
+    location:'Ghaghra River, Bihar', people:['Babur','Mahmud Lodi','Nusrat Shah'], description:'Babur defeated the Afghan alliance of Mahmud Lodi and Sultan Nusrat Shah of Bengal.', significance:'Final battle of Babur; completed Mughal control over North India.', sscRelevance:'MEDIUM', pyq:false, tags:['ghaghra','babur','afghan'], relatedEvents:['btl-panipat1'], source:'Medieval History' },
+
+  { id:'btl-chausa', title:'Battle of Chausa', date:'06-26', year:1539, category:'battle', subcategory:'Medieval Battle',
+    location:'Chausa, Bihar', people:['Sher Shah Suri','Humayun'], description:'Sher Shah Suri defeated Mughal emperor Humayun, who barely escaped with his life.', significance:'First major victory of Sher Shah over the Mughals; Humayun fled to Persia.', sscRelevance:'HIGH', pyq:true, tags:['chausa','sher shah','humayun','sur'], relatedEvents:['btl-kannauj'], source:'Medieval History' },
+
+  { id:'btl-kannauj', title:'Battle of Kannauj (Bilgram)', date:'05-17', year:1540, category:'battle', subcategory:'Medieval Battle',
+    location:'Bilgram, near Kannauj', people:['Sher Shah Suri','Humayun'], description:'Sher Shah decisively defeated Humayun again, forcing him into exile.', significance:'Ended Mughal rule temporarily; Sur dynasty ruled North India 1540–1555.', sscRelevance:'HIGH', pyq:true, tags:['kannauj','bilgram','sher shah','humayun'], relatedEvents:['btl-chausa'], source:'Medieval History' },
+
+  { id:'btl-panipat2', title:'Second Battle of Panipat', date:'11-05', year:1556, category:'battle', subcategory:'Medieval Battle',
+    location:'Panipat, Haryana', people:['Akbar','Bairam Khan','Hemu'], description:'Akbar\'s forces under Bairam Khan defeated Hemu (Vikramaditya) of the Sur regime.', significance:'Restored and secured Mughal rule under Akbar.', sscRelevance:'VERY HIGH', pyq:true, tags:['panipat','akbar','bairam khan','hemu'], relatedEvents:['btl-panipat1','btl-panipat3'], source:'Medieval History' },
+
+  { id:'btl-talikota', title:'Battle of Talikota (Rakshasi–Tangadi)', date:'01-26', year:1565, category:'battle', subcategory:'Medieval Battle',
+    location:'Talikota, Karnataka', people:['Rama Raya','Ali Adil Shah','Deccan Sultans'], description:'The combined Deccan Sultanates defeated the Vijayanagara Empire under Rama Raya.', significance:'Broke the Vijayanagara Empire; its capital Hampi was sacked and destroyed.', sscRelevance:'VERY HIGH', pyq:true, tags:['talikota','vijayanagara','deccan sultans','rama raya'], relatedEvents:[], source:'Medieval History' },
+
+  { id:'btl-haldighati', title:'Battle of Haldighati', date:'06-18', year:1576, category:'battle', subcategory:'Medieval Battle',
+    location:'Haldighati, near Gogunda, Rajasthan', people:['Maharana Pratap','Man Singh I','Akbar'], description:'Mughal forces under Man Singh defeated Maharana Pratap of Mewar in the mountain pass.', significance:'Mewar never fully submitted; Pratap continued guerrilla resistance — symbol of Rajput valour.', sscRelevance:'VERY HIGH', pyq:true, tags:['haldighati','pratap','man singh','mewar'], relatedEvents:[], source:'Medieval History' },
+
+  { id:'btl-wandiwash', title:'Battle of Wandiwash', date:'01-22', year:1760, category:'battle', subcategory:'Carnatic War',
+    location:'Wandiwash (Vandavasi), Tamil Nadu', people:['Sir Eyre Coote','Comte de Lally'], description:'British forces under Eyre Coote decisively defeated the French under Lally in the Third Carnatic War.', significance:'Ended French imperial ambitions in India; Britain became the dominant European power.', sscRelevance:'VERY HIGH', pyq:true, tags:['wandiwash','carnatic war','french','eyre coote'], relatedEvents:['jun23-2'], source:'Colonial History' },
+
+  { id:'btl-panipat3', title:'Third Battle of Panipat', date:'01-14', year:1761, category:'battle', subcategory:'Medieval Battle',
+    location:'Panipat, Haryana', people:['Sadashivrao Bhau','Ahmad Shah Abdali'], description:'The Afghan invader Ahmad Shah Abdali crushed the Maratha confederacy under Sadashivrao Bhau.', significance:'Shattered Maratha power and paved the way for eventual British ascendancy in India.', sscRelevance:'VERY HIGH', pyq:true, tags:['panipat','maratha','abdali','bhausaheb'], relatedEvents:['btl-panipat1','btl-panipat2'], source:'Medieval History' },
+
+  { id:'btl-mudki', title:'Battle of Mudki', date:'12-18', year:1845, category:'battle', subcategory:'Anglo-Sikh War',
+    location:'Mudki, Punjab', people:['Sir Hugh Gough','Tej Singh'], description:'First major engagement of the First Anglo-Sikh War — British victory over the Sikh army.', significance:'Opened the First Anglo-Sikh War (1845-46).', sscRelevance:'MEDIUM', pyq:false, tags:['mudki','anglo-sikh','sikh war'], relatedEvents:['btl-sobraon'], source:'Colonial History' },
+
+  { id:'btl-sobraon', title:'Battle of Sobraon', date:'02-10', year:1846, category:'battle', subcategory:'Anglo-Sikh War',
+    location:'Sutlej River, Punjab', people:['Sir Hugh Gough','Lal Singh','Tej Singh'], description:'Decisive British victory that ended the First Anglo-Sikh War.', significance:'Led to the Treaty of Lahore (1846); Kashmir was sold to Gulab Singh.', sscRelevance:'HIGH', pyq:true, tags:['sobraon','anglo-sikh','treaty of lahore'], relatedEvents:['btl-mudki'], source:'Colonial History' },
+
+  { id:'btl-chillianwala', title:'Battle of Chillianwala', date:'01-13', year:1849, category:'battle', subcategory:'Anglo-Sikh War',
+    location:'Jhelum River, Punjab', people:['Sir Hugh Gough','Sher Singh Attariwala'], description:'Bloody indecisive battle of the Second Anglo-Sikh War — British suffered heavy casualties.', significance:'One of the toughest battles the British fought in India; followed by the Battle of Gujarat.', sscRelevance:'HIGH', pyq:true, tags:['chillianwala','anglo-sikh','second sikh war'], relatedEvents:['btl-gujarat'], source:'Colonial History' },
+
+  { id:'btl-gujarat', title:'Battle of Gujarat', date:'02-21', year:1849, category:'battle', subcategory:'Anglo-Sikh War',
+    location:'Gujarat, Punjab', people:['Sir Hugh Gough','Sher Singh Attariwala'], description:'Decisive British victory that ended the Second Anglo-Sikh War.', significance:'The Sikh Empire was annexed by the British in 1849.', sscRelevance:'HIGH', pyq:true, tags:['gujarat','anglo-sikh','annexation'], relatedEvents:['btl-chillianwala'], source:'Colonial History' },
+];
+
+// Timeline major markers
+const TIMELINE_MARKERS = [
+  { year:1191, label:'TARAIN I' },
+  { year:1192, label:'TARAIN II' },
+  { year:1526, label:'PANIPAT I' },
+  { year:1527, label:'KHANWA' },
+  { year:1556, label:'PANIPAT II' },
+  { year:1565, label:'TALIKOTA' },
+  { year:1576, label:'HALDIGHATI' },
+  { year:1600, label:'EIC CHARTER' },
+  { year:1757, label:'PLASSEY' },
+  { year:1760, label:'WANDIWASH' },
+  { year:1761, label:'PANIPAT III' },
+  { year:1764, label:'BUXAR' },
+  { year:1773, label:'REGULATING ACT' },
+  { year:1857, label:'REVOLT' },
+  { year:1858, label:'CROWN RULE' },
+  { year:1885, label:'INC' },
+  { year:1905, label:'BENGAL PARTITION' },
+  { year:1911, label:'DELHI DURBAR' },
+  { year:1919, label:'ROWLATT/JALLIANWALA' },
+  { year:1920, label:'NON-COOP' },
+  { year:1930, label:'DANDI' },
+  { year:1935, label:'GOI ACT' },
+  { year:1942, label:'QUIT INDIA' },
+  { year:1947, label:'INDEPENDENCE' }
+];
+
+const PRIORITY_LEVELS = ['VERY HIGH','HIGH','MEDIUM','LOW'];
+const ACTIVE_PRIORITY = new Set(PRIORITY_LEVELS);
+
+const CATEGORY_FILTERS = {
+  important: true,
+  history: true,
+  revolt: true,
+  act: true,
+  person: true,
+  battle: true
+};
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════ */
+
+const state = {
+  year: 2026,
+  month: 2, // March = 2
+  selectedDate: null, // ISO like '2026-03-12'
+  selectedEventId: null,
+  pyqOnly: false,
+  revisionOnly: false,
+  battlesOnly: false
+};
+
+/* ═══════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════ */
+
+function parseDate(d) {
+  // d = 'MM-DD' or null (year-only event)
+  if (!d) return { mm: null, dd: null };
+  const [mm, dd] = d.split('-').map(Number);
+  return { mm, dd };
+}
+
+function formatMonth(mmIdx) { return MONTHS[mmIdx]; }
+
+function ordinalSuffix(n) {
+  const s = ['th','st','nd','rd'];
+  const v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+
+function getEventsForDay(mmIdx, dd) {
+  const mmStr = String(mmIdx+1).padStart(2,'0');
+  const ddStr = String(dd).padStart(2,'0');
+  const key = `${mmStr}-${ddStr}`;
+  return events.filter(e => e.date === key).filter(filterEvent);
+}
+
+function filterEvent(e) {
+  if (state.pyqOnly && !e.pyq) return false;
+  if (!CATEGORY_FILTERS[e.category]) return false;
+  if (!ACTIVE_PRIORITY.has(e.sscRelevance)) return false;
+  if (state.battlesOnly && e.category !== 'battle') return false;
+  return true;
+}
+
+function getAllBattles() {
+  return events.filter(e => e.category === 'battle').sort((a,b) => (a.year||0) - (b.year||0));
+}
+
+function getAllFilteredEvents() {
+  return events.filter(filterEvent);
+}
+
+function getEventsForMonth(mmIdx) {
+  const mmStr = String(mmIdx+1).padStart(2,'0');
+  return events.filter(e => e.date && e.date.startsWith(mmStr + '-')).filter(filterEvent);
+}
+
+function getEventsCountByMonth(mmIdx) {
+  return getEventsForMonth(mmIdx).length;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER - MONTH LIST
+   ═══════════════════════════════════════════════════════ */
+
+function renderMonths() {
+  const list = document.getElementById('monthList');
+  list.innerHTML = '';
+  MONTHS.forEach((name, idx) => {
+    const count = getEventsCountByMonth(idx);
+    const el = document.createElement('div');
+    el.className = 'month-item' + (idx === state.month ? ' active' : '');
+    el.innerHTML = `
+      <span class="month-name">${name}</span>
+      <span class="month-count">${String(count).padStart(2,'0')}</span>
+    `;
+    el.onclick = () => { state.month = idx; renderAll(); };
+    list.appendChild(el);
+  });
+  document.getElementById('eventCount').textContent = getAllFilteredEvents().length + ' EV';
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER - FILTERS
+   ═══════════════════════════════════════════════════════ */
+
+function renderFilters() {
+  const fl = document.getElementById('filterList');
+  fl.innerHTML = '';
+  Object.keys(CATEGORIES).forEach(cat => {
+    const c = CATEGORIES[cat];
+    const on = CATEGORY_FILTERS[cat];
+    const el = document.createElement('div');
+    el.className = 'filter-item' + (on ? ' on' : '');
+    el.innerHTML = `
+      <span class="filter-check">✓</span>
+      <span class="filter-dot ${c.dot}"></span>
+      <span>${c.label}</span>
+    `;
+    el.onclick = () => { CATEGORY_FILTERS[cat] = !on; renderAll(); };
+    fl.appendChild(el);
+  });
+}
+
+function renderPriorities() {
+  const pl = document.getElementById('priorityList');
+  pl.innerHTML = '';
+  const colors = { 'VERY HIGH':'red', 'HIGH':'amber', 'MEDIUM':'blue', 'LOW':'text-faint' };
+  PRIORITY_LEVELS.forEach(p => {
+    const on = ACTIVE_PRIORITY.has(p);
+    const el = document.createElement('div');
+    el.className = 'priority-row' + (on ? ' on' : '');
+    el.innerHTML = `<span class="check-box">✓</span><span style="color:var(--${colors[p]})">${p}</span>`;
+    el.onclick = () => {
+      if (on) ACTIVE_PRIORITY.delete(p); else ACTIVE_PRIORITY.add(p);
+      renderAll();
+    };
+    pl.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER - CALENDAR
+   ═══════════════════════════════════════════════════════ */
+
+function renderCalendar() {
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const y = state.year;
+  const m = state.month;
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const daysInPrevMonth = new Date(y, m, 0).getDate();
+  const today = new Date();
+  const isCurrentMonth = today.getFullYear() === y && today.getMonth() === m;
+
+  document.getElementById('calTitle').textContent = `${MONTHS[m]} ${y}`;
+
+  // prev month trailing days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const d = daysInPrevMonth - i;
+    const cell = buildCell(d, m-1, y, true);
+    grid.appendChild(cell);
+  }
+  // current month
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = buildCell(d, m, y, false, isCurrentMonth && d === today.getDate());
+    grid.appendChild(cell);
+  }
+  // trailing cells
+  const total = firstDay + daysInMonth;
+  const trail = (7 - (total % 7)) % 7;
+  for (let d = 1; d <= trail; d++) {
+    const cell = buildCell(d, m+1, y, true);
+    grid.appendChild(cell);
+  }
+
+  // Stats
+  const monthEvents = getEventsForMonth(m);
+  document.getElementById('statEvents').textContent = monthEvents.length;
+  document.getElementById('statPyq').textContent = monthEvents.filter(e => e.pyq).length;
+  document.getElementById('statVh').textContent = monthEvents.filter(e => e.sscRelevance === 'VERY HIGH').length;
+}
+
+function buildCell(day, month, year, otherMonth, isToday=false) {
+  const cell = document.createElement('div');
+  cell.className = 'day-cell' + (otherMonth ? ' other-month' : '');
+  if (isToday) cell.classList.add('today');
+
+  const mmIdx = month < 0 ? 11 : (month > 11 ? 0 : month);
+  const eventsForDay = otherMonth ? [] : getEventsForDay(mmIdx, day);
+
+  const selectedDateKey = state.selectedDate;
+  const cellDateKey = `${year}-${String(mmIdx+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  if (!otherMonth && selectedDateKey === cellDateKey) cell.classList.add('selected');
+
+  const topHtml = `<div class="day-num">${day}</div>`;
+  const countHtml = eventsForDay.length ? `<div class="day-count">${eventsForDay.length}</div>` : '';
+
+  // dots — limit to 4
+  const dotSet = new Set();
+  eventsForDay.forEach(e => dotSet.add(e.category));
+  const dots = [...dotSet].slice(0,4).map(c => `<span class="day-dot ${CATEGORIES[c].dot}"></span>`).join('');
+  const extra = dotSet.size > 4 ? `<span class="day-dot" style="background:var(--text-faint);width:3px"></span>` : '';
+
+  // priority tag — highest priority event
+  let priorityTag = '';
+  if (eventsForDay.length) {
+    const vh = eventsForDay.find(e => e.sscRelevance === 'VERY HIGH');
+    if (vh) priorityTag = `<div class="day-priority-tag tag-very-high">V·HIGH</div>`;
+    else {
+      const h = eventsForDay.find(e => e.sscRelevance === 'HIGH');
+      if (h) priorityTag = `<div class="day-priority-tag tag-high">HIGH</div>`;
+    }
+  }
+
+  cell.innerHTML = topHtml + countHtml + `<div class="day-dots">${dots}${extra}</div>` + priorityTag;
+
+  cell.onmouseenter = (ev) => showTooltip(ev, day, mmIdx, year, eventsForDay);
+  cell.onmousemove = (ev) => moveTooltip(ev);
+  cell.onmouseleave = hideTooltip;
+  cell.onclick = () => {
+    if (otherMonth) {
+      state.month = mmIdx;
+      if (mmIdx === 11 && month > 11) state.year++;
+      if (mmIdx === 0 && month < 0) state.year--;
+    }
+    state.selectedDate = cellDateKey;
+    state.selectedEventId = null;
+    renderAll();
+  };
+  return cell;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TOOLTIP
+   ═══════════════════════════════════════════════════════ */
+
+const tooltip = document.getElementById('tooltip');
+function showTooltip(ev, day, mmIdx, year, events) {
+  const weekday = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const dt = new Date(year, mmIdx, day);
+  const wd = weekday[dt.getDay()];
+  let html = `<div class="tooltip-head">${MONTHS[mmIdx]} ${ordinalSuffix(day).toUpperCase()} · ${wd}</div>`;
+  if (!events.length) {
+    html += `<div class="tooltip-row" style="color:var(--text-faint)">No events recorded</div>`;
+  } else {
+    events.slice(0,4).forEach(e => {
+      html += `
+        <div class="tooltip-row">
+          <span class="dot ${CATEGORIES[e.category].dot}"></span>
+          <span>${e.title.length > 34 ? e.title.slice(0,32)+'…' : e.title}</span>
+          <span class="tooltip-year">${e.year || '—'}</span>
+        </div>`;
+    });
+    if (events.length > 4) html += `<div class="tooltip-row" style="color:var(--text-faint)">+${events.length-4} more</div>`;
+    const vh = events.find(e => e.sscRelevance === 'VERY HIGH');
+    if (vh) html += `<div class="tooltip-priority" style="color:var(--red)">SSC PRIORITY: VERY HIGH</div>`;
+    else {
+      const h = events.find(e => e.sscRelevance === 'HIGH');
+      if (h) html += `<div class="tooltip-priority" style="color:var(--amber)">SSC PRIORITY: HIGH</div>`;
+    }
+  }
+  tooltip.innerHTML = html;
+  tooltip.classList.add('show');
+  moveTooltip(ev);
+}
+function moveTooltip(ev) {
+  const pad = 14;
+  let x = ev.clientX + pad;
+  let y = ev.clientY + pad;
+  const w = tooltip.offsetWidth;
+  const h = tooltip.offsetHeight;
+  if (x + w > window.innerWidth - 10) x = ev.clientX - w - pad;
+  if (y + h > window.innerHeight - 10) y = ev.clientY - h - pad;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+}
+function hideTooltip() { tooltip.classList.remove('show'); }
+
+/* ═══════════════════════════════════════════════════════
+   RENDER - RIGHT PANEL
+   ═══════════════════════════════════════════════════════ */
+
+function renderRightPanel() {
+  const hero = document.getElementById('dateHero');
+  const eventsBox = document.getElementById('dateEvents');
+  const detail = document.getElementById('detailView');
+
+  // Year-only event selected (no date): show detail directly, hide hero
+  if (state.selectedEventId && !state.selectedDate) {
+    hero.style.display = 'none';
+    eventsBox.style.display = 'none';
+    detail.classList.add('show');
+    renderEventDetail(state.selectedEventId);
+    return;
+  }
+
+  if (!state.selectedDate) {
+    hero.style.display = 'none';
+    eventsBox.style.display = 'block';
+    detail.classList.remove('show');
+
+    if (state.battlesOnly) {
+      const battles = getAllBattles().filter(filterEvent);
+      let html = `<div class="battle-list-head">ALL BATTLES — ${battles.length}</div>`;
+      battles.forEach(e => {
+        const cat = CATEGORIES[e.category];
+        const tagClass = { 'VERY HIGH':'tag-very-high','HIGH':'tag-high','MEDIUM':'tag-medium','LOW':'tag-low' }[e.sscRelevance];
+        html += `
+          <div class="event-card battle-card" data-id="${e.id}" style="border-left-color:${cat.color}">
+            <div class="event-card-head">
+              <span class="event-cat-dot" style="background:${cat.color}"></span>
+              <span class="event-title">${e.title}</span>
+              <span class="event-year-badge">${e.date ? e.year : e.year + ' · YEAR'}</span>
+            </div>
+            <div class="event-sub"><span class="sub-cat">${e.subcategory}</span> <span class="sub-loc">▸ ${e.location}</span></div>
+            <div class="event-tags">
+              <span class="event-tag cat-${e.category}">BATTLE</span>
+              <span class="event-tag ${tagClass}">${e.sscRelevance}</span>
+              ${e.pyq ? '<span class="event-tag tag-high">PYQ</span>' : ''}
+            </div>
+          </div>`;
+      });
+      eventsBox.innerHTML = html;
+      eventsBox.querySelectorAll('.event-card').forEach(c => {
+        c.onclick = () => {
+          state.selectedEventId = c.dataset.id;
+          renderRightPanel();
+        };
+      });
+      return;
+    }
+
+    eventsBox.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">◇</div>
+        SELECT A DATE TO VIEW<br>HISTORICAL EVENTS
+      </div>`;
+    return;
+  }
+
+  hero.style.display = 'block';
+  const [y, mm, dd] = state.selectedDate.split('-').map(Number);
+  const mmIdx = mm - 1;
+  const dt = new Date(y, mmIdx, dd);
+  const weekday = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+
+  document.getElementById('heroDay').textContent = String(dd).padStart(2,'0');
+  document.getElementById('heroMonth').textContent = MONTHS[mmIdx];
+  document.getElementById('heroWeekday').textContent = weekday[dt.getDay()] + ' · ' + y;
+
+  // Show detail if selected
+  if (state.selectedEventId) {
+    eventsBox.style.display = 'none';
+    detail.classList.add('show');
+    renderEventDetail(state.selectedEventId);
+    return;
+  }
+
+  detail.classList.remove('show');
+  eventsBox.style.display = 'block';
+
+  const dayEvents = getEventsForDay(mmIdx, dd);
+  if (!dayEvents.length) {
+    eventsBox.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">∅</div>
+        NO RECORDED EVENTS<br>FOR THIS DATE
+      </div>`;
+    return;
+  }
+
+  // Group by year
+  const byYear = {};
+  dayEvents.forEach(e => {
+    const k = e.year || 'OBSERVANCE';
+    if (!byYear[k]) byYear[k] = [];
+    byYear[k].push(e);
+  });
+  const yearKeys = Object.keys(byYear).sort((a,b) => {
+    if (a === 'OBSERVANCE') return 1;
+    if (b === 'OBSERVANCE') return -1;
+    return a - b;
+  });
+
+  let html = '';
+  yearKeys.forEach(k => {
+    html += `<div class="event-year-group">
+      <div class="event-year-head"><span>${k === 'OBSERVANCE' ? 'OBSERVANCE / ANNUAL' : k}</span></div>`;
+    byYear[k].forEach(e => {
+      const cat = CATEGORIES[e.category];
+      const tagClass = { 'VERY HIGH':'tag-very-high','HIGH':'tag-high','MEDIUM':'tag-medium','LOW':'tag-low' }[e.sscRelevance];
+      html += `
+        <div class="event-card" data-id="${e.id}" style="border-left-color:${cat.color}">
+          <div class="event-card-head">
+            <span class="event-cat-dot" style="background:${cat.color}"></span>
+            <span class="event-title">${e.title}</span>
+            <span class="event-year-badge">${e.year || 'ANN'}</span>
+          </div>
+          <div class="event-sub"><span class="sub-cat">${e.subcategory}</span> <span class="sub-loc">▸ ${e.location}</span></div>
+          <div class="event-tags">
+            <span class="event-tag cat-${e.category}">${cat.label.toUpperCase()}</span>
+            <span class="event-tag ${tagClass}">${e.sscRelevance}</span>
+            ${e.pyq ? '<span class="event-tag tag-high">PYQ</span>' : ''}
+          </div>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+  eventsBox.innerHTML = html;
+
+  eventsBox.querySelectorAll('.event-card').forEach(c => {
+    c.onclick = () => {
+      state.selectedEventId = c.dataset.id;
+      renderRightPanel();
+    };
+  });
+}
+
+function renderEventDetail(id) {
+  const e = events.find(x => x.id === id);
+  if (!e) return;
+  const detail = document.getElementById('detailView');
+  const cat = CATEGORIES[e.category];
+  const tagClass = { 'VERY HIGH':'tag-very-high','HIGH':'tag-high','MEDIUM':'tag-medium','LOW':'tag-low' }[e.sscRelevance];
+
+  const peopleHtml = e.people && e.people.length
+    ? `<div class="detail-people">${e.people.map(p => `<span class="detail-person">${p}</span>`).join('')}</div>`
+    : '<div class="detail-text" style="color:var(--text-faint)">—</div>';
+
+  const relatedHtml = e.relatedEvents && e.relatedEvents.length
+    ? `<div class="detail-related">${e.relatedEvents.map(rid => {
+        const re = events.find(x => x.id === rid);
+        return re ? `<div class="detail-related-item" data-id="${re.id}">→ ${re.title} ${re.year ? '('+re.year+')' : ''}</div>` : '';
+      }).join('')}</div>`
+    : '<div class="detail-text" style="color:var(--text-faint)">—</div>';
+
+  detail.innerHTML = `
+    <div class="detail-back" id="detailBack">‹ BACK TO DATE</div>
+    <div class="detail-title">${e.title}</div>
+    <div class="detail-meta">
+      <span><span class="event-cat-dot" style="background:${cat.color}"></span> <b style="color:${cat.color}">${cat.label.toUpperCase()}</b></span>
+      <span>·</span>
+      <span>${e.year || 'ANNUAL'}</span>
+      <span>·</span>
+      <span class="event-tag ${tagClass}">${e.sscRelevance}</span>
+      ${e.pyq ? '<span class="event-tag tag-high">PYQ</span>' : ''}
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--cyan); border-color:rgba(45,212,191,.25)">WHAT HAPPENED</div>
+      <div class="detail-text">${e.description}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--green); border-color:rgba(16,185,129,.25)">LOCATION</div>
+      <div class="detail-text"><span style="color:var(--green)">▸</span> ${e.location}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--purple); border-color:rgba(168,85,247,.25)">KEY FIGURES</div>
+      ${peopleHtml}
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--amber); border-color:rgba(245,158,11,.25)">HISTORICAL SIGNIFICANCE</div>
+      <div class="detail-text">${e.significance}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--red); border-color:rgba(239,68,68,.25)">SSC RELEVANCE</div>
+      <div class="detail-text"><b>Priority:</b> ${e.sscRelevance} ${e.pyq ? '· <b>PYQ Status:</b> Frequently asked' : '· <b>PYQ Status:</b> Limited appearances'}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--cyan); border-color:rgba(45,212,191,.25)">TAGS</div>
+      <div class="detail-people">${e.tags.map(t => `<span class="detail-person" style="color:${cat.color}; border-color:${cat.color}55; background:${cat.color}15">#${t}</span>`).join('')}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-section-title" style="color:var(--blue); border-color:rgba(59,130,246,.25)">RELATED EVENTS</div>
+      ${relatedHtml}
+    </div>
+
+    <div class="detail-source">SOURCE: ${e.source || 'Archival records'}</div>
+  `;
+
+  document.getElementById('detailBack').onclick = () => {
+    state.selectedEventId = null;
+    renderRightPanel();
+  };
+  detail.querySelectorAll('.detail-related-item').forEach(i => {
+    i.onclick = () => {
+      state.selectedEventId = i.dataset.id;
+      const re = events.find(x => x.id === i.dataset.id);
+      if (re) {
+        if (re.date) {
+          const { mm } = parseDate(re.date);
+          state.month = mm - 1;
+          state.selectedDate = null;
+        } else {
+          state.selectedDate = null;
+        }
+      }
+      renderAll();
+    };
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER - TIMELINE
+   ═══════════════════════════════════════════════════════ */
+
+function renderTimeline() {
+  const markers = document.getElementById('timelineMarkers');
+  markers.innerHTML = '';
+  TIMELINE_MARKERS.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'timeline-point';
+    // If current month has events related to this marker year, mark active
+    const currentYear = state.year; // we keep year fixed at 2026 for calendar
+    // Highlight marker if month has events from that year
+    const monthEvents = getEventsForMonth(state.month);
+    const hasMarkerYearEvent = monthEvents.some(e => e.year === m.year);
+    if (hasMarkerYearEvent) el.classList.add('active');
+    el.innerHTML = `
+      <div class="tp-year">${m.year}</div>
+      <div class="tp-dot"></div>
+      <div class="tp-label">${m.label}</div>
+    `;
+    el.onclick = () => {
+      // Find first event matching this year in current month; else any
+      const evts = events.filter(e => e.year === m.year && filterEvent(e));
+      if (evts.length) {
+        const e = evts[0];
+        if (e.date) {
+          const { mm, dd } = parseDate(e.date);
+          state.month = mm - 1;
+          state.selectedDate = `${state.year}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+        } else {
+          // Year-only event (e.g., battle) — select without a date
+          state.selectedDate = null;
+        }
+        state.selectedEventId = e.id;
+        renderAll();
+      }
+    };
+    markers.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   SEARCH
+   ═══════════════════════════════════════════════════════ */
+
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (q.length < 2) { searchResults.classList.remove('show'); return; }
+  const results = events.filter(e => {
+    const hay = (e.title + ' ' + e.description + ' ' + e.people.join(' ') + ' ' + e.tags.join(' ') + ' ' + (e.year||'') + ' ' + e.location + ' ' + e.category).toLowerCase();
+    return hay.includes(q);
+  }).slice(0, 12);
+
+  if (!results.length) {
+    searchResults.innerHTML = '<div class="search-result-item"><div class="search-result-title" style="color:var(--text-faint)">No results</div></div>';
+    searchResults.classList.add('show');
+    return;
+  }
+
+  searchResults.innerHTML = results.map(e => {
+    const { mm, dd } = parseDate(e.date);
+    const dateLabel = mm ? `${MONTHS[mm-1].slice(0,3)} ${dd}` : 'YEAR';
+    return `
+      <div class="search-result-item" data-id="${e.id}">
+        <div class="search-result-title">${e.title}</div>
+        <div class="search-result-meta">
+          <span>${dateLabel}</span>
+          <span>${e.year || 'ANN'}</span>
+          <span>${CATEGORIES[e.category].label}</span>
+          <span>${e.sscRelevance}</span>
+        </div>
+      </div>`;
+  }).join('');
+  searchResults.classList.add('show');
+
+  searchResults.querySelectorAll('.search-result-item').forEach(item => {
+    item.onclick = () => {
+      const ev = events.find(x => x.id === item.dataset.id);
+      if (!ev) return;
+      if (ev.date) {
+        const { mm, dd } = parseDate(ev.date);
+        state.month = mm - 1;
+        state.selectedDate = `${state.year}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+      } else {
+        state.selectedDate = null;
+      }
+      state.selectedEventId = ev.id;
+      searchResults.classList.remove('show');
+      searchInput.value = '';
+      renderAll();
+    };
+  });
+});
+
+searchInput.addEventListener('blur', () => {
+  setTimeout(() => searchResults.classList.remove('show'), 180);
+});
+searchInput.addEventListener('focus', () => {
+  if (searchInput.value.trim().length >= 2) searchResults.classList.add('show');
+});
+
+// Cmd+K shortcut
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape') {
+    searchResults.classList.remove('show');
+    searchInput.blur();
+  }
+});
+
+/* ═══════════════════════════════════════════════════════
+   RENDER ALL
+   ═══════════════════════════════════════════════════════ */
+
+function renderAll() {
+  document.getElementById('yearDisplay').textContent = state.year;
+  renderMonths();
+  renderFilters();
+  renderPriorities();
+  renderCalendar();
+  renderRightPanel();
+  renderTimeline();
+  updateToggleSwitches();
+}
+
+/* ═══════════════════════════════════════════════════════
+   EVENTS
+   ═══════════════════════════════════════════════════════ */
+
+document.getElementById('calPrev').onclick = () => {
+  state.month--;
+  if (state.month < 0) { state.month = 11; state.year--; }
+  state.selectedDate = null;
+  state.selectedEventId = null;
+  renderAll();
+};
+document.getElementById('calNext').onclick = () => {
+  state.month++;
+  if (state.month > 11) { state.month = 0; state.year++; }
+  state.selectedDate = null;
+  state.selectedEventId = null;
+  renderAll();
+};
+document.getElementById('calToday').onclick = () => {
+  const t = new Date();
+  state.year = t.getFullYear();
+  state.month = t.getMonth();
+  state.selectedDate = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  state.selectedEventId = null;
+  renderAll();
+};
+document.getElementById('yearPrev').onclick = () => { state.year--; state.selectedDate = null; state.selectedEventId = null; renderAll(); };
+document.getElementById('yearNext').onclick = () => { state.year++; state.selectedDate = null; state.selectedEventId = null; renderAll(); };
+
+/* ═══════════════════════════════════════════════════════
+   TOP NAV TABS — Revision / Quiz
+   ═══════════════════════════════════════════════════════ */
+
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+function resetAllFilters() {
+  Object.keys(CATEGORY_FILTERS).forEach(k => CATEGORY_FILTERS[k] = true);
+  state.pyqOnly = false;
+  state.revisionOnly = false;
+  state.battlesOnly = false;
+  ACTIVE_PRIORITY.clear();
+  PRIORITY_LEVELS.forEach(p => ACTIVE_PRIORITY.add(p));
+}
+
+function updateToggleSwitches() {
+  const bt = document.getElementById('battlesToggle');
+  if (bt) bt.classList.toggle('on', state.battlesOnly);
+  const pt = document.getElementById('pyqToggle');
+  if (pt) pt.classList.toggle('on', state.pyqOnly);
+}
+
+document.getElementById('battlesToggle').onclick = () => {
+  state.battlesOnly = !state.battlesOnly;
+  if (state.battlesOnly) {
+    state.selectedDate = null;
+    state.selectedEventId = null;
+  }
+  updateToggleSwitches();
+  renderAll();
+};
+
+document.getElementById('pyqToggle').onclick = () => {
+  state.pyqOnly = !state.pyqOnly;
+  updateToggleSwitches();
+  renderAll();
+};
+
+document.getElementById('navRevision').onclick = () => {
+  setActiveNav('navRevision');
+  openRevisionView();
+};
+
+document.getElementById('navQuiz').onclick = () => {
+  setActiveNav('navQuiz');
+  openQuizView();
+};
+
+/* ═══════════════════════════════════════════════════════
+   REVISION VIEW — condensed high-yield list, grouped by month
+   ═══════════════════════════════════════════════════════ */
+
+const MONTH_NAMES_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+let revisionTab = 'all';
+const REVISION_TABS = [
+  { key: 'all', label: 'All' },
+  { key: 'important', label: 'Important Days' },
+  { key: 'history', label: 'Modern History' },
+  { key: 'revolt', label: 'Revolts & Movements' },
+  { key: 'act', label: 'Acts & Constitutional' },
+  { key: 'person', label: 'Personalities' },
+  { key: 'battle', label: 'Battles' }
+];
+
+function revisionHighYield() {
+  return events.filter(e => e.sscRelevance === 'VERY HIGH' || e.sscRelevance === 'HIGH');
+}
+
+function openRevisionView() {
+  revisionTab = 'all';
+  renderRevisionTabs();
+  renderRevisionBody();
+  document.getElementById('revisionOverlay').classList.add('show');
+  document.getElementById('revisionCloseBtn').onclick = closeRevisionView;
+}
+
+function renderRevisionTabs() {
+  const box = document.getElementById('revisionBox');
+  let tabs = `<div class="quiz-box-head"><span class="quiz-box-title">Revision — High &amp; Very High Yield</span><span class="quiz-close" id="revisionCloseBtn">✕</span></div>`;
+  tabs += `<div class="revision-tabs" id="revisionTabs">`;
+  REVISION_TABS.forEach(t => {
+    const count = t.key === 'all' ? revisionHighYield().length : revisionHighYield().filter(e => e.category === t.key).length;
+    tabs += `<div class="revision-tab${revisionTab === t.key ? ' on' : ''}" data-tab="${t.key}">${t.label}<span class="cnt">${count}</span></div>`;
+  });
+  tabs += `</div>`;
+  box.innerHTML = tabs;
+  box.querySelectorAll('.revision-tab').forEach(t => {
+    t.onclick = () => { revisionTab = t.dataset.tab; renderRevisionTabs(); renderRevisionBody(); };
+  });
+}
+
+function renderRevisionBody() {
+  const box = document.getElementById('revisionBox');
+  let list = revisionHighYield().filter(e => revisionTab === 'all' || e.category === revisionTab);
+
+  const dated = list.filter(e => e.date);
+  const yearOnly = list.filter(e => !e.date);
+
+  const byMonth = {};
+  dated.forEach(e => {
+    const m = parseInt(e.date.split('-')[0], 10) - 1;
+    (byMonth[m] = byMonth[m] || []).push(e);
+  });
+
+  let html = `<div id="revisionBody">`;
+  for (let m = 0; m < 12; m++) {
+    if (!byMonth[m]) continue;
+    const sorted = byMonth[m].slice().sort((a,b) => a.date.localeCompare(b.date));
+    html += `<div class="revision-month-group"><div class="revision-month-h">${MONTH_NAMES_FULL[m]}</div>`;
+    sorted.forEach(e => {
+      html += `<div class="revision-item rev-click" data-id="${e.id}"><span class="rd">${e.date.split('-')[1]}</span><span class="rt">${e.title}${e.pyq ? ' ★' : ''}</span><span class="ry">${e.year || 'ANN'}</span></div>`;
+    });
+    html += `</div>`;
+  }
+  if (yearOnly.length) {
+    const sortedYo = yearOnly.slice().sort((a,b) => (a.year||0) - (b.year||0));
+    html += `<div class="revision-month-group"><div class="revision-month-h">YEAR-ONLY EVENTS</div>`;
+    sortedYo.forEach(e => {
+      html += `<div class="revision-item rev-click" data-id="${e.id}"><span class="rd">—</span><span class="rt">${e.title}${e.pyq ? ' ★' : ''}</span><span class="ry">${e.year || 'ANN'}</span></div>`;
+    });
+    html += `</div>`;
+  }
+  html += `</div>`;
+  box.insertAdjacentHTML('beforeend', html);
+
+  box.querySelectorAll('.rev-click').forEach(i => {
+    i.onclick = () => {
+      const ev = events.find(x => x.id === i.dataset.id);
+      if (!ev) return;
+      if (ev.date) {
+        const { mm, dd } = parseDate(ev.date);
+        state.month = mm - 1;
+        state.selectedDate = `${state.year}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+      } else {
+        state.selectedDate = null;
+      }
+      state.selectedEventId = ev.id;
+      closeRevisionView();
+      renderAll();
+    };
+  });
+}
+
+function closeRevisionView() {
+  document.getElementById('revisionOverlay').classList.remove('show');
+  setActiveNav('navExplore');
+}
+document.getElementById('revisionOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'revisionOverlay') closeRevisionView();
+});
+
+/* ═══════════════════════════════════════════════════════
+   QUIZ VIEW — "which year" / "what happened on this date"
+   ═══════════════════════════════════════════════════════ */
+
+let quizScore = { right: 0, wrong: 0 };
+let quizPool = [];
+let quizCurrent = null;
+
+function quizEligible() {
+  return events.filter(e => e.pyq && (e.sscRelevance === 'VERY HIGH' || e.sscRelevance === 'HIGH'));
+}
+
+function openQuizView() {
+  document.getElementById('quizOverlay').classList.add('show');
+  document.getElementById('quizCloseBtn').onclick = closeQuizView;
+  if (quizPool.length === 0) quizPool = quizEligible().map((_, i) => i);
+  nextQuizQuestion();
+}
+function closeQuizView() {
+  document.getElementById('quizOverlay').classList.remove('show');
+  setActiveNav('navExplore');
+}
+document.getElementById('quizOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'quizOverlay') closeQuizView();
+});
+
+function nextQuizQuestion() {
+  const pool = quizEligible();
+  if (pool.length < 4) {
+    document.getElementById('quizArea').innerHTML = '<p style="color:var(--text-dim); font-size:12.5px;">Not enough tagged PYQ events to build a quiz yet.</p>';
+    return;
+  }
+  if (quizPool.length === 0) quizPool = pool.map((_, i) => i);
+  const pickAt = Math.floor(Math.random() * quizPool.length);
+  const qIndex = quizPool.splice(pickAt, 1)[0];
+  quizCurrent = pool[qIndex];
+
+  const mode = Math.random() < 0.5 ? 'year' : 'date';
+  const area = document.getElementById('quizArea');
+
+  if (mode === 'year') {
+    const wrongYears = pool.filter(e => e.id !== quizCurrent.id).sort(() => Math.random() - 0.5).slice(0, 3).map(e => e.year);
+    const options = [quizCurrent.year, ...wrongYears].sort(() => Math.random() - 0.5);
+    area.innerHTML = `
+      <div class="quiz-q-label">In which year did this happen?</div>
+      <div class="quiz-q-text">${quizCurrent.title}</div>
+      <div class="quiz-options">${options.map(y => `<div class="quiz-opt" data-v="${y}">${y}</div>`).join('')}</div>
+      <div id="quizFeedback"></div>
+    `;
+    area.querySelectorAll('.quiz-opt').forEach(el => {
+      el.onclick = () => checkQuizAnswer(el, String(quizCurrent.year), options.map(String));
+    });
+  } else {
+    const wrongTitles = pool.filter(e => e.id !== quizCurrent.id).sort(() => Math.random() - 0.5).slice(0, 3).map(e => e.title);
+    const options = [quizCurrent.title, ...wrongTitles].sort(() => Math.random() - 0.5);
+    const [mm, dd] = quizCurrent.date.split('-');
+    area.innerHTML = `
+      <div class="quiz-q-label">What happened on ${MONTH_NAMES_FULL[parseInt(mm,10)-1]} ${parseInt(dd,10)}, ${quizCurrent.year}?</div>
+      <div class="quiz-q-text">&nbsp;</div>
+      <div class="quiz-options">${options.map(t => `<div class="quiz-opt" data-v="${t.replace(/"/g,'&quot;')}">${t}</div>`).join('')}</div>
+      <div id="quizFeedback"></div>
+    `;
+    area.querySelectorAll('.quiz-opt').forEach(el => {
+      el.onclick = () => checkQuizAnswer(el, quizCurrent.title, options);
+    });
+  }
+}
+
+function checkQuizAnswer(el, correctVal, allVals) {
+  const chosen = el.dataset.v;
+  const correct = chosen === correctVal;
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    if (o.dataset.v === correctVal) o.classList.add('correct');
+    else if (o === el && !correct) o.classList.add('wrong');
+    o.onclick = null;
+  });
+  if (correct) quizScore.right++; else quizScore.wrong++;
+  document.getElementById('quizRightN').textContent = quizScore.right;
+  document.getElementById('quizWrongN').textContent = quizScore.wrong;
+  document.getElementById('quizFeedback').innerHTML = `<button class="quiz-next-btn" id="quizNextBtn">${correct ? '✓ Correct — ' : '✗ Missed — '}Next question →</button>`;
+  document.getElementById('quizNextBtn').onclick = nextQuizQuestion;
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════ */
+
+// Start on March (as in reference)
+state.month = 2;
+state.selectedDate = '2026-03-12';
+state.selectedEventId = 'mar12-1';
+renderAll();
+
+/* ---- close to dashboard (fullscreen overlay) ---- */
+function doExit(){
+  try{ window.parent.postMessage({ type:"closeFullscreen" }, "*"); }
+  catch(e){ window.close(); }
+}
+document.getElementById('pageCloseBtn').onclick = doExit;
+window.addEventListener("keydown", function(e){
+  var t=e.target;
+  if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable)) return;
+  if(e.key==="b" || e.key==="B"){ e.preventDefault(); doExit(); }
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,748 @@
+{
+  "communities": {
+    "0": [
+      "js_syllabus",
+      "js_syllabus_anyfilteractive",
+      "js_syllabus_applyfilterselection",
+      "js_syllabus_bindcompact",
+      "js_syllabus_bindexplorer",
+      "js_syllabus_bindfilterrow",
+      "js_syllabus_bindgrid",
+      "js_syllabus_bindkanban",
+      "js_syllabus_bindtable",
+      "js_syllabus_bindtree",
+      "js_syllabus_bindtrirows",
+      "js_syllabus_buildfilterrow",
+      "js_syllabus_buildsubjects",
+      "js_syllabus_chapterpanelhtml",
+      "js_syllabus_chapterstats",
+      "js_syllabus_diffpill",
+      "js_syllabus_dropdownmarkup",
+      "js_syllabus_effortlabel",
+      "js_syllabus_findstudynoteforsyllabus",
+      "js_syllabus_flags",
+      "js_syllabus_fullydone",
+      "js_syllabus_getdropdowndefs",
+      "js_syllabus_getfilteredsubjects",
+      "js_syllabus_groupstats",
+      "js_syllabus_inittoolbar",
+      "js_syllabus_itemmatches",
+      "js_syllabus_itemstage",
+      "js_syllabus_minitri",
+      "js_syllabus_optionrow",
+      "js_syllabus_refreshdropdownui",
+      "js_syllabus_renderall",
+      "js_syllabus_rendercompact",
+      "js_syllabus_renderexplorer",
+      "js_syllabus_renderexplorerbreadcrumb",
+      "js_syllabus_rendergrid",
+      "js_syllabus_rendergridbreadcrumb",
+      "js_syllabus_renderkanban",
+      "js_syllabus_renderringdeck",
+      "js_syllabus_rendertable",
+      "js_syllabus_rendertree",
+      "js_syllabus_resetpaths",
+      "js_syllabus_save",
+      "js_syllabus_segmentedbar",
+      "js_syllabus_setstage",
+      "js_syllabus_showvisualerror",
+      "js_syllabus_simpleoptionshtml",
+      "js_syllabus_slugify",
+      "js_syllabus_sortitems",
+      "js_syllabus_sortpanelhtml",
+      "js_syllabus_stagebreakdown",
+      "js_syllabus_subjectstats",
+      "js_syllabus_toggleall",
+      "js_syllabus_toggleflag",
+      "js_syllabus_tristaterow",
+      "js_syllabus_tryopenstudynote",
+      "js_syllabus_viewpanelhtml",
+      "js_syllabus_weightpill"
+    ],
+    "1": [
+      "js_app",
+      "js_app_renderall",
+      "js_state_triggermathtypesetting",
+      "js_toolkit",
+      "js_toolkit_backtosubjects",
+      "js_toolkit_buildsearchindex",
+      "js_toolkit_buildstudyfilterrow",
+      "js_toolkit_buildtableofcontents",
+      "js_toolkit_clearstudyfilters",
+      "js_toolkit_closestudyviewer",
+      "js_toolkit_deletenote",
+      "js_toolkit_findsubtopicbyid",
+      "js_toolkit_getfilteredstudysubtopics",
+      "js_toolkit_handlestudyclickoutside",
+      "js_toolkit_initstudypage",
+      "js_toolkit_initstudytoolbar",
+      "js_toolkit_loadchapterscript",
+      "js_toolkit_navigateviewer",
+      "js_toolkit_openstudyviewer",
+      "js_toolkit_parsefrontmatter",
+      "js_toolkit_progressstore",
+      "js_toolkit_renderstudycompact",
+      "js_toolkit_renderstudyexplorer",
+      "js_toolkit_renderstudyexplorerbreadcrumb",
+      "js_toolkit_renderstudygrid",
+      "js_toolkit_renderstudykanban",
+      "js_toolkit_renderstudytable",
+      "js_toolkit_renderstudytrackerall",
+      "js_toolkit_renderstudytree",
+      "js_toolkit_rendersubjectgrid",
+      "js_toolkit_rendertoolkit",
+      "js_toolkit_rendertoolkitsubtab",
+      "js_toolkit_saveprogress",
+      "js_toolkit_searchindex",
+      "js_toolkit_setstudyexplorerchapter",
+      "js_toolkit_setstudysort",
+      "js_toolkit_setstudyview",
+      "js_toolkit_setupglobalsearch",
+      "js_toolkit_setupscrollprogresstracker",
+      "js_toolkit_showcustomnotes",
+      "js_toolkit_showquickreftables",
+      "js_toolkit_showsubjectdetail",
+      "js_toolkit_studystate",
+      "js_toolkit_toggleaccordion",
+      "js_toolkit_togglestudydifffilter",
+      "js_toolkit_togglestudyroifilter",
+      "js_toolkit_toggleviewerprogress",
+      "js_toolkit_updatevieweractionbuttons"
+    ],
+    "2": [
+      "js_typingtest",
+      "js_typingtest_advanceword",
+      "js_typingtest_buildwordlist",
+      "js_typingtest_computestats",
+      "js_typingtest_disablefocusmode",
+      "js_typingtest_enablefocusmode",
+      "js_typingtest_finishtest",
+      "js_typingtest_getletter",
+      "js_typingtest_getwordel",
+      "js_typingtest_handlebackspace",
+      "js_typingtest_handlechar",
+      "js_typingtest_hidelevelselect",
+      "js_typingtest_hookdrillbuttons",
+      "js_typingtest_hookspeedtabs",
+      "js_typingtest_init",
+      "js_typingtest_inittest",
+      "js_typingtest_injectui",
+      "js_typingtest_pausetest",
+      "js_typingtest_renderwords",
+      "js_typingtest_restorearea",
+      "js_typingtest_scrollonwordadvance",
+      "js_typingtest_setpausebtn",
+      "js_typingtest_showcontrols",
+      "js_typingtest_showlevelselect",
+      "js_typingtest_showstats",
+      "js_typingtest_shuffle",
+      "js_typingtest_startrunning",
+      "js_typingtest_teardown",
+      "js_typingtest_updatecursor",
+      "js_typingtest_updatelivestats"
+    ],
+    "3": [
+      "compile_data",
+      "compile_data_computer",
+      "compile_data_datadir",
+      "compile_data_fs",
+      "compile_data_geography",
+      "compile_data_gkdir",
+      "compile_data_grammar",
+      "compile_data_history",
+      "compile_data_laws",
+      "compile_data_path",
+      "compile_data_patterns",
+      "compile_data_plan",
+      "compile_data_polity",
+      "compile_data_quant",
+      "compile_data_quizzes",
+      "compile_data_reasoning",
+      "compile_data_science",
+      "compile_data_statejs",
+      "compile_data_statepath",
+      "compile_data_syllabus",
+      "compile_data_tables",
+      "compile_data_tkdir",
+      "compile_data_vocab"
+    ],
+    "4": [
+      "js_cmdpalette",
+      "js_cmdpalette_buildregistry",
+      "js_cmdpalette_close",
+      "js_cmdpalette_execute",
+      "js_cmdpalette_filtercommands",
+      "js_cmdpalette_open",
+      "js_cmdpalette_render",
+      "js_cmdpalette_renderactiveonly",
+      "js_cmdpalette_startdrill",
+      "js_state",
+      "js_state_appstate",
+      "js_state_computer_target_map",
+      "js_state_embedded_quizzes",
+      "js_state_flashcards",
+      "js_state_formatdatereadable",
+      "js_state_gk_static_data",
+      "js_state_loadapplicationdata",
+      "js_state_loadstatefromstorage",
+      "js_state_parsemarkdown",
+      "js_state_savestatetostorage",
+      "js_state_speaktext",
+      "js_state_syllabus_data",
+      "js_state_toolkit_static_data"
+    ],
+    "5": [
+      "js_dashboard",
+      "js_dashboard_calculateoverallstats",
+      "js_dashboard_formattimeseconds",
+      "js_dashboard_initexamtargeteditor",
+      "js_dashboard_initpomotimer",
+      "js_dashboard_initsessiontimer",
+      "js_dashboard_inittiertoggler",
+      "js_dashboard_inittoolkittabs",
+      "js_dashboard_loadrituals",
+      "js_dashboard_renderall",
+      "js_dashboard_renderdashboardoverview",
+      "js_dashboard_rendersubjectprogressbars",
+      "js_dashboard_rendertodaymissions",
+      "js_dashboard_startexamcountdown",
+      "js_dashboard_updatetodaygoalsratio",
+      "js_plan",
+      "js_plan_btncompleteday",
+      "js_plan_completeactiveday",
+      "js_plan_renderstudyplan",
+      "js_plan_resetactivedayto",
+      "js_plan_toggleplanday",
+      "js_state_plan_data"
+    ],
+    "6": [
+      "js_navigation",
+      "js_navigation_closeshortcutshelpmodal",
+      "js_navigation_expandnav",
+      "js_navigation_filtershortcuts",
+      "js_navigation_handleshortcutaction",
+      "js_navigation_initheaderscroll",
+      "js_navigation_initnavigation",
+      "js_navigation_inittheme",
+      "js_navigation_navigatetopage",
+      "js_navigation_openshortcutshelpmodal",
+      "js_navigation_sc_aliases",
+      "js_navigation_shrinknav",
+      "js_navigation_togglespeechmode",
+      "js_navigation_togglethememode",
+      "js_navigation_toggletoastmode",
+      "js_navigation_updatemetathemecolor",
+      "js_navigation_updatespeechtoggleui",
+      "js_navigation_updatethemetoggleui",
+      "js_navigation_updatetoasttoggleui"
+    ],
+    "7": [
+      "js_speed",
+      "js_speed_checkdrillanswer",
+      "js_speed_clearidletimer",
+      "js_speed_drill_mode_labels",
+      "js_speed_endchallengerun",
+      "js_speed_generatechallengequestion",
+      "js_speed_generatedrillquestion",
+      "js_speed_generatemathoptions",
+      "js_speed_generateproceduralmathquestion",
+      "js_speed_generatequestiontextandanswer",
+      "js_speed_initcustomtooltips",
+      "js_speed_initspeeddrillspage",
+      "js_speed_ishighweighttopic",
+      "js_speed_resetdrillsession",
+      "js_speed_startchallengerun",
+      "js_speed_startidletimer",
+      "js_speed_submitchallengeanswer",
+      "js_speed_togglefreemodecomponents",
+      "js_speed_updatechallengeui"
+    ],
+    "8": [
+      "js_mocks",
+      "js_mocks_cancelmockedit",
+      "js_mocks_deletemock",
+      "js_mocks_editmock",
+      "js_mocks_getsubtopicdetails",
+      "js_mocks_initforms",
+      "js_mocks_rendermockanalytics",
+      "js_mocks_renderrevisionradar",
+      "js_mocks_rendersectionalbenchmarks",
+      "js_mocks_renderselectedweaktags",
+      "js_mocks_rendersvgmockchart",
+      "js_mocks_renderweakdropdownoptions",
+      "js_mocks_selectedweaktopicids",
+      "js_mocks_updatemockformlimits"
+    ],
+    "9": [
+      "package",
+      "package_description",
+      "package_devdependencies",
+      "package_devdependencies_tailwindcss",
+      "package_name",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_build_css",
+      "package_scripts_build_data",
+      "package_scripts_watch_css",
+      "package_version",
+      "tailwindcss"
+    ],
+    "10": [
+      "js_components_dropdown",
+      "js_components_dropdown_customdropdown",
+      "js_components_dropdown_customdropdown_close",
+      "js_components_dropdown_customdropdown_constructor",
+      "js_components_dropdown_customdropdown_hide",
+      "js_components_dropdown_customdropdown_init",
+      "js_components_dropdown_customdropdown_refresh",
+      "js_components_dropdown_customdropdown_renderoptions",
+      "js_components_dropdown_customdropdown_show",
+      "js_components_dropdown_customdropdown_toggle",
+      "js_components_dropdown_customdropdown_updatebuttontext"
+    ],
+    "11": [
+      "manifest",
+      "manifest_background_color",
+      "manifest_description",
+      "manifest_display",
+      "manifest_icons",
+      "manifest_name",
+      "manifest_short_name",
+      "manifest_start_url",
+      "manifest_theme_color"
+    ],
+    "12": [
+      "js_components_calendar",
+      "js_components_calendar_customcalendar",
+      "js_components_calendar_customcalendar_constructor",
+      "js_components_calendar_customcalendar_createdropdown",
+      "js_components_calendar_customcalendar_destroydropdown",
+      "js_components_calendar_customcalendar_init",
+      "js_components_calendar_customcalendar_render",
+      "js_components_calendar_customcalendar_toggledropdown"
+    ],
+    "13": [
+      "build_tailwind",
+      "build_tailwind_execsync",
+      "build_tailwind_fs",
+      "build_tailwind_inputpath",
+      "build_tailwind_iswatch",
+      "build_tailwind_outputpath",
+      "build_tailwind_path"
+    ],
+    "14": [
+      "js_components_tooltip",
+      "js_components_tooltip_customtooltip",
+      "js_components_tooltip_customtooltip_constructor",
+      "js_components_tooltip_customtooltip_hide",
+      "js_components_tooltip_customtooltip_init",
+      "js_components_tooltip_customtooltip_show"
+    ],
+    "15": [
+      "opencode_opencode",
+      "opencode_opencode_plugin",
+      "opencode_opencode_schema",
+      "ref_opencode_plugins_graphify_js"
+    ],
+    "16": [
+      "opencode_plugins_graphify",
+      "opencode_plugins_graphify_graphifyplugin",
+      "opencode_plugins_graphify_rationale_4"
+    ],
+    "17": [
+      "data_plan",
+      "data_plan_embedded_plan_data"
+    ],
+    "18": [
+      "data_quizzes",
+      "data_quizzes_embedded_quizzes"
+    ],
+    "19": [
+      "data_syllabus",
+      "data_syllabus_embedded_syllabus_data"
+    ],
+    "20": [
+      "data_vocab",
+      "data_vocab_embedded_flashcards"
+    ],
+    "21": [
+      "install",
+      "install_invoke_cbmdownload"
+    ],
+    "22": [
+      "sw",
+      "sw_assets"
+    ],
+    "23": [
+      "study_computer_cybersecurity_malwares_safeguards"
+    ],
+    "24": [
+      "study_computer_internet_protocols_network_port_mappings"
+    ],
+    "25": [
+      "study_computer_keyboard_shortcut_commands"
+    ],
+    "26": [
+      "study_computer_ms_excel_formulas_cell_referencing"
+    ],
+    "27": [
+      "study_english_active_passive_transformations"
+    ],
+    "28": [
+      "study_english_conditional_clauses_structure"
+    ],
+    "29": [
+      "study_english_direct_indirect_speech_rules"
+    ],
+    "30": [
+      "study_english_fixed_prepositions_combinations"
+    ],
+    "31": [
+      "study_english_plural_vs_singular_noun_traps"
+    ],
+    "32": [
+      "study_english_pronoun_order_cases"
+    ],
+    "33": [
+      "study_english_subject_verb_agreement_core_cases"
+    ],
+    "34": [
+      "study_general_computer_science"
+    ],
+    "35": [
+      "study_general_english_grammar"
+    ],
+    "36": [
+      "study_general_english_language_amp_comprehension"
+    ],
+    "37": [
+      "study_general_general_awareness_gkgs"
+    ],
+    "38": [
+      "study_general_general_intelligence_amp_reasoning"
+    ],
+    "39": [
+      "study_general_quantitative_aptitude"
+    ],
+    "40": [
+      "study_general_quantitative_aptitude_core_strategy"
+    ],
+    "41": [
+      "study_general_reasoning_logic"
+    ],
+    "42": [
+      "study_gk_geography_dams"
+    ],
+    "43": [
+      "study_gk_geography_mountains"
+    ],
+    "44": [
+      "study_gk_geography_passes"
+    ],
+    "45": [
+      "study_gk_geography_rivers"
+    ],
+    "46": [
+      "study_gk_history_crucial_battles_timelines"
+    ],
+    "47": [
+      "study_gk_polity_constitution_articles_memory_roadmap"
+    ],
+    "48": [
+      "study_gk_polity_daily_micro_trick_the_5_point_memory_chain"
+    ],
+    "49": [
+      "study_gk_polity_tier_1_constitutional_articles_must_know"
+    ],
+    "50": [
+      "study_gk_polity_tier_2_articles_very_high_frequency"
+    ],
+    "51": [
+      "study_gk_polity_tier_3_articles_frequently_asked"
+    ],
+    "52": [
+      "study_gk_polity_top_15_articles_to_memorize_first"
+    ],
+    "53": [
+      "study_gk_science_facts"
+    ],
+    "54": [
+      "study_gk_science_units"
+    ],
+    "55": [
+      "study_quant_algebraic_identities_roots"
+    ],
+    "56": [
+      "study_quant_coordinate_geometry"
+    ],
+    "57": [
+      "study_quant_geometry_centers_theorems"
+    ],
+    "58": [
+      "study_quant_mensuration_3d_surfaces_volumes"
+    ],
+    "59": [
+      "study_quant_percentage_product_constancy"
+    ],
+    "60": [
+      "study_quant_profit_loss_successive_discounts"
+    ],
+    "61": [
+      "study_quant_simple_compound_interest"
+    ],
+    "62": [
+      "study_quant_time_speed_distance_boats"
+    ],
+    "63": [
+      "study_quant_time_work_equivalence"
+    ],
+    "64": [
+      "study_quant_trigonometric_values_amp_formulas_table"
+    ],
+    "65": [
+      "study_reasoning_alphabet_code_map_ejoty"
+    ],
+    "66": [
+      "study_reasoning_calendar_odd_days_rules"
+    ],
+    "67": [
+      "study_reasoning_clock_hands_angle_equation"
+    ],
+    "68": [
+      "study_reasoning_dice_closed_open_rules"
+    ],
+    "69": [
+      "study_reasoning_direction_sense_shadows_triplets"
+    ],
+    "70": [
+      "study_reasoning_syllogism_truth_matrix"
+    ],
+    "71": [
+      "study_subjects"
+    ],
+    "72": [
+      "tailwind_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.09649122807017543,
+    "1": 0.0797872340425532,
+    "2": 0.17471264367816092,
+    "3": 0.08695652173913043,
+    "4": 0.11857707509881422,
+    "5": 0.16017316017316016,
+    "6": 0.23391812865497075,
+    "7": 0.2573099415204678,
+    "8": 0.26373626373626374,
+    "9": 0.16666666666666666,
+    "10": 0.36363636363636365,
+    "11": 0.2222222222222222,
+    "12": 0.5,
+    "13": 0.2857142857142857,
+    "14": 0.4,
+    "15": 0.5,
+    "16": 0.6666666666666666,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0
+  },
+  "gods": [
+    {
+      "id": "js_syllabus_renderall",
+      "label": "renderAll()",
+      "degree": 24
+    },
+    {
+      "id": "js_toolkit_renderstudytrackerall",
+      "label": "renderStudyTrackerAll()",
+      "degree": 19
+    },
+    {
+      "id": "js_syllabus_flags",
+      "label": "flags()",
+      "degree": 11
+    },
+    {
+      "id": "js_components_dropdown_customdropdown",
+      "label": "CustomDropdown",
+      "degree": 10
+    },
+    {
+      "id": "js_navigation_inittheme",
+      "label": "initTheme()",
+      "degree": 10
+    },
+    {
+      "id": "js_typingtest_inittest",
+      "label": "initTest()",
+      "degree": 10
+    },
+    {
+      "id": "js_state_triggermathtypesetting",
+      "label": "triggerMathTypesetting()",
+      "degree": 9
+    },
+    {
+      "id": "js_toolkit_openstudyviewer",
+      "label": "openStudyViewer()",
+      "degree": 9
+    },
+    {
+      "id": "js_speed_initspeeddrillspage",
+      "label": "initSpeedDrillsPage()",
+      "degree": 8
+    },
+    {
+      "id": "js_syllabus_sortitems",
+      "label": "sortItems()",
+      "degree": 8
+    }
+  ],
+  "surprises": [
+    {
+      "source": "renderAll()",
+      "target": "triggerMathTypesetting()",
+      "source_files": [
+        "js/app.js",
+        "js/state.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `renderAll()` unexpectedly reaches hub `triggerMathTypesetting()`"
+    },
+    {
+      "source": "renderAll()",
+      "target": "triggerMathTypesetting()",
+      "source_files": [
+        "js/dashboard.js",
+        "js/state.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "navigateToPage()",
+      "target": "triggerMathTypesetting()",
+      "source_files": [
+        "js/navigation.js",
+        "js/state.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "renderStudyPlan()",
+      "target": "triggerMathTypesetting()",
+      "source_files": [
+        "js/plan.js",
+        "js/state.js"
+      ],
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "calculateOverallStats()",
+      "target": "SYLLABUS_DATA",
+      "source_files": [
+        "js/dashboard.js",
+        "js/state.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `triggerMathTypesetting()` connect `Community 1` to `Community 4`, `Community 5`, `Community 6`?",
+      "why": "High betweenness centrality (0.073) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `SYLLABUS_DATA` connect `Community 4` to `Community 8`, `Community 5`?",
+      "why": "High betweenness centrality (0.036) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `navigateToPage()` connect `Community 6` to `Community 1`?",
+      "why": "High betweenness centrality (0.027) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 3 inferred relationships involving `initTheme()` (e.g. with `toggleThemeMode()` and `toggleSpeechMode()`) actually correct?",
+      "why": "`initTheme()` has 3 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?",
+      "why": "64 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09649122807017543 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.0797872340425532 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

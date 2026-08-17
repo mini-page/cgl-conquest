@@ -2,7 +2,7 @@ window.studySubjects = {
   "subjects": [
     {
       "id": "quant",
-      "name": "\ud83d\udcd0 Quant Formulas",
+      "name": "📐 Quant Formulas",
       "icon": "fa-calculator",
       "topics": [
         {
@@ -64,56 +64,38 @@ window.studySubjects = {
       ]
     },
     {
-      "id": "english",
-      "name": "\u270d\ufe0f Grammar Rules",
-      "icon": "fa-pen-to-square",
+      "id": "mathematics",
+      "name": "📐 Mathematics",
+      "icon": "fa-calculator",
       "topics": [
         {
-          "id": "grammar",
-          "name": "Grammar Rules",
-          "subtopics": [
-            {
-              "id": "subject-verb_agreement_core_cases",
-              "name": "Subject-Verb Agreement Core Cases",
-              "file": "study/english/subject-verb_agreement_core_cases.js"
-            },
-            {
-              "id": "conditional_clauses_structure",
-              "name": "Conditional Clauses Structure",
-              "file": "study/english/conditional_clauses_structure.js"
-            },
-            {
-              "id": "active_passive_transformations",
-              "name": "Active / Passive Transformations",
-              "file": "study/english/active_passive_transformations.js"
-            },
-            {
-              "id": "direct_indirect_speech_rules",
-              "name": "Direct & Indirect Speech Rules",
-              "file": "study/english/direct_indirect_speech_rules.js"
-            },
-            {
-              "id": "plural_vs_singular_noun_traps",
-              "name": "Plural vs Singular Noun Traps",
-              "file": "study/english/plural_vs_singular_noun_traps.js"
-            },
-            {
-              "id": "pronoun_order_cases",
-              "name": "Pronoun Order & Cases",
-              "file": "study/english/pronoun_order_cases.js"
-            },
-            {
-              "id": "fixed_prepositions_combinations",
-              "name": "Fixed Prepositions Combinations",
-              "file": "study/english/fixed_prepositions_combinations.js"
-            }
-          ]
+          "id": "geometry_atlas",
+          "name": "Geometry & Mensuration Atlas",
+          "icon": "fa-calculator",
+          "page": "pages/geometry-atlas.html",
+          "description": "Interactive atlas with 2D shapes, 3D solids, formulas, theorems, calculators & PYQs",
+          "tags": ["atlas", "geometry", "mensuration", "formulas", "interactive"]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "name": "✍️ Grammar Rules",
+      "icon": "fa-book-open-reader",
+      "topics": [
+        {
+          "id": "grammar_book",
+          "name": "English Grammar Master Book",
+          "icon": "fa-book-open-reader",
+          "page": "pages/grammar-book.html",
+          "description": "Interactive master book with 8 core pillars, common traps, rule cards & practice questions for SSC CGL.",
+          "tags": ["english", "grammar", "book", "rules", "interactive"]
         }
       ]
     },
     {
       "id": "reasoning",
-      "name": "\ud83e\udde0 Reasoning Tricks",
+      "name": "🧠 Reasoning Tricks",
       "icon": "fa-brain",
       "topics": [
         {
@@ -155,116 +137,47 @@ window.studySubjects = {
       ]
     },
     {
-      "id": "gk_polity",
-      "name": "\ud83c\udfdb Polity",
-      "icon": "fa-building-columns",
+      "id": "gk_gs",
+      "name": "🏛️ General Knowledge & Science (GK/GS)",
+      "icon": "fa-landmark",
       "topics": [
         {
-          "id": "polity",
-          "name": "Polity",
-          "subtopics": [
-            {
-              "id": "top_15_articles_to_memorize_first",
-              "name": "\ud83d\udd25 Top 15 Articles to Memorize First",
-              "file": "study/gk/polity/top_15_articles_to_memorize_first.js"
-            },
-            {
-              "id": "tier_1_constitutional_articles_must_know",
-              "name": "\ud83c\udfc6 Tier 1 Constitutional Articles (Must Know)",
-              "file": "study/gk/polity/tier_1_constitutional_articles_must_know.js"
-            },
-            {
-              "id": "tier_2_articles_very_high_frequency",
-              "name": "\u2b50 Tier 2 Articles (Very High Frequency)",
-              "file": "study/gk/polity/tier_2_articles_very_high_frequency.js"
-            },
-            {
-              "id": "tier_3_articles_frequently_asked",
-              "name": "\u2b50 Tier 3 Articles (Frequently Asked)",
-              "file": "study/gk/polity/tier_3_articles_frequently_asked.js"
-            },
-            {
-              "id": "constitution_articles_memory_roadmap",
-              "name": "\ud83d\uddfa\ufe0f Constitution Articles Memory Roadmap",
-              "file": "study/gk/polity/constitution_articles_memory_roadmap.js"
-            },
-            {
-              "id": "daily_micro_trick_the_5-point_memory_chain",
-              "name": "\ud83c\udfaf Daily Micro Trick: The 5-Point Memory Chain",
-              "file": "study/gk/polity/daily_micro_trick_the_5-point_memory_chain.js"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "gk_geography",
-      "name": "\ud83c\udf0f Geography",
-      "icon": "fa-earth-americas",
-      "topics": [
+          "id": "constitution_explorer",
+          "name": "Polity (Constitution)",
+          "icon": "fa-building-columns",
+          "page": "pages/constitution-explorer.html",
+          "description": "Interactive constitution explorer with articles, search, bookmarks & more",
+          "tags": ["polity", "constitution", "articles", "interactive"]
+        },
         {
-          "id": "geography",
-          "name": "Geography Reference",
-          "subtopics": [
-            {
-              "id": "rivers",
-              "name": "Rivers",
-              "file": "study/gk/geography/rivers.js"
-            },
-            {
-              "id": "mountains",
-              "name": "Mountains",
-              "file": "study/gk/geography/mountains.js"
-            },
-            {
-              "id": "dams",
-              "name": "Dams",
-              "file": "study/gk/geography/dams.js"
-            },
-            {
-              "id": "passes",
-              "name": "Passes",
-              "file": "study/gk/geography/passes.js"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "gk_history",
-      "name": "\ud83d\udcdc History",
-      "icon": "fa-scroll",
-      "topics": [
+          "id": "india_atlas",
+          "name": "Geography (India Atlas)",
+          "icon": "fa-map-location-dot",
+          "page": "pages/india-atlas.html",
+          "description": "Interactive map-based atlas with states, rivers, mountains, parks & PYQs",
+          "tags": ["atlas", "interactive", "map"]
+        },
         {
-          "id": "history",
-          "name": "History Timeline",
-          "subtopics": [
-            {
-              "id": "crucial_battles_timelines",
-              "name": "\u2694\ufe0f Crucial Battles & Timelines",
-              "file": "study/gk/history/crucial_battles_timelines.js"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "gk_science",
-      "name": "\ud83d\udd2c Science",
-      "icon": "fa-microscope",
-      "topics": [
+          "id": "historical_calendar",
+          "name": "History (Calendar)",
+          "icon": "fa-calendar-days",
+          "page": "pages/historical-calendar.html",
+          "description": "Interactive calendar of historical events & important days with filters, revision, quiz & timeline",
+          "tags": ["history", "calendar", "dates", "events", "interactive"]
+        },
         {
           "id": "science",
           "name": "General Science",
+          "icon": "fa-microscope",
           "subtopics": [
             {
               "id": "units",
-              "name": "Units",
+              "name": "Science Units",
               "file": "study/gk/science/units.js"
             },
             {
               "id": "facts",
-              "name": "Facts",
+              "name": "Science Facts",
               "file": "study/gk/science/facts.js"
             }
           ]
@@ -273,40 +186,22 @@ window.studySubjects = {
     },
     {
       "id": "computer",
-      "name": "\ud83d\udcbb Computer Tier-2",
+      "name": "💻 Computer Tier-2",
       "icon": "fa-laptop-code",
       "topics": [
         {
-          "id": "foundation",
-          "name": "Computer Foundation",
-          "subtopics": [
-            {
-              "id": "keyboard_shortcut_commands",
-              "name": "Keyboard Shortcut Commands",
-              "file": "study/computer/keyboard_shortcut_commands.js"
-            },
-            {
-              "id": "ms_excel_formulas_cell_referencing",
-              "name": "MS Excel Formulas & Cell Referencing",
-              "file": "study/computer/ms_excel_formulas_cell_referencing.js"
-            },
-            {
-              "id": "internet_protocols_network_port_mappings",
-              "name": "Internet Protocols & Network Port Mappings",
-              "file": "study/computer/internet_protocols_network_port_mappings.js"
-            },
-            {
-              "id": "cybersecurity_malwares_safeguards",
-              "name": "Cybersecurity: Malwares & Safeguards",
-              "file": "study/computer/cybersecurity_malwares_safeguards.js"
-            }
-          ]
+          "id": "computer_os",
+          "name": "SSC OS Simulator",
+          "icon": "fa-laptop-code",
+          "page": "pages/ssc-os-computer-tier2.html",
+          "description": "Interactive OS simulator: shortcuts, abbreviations, quiz, formula lab, typing test & notepad",
+          "tags": ["computer", "tier2", "shortcuts", "abbreviations", "quiz", "interactive"]
         }
       ]
     },
     {
       "id": "general_rules",
-      "name": "\u2696\ufe0f Fixed vs. Conditional",
+      "name": "⚖️ Fixed vs. Conditional",
       "icon": "fa-scale-balanced",
       "topics": [
         {
@@ -339,7 +234,7 @@ window.studySubjects = {
     },
     {
       "id": "conquest_patterns",
-      "name": "\ud83d\udcca Conquest Weightage",
+      "name": "📊 Conquest Weightage",
       "icon": "fa-chart-pie",
       "topics": [
         {

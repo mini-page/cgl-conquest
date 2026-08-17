@@ -349,10 +349,10 @@ function initNavigation() {
     });
 
     window.addEventListener("keydown", (e) => {
-        // Intercept navigation keys if study viewer modal is active
-        const studyModal = document.getElementById("modal-study-viewer");
-        if (studyModal && studyModal.classList.contains("active")) {
-            if (e.key === "Escape" || e.key === "x" || e.key === "X") {
+        // Intercept navigation keys if study content viewer is active (inline)
+        const contentViewer = document.getElementById("study-content-viewer");
+        if (contentViewer && !contentViewer.classList.contains("hidden")) {
+            if (e.key === "Escape") {
                 if (window.closeStudyViewer) window.closeStudyViewer();
                 e.preventDefault();
                 return;

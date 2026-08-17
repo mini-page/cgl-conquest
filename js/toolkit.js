@@ -10,12 +10,25 @@ try {
     console.error("localStorage disabled/inaccessible for studyProgress:", e);
 }
 
+// Global UI State for Study Views
+let studyState = {
+    view: 'command', // Default to Mastery Command Hub
+    sortBy: 'name',
+    sortDir: 1,
+    search: '',
+    difficulty: '',
+    roi: '',
+    chapter: null,
+    activeSubject: 'all',
+    openDropdown: null
+};
+
 // Setup DOM content listeners
 document.addEventListener("DOMContentLoaded", () => {
     initStudyPage();
     setupGlobalSearch();
     
-    // Bind modal actions
+    // Bind modal actions (legacy — modal is hidden but kept for compatibility)
     const starBtn = document.getElementById("btn-viewer-star");
     if (starBtn) starBtn.onclick = () => toggleViewerProgress("starred");
     
@@ -33,6 +46,22 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const nextBtn = document.getElementById("btn-viewer-next");
     if (nextBtn) nextBtn.onclick = () => navigateViewer(1);
+    
+    // Bind inline content viewer action buttons
+    const contentStarBtn = document.getElementById("btn-content-star");
+    if (contentStarBtn) contentStarBtn.onclick = () => toggleViewerProgress("starred");
+    
+    const contentLearnedBtn = document.getElementById("btn-content-learned");
+    if (contentLearnedBtn) contentLearnedBtn.onclick = () => toggleViewerProgress("learned");
+    
+    const contentBookmarkBtn = document.getElementById("btn-content-bookmark");
+    if (contentBookmarkBtn) contentBookmarkBtn.onclick = () => toggleViewerProgress("bookmarked");
+    
+    const contentPrevBtn = document.getElementById("btn-content-prev");
+    if (contentPrevBtn) contentPrevBtn.onclick = () => navigateViewer(-1);
+    
+    const contentNextBtn = document.getElementById("btn-content-next");
+    if (contentNextBtn) contentNextBtn.onclick = () => navigateViewer(1);
     
     const tocToggleBtn = document.getElementById("btn-viewer-toc-toggle");
     const tocSidebar = document.getElementById("viewer-toc-sidebar");
@@ -52,6 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const backCustomBtn = document.getElementById("btn-study-custom-back");
     if (backCustomBtn) backCustomBtn.onclick = backToSubjects;
+    
+    // Setup content viewer back button
+    const contentBackBtn = document.getElementById("btn-content-back");
+    if (contentBackBtn) contentBackBtn.onclick = closeStudyViewer;
     
     // Setup modal outside clicks
     const modalViewer = document.getElementById("modal-study-viewer");
@@ -90,6 +123,279 @@ function loadChapterScript(filePath) {
     });
 }
 
+const SUBJECT_ICONS = {
+    quant: 'fa-calculator',
+    mathematics: 'fa-subscript',
+    english: 'fa-book-open-reader',
+    reasoning: 'fa-brain',
+    gk: 'fa-landmark',
+    general_science: 'fa-flask',
+    computer: 'fa-laptop-code'
+};
+
+const SUBJECT_COLORS = {
+    quant: 'accentCyan',
+    mathematics: 'accentPurple',
+    english: 'accentAmber',
+    reasoning: 'accentGreen',
+    gk: 'accentRose',
+    general_science: 'accentCyan',
+    computer: 'accentPurple'
+};
+
+const DIRECT_MASTER_PAGES = [
+    {
+        id: "grammar_book",
+        title: "English Grammar Master Book",
+        page: "pages/grammar-book.html",
+        icon: "fa-book-open-reader",
+        color: "text-amber-400",
+        bg: "from-amber-950/70 via-slate-900/80 to-amber-900/40",
+        border: "border-amber-500/40 hover:border-amber-400",
+        badge: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Full interactive grammar book: 8 core pillars, common traps, rule search & PYQs."
+    },
+    {
+        id: "geometry_atlas",
+        title: "Geometry & Mensuration 3D Atlas",
+        page: "pages/geometry-atlas.html",
+        icon: "fa-draw-polygon",
+        color: "text-cyan-400",
+        bg: "from-cyan-950/70 via-slate-900/80 to-cyan-900/40",
+        border: "border-cyan-500/40 hover:border-cyan-400",
+        badge: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive 3D geometry & mensuration shapes, formulas, theorems & calculators."
+    },
+    {
+        id: "constitution_explorer",
+        title: "Constitution & Polity Explorer",
+        page: "pages/constitution-explorer.html",
+        icon: "fa-building-columns",
+        color: "text-purple-400",
+        bg: "from-purple-950/70 via-slate-900/80 to-purple-900/40",
+        border: "border-purple-500/40 hover:border-purple-400",
+        badge: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive Constitution reader with articles, parts, schedules, amendments & search."
+    },
+    {
+        id: "india_atlas",
+        title: "India Maps & Rivers Atlas",
+        page: "pages/india-atlas.html",
+        icon: "fa-map-location-dot",
+        color: "text-emerald-400",
+        bg: "from-emerald-950/70 via-slate-900/80 to-emerald-900/40",
+        border: "border-emerald-500/40 hover:border-emerald-400",
+        badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive visual map: states, river basins, mountain ranges, parks & PYQs."
+    },
+    {
+        id: "historical_calendar",
+        title: "History Timeline & Events Calendar",
+        page: "pages/historical-calendar.html",
+        icon: "fa-calendar-days",
+        color: "text-rose-400",
+        bg: "from-rose-950/70 via-slate-900/80 to-rose-900/40",
+        border: "border-rose-500/40 hover:border-rose-400",
+        badge: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Chronological history events, important dates, revision drills & timeline."
+    },
+    {
+        id: "computer_os",
+        title: "SSC Tier-2 Computer OS Simulator",
+        page: "pages/ssc-os-computer-tier2.html",
+        icon: "fa-laptop-code",
+        color: "text-blue-400",
+        bg: "from-blue-950/70 via-slate-900/80 to-blue-900/40",
+        border: "border-blue-500/40 hover:border-blue-400",
+        badge: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive OS simulation: keyboard shortcuts, computer abbreviations & typing lab."
+    }
+];
+
+function renderSubjectGrid(subjects, searchQuery = "") {
+    const grid = document.getElementById("study-subject-grid");
+    if (!grid) return;
+
+    const q = (searchQuery || "").trim().toLowerCase();
+
+    // Filter Direct Master Page Cards
+    const filteredMasterPages = DIRECT_MASTER_PAGES.filter(p => {
+        if (!q) return true;
+        return p.title.toLowerCase().includes(q) ||
+               p.desc.toLowerCase().includes(q) ||
+               p.id.toLowerCase().includes(q);
+    });
+
+    // Filter Subjects for Section 2: keep ONLY "general_rules" (Fixed Rules) and "conquest_patterns" (Conquest Weightage) alongside All Subjects Hub
+    const allowedSection2Ids = ["general_rules", "conquest_patterns"];
+    const filteredSubjects = (subjects || []).filter(subj => {
+        if (!allowedSection2Ids.includes(subj.id)) return false;
+
+        if (!q) return true;
+        return subj.name.toLowerCase().includes(q) ||
+               (subj.description && subj.description.toLowerCase().includes(q)) ||
+               (subj.topics && subj.topics.some(t => t.name.toLowerCase().includes(q)));
+    });
+
+    const showAllDeck = !q || "all subjects hub".includes(q) || "master deck".includes(q) || "all deck".includes(q);
+
+    let html = `<div class="space-y-8 animate-fadeIn">`;
+
+    // SECTION 1: DIRECT INTERACTIVE MASTER PAGES (NO MIDDLE MAN)
+    if (filteredMasterPages.length > 0) {
+        html += `
+            <div class="space-y-3">
+                <div class="flex items-center justify-between pb-1 border-b border-white/10">
+                    <h3 class="text-xs font-heading font-extrabold text-white uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        <i class="fa-solid fa-bolt text-accentCyan"></i> Direct Master Interactive Books &amp; Atlases
+                    </h3>
+                    <span class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full">
+                        Instant Launch (No Middle-Man)
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${filteredMasterPages.map(mp => `
+                        <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-5 shadow-2xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="w-10 h-10 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-lg group-hover:scale-110 transition">
+                                        <i class="fa-solid ${mp.icon}"></i>
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${mp.badge}">
+                                        ${mp.badgeText}
+                                    </span>
+                                </div>
+                                <h4 class="font-heading font-black text-white text-base mb-1 group-hover:text-cyan-300 transition leading-snug">${mp.title}</h4>
+                                <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">${mp.desc}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                                <span class="text-[10px] font-extrabold uppercase text-gray-400 group-hover:text-white transition">Direct Open</span>
+                                <button class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                                    Launch Page &rarr;
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    // SECTION 2: MASTER SYLLABUS & WEIGHTAGE DECKS
+    const totalSection2Count = (showAllDeck ? 1 : 0) + filteredSubjects.length;
+    if (totalSection2Count > 0) {
+        html += `
+            <div class="space-y-3 pt-2">
+                <div class="flex items-center justify-between pb-1 border-b border-white/10">
+                    <h3 class="text-xs font-heading font-extrabold text-white uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-accentGreen"></i> Subject Syllabus Decks &amp; Question Banks
+                    </h3>
+                    <span class="text-[10px] font-extrabold text-gray-400 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">
+                        ${totalSection2Count} Decks
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    ${showAllDeck ? `
+                        <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 hover:border-cyan-400 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-lg group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-layer-group"></i>
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Master Deck</span>
+                                </div>
+                                <h4 class="font-heading font-black text-white text-base mb-1 group-hover:text-cyan-300 transition">All Subjects Hub</h4>
+                                <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">Full interactive mastery deck across Quant, English, Reasoning, GK & Atlases.</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-cyan-400 font-extrabold">
+                                <span>Explore All Topics</span>
+                                <span>&rarr;</span>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${filteredSubjects.map(subj => {
+                        const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
+                        const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
+                        const totalTopics = subj.topics ? subj.topics.length : 0;
+                        
+                        return `
+                            <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-lg group-hover:scale-110 transition">
+                                            <i class="fa-solid ${icon}"></i>
+                                        </span>
+                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-white/5 text-gray-400 border border-white/10">${totalTopics} Decks</span>
+                                    </div>
+                                    <h4 class="font-heading font-black text-white text-base mb-1 group-hover:text-${color} transition">${subj.name}</h4>
+                                    <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">${subj.description || 'Comprehensive exam rules, pyqs, and weightage cards.'}</p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400 font-bold group-hover:text-white transition">
+                                    <span>Browse Deck</span>
+                                    <span>&rarr;</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    if (filteredMasterPages.length === 0 && filteredSubjects.length === 0) {
+        html += `
+            <div class="text-center py-12 space-y-3 bg-bgCard/30 border border-white/10 rounded-2xl">
+                <i class="fa-solid fa-magnifying-glass text-gray-500 text-3xl"></i>
+                <div class="text-sm font-extrabold text-white">No topics or master pages match "${q}"</div>
+                <div class="text-xs text-gray-400">Try searching for terms like "Grammar", "Atlas", "Geometry", "Constitution", "History", or "Calendar".</div>
+            </div>
+        `;
+    }
+
+    html += `</div>`;
+    grid.innerHTML = html;
+}
+
+function showSubjectDetail(subjectId) {
+    studyState.activeSubject = subjectId;
+    studyState.chapter = null;
+    
+    const subjectGrid = document.getElementById("study-subject-grid");
+    const topicArea = document.getElementById("study-topic-area");
+    const customArea = document.getElementById("study-custom-notes-area");
+    
+    if (subjectGrid) subjectGrid.classList.add("hidden");
+    if (customArea) customArea.classList.add("hidden");
+    if (topicArea) topicArea.classList.remove("hidden");
+    
+    const titleEl = document.getElementById("study-active-subject-title");
+    if (titleEl) {
+        if (subjectId === 'all') {
+            titleEl.innerHTML = `<i class="fa-solid fa-layer-group text-accentCyan mr-2"></i> All Subjects - Mastery Command Deck`;
+        } else {
+            const subj = studyCatalog ? studyCatalog.subjects.find(s => s.id === subjectId) : null;
+            const name = subj ? subj.name : subjectId;
+            const icon = subj ? (subj.icon || 'fa-book') : 'fa-book';
+            titleEl.innerHTML = `<i class="fa-solid ${icon} text-accentCyan mr-2"></i> ${name}`;
+        }
+    }
+    
+    const searchInput = document.getElementById("study-search");
+    if (searchInput) searchInput.style.display = "";
+    
+    renderStudyTrackerAll();
+}
+
 // Initialize dynamic subjects and index files
 async function initStudyPage() {
     try {
@@ -111,178 +417,52 @@ async function initStudyPage() {
     }
 }
 
-// Background builder for global search index
-async function buildSearchIndex(subjects) {
+// Background builder for global search index using pre-compiled STUDY_DATA
+function buildSearchIndex(subjects) {
     searchIndex = [];
-    const promises = [];
     
     subjects.forEach(subject => {
         subject.topics.forEach(topic => {
-            topic.subtopics.forEach(subtopic => {
-                promises.push(
-                    loadChapterScript(subtopic.file)
-                        .then(() => {
-                            const text = window.studyChapters[subtopic.id] || "";
-                            const meta = parseFrontmatter(text);
-                            searchIndex.push({
-                                subtopicId: subtopic.id,
-                                subtopicName: subtopic.name,
-                                subjectName: subject.name,
-                                subjectId: subject.id,
-                                topicName: topic.name,
-                                topicId: topic.id,
-                                file: subtopic.file,
-                                difficulty: meta.difficulty || "medium",
-                                roi: meta.roi || "high",
-                                tags: meta.tags || [],
-                                content: text
-                            });
-                        })
-                        .catch(err => console.warn("Error indexing " + subtopic.id + ":", err))
-                );
+            const subtopics = topic.subtopics || [topic];
+            subtopics.forEach(subtopic => {
+                const data = window.STUDY_DATA ? window.STUDY_DATA[subtopic.id] : null;
+                if (!data) return;
+                searchIndex.push({
+                    subtopicId: subtopic.id,
+                    subtopicName: subtopic.name,
+                    subjectName: subject.name,
+                    subjectId: subject.id,
+                    topicId: topic.id,
+                    topicName: topic.name,
+                    file: subtopic.file,
+                    difficulty: data.difficulty || "medium",
+                    roi: data.roi || "high",
+                    tags: data.tags || [],
+                    content: data.sections.map(s => s.html).join(' ')
+                });
             });
         });
     });
-    
-    await Promise.all(promises);
-    console.log(`Global Study Search Indexing Complete: ${searchIndex.length} subtopics loaded.`);
 }
 
-// Custom parser to extract frontmatter YAML lines
-function parseFrontmatter(text) {
-    const cleanText = text.trim();
-    const meta = { tags: [] };
-    if (!cleanText.startsWith("---")) return meta;
-    
-    const parts = cleanText.split("---");
-    if (parts.length < 3) return meta;
-    
-    const lines = parts[1].split("\n");
-    let currentKey = null;
-    
-    lines.forEach(line => {
-        const trimmed = line.trim();
-        if (!trimmed) return;
-        
-        if (trimmed.startsWith("-")) {
-            // Element of an active array/list
-            if (currentKey === "tags") {
-                meta.tags.push(trimmed.slice(1).trim());
-            }
-        } else {
-            const colonIdx = trimmed.indexOf(":");
-            if (colonIdx > 0) {
-                const key = trimmed.slice(0, colonIdx).trim();
-                let val = trimmed.slice(colonIdx + 1).trim();
-                currentKey = key;
-                
-                if (val.startsWith("[") && val.endsWith("]")) {
-                    // Inline array representation e.g. [percentage, ratio]
-                    const inner = val.slice(1, -1);
-                    meta[key] = inner.split(",").map(t => t.trim().replace(/^['"]|['"]$/g, ""));
-                } else if (!val.startsWith("-") && val !== "") {
-                    // Standard key-value
-                    val = val.replace(/^['"]|['"]$/g, "");
-                    meta[key] = val;
-                }
-            }
+function handleStudyClickOutside(e) {
+    if (studyState.openDropdown) {
+        const wrap = document.querySelector(`[data-study-dd-wrap="${studyState.openDropdown}"]`);
+        if (wrap && !wrap.contains(e.target)) {
+            const panel = wrap.querySelector('[data-study-dd-panel]');
+            if (panel) panel.classList.add('hidden');
+            studyState.openDropdown = null;
         }
-    });
-    
-    return meta;
-}
-
-// Display main list of subject directories
-function renderSubjectGrid(subjects) {
-    const grid = document.getElementById("study-subject-grid");
-    if (!grid) return;
-    grid.innerHTML = "";
-    
-    subjects.forEach(sub => {
-        const card = document.createElement("div");
-        card.className = "cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 hover:shadow-cyan-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px] backdrop-blur-xl";
-        card.innerHTML = `
-            <span class="w-12 h-12 rounded-xl bg-accentCyan/10 text-accentCyan flex items-center justify-center text-xl">
-                <i class="fa-solid ${sub.icon || 'fa-toolbox'}"></i>
-            </span>
-            <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider">${sub.name}</h3>
-        `;
-        card.onclick = () => showSubjectDetail(sub.id);
-        grid.appendChild(card);
-    });
-    
-    // Append Custom Notes & Mistakes Card (Mistake Book)
-    const notesCard = document.createElement("div");
-    notesCard.className = "cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentPurple/30 hover:shadow-purple-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px] backdrop-blur-xl";
-    notesCard.innerHTML = `
-        <span class="w-12 h-12 rounded-xl bg-accentPurple/10 text-accentPurple flex items-center justify-center text-xl">
-            <i class="fa-solid fa-pen-to-square"></i>
-        </span>
-        <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider">Custom Notes & Mistakes</h3>
-    `;
-    notesCard.onclick = () => showCustomNotes();
-    grid.appendChild(notesCard);
-
-    // Append Quick Reference Tables Card
-    const refCard = document.createElement("div");
-    refCard.className = "cursor-pointer bg-bgCard/50 border border-white/10 hover:border-accentAmber/30 hover:shadow-amber-950/10 hover:shadow-lg p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition duration-300 transform hover:-translate-y-1 select-none text-center min-h-[140px] backdrop-blur-xl";
-    refCard.innerHTML = `
-        <span class="w-12 h-12 rounded-xl bg-accentAmber/10 text-accentAmber flex items-center justify-center text-xl">
-            <i class="fa-solid fa-table-list"></i>
-        </span>
-        <h3 class="font-heading font-extrabold text-xs text-white uppercase tracking-wider">Quick Reference Tables</h3>
-        <span class="text-[10px] text-gray-500">Tables · Trig · Fractions · Triplets</span>
-    `;
-    refCard.onclick = () => showQuickRefTables();
-    grid.appendChild(refCard);
-}
-
-
-// View state for Study Notes Tracker
-let studyState = {
-    view: 'tree',
-    search: '',
-    sortBy: 'name',
-    sortDir: 1,
-    difficulty: '',
-    roi: '',
-    activeSubject: null,
-    chapter: null,
-    openDropdown: null
-};
-
-// Display detailed topic hierarchy accordion for selected subject
-function showSubjectDetail(subjectId) {
-    if (!studyCatalog) return;
-    const subject = studyCatalog.subjects.find(s => s.id === subjectId);
-    if (!subject) return;
-    
-    activeSubjectId = subjectId;
-    studyState.activeSubject = subjectId;
-    studyState.chapter = null; // reset drilldown
-    
-    document.getElementById("study-subject-grid").classList.add("hidden");
-    document.getElementById("study-custom-notes-area").classList.add("hidden");
-    
-    const detailArea = document.getElementById("study-topic-area");
-    detailArea.classList.remove("hidden");
-    
-    const titleEl = document.getElementById("study-active-subject-title");
-    if (titleEl) {
-        titleEl.innerHTML = `<i class="fa-solid ${subject.icon || 'fa-toolbox'} text-accentCyan mr-1.5"></i> ${subject.name}`;
     }
-    
-    renderStudyTrackerAll();
 }
 
 function initStudyToolbar() {
-    // Setup view select dropdown HTML
     const viewWrap = document.getElementById("study-view-dropdown-wrap");
     if (viewWrap) {
-        const viewIcons = { tree: '🌲', explorer: '📂', compact: '📝', grid: '🎴', kanban: '📋', table: '📊' };
-        const viewNames = { tree: 'Tree View', explorer: 'Explorer', compact: 'Compact', grid: 'Grid', kanban: 'Kanban', table: 'Table' };
-        const activeIcon = viewIcons[studyState.view] || '🌲';
-        const activeName = viewNames[studyState.view] || 'Tree View';
+        const viewIcons = { command: '⚡', grid: '🎴', explorer: '📂', kanban: '📋', table: '📊', tree: '🌲', compact: '📝' };
+        const viewNames = { command: 'Mastery Command Hub', grid: 'Grid View', explorer: 'Explorer', kanban: 'Kanban', table: 'Table', tree: 'Tree View', compact: 'Compact' };
+        const activeIcon = viewIcons[studyState.view] || '⚡';
+        const activeName = viewNames[studyState.view] || 'Mastery Command Hub';
         
         viewWrap.innerHTML = `
         <div class="relative" data-study-dd-wrap="view">
@@ -299,7 +479,6 @@ function initStudyToolbar() {
         </div>`;
     }
 
-    // Setup sort select dropdown HTML
     const sortWrap = document.getElementById("study-sort-dropdown-wrap");
     if (sortWrap) {
         sortWrap.innerHTML = `
@@ -321,7 +500,6 @@ function initStudyToolbar() {
         </div>`;
     }
 
-    // Bind dropdown click toggle behaviors
     document.querySelectorAll('[data-study-dd-btn]').forEach(btn => {
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -329,7 +507,6 @@ function initStudyToolbar() {
             const panel = document.querySelector(`[data-study-dd-panel="${id}"]`);
             const isHidden = panel.classList.contains('hidden');
             
-            // Close other study dropdowns
             document.querySelectorAll('[data-study-dd-panel]').forEach(p => p.classList.add('hidden'));
             
             if (isHidden) {
@@ -342,11 +519,9 @@ function initStudyToolbar() {
         };
     });
 
-    // Handle outside clicks to close dropdowns
     document.removeEventListener('click', handleStudyClickOutside);
     document.addEventListener('click', handleStudyClickOutside);
 
-    // Bind search
     const searchInput = document.getElementById("study-search");
     if (searchInput) {
         searchInput.value = studyState.search;
@@ -354,17 +529,6 @@ function initStudyToolbar() {
             studyState.search = searchInput.value.trim().toLowerCase();
             renderStudyTrackerAll();
         };
-    }
-}
-
-function handleStudyClickOutside(e) {
-    if (studyState.openDropdown) {
-        const wrap = document.querySelector(`[data-study-dd-wrap="${studyState.openDropdown}"]`);
-        if (wrap && !wrap.contains(e.target)) {
-            const panel = wrap.querySelector('[data-study-dd-panel]');
-            if (panel) panel.classList.add('hidden');
-            studyState.openDropdown = null;
-        }
     }
 }
 
@@ -389,7 +553,6 @@ function buildStudyFilterRow() {
     
     let html = "";
     
-    // Add clear button if any filter is active
     if (studyState.difficulty || studyState.roi || studyState.chapter) {
         html += `
         <button class="px-2 py-1 rounded bg-accentRose/15 border border-accentRose/30 text-accentRose hover:bg-accentRose/20 text-[10px] font-bold uppercase transition" onclick="clearStudyFilters()">
@@ -397,7 +560,6 @@ function buildStudyFilterRow() {
         </button>`;
     }
     
-    // Difficulty filters
     ['Easy', 'Moderate', 'Hard'].forEach(diff => {
         const active = studyState.difficulty === diff;
         html += `
@@ -406,7 +568,6 @@ function buildStudyFilterRow() {
         </button>`;
     });
     
-    // ROI filters
     ['High', 'Medium', 'Low'].forEach(roi => {
         const active = studyState.roi === roi;
         html += `
@@ -436,33 +597,36 @@ function toggleStudyRoiFilter(roi) {
 }
 
 function getFilteredStudySubtopics() {
-    if (!studyCatalog || !studyState.activeSubject) return [];
+    if (!studyCatalog) return [];
     
-    const subject = studyCatalog.subjects.find(s => s.id === studyState.activeSubject);
-    if (!subject) return [];
+    let subjectsToScan = studyCatalog.subjects;
+    if (studyState.activeSubject && studyState.activeSubject !== 'all') {
+        const found = studyCatalog.subjects.find(s => s.id === studyState.activeSubject);
+        if (found) subjectsToScan = [found];
+    }
     
-    // Gather all subtopics under this subject
     let items = [];
-    subject.topics.forEach(topic => {
-        topic.subtopics.forEach(sub => {
-            // Find its indexed details from searchIndex if available
-            const indexed = searchIndex.find(idx => idx.subtopicId === sub.id) || {};
-            items.push({
-                id: sub.id,
-                name: sub.name,
-                file: sub.file,
-                topicId: topic.id,
-                topicName: topic.name,
-                subjectId: subject.id,
-                subjectName: subject.name,
-                difficulty: indexed.difficulty || 'medium',
-                roi: indexed.roi || 'high',
-                tags: indexed.tags || []
+    subjectsToScan.forEach(subject => {
+        subject.topics.forEach(topic => {
+            const subtopics = topic.subtopics || [topic];
+            subtopics.forEach(sub => {
+                const indexed = searchIndex.find(idx => idx.subtopicId === sub.id) || {};
+                items.push({
+                    id: sub.id,
+                    name: sub.name,
+                    file: sub.file,
+                    topicId: topic.id,
+                    topicName: topic.name,
+                    subjectId: subject.id,
+                    subjectName: subject.name,
+                    difficulty: indexed.difficulty || 'medium',
+                    roi: indexed.roi || 'high',
+                    tags: indexed.tags || []
+                });
             });
         });
     });
     
-    // Filter by search query
     if (studyState.search) {
         const q = studyState.search;
         items = items.filter(it => 
@@ -472,22 +636,18 @@ function getFilteredStudySubtopics() {
         );
     }
     
-    // Filter by Difficulty
     if (studyState.difficulty) {
         items = items.filter(it => it.difficulty.toLowerCase() === studyState.difficulty.toLowerCase());
     }
     
-    // Filter by ROI
     if (studyState.roi) {
         items = items.filter(it => it.roi.toLowerCase() === studyState.roi.toLowerCase());
     }
     
-    // Filter by active chapter (for drill-down)
     if (studyState.chapter) {
         items = items.filter(it => it.topicId === studyState.chapter);
     }
     
-    // Sort items
     items.sort((a, b) => {
         let valA = a.name;
         let valB = b.name;
@@ -511,8 +671,146 @@ function getFilteredStudySubtopics() {
     return items;
 }
 
+function renderStudyCommandHub(items) {
+    const totalItems = items.length;
+    const readCount = items.filter(sub => {
+        const itemState = window.USER_STATE ? (window.USER_STATE.studySubtopics ? window.USER_STATE.studySubtopics[sub.id] : null) : null;
+        return itemState && itemState.read;
+    }).length;
+    
+    const pct = totalItems > 0 ? Math.round((readCount / totalItems) * 100) : 0;
+    
+    const pageItems = items.filter(sub => {
+        const data = window.STUDY_DATA ? window.STUDY_DATA[sub.id] : null;
+        return data && data.page;
+    });
+
+    let html = `
+        <div class="space-y-6 animate-fadeIn">
+            <!-- HERO READINESS & COMMAND PANEL -->
+            <div class="relative overflow-hidden bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl p-6 shadow-2xl backdrop-blur-2xl">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                    
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/35 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                            Mastery Command Hub
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-heading font-black text-white tracking-tight">SSC CGL 2026 Interactive Study Deck</h2>
+                        <p class="text-xs text-gray-300 max-w-xl leading-relaxed">
+                            Access interactive 3D visual atlases, master book pages, and quick formula flashcard drills tailored for Tier 1 &amp; Tier 2 exam conquest.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-5 bg-white/5 border border-white/10 rounded-xl p-4 shrink-0 backdrop-blur-md">
+                        <div class="relative w-16 h-16 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-white/10" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                                <path class="text-cyan-400 stroke-current transition-all duration-1000 ease-out" stroke-dasharray="${pct}, 100" stroke-width="3.5" stroke-linecap="round" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                            </svg>
+                            <span class="absolute text-sm font-extrabold text-white">${pct}%</span>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Mastery Score</div>
+                            <div class="text-base font-extrabold text-white">${readCount} / ${totalItems} Topics</div>
+                            <div class="text-[10px] text-cyan-400 font-bold">${pageItems.length} Interactive Books &amp; Atlases</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            ${pageItems.length > 0 ? `
+            <div class="space-y-3">
+                <div class="flex items-center justify-between pb-1 border-b border-white/5">
+                    <h3 class="text-xs font-extrabold text-gray-300 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-accentCyan"></i> Interactive Book &amp; Atlas Suite
+                    </h3>
+                    <span class="text-[10px] font-bold text-accentCyan bg-accentCyan/10 border border-accentCyan/20 px-2 py-0.5 rounded-full">${pageItems.length} Master Modules</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    ${pageItems.map(sub => {
+                        const data = window.STUDY_DATA ? window.STUDY_DATA[sub.id] : null;
+                        const subjectId = sub.subjectId || 'english';
+                        const subjColor = SUBJECT_COLORS[subjectId] || 'accentCyan';
+                        return `
+                            <div class="group relative bg-gradient-to-b from-bgCard/90 to-bgCard/50 border border-cyan-500/35 hover:border-cyan-400 rounded-xl p-4 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between cursor-pointer" onclick="renderStudyContent('${sub.id}')">
+                                <div class="flex items-start justify-between gap-2 mb-3">
+                                    <span class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 flex items-center justify-center text-base group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-book-open-reader"></i>
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider bg-accentCyan/20 text-accentCyan border border-accentCyan/30">Master Page</span>
+                                </div>
+                                <div class="space-y-1 mb-4">
+                                    <h4 class="text-sm font-extrabold text-white group-hover:text-cyan-300 transition leading-snug">${sub.name}</h4>
+                                    <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Full-screen interactive master reader with rule search, vector overlays, and practice engine.</p>
+                                </div>
+                                <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                                    <span class="text-[9px] text-gray-500 font-bold uppercase">${data && data.difficulty ? data.difficulty : 'Master'}</span>
+                                    <button class="px-3 py-1 rounded-lg text-[9px] font-extrabold uppercase tracking-wider bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 group-hover:bg-cyan-500 group-hover:text-black transition">
+                                        Launch Module &rarr;
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+            ` : ''}
+
+            <div class="space-y-4 pt-2">
+                <div class="flex items-center justify-between pb-1 border-b border-white/5">
+                    <h3 class="text-xs font-extrabold text-gray-300 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-grid-2 text-accentGreen"></i> All Syllabus Topics (${items.length})
+                    </h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+                    ${items.map(sub => {
+                        const data = window.STUDY_DATA ? window.STUDY_DATA[sub.id] : null;
+                        const isPage = !!(data && data.page);
+                        const isRead = window.USER_STATE && window.USER_STATE.studySubtopics && window.USER_STATE.studySubtopics[sub.id] && window.USER_STATE.studySubtopics[sub.id].read;
+                        const subjectId = sub.subjectId || 'quant';
+                        const diffCls = difficultyClass(data ? data.difficulty : 'medium');
+
+                        return `
+                            <div class="bg-bgCard/50 hover:bg-bgCard/80 border ${isRead ? 'border-accentGreen/40 bg-accentGreen/5' : (isPage ? 'border-cyan-500/30' : 'border-white/10')} hover:border-accentCyan/40 rounded-xl p-3.5 shadow-md backdrop-blur-xl flex flex-col justify-between gap-3 cursor-pointer transition-all duration-200 hover:-translate-y-0.5 group" onclick="renderStudyContent('${sub.id}')">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-7 h-7 rounded-lg ${isPage ? 'bg-cyan-500/20 text-cyan-400' : 'bg-white/5 text-gray-300'} flex items-center justify-center text-xs">
+                                            <i class="fa-solid ${isPage ? 'fa-file-lines' : 'fa-book-bookmark'}"></i>
+                                        </span>
+                                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">${subjectId}</span>
+                                    </div>
+                                    <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${isRead ? 'bg-accentGreen/20 text-accentGreen border border-accentGreen/40' : 'bg-white/5 text-gray-600'}">
+                                        <i class="fa-solid ${isRead ? 'fa-check' : 'fa-circle'}"></i>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <h5 class="text-xs font-bold text-white group-hover:text-accentCyan transition leading-snug line-clamp-2">${sub.name}</h5>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                                    <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${diffCls}">${data ? (data.difficulty || 'medium') : 'medium'}</span>
+                                    <span class="text-[9px] font-bold text-accentCyan group-hover:underline flex items-center gap-1">
+                                        ${isPage ? 'Open Page' : 'Read Note'} &rarr;
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    return html;
+}
+
 function renderStudyTree(items) {
-    // Group items by topic
     const groups = {};
     items.forEach(it => {
         if (!groups[it.topicId]) {
@@ -533,7 +831,7 @@ function renderStudyTree(items) {
                 </div>
                 <div class="divide-y divide-white/5">
                     ${gp.list.map(sub => `
-                        <div class="flex items-center justify-between p-3.5 hover:bg-white/10 cursor-pointer transition select-none backdrop-blur-xl" onclick="openStudyViewer('${sub.id}')">
+                        <div class="flex items-center justify-between p-3.5 hover:bg-white/10 cursor-pointer transition select-none backdrop-blur-xl" onclick="renderStudyContent('${sub.id}')">
                             <div class="flex items-center gap-3">
                                 <span class="text-xs text-gray-300 font-semibold">${sub.name}</span>
                                 <div class="flex gap-1.5">
@@ -560,7 +858,7 @@ function renderStudyExplorer(items) {
         <div class="space-y-4">
             <div class="divide-y divide-white/10 bg-bgCard/50 border border-white/10 rounded-2xl backdrop-blur-xl">
                 ${items.map(sub => `
-                    <div class="flex items-center justify-between p-3.5 hover:bg-white/10 cursor-pointer transition select-none backdrop-blur-xl" onclick="openStudyViewer('${sub.id}')">
+                    <div class="flex items-center justify-between p-3.5 hover:bg-white/10 cursor-pointer transition select-none backdrop-blur-xl" onclick="renderStudyContent('${sub.id}')">
                         <div class="flex items-center gap-3">
                             <span class="text-xs text-gray-300 font-semibold">${sub.name}</span>
                             <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
@@ -576,7 +874,6 @@ function renderStudyExplorer(items) {
         </div>`;
     }
     
-    // Show folders of topics
     const topics = {};
     items.forEach(it => {
         topics[it.topicId] = { name: it.topicName, count: (topics[it.topicId]?.count || 0) + 1 };
@@ -602,11 +899,11 @@ function renderStudyExplorerBreadcrumb() {
     
     if (studyState.chapter) {
         const subject = studyCatalog.subjects.find(s => s.id === studyState.activeSubject);
-        const topic = subject.topics.find(t => t.id === studyState.chapter);
+        const topic = subject && subject.topics ? subject.topics.find(t => t.id === studyState.chapter) : null;
         breadcrumbEl.innerHTML = `
-            <span class="cursor-pointer hover:text-white" onclick="setStudyExplorerChapter(null)">${subject.name}</span>
+            <span class="cursor-pointer hover:text-white" onclick="setStudyExplorerChapter(null)">${subject ? subject.name : 'Subjects'}</span>
             <span class="text-gray-600 mx-1.5">/</span>
-            <span class="text-white font-bold">${topic.name}</span>
+            <span class="text-white font-bold">${topic ? topic.name : 'Topics'}</span>
         `;
         breadcrumbEl.classList.remove("hidden");
     } else {
@@ -619,13 +916,65 @@ function setStudyExplorerChapter(tId) {
     renderStudyTrackerAll();
 }
 
+function renderStudyTrackerAll() {
+    const mount = document.getElementById('study-view-mount');
+    const emptyState = document.getElementById('study-empty-state');
+    if (!mount) return;
+    
+    initStudyToolbar();
+    buildStudyFilterRow();
+    
+    const items = getFilteredStudySubtopics();
+    const hasItems = items.length > 0;
+    
+    if (emptyState) {
+        if (!hasItems) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+        }
+    }
+    
+    let html = "";
+    if (hasItems) {
+        switch (studyState.view) {
+            case 'command':
+                html = renderStudyCommandHub(items);
+                break;
+            case 'explorer':
+                html = renderStudyExplorer(items);
+                renderStudyExplorerBreadcrumb();
+                break;
+            case 'compact':
+                html = renderStudyCompact(items);
+                break;
+            case 'grid':
+                html = renderStudyGrid(items);
+                break;
+            case 'kanban':
+                html = renderStudyKanban(items);
+                break;
+            case 'table':
+                html = renderStudyTable(items);
+                break;
+            default: // 'tree'
+                html = renderStudyTree(items);
+                break;
+        }
+    }
+    
+    mount.innerHTML = html;
+    
+    setTimeout(triggerMathTypesetting, 50);
+}
+
 function renderStudyCompact(items) {
     return `
     <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-4 backdrop-blur-xl">
         <ul class="space-y-2.5">
             ${items.map(sub => `
                 <li class="flex items-center justify-between text-xs border-b border-white/10 pb-2 last:border-0 last:pb-0">
-                    <span class="cursor-pointer font-medium text-gray-300 hover:text-accentCyan transition" onclick="openStudyViewer('${sub.id}')">${sub.name}</span>
+                    <span class="cursor-pointer font-medium text-gray-300 hover:text-accentCyan transition" onclick="renderStudyContent('${sub.id}')">${sub.name}</span>
                     <span class="text-[9px] font-mono text-gray-500">${sub.topicName}</span>
                 </li>
             `).join('')}
@@ -637,7 +986,7 @@ function renderStudyGrid(items) {
     return `
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
         ${items.map(sub => `
-            <div class="bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 rounded-xl p-4 shadow-md backdrop-blur-xl flex flex-col justify-between cursor-pointer hover:-translate-y-0.5 transition duration-200" onclick="openStudyViewer('${sub.id}')">
+            <div class="bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 rounded-xl p-4 shadow-md backdrop-blur-xl flex flex-col justify-between cursor-pointer hover:-translate-y-0.5 transition duration-200" onclick="renderStudyContent('${sub.id}')">
                 <div>
                     <div class="flex justify-between items-start mb-2">
                         <span class="text-[9px] text-gray-500 font-bold uppercase truncate max-w-[150px]">${sub.topicName}</span>
@@ -685,7 +1034,7 @@ function renderStudyKanban(items) {
                     ${col.list.length === 0 ? `
                         <div class="text-center text-[10px] text-gray-600 italic py-6">No notes here</div>
                     ` : col.list.map(sub => `
-                        <div class="bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 rounded-xl p-3 cursor-pointer hover:bg-white/10 backdrop-blur-xl transition" onclick="openStudyViewer('${sub.id}')">
+                        <div class="bg-bgCard/50 border border-white/10 hover:border-accentCyan/30 rounded-xl p-3 cursor-pointer hover:bg-white/10 backdrop-blur-xl transition" onclick="renderStudyContent('${sub.id}')">
                             <p class="text-xs font-bold text-gray-200 leading-normal mb-1.5">${sub.name}</p>
                             <div class="flex justify-between items-center text-[9px] text-gray-500">
                                 <span class="truncate max-w-[120px]">${sub.topicName}</span>
@@ -715,7 +1064,7 @@ function renderStudyTable(items) {
             <tbody class="divide-y divide-white/10 text-xs">
                 ${items.map(sub => `
                     <tr class="hover:bg-white/[0.02] transition">
-                        <td class="px-4 py-2.5 font-bold text-white cursor-pointer hover:text-accentCyan" onclick="openStudyViewer('${sub.id}')">${sub.name}</td>
+                        <td class="px-4 py-2.5 font-bold text-white cursor-pointer hover:text-accentCyan" onclick="renderStudyContent('${sub.id}')">${sub.name}</td>
                         <td class="px-4 py-2.5 text-gray-400">${sub.topicName}</td>
                         <td class="px-4 py-2.5">
                             <span class="px-1.5 py-0.5 rounded text-[8px] font-bold uppercase ${
@@ -726,7 +1075,7 @@ function renderStudyTable(items) {
                         </td>
                         <td class="px-4 py-2.5 text-gray-400 font-mono text-[10px]">${sub.roi.toUpperCase()}</td>
                         <td class="px-4 py-2.5 text-right">
-                            <button class="text-accentCyan hover:text-cyan-400 font-bold uppercase text-[9px] bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded" onclick="openStudyViewer('${sub.id}')">Read</button>
+                            <button class="text-accentCyan hover:text-cyan-400 font-bold uppercase text-[9px] bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded" onclick="renderStudyContent('${sub.id}')">Read</button>
                         </td>
                     </tr>
                 `).join('')}
@@ -922,72 +1271,125 @@ function toggleAccordion(header) {
     }
 }
 
-// Open Fullscreen Learning Modal
-async function openStudyViewer(subtopicId) {
+// Render inline study content from pre-compiled STUDY_DATA
+function renderStudyContent(subtopicId) {
+    const data = window.STUDY_DATA ? window.STUDY_DATA[subtopicId] : null;
+    if (!data) return;
+    
+    // Handle full-screen page subtopics (e.g., India Atlas)
+    if (data.page) {
+        openFullscreenPage(data.page, subtopicId);
+        return;
+    }
+    
     const subtopic = findSubtopicById(subtopicId);
     if (!subtopic) return;
     
     currentReadingSubtopic = subtopic;
     
-    const modal = document.getElementById("modal-study-viewer");
-    if (!modal) return;
+    const subjectGrid = document.getElementById("study-subject-grid");
+    const topicArea = document.getElementById("study-topic-area");
+    const contentViewer = document.getElementById("study-content-viewer");
+    if (!contentViewer) return;
     
-    // Activate fullscreen styling
-    modal.classList.add("active");
-    modal.classList.remove("opacity-0", "pointer-events-none");
+    if (subjectGrid) subjectGrid.classList.add("hidden");
+    if (topicArea) topicArea.classList.add("hidden");
+    contentViewer.classList.remove("hidden");
+    contentViewer.classList.add("study-zone");
+    contentViewer.setAttribute("data-subject", data.subject);
     
-    // Build clean breadcrumb: strip emoji from subject name, deduplicate if topic == subject
+    const iconEl = document.getElementById("content-subject-icon");
+    if (iconEl) {
+        iconEl.innerHTML = `<i class="fa-solid ${data.subjectIcon || 'fa-book'} text-${data.subjectColor || 'accentCyan'}"></i>`;
+    }
+    
+    const titleEl = document.getElementById("content-title");
+    if (titleEl) titleEl.textContent = data.title;
+    
     const cleanSubjectName = subtopic.subjectName.replace(/^[\p{Emoji}\s]+/u, "").trim();
     const pathParts = cleanSubjectName === subtopic.topicName
         ? cleanSubjectName
         : `${cleanSubjectName} → ${subtopic.topicName}`;
-    document.getElementById("viewer-path-label").innerText = pathParts;
-    document.getElementById("viewer-title-label").innerText = subtopic.name;
-    
-    updateViewerActionButtons(subtopicId);
-    
-    const container = document.getElementById("viewer-document-body");
-    if (container) {
-        container.innerHTML = `<div class="text-center text-xs text-gray-500 py-12"><i class="fa-solid fa-spinner animate-spin mr-1.5 text-accentCyan"></i> Fetching chapter details...</div>`;
-        try {
-            // Load script file dynamically if not already present
-            await loadChapterScript(subtopic.file);
-            
-            const rawText = window.studyChapters[subtopicId] || "";
-            const cleanText = rawText.trim();
-            
-            // Slice off frontmatter block
-            let bodyText = cleanText.startsWith("---") ? cleanText.split("---").slice(2).join("---").trim() : cleanText;
-            // Remove duplicate top-level heading title matching subtopic name
-            bodyText = bodyText.replace(/^#+\s+.*$/m, "").trim();
-            
-            // Render via markdown compiler
-            container.innerHTML = parseMarkdown(bodyText);
-            
-            // Build outlines table of contents sidebar
-            buildTableOfContents(container);
-            
-            // Trigger math rendering
-            triggerMathTypesetting();
-        } catch (err) {
-            container.innerHTML = `<div class="text-center text-xs text-accentRose py-12"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Error displaying study content: ${err.message}</div>`;
-        }
+    const crumbEl = document.getElementById("content-breadcrumb");
+    if (crumbEl) {
+        crumbEl.textContent = pathParts;
+        crumbEl.classList.remove("hidden");
     }
     
+    const tagsEl = document.getElementById("content-tags");
+    if (tagsEl) {
+        tagsEl.innerHTML = data.tags.map(tag =>
+            `<span class="tag-pill">${tag}</span>`
+        ).join('');
+    }
+    
+    const diffEl = document.getElementById("content-difficulty");
+    if (diffEl) {
+        diffEl.textContent = data.difficulty.toUpperCase();
+        const diffClass = data.difficulty === 'easy'
+            ? 'text-green-400 border-green-500/25 bg-green-500/10'
+            : data.difficulty === 'hard'
+            ? 'text-accentRose border-accentRose/25 bg-accentRose/10'
+            : 'text-accentAmber border-accentAmber/25 bg-accentAmber/10';
+        diffEl.className = `text-[9px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-widest ${diffClass}`;
+    }
+    
+    const container = document.getElementById("content-document-body");
+    if (!container) return;
+    
+    let html = '';
+    data.sections.forEach((section, idx) => {
+        const sectionIcons = {
+            formula: 'fa-calculator',
+            table: 'fa-table',
+            tip: 'fa-lightbulb',
+            example: 'fa-play',
+            note: 'fa-info',
+        };
+        const icon = sectionIcons[section.type] || 'fa-file';
+        const cardClass = section.type === 'tip' || section.type === 'note'
+            ? 'fact-card note-card' : 'section-card';
+        
+        html += `<div class="${cardClass}">`;
+        if (section.title) {
+            html += `<h4 class="flex items-center gap-1.5">
+                <i class="fa-solid ${icon}"></i>
+                ${section.title}
+            </h4>`;
+        }
+        html += `<div class="reader-content">${section.html}</div>`;
+        html += `</div>`;
+    });
+    
+    container.innerHTML = html;
+    
+    updateViewerActionButtons(subtopicId);
     setupScrollProgressTracker();
     
-    // Add opened timestamp
+    const progressLabel = document.getElementById("content-progress-label");
+    if (progressLabel) {
+        const progress = progressStore[subtopicId] || {};
+        if (progress.learned) progressLabel.textContent = 'Learned';
+        else if (progress.starred || progress.bookmarked) progressLabel.textContent = 'In Progress';
+        else progressLabel.textContent = '0% Read';
+    }
+    
+    setTimeout(triggerMathTypesetting, 50);
+    
     if (!progressStore[subtopicId]) progressStore[subtopicId] = {};
     progressStore[subtopicId].lastOpened = new Date().toISOString();
     saveProgress();
 }
+
+// Backward compat alias (also exported at bottom of file)
 
 // Search utility to find nested subtopic object
 function findSubtopicById(subtopicId) {
     if (!studyCatalog) return null;
     for (const subject of studyCatalog.subjects) {
         for (const topic of subject.topics) {
-            for (const sub of topic.subtopics) {
+            const subtopics = topic.subtopics || [topic];
+            for (const sub of subtopics) {
                 if (sub.id === subtopicId) {
                     return {
                         ...sub,
@@ -1007,26 +1409,26 @@ function findSubtopicById(subtopicId) {
 function updateViewerActionButtons(subtopicId) {
     const progress = progressStore[subtopicId] || {};
     
-    const btnStar = document.getElementById("btn-viewer-star");
-    const btnLearned = document.getElementById("btn-viewer-learned");
-    const btnBookmark = document.getElementById("btn-viewer-bookmark");
+    const btnStar = document.getElementById("btn-content-star");
+    const btnLearned = document.getElementById("btn-content-learned");
+    const btnBookmark = document.getElementById("btn-content-bookmark");
     
     if (btnStar) {
         btnStar.className = progress.starred
-            ? "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accentAmber/30 bg-accentAmber/10 text-accentAmber transition"
-            : "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition";
+            ? "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-accentAmber/30 bg-accentAmber/10 text-accentAmber transition"
+            : "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition";
         btnStar.querySelector("i").className = progress.starred ? "fa-solid fa-star" : "fa-regular fa-star";
     }
     if (btnLearned) {
         btnLearned.className = progress.learned
-            ? "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accentGreen/30 bg-accentGreen/10 text-accentGreen transition"
-            : "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition";
+            ? "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-accentGreen/30 bg-accentGreen/10 text-accentGreen transition"
+            : "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition";
         btnLearned.querySelector("i").className = progress.learned ? "fa-solid fa-circle-check" : "fa-regular fa-circle-check";
     }
     if (btnBookmark) {
         btnBookmark.className = progress.bookmarked
-            ? "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-accentCyan/30 bg-accentCyan/10 text-accentCyan transition"
-            : "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition";
+            ? "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-accentCyan/30 bg-accentCyan/10 text-accentCyan transition"
+            : "text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition";
         btnBookmark.querySelector("i").className = progress.bookmarked ? "fa-solid fa-bookmark" : "fa-regular fa-bookmark";
     }
 }
@@ -1048,8 +1450,10 @@ function toggleViewerProgress(type) {
     saveProgress();
     updateViewerActionButtons(subtopicId);
     
-    // Refresh accordion UI progress indicators
-    showSubjectDetail(currentReadingSubtopic.subjectId);
+    // Refresh tracker state without changing view visibility
+    activeSubjectId = currentReadingSubtopic.subjectId;
+    studyState.activeSubject = currentReadingSubtopic.subjectId;
+    renderStudyTrackerAll();
 }
 
 function saveProgress() {
@@ -1061,11 +1465,14 @@ function saveProgress() {
 }
 
 function closeStudyViewer() {
-    const modal = document.getElementById("modal-study-viewer");
-    if (modal) {
-        modal.classList.remove("active");
-        modal.classList.add("opacity-0", "pointer-events-none");
-    }
+    const viewer = document.getElementById("study-content-viewer");
+    const topicArea = document.getElementById("study-topic-area");
+    const subjectGrid = document.getElementById("study-subject-grid");
+    
+    if (viewer) viewer.classList.add("hidden");
+    if (topicArea) topicArea.classList.add("hidden");
+    if (subjectGrid) subjectGrid.classList.remove("hidden");
+    
     currentReadingSubtopic = null;
 }
 
@@ -1106,20 +1513,20 @@ function buildTableOfContents(container) {
 
 // Hook scroll events inside document reader
 function setupScrollProgressTracker() {
-    const container = document.getElementById("viewer-document-body");
-    const pctLabel = document.getElementById("viewer-progress-pct");
+    const container = document.getElementById("content-document-body");
+    const pctLabel = document.getElementById("content-progress-pct");
     if (!container || !pctLabel) return;
     
-    pctLabel.innerText = "0% Read";
+    pctLabel.innerText = "0%";
     
     container.onscroll = () => {
         const total = container.scrollHeight - container.clientHeight;
         if (total <= 0) {
-            pctLabel.innerText = "100% Read";
+            pctLabel.innerText = "100%";
             return;
         }
         const pct = Math.min(100, Math.round((container.scrollTop / total) * 100));
-        pctLabel.innerText = `${pct}% Read`;
+        pctLabel.innerText = `${pct}%`;
     };
 }
 
@@ -1130,7 +1537,8 @@ function navigateViewer(direction) {
     const flatIds = [];
     studyCatalog.subjects.forEach(subject => {
         subject.topics.forEach(topic => {
-            topic.subtopics.forEach(sub => {
+            const subtopics = topic.subtopics || [topic];
+            subtopics.forEach(sub => {
                 flatIds.push(sub.id);
             });
         });
@@ -1143,7 +1551,7 @@ function navigateViewer(direction) {
     if (targetIdx < 0) targetIdx = flatIds.length - 1;
     else if (targetIdx >= flatIds.length) targetIdx = 0;
     
-    openStudyViewer(flatIds[targetIdx]);
+    renderStudyContent(flatIds[targetIdx]);
 }
 
 // Set up Global Search listeners and display
@@ -1156,6 +1564,12 @@ function setupGlobalSearch() {
     
     searchInput.oninput = () => {
         const query = searchInput.value.trim().toLowerCase();
+        
+        // Filter direct surface cards in real-time on the Study page
+        if (studyCatalog && studyCatalog.subjects) {
+            renderSubjectGrid(studyCatalog.subjects, query);
+        }
+
         if (query.length < 2) {
             searchResults.classList.add("hidden");
             return;
@@ -1188,7 +1602,7 @@ function setupGlobalSearch() {
                 item.onclick = () => {
                     searchResults.classList.add("hidden");
                     searchInput.value = "";
-                    openStudyViewer(match.subtopicId);
+                    renderStudyContent(match.subtopicId);
                 };
                 searchList.appendChild(item);
             });
@@ -1269,13 +1683,76 @@ function renderToolkitSubTab(targetPanelId) {
     setTimeout(triggerMathTypesetting, 50);
 }
 
+// Open full-screen page overlay (for atlas, maps, and special topic pages)
+function openFullscreenPage(pagePath, subtopicId) {
+    const overlay = document.getElementById("fullscreen-page");
+    const iframe = document.getElementById("fullscreen-page-frame");
+    if (!overlay || !iframe) return;
+    
+    currentReadingSubtopic = subtopicId ? findSubtopicById(subtopicId) : null;
+    iframe.src = pagePath;
+    overlay.classList.remove("hidden");
+    overlay.classList.remove("opacity-0", "pointer-events-none");
+    setTimeout(() => overlay.classList.add("opacity-100"), 10);
+    document.body.style.overflow = "hidden";
+}
+
+// Close full-screen page overlay
+function closeFullscreenPage() {
+    const overlay = document.getElementById("fullscreen-page");
+    if (!overlay) return;
+    
+    overlay.classList.add("opacity-0", "pointer-events-none");
+    setTimeout(() => {
+        overlay.classList.add("hidden");
+        const iframe = document.getElementById("fullscreen-page-frame");
+        if (iframe) iframe.src = "";
+        document.body.style.overflow = "";
+    }, 300);
+    currentReadingSubtopic = null;
+}
+
+// Global keydown: 'b' closes any active viewer/overlay
+document.addEventListener("keydown", (e) => {
+    // Only intercept 'b' when NOT typing in an input field
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.target.isContentEditable) return;
+    
+    if (e.key === "b" || e.key === "B") {
+        const fullscreen = document.getElementById("fullscreen-page");
+        if (fullscreen && !fullscreen.classList.contains("hidden")) {
+            closeFullscreenPage();
+            e.preventDefault();
+            return;
+        }
+        const contentViewer = document.getElementById("study-content-viewer");
+        if (contentViewer && !contentViewer.classList.contains("hidden")) {
+            if (window.closeStudyViewer) window.closeStudyViewer();
+            e.preventDefault();
+            return;
+        }
+    }
+});
+
+// Close button in fullscreen overlay
+const fullscreenCloseBtn = document.getElementById("btn-fullscreen-close");
+if (fullscreenCloseBtn) fullscreenCloseBtn.addEventListener("click", closeFullscreenPage);
+
+// Listen for close requests from iframe (e.g., atlas page close button)
+window.addEventListener("message", (e) => {
+    if (e.data && e.data.type === "closeFullscreen") closeFullscreenPage();
+});
+
 
 
 // Expose elements globally
 window.renderToolkit = renderToolkit;
 window.renderToolkitSubTab = renderToolkitSubTab;
 window.deleteNote = deleteNote;
-window.openStudyViewer = openStudyViewer;
+window.openStudyViewer = renderStudyContent;
+window.renderStudyContent = renderStudyContent;
+window.openFullscreenPage = openFullscreenPage;
+window.closeFullscreenPage = closeFullscreenPage;
 window.showQuickRefTables = showQuickRefTables;
 window.initStudyPage = initStudyPage;
 window.closeStudyViewer = closeStudyViewer;

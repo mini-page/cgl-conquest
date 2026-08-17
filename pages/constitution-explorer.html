@@ -1,0 +1,1491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a1122">
+<title>Constitution of India Explorer</title>
+<style>
+:root{
+  --navy:#0a1122;--navy2:#111b33;--parchment:#0e121a;--parchment2:#171c27;
+  --panel:#151a24;--ink:#eae6d9;--muted:#9490a0;--line:#282e3d;
+  --saffron:#e08a3f;--saffron-soft:rgba(224,138,63,.14);--saffron-border:rgba(224,138,63,.38);
+  --indigo:#8ba0f0;--indigo-soft:rgba(139,160,240,.14);--indigo-border:rgba(139,160,240,.32);
+  --green:#4fd19a;--green-soft:rgba(79,209,154,.14);--green-border:rgba(79,209,154,.32);
+  --gold:#d3a94c;--shadow:0 14px 38px rgba(0,0,0,.35);--radius:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--parchment);color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+::selection{background:var(--saffron-soft)}
+h1,h2,h3,.serif{font-family:"Source Serif Pro",Georgia,"Iowan Old Style",serif}
+
+.app{display:grid;grid-template-rows:64px 1fr;height:100vh;overflow:hidden}
+
+/* ---------- Top bar ---------- */
+.topbar{display:flex;align-items:center;gap:16px;padding:0 20px;background:var(--navy);color:#f4efe0;
+  border-bottom:3px solid var(--saffron);z-index:20}
+.brand{display:flex;align-items:center;gap:11px;min-width:240px}
+.emblem{width:36px;height:36px;border:1.5px solid var(--saffron);border-radius:50%;display:grid;place-items:center;
+  color:var(--saffron);font-weight:800;font-size:12px;letter-spacing:.03em;font-family:Inter,sans-serif}
+.brand b{font-size:14.5px;letter-spacing:.01em}
+.brand span{display:block;color:#c7cbe0;font-size:10.5px;margin-top:1px;letter-spacing:.03em}
+.top-crumbs{flex:1;min-width:0;display:flex;align-items:center;gap:6px;font-size:11.5px;color:#c7cbe0;overflow:hidden;white-space:nowrap}
+.top-crumbs .c{cursor:pointer}.top-crumbs .c:hover{color:#fff;text-decoration:underline}
+.top-crumbs .cur{color:#fff;font-weight:700}
+.top-actions{display:flex;gap:8px;flex-shrink:0}
+.tbtn{height:36px;border:1px solid rgba(244,239,224,.25);background:rgba(244,239,224,.06);color:#f4efe0;
+  border-radius:8px;padding:0 13px;font-size:12px;display:flex;align-items:center;gap:6px;font-family:Inter,sans-serif;font-weight:600}
+.tbtn:hover{background:rgba(244,239,224,.14)}
+.tbtn.accent{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.tbtn.accent:hover{background:#a8530f}
+.tbtn.ghost{background:transparent}
+
+/* ---------- Layout ---------- */
+.layout{display:grid;grid-template-columns:266px minmax(0,1fr) 296px;min-height:0}
+.sidebar,.rightbar{background:var(--panel);min-height:0;overflow:auto;font-family:Inter,sans-serif}
+.sidebar{border-right:1px solid var(--line)}
+.rightbar{border-left:1px solid var(--line)}
+.sb-inner{padding:14px 10px 40px}
+.sb-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:800;padding:14px 10px 6px}
+.sb-label:first-child{padding-top:6px}
+.nav-btn{width:100%;display:flex;align-items:center;gap:9px;border:0;background:transparent;color:var(--ink);
+  padding:8px 10px;border-radius:7px;text-align:left;font-size:12.2px;line-height:1.3}
+.nav-btn:hover{background:var(--parchment2)}
+.nav-btn.active{background:var(--saffron-soft);color:var(--saffron);font-weight:700}
+.nav-num{margin-left:auto;color:var(--muted);font-size:10px;font-weight:400}
+.nav-btn.small{font-size:11.4px;color:#b6b1a3;padding:6px 10px 6px 20px}
+.nav-btn.small:before{content:"–";margin-right:2px;color:var(--muted)}
+
+/* ---------- Main ---------- */
+.main{min-width:0;overflow:auto;padding:26px 34px 70px}
+.container{max-width:900px;margin:auto}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:11.5px;margin:0 0 18px;font-family:Inter,sans-serif}
+.crumbs .c{cursor:pointer}.crumbs .c:hover{color:var(--saffron);text-decoration:underline}
+.crumbs .cur{color:var(--ink);font-weight:700}
+.crumbs .sep{color:#c8c2ac}
+
+.hero{border:1px solid var(--line);background:linear-gradient(160deg,var(--panel),var(--parchment2));
+  border-radius:14px;padding:26px 28px;box-shadow:var(--shadow);margin-bottom:20px}
+.eyebrow{color:var(--saffron);font-weight:800;font-size:10px;text-transform:uppercase;letter-spacing:.11em;font-family:Inter,sans-serif}
+.hero h1{font-size:34px;letter-spacing:-.4px;margin:8px 0 8px}
+.hero p{color:var(--muted);font-size:13.5px;line-height:1.65;max-width:680px;margin:0;font-family:Inter,sans-serif}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px;font-family:Inter,sans-serif}
+.stat{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:12px}
+.stat strong{font-size:21px;font-family:"Source Serif Pro",Georgia,serif}
+.stat span{display:block;color:var(--muted);font-size:9.5px;margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+
+.content-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin:22px 0 12px;font-family:Inter,sans-serif}
+.content-head h2{font-size:22px;margin:0;font-family:"Source Serif Pro",Georgia,serif}
+.content-head p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.small-btn{height:33px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:7px;
+  padding:0 11px;font-size:11.5px;font-family:Inter,sans-serif;font-weight:600;display:flex;align-items:center;gap:5px}
+.small-btn:hover{border-color:#3d4152}
+.small-btn.primary{background:var(--saffron);border-color:var(--saffron);color:#fff}
+.small-btn.saved{color:var(--saffron);border-color:var(--saffron)}
+
+.callout{border-left:3px solid var(--saffron);background:var(--saffron-soft);padding:12px 15px;border-radius:0 8px 8px 0;
+  margin:14px 0;font-size:12px;line-height:1.65;font-family:Inter,sans-serif;color:var(--ink)}
+
+.card{border:1px solid var(--line);background:var(--panel);border-radius:11px;padding:17px;margin:11px 0;
+  box-shadow:0 1px 3px rgba(28,27,23,.03);font-family:Inter,sans-serif}
+.card.clickable{cursor:pointer;transition:transform .08s,border-color .12s}
+.card.clickable:hover{border-color:#3d4658;transform:translateY(-1px)}
+.article-meta{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.article-no{color:var(--saffron);font-weight:900;font-size:11.5px}
+.card h3{margin:8px 0;font-size:16px;font-family:"Source Serif Pro",Georgia,serif}
+.card p{margin:0;color:#c3bfae;font-size:12.3px;line-height:1.68}
+.tagrow{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.tag{border:1px solid var(--line);background:var(--parchment2);color:var(--muted);border-radius:999px;
+  padding:4px 9px;font-size:9.5px;cursor:pointer;font-weight:600}
+.tag:hover{color:var(--saffron);border-color:var(--saffron-border);background:var(--saffron-soft)}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.badge{font-size:9px;border-radius:999px;padding:4px 8px;font-weight:750;border:1px solid var(--line);background:var(--parchment2)}
+.badge.imp{color:var(--saffron);background:var(--saffron-soft);border-color:var(--saffron-border)}
+.badge.freq{color:var(--indigo);background:var(--indigo-soft);border-color:var(--indigo-border)}
+.badge.rec{color:var(--green);background:var(--green-soft);border-color:var(--green-border)}
+
+.quote{font-family:"Source Serif Pro",Georgia,serif;font-size:16.5px;line-height:1.85;padding:19px 21px;
+  background:var(--parchment2);border:1px solid var(--line);border-radius:10px;color:var(--ink)}
+.clause-list{margin:12px 0 0;padding-left:0;list-style:none;font-family:Inter,sans-serif}
+.clause-list li{padding:9px 0 9px 26px;position:relative;font-size:12.5px;color:#c3bfae;line-height:1.6;border-top:1px solid var(--line)}
+.clause-list li:first-child{border-top:0}
+.clause-list b{color:var(--ink);font-family:"Source Serif Pro",Georgia,serif;margin-right:6px}
+.clause-list li:before{content:"§";position:absolute;left:2px;color:var(--saffron);font-weight:700}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:Inter,sans-serif}
+.side-card{border:1px solid var(--line);border-radius:10px;padding:13px;background:var(--panel);margin-bottom:10px;font-family:Inter,sans-serif}
+.side-card h4{margin:0 0 10px;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--navy)}
+.side-card p,.side-card li{font-size:11.3px;color:var(--muted);line-height:1.55}
+.side-card ul{padding-left:15px;margin:0}
+.related{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:11.3px}
+.related:last-child{border-bottom:0}
+.link{color:var(--indigo);font-weight:700;cursor:pointer;white-space:nowrap}
+.link:hover{text-decoration:underline}
+.pillset{display:flex;flex-wrap:wrap;gap:5px}
+.pill-mini{border:1px solid var(--line);background:var(--parchment2);border-radius:999px;padding:3px 8px;font-size:10px;cursor:pointer;font-weight:600;color:var(--ink)}
+.pill-mini:hover{background:var(--saffron-soft);color:var(--saffron);border-color:var(--saffron-border)}
+
+.status{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;color:var(--green)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.timeline{position:relative;margin:16px 0;font-family:Inter,sans-serif}
+.timeline:before{content:"";position:absolute;left:12px;top:0;bottom:0;width:1px;background:var(--line)}
+.event{position:relative;padding:0 0 19px 34px}
+.event:before{content:"";position:absolute;left:8px;top:4px;width:9px;height:9px;border:2px solid var(--saffron);background:var(--panel);border-radius:50%}
+.event strong{font-size:12.5px;font-family:"Source Serif Pro",Georgia,serif}
+.event p{font-size:11.5px;color:var(--muted);margin:4px 0}
+
+.empty{padding:32px;text-align:center;color:var(--muted);font-size:12px;border:1.5px dashed var(--line);border-radius:11px;font-family:Inter,sans-serif}
+
+/* ---------- Search modal ---------- */
+.modal-wrap{position:fixed;inset:0;background:rgba(15,29,58,.5);display:none;align-items:flex-start;justify-content:center;
+  padding:70px 18px;z-index:60}
+.modal-wrap.open{display:flex}
+.modal{width:min(740px,100%);background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 30px 80px rgba(0,0,0,.28);overflow:hidden;font-family:Inter,sans-serif}
+.modal-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;background:var(--parchment2)}
+.modal-head input{flex:1;border:0;outline:0;background:transparent;color:var(--ink);font-size:15px}
+.modal-head input::placeholder{color:var(--muted)}
+.modal-head .mico{color:var(--muted)}
+.recent-wrap{padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+.recent-title{font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin-bottom:8px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.recent-pill{border:1px solid var(--line);background:var(--parchment2);border-radius:999px;padding:6px 10px;font-size:10.5px;color:var(--ink);font-weight:600}
+.recent-pill:hover{background:var(--saffron-soft);color:var(--saffron)}
+.results{max-height:480px;overflow:auto;padding:8px}
+.result{padding:11px 13px;border-radius:9px;cursor:pointer}
+.result:hover{background:var(--parchment2)}
+.result small{color:var(--saffron);font-weight:800;text-transform:uppercase;letter-spacing:.04em;font-size:9.5px}
+.result b{display:block;margin:3px 0;font-size:13px;font-family:"Source Serif Pro",Georgia,serif}
+.result span{font-size:11px;color:var(--muted)}
+
+#toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#fff;padding:11px 15px;border-radius:9px;
+  font-size:11.5px;display:none;z-index:80;font-family:Inter,sans-serif;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+
+.mobile-nav{display:none}
+
+/* ---------- Quick Reference table ---------- */
+.reftable-wrap{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--panel);font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace}
+.reftable{width:100%;border-collapse:collapse;font-size:12px}
+.reftable thead th{text-align:left;padding:12px 16px;color:var(--muted);font-size:10px;text-transform:uppercase;
+  letter-spacing:.09em;border-bottom:1px solid var(--line);font-weight:700;background:var(--parchment2)}
+.reftable tbody td{padding:11px 16px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:top}
+.reftable tbody tr:last-child td{border-bottom:0}
+.reftable tbody tr{cursor:pointer}
+.reftable tbody tr:hover td{background:var(--saffron-soft)}
+.reftable td.rt-art{color:var(--saffron);font-weight:800;white-space:nowrap}
+.reftable td.rt-part{color:var(--muted);white-space:nowrap}
+.reftable td.rt-topic{color:var(--ink)}
+.reftable td.rt-trick{color:#9ea6c4}
+.reftable-search{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.reftable-search input{flex:1;height:38px;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+  border-radius:8px;padding:0 12px;font-size:12.5px;font-family:Inter,sans-serif}
+.reftable-search input::placeholder{color:var(--muted)}
+@media(max-width:720px){
+  .reftable{font-size:11px}
+  .reftable thead th,.reftable tbody td{padding:9px 10px}
+  .reftable td.rt-trick{display:none}
+  .reftable thead th:last-child{display:none}
+}
+@media(max-width:1080px){.layout{grid-template-columns:230px minmax(0,1fr)}.rightbar{display:none}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+  .app{grid-template-rows:58px 1fr}
+  .topbar{padding:0 12px;gap:8px}
+  .brand span{display:none}.brand b{font-size:12.5px}
+  .top-crumbs{display:none}
+  .layout{display:block}
+  .sidebar{display:none}
+  .main{padding:16px 14px 84px}
+  .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);
+    z-index:20;justify-content:space-around;padding:8px 4px;font-family:Inter,sans-serif}
+  .mobile-nav button{background:none;border:0;color:var(--muted);font-size:9px;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .mobile-nav button span{font-size:15px}
+  .hero h1{font-size:25px}.hero{padding:19px}
+  .stats{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="emblem">IN</div>
+      <div><b>Constitution Explorer</b><span>Republic of India · Legal Knowledge Base</span></div>
+    </div>
+    <div class="top-crumbs" id="topCrumbs"></div>
+    <div class="top-actions">
+      <button class="tbtn accent" onclick="openSearch()">⌕ Search</button>
+      <button class="tbtn" onclick="showBookmarks()">☆ Bookmarks <span id="bmCountTop"></span></button>
+      <button class="tbtn ghost" title="Close" onclick="toast('Close is a UI placeholder in this build')">✕</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar"><div class="sb-inner" id="sidebarInner"></div></aside>
+
+    <main class="main"><div class="container" id="content"></div></main>
+
+    <aside class="rightbar"><div class="sb-inner" id="rightInner" style="padding-top:16px"></div></aside>
+  </div>
+
+  <nav class="mobile-nav">
+    <button onclick="showHome()"><span>⌂</span>Home</button>
+    <button onclick="showArticlesList()"><span>§</span>Articles</button>
+    <button onclick="showPartsList()"><span>◫</span>Parts</button>
+    <button onclick="showAmendmentsList()"><span>↻</span>Amend.</button>
+    <button onclick="openSearch()"><span>⌕</span>Search</button>
+  </nav>
+</div>
+
+<div class="modal-wrap" id="searchModal" onclick="if(event.target===this)closeSearch()">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="mico">⌕</span>
+      <input id="modalSearch" placeholder="Search article, part, topic, amendment, office, schedule…" oninput="runSearch(this.value)">
+      <button class="small-btn" onclick="closeSearch()">Close</button>
+    </div>
+    <div class="recent-wrap">
+      <div class="recent-title">Recent searches · top 5</div>
+      <div class="pills" id="recentPills"></div>
+    </div>
+    <div class="results" id="results"></div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ======================================================================
+   DATA LAYER — normalized, relationship-driven.
+   NOTE: article "text" fields are plain-language summaries/paraphrases
+   produced for this explorer, not the verbatim official text. For the
+   authoritative consolidated Constitution, always defer to the
+   Legislative Department's official 2026 edition (linked in the footer
+   of the Overview page). This dataset is a representative seed — the
+   architecture is built so the full corpus can be dropped in later
+   without touching the UI.
+   ====================================================================== */
+
+const SOURCE_URL = "https://www.legislative.gov.in/documents/constitution-of-india/constitution-of-india-AjN2EjMtQWa?pageTitle=Constitution-of-India";
+
+const PARTS = [
+["I","The Union and its Territory","1–4"],
+["II","Citizenship","5–11"],
+["III","Fundamental Rights","12–35"],
+["IV","Directive Principles of State Policy","36–51"],
+["IVA","Fundamental Duties","51A"],
+["V","The Union","52–151"],
+["VI","The States","152–237"],
+["VIII","Union Territories","239–242"],
+["IX","The Panchayats","243–243O"],
+["IXA","The Municipalities","243P–243ZG"],
+["IXB","Co-operative Societies","243ZH–243ZT"],
+["X","Scheduled and Tribal Areas","244–244A"],
+["XI","Relations between the Union and the States","245–263"],
+["XII","Finance, Property, Contracts and Suits","264–300A"],
+["XIII","Trade, Commerce and Intercourse","301–307"],
+["XIV","Services under the Union and the States","308–323"],
+["XIVA","Tribunals","323A–323B"],
+["XV","Elections","324–329A"],
+["XVI","Special Provisions Relating to Certain Classes","330–342A"],
+["XVII","Official Language","343–351"],
+["XVIII","Emergency Provisions","352–360"],
+["XIX","Miscellaneous","361–367"],
+["XX","Amendment of the Constitution","368"],
+["XXI","Temporary, Transitional and Special Provisions","369–392"],
+["XXII","Short Title, Commencement, Authoritative Text in Hindi and Repeals","393–395"]
+].map(function(p,i){return {id:i+1,roman:p[0],name:p[1],range:p[2],
+  description:"Part "+p[0]+" of the Constitution — "+p[1]+"."}});
+
+const SCHEDULES = [
+["1","States and Union territories","Names and territorial extent of the States and Union territories."],
+["2","Emoluments, allowances, privileges","Salaries and allowances of the President, Governors, Speaker, judges, CAG and other constitutional offices."],
+["3","Forms of oaths and affirmations","Prescribed oaths for the President, Ministers, MPs, MLAs, judges and the CAG."],
+["4","Allocation of Rajya Sabha seats","Seat allocation to States and Union territories in the Council of States."],
+["5","Administration of Scheduled Areas and Tribes","Special provisions for administration of Scheduled Areas and Scheduled Tribes."],
+["6","Administration of Tribal Areas in Assam, etc.","Provisions for tribal areas in Assam, Meghalaya, Tripura and Mizoram."],
+["7","Union, State and Concurrent Lists","Distribution of legislative subjects between the Union and the States."],
+["8","Recognised languages","The list of languages officially recognised by the Constitution."],
+["9","Land reform and related laws","Acts and regulations protected from judicial review on specified grounds."],
+["10","Anti-defection provisions","Provisions regarding disqualification of members on grounds of defection."],
+["11","Powers of Panchayats","Subjects on which Panchayats may be given powers and responsibilities."],
+["12","Powers of Municipalities","Subjects on which Municipalities may be given powers and responsibilities."]
+].map(function(s){return {id:parseInt(s[0]),title:s[0]+ordinalSuffix(parseInt(s[0]))+" Schedule",name:s[1],summary:s[2]}});
+function ordinalSuffix(n){var s=["th","st","nd","rd"],v=n%100;return (s[(v-20)%10]||s[v]||s[0])}
+
+const AMENDMENTS = [
+{no:1,year:1951,name:"Constitution (First Amendment) Act",purpose:"Enabled land reform legislation and added reasonable restrictions on speech; introduced the Ninth Schedule.",
+ articles:[15,19,85,87,174,176,341,342,372,376],schedules:[9],added:"Ninth Schedule",modified:"Articles 19, 85, 87",deleted:"—",
+ notes:"First major amendment; tested early after the Constitution's commencement over zamindari-abolition litigation."},
+{no:7,year:1956,name:"Constitution (Seventh Amendment) Act",purpose:"Gave effect to the States Reorganisation Commission's recommendations, restructuring States on linguistic lines.",
+ articles:[1,3,49,80,81,82,131,153,158,168,170,171,216,217,220,222,224,230,231,232,257,363,371,372,378],schedules:[1,2,4],
+ added:"Provisions on common High Courts and reorganised States",modified:"Articles 1, 3, 80",deleted:"Part VII (States in Part B) effectively omitted",
+ notes:"One of the most structurally significant amendments after the original Constitution."},
+{no:24,year:1971,name:"Constitution (Twenty-fourth Amendment) Act",purpose:"Restored and affirmed Parliament's power to amend any part of the Constitution, including Fundamental Rights, reversing the Supreme Court's Golaknath (1967) ruling.",
+ articles:[13,368],schedules:[],added:"Article 13(4) and Article 368(3), excluding constitutional amendments from Article 13's 'law' definition",
+ modified:"Article 368 heading; made presidential assent to amendment Bills mandatory",deleted:"—",
+ notes:"Upheld by the Supreme Court in Kesavananda Bharati (1973), which simultaneously introduced the Basic Structure Doctrine as a limit on this very power."},
+{no:42,year:1976,name:"Constitution (Forty-second Amendment) Act",purpose:"Wide-ranging changes during the Emergency; added Fundamental Duties, altered the Preamble, and expanded Parliament's amending power.",
+ articles:[31,32,39,55,74,77,81,82,83,100,102,103,105,118,145,150,166,170,172,189,191,192,194,208,217,225,226,227,228,311,312,330,352,356,357,358,359,366,368],
+ schedules:[],added:"Part IVA (Fundamental Duties), words 'Socialist' and 'Secular' in the Preamble",
+ modified:"Articles 31, 74, 226, 368 and several others",deleted:"—",
+ notes:"Widely regarded as the most sweeping single amendment; several provisions were later reversed."},
+{no:38,year:1975,name:"Constitution (Thirty-eighth Amendment) Act",purpose:"Made the President's, Governors' and Administrators' 'satisfaction' in issuing Ordinances and Emergency proclamations final and non-justiciable.",
+ articles:[123,213,"239B",352,356,359,360],schedules:[],added:"Clause barring judicial review of Emergency-related 'satisfaction'",modified:"Articles 123, 213, 352",deleted:"—",
+ notes:"Passed during the 1975 Emergency; its non-justiciability clause in Article 352 was later repealed by the 44th Amendment, 1978."},
+{no:44,year:1978,name:"Constitution (Forty-fourth Amendment) Act",purpose:"Reversed several Emergency-era changes and strengthened procedural safeguards, including for proclaiming Emergency.",
+ articles:[31,74,77,83,103,105,123,150,163,166,172,192,213,217,225,226,227,239,329,352,356,358,359,360,371],schedules:[9],
+ added:"Stronger safeguards on Article 352 proclamation",modified:"Articles 352, 356, 358, 359",deleted:"Right to Property as a Fundamental Right (Article 31, moved to Article 300A)",
+ notes:"A corrective amendment following the post-Emergency political consensus."},
+{no:52,year:1985,name:"Constitution (Fifty-second Amendment) Act",purpose:"Introduced the anti-defection law.",
+ articles:[101,102,190,191],schedules:[10],added:"Tenth Schedule (Anti-Defection)",modified:"Articles 101, 102, 190, 191",deleted:"—",
+ notes:"Created disqualification grounds for defecting legislators."},
+{no:61,year:1989,name:"Constitution (Sixty-first Amendment) Act",purpose:"Reduced the voting age from 21 to 18 years.",
+ articles:[326],schedules:[],added:"—",modified:"Article 326",deleted:"—",notes:"Expanded the electorate significantly."},
+{no:69,year:1991,name:"Constitution (Sixty-ninth Amendment) Act",purpose:"Gave the National Capital Territory of Delhi a Legislative Assembly and Council of Ministers with defined, limited powers.",
+ articles:["239AA","239AB"],schedules:[],added:"Articles 239AA and 239AB, and the term 'National Capital Territory of Delhi'",modified:"Article 239",deleted:"—",
+ notes:"Created Delhi's distinctive part-State, part-Union-Territory governance model, a continuing source of Centre-Delhi jurisdictional disputes."},
+{no:73,year:1992,name:"Constitution (Seventy-third Amendment) Act",purpose:"Gave constitutional status to Panchayati Raj institutions.",
+ articles:[243],schedules:[11],added:"Part IX (The Panchayats), Eleventh Schedule",modified:"—",deleted:"—",
+ notes:"Foundational reform for rural local self-government."},
+{no:74,year:1992,name:"Constitution (Seventy-fourth Amendment) Act",purpose:"Gave constitutional status to urban local bodies (Municipalities).",
+ articles:[243],schedules:[12],added:"Part IXA (The Municipalities), Twelfth Schedule",modified:"—",deleted:"—",
+ notes:"Companion reform to the 73rd Amendment for urban governance."},
+{no:84,year:2001,name:"Constitution (Eighty-fourth Amendment) Act",purpose:"Froze the total number of Lok Sabha and State Assembly seats, and their delimitation, based on the 1971 census until the first census after 2026.",
+ articles:[55,81,82,170,330,332],schedules:[],added:"—",modified:"Articles 81, 82, 170 (delimitation freeze extended)",deleted:"—",
+ notes:"Intended to avoid penalising States that had controlled population growth; the freeze remains a live issue tied to future delimitation."},
+{no:86,year:2002,name:"Constitution (Eighty-sixth Amendment) Act",purpose:"Made elementary education a Fundamental Right and added a corresponding Fundamental Duty.",
+ articles:[21,45,51],schedules:[],added:"Article 21A (Right to Education)",modified:"Article 45, 51A",deleted:"—",
+ notes:"Led to the Right of Children to Free and Compulsory Education Act, 2009."},
+{no:89,year:2003,name:"Constitution (Eighty-ninth Amendment) Act",purpose:"Split the joint National Commission for Scheduled Castes and Scheduled Tribes into two separate constitutional bodies.",
+ articles:[338,"338A"],schedules:[],added:"Article 338A (National Commission for Scheduled Tribes)",modified:"Article 338 (retained for the National Commission for Scheduled Castes)",deleted:"—",
+ notes:"In force from 19 February 2004; gave Scheduled Tribes a dedicated constitutional body distinct from the SC commission."},
+{no:99,year:2014,name:"Constitution (Ninety-ninth Amendment) Act",purpose:"Sought to replace the judicial collegium with a National Judicial Appointments Commission.",
+ articles:[124,127,128,217,222,224,231],schedules:[],added:"Articles 124A, 124B, 124C",modified:"Articles 124, 217",deleted:"—",
+ notes:"Struck down by the Supreme Court in 2015 as unconstitutional; the collegium system continues."},
+{no:101,year:2016,name:"Constitution (One Hundred and First Amendment) Act",purpose:"Introduced the Goods and Services Tax (GST), unifying indirect taxation.",
+ articles:[246,248,249,250,268,269,270,271,286,366,368],schedules:[7],added:"Article 246A, GST Council framework",modified:"Article 268, 269",deleted:"—",
+ notes:"One of the largest indirect-tax reforms since Independence."},
+{no:103,year:2019,name:"Constitution (One Hundred and Third Amendment) Act",purpose:"Provided reservation for Economically Weaker Sections (EWS).",
+ articles:[15,16],schedules:[],added:"Articles 15(6), 16(6)",modified:"—",deleted:"—",
+ notes:"Extended reservation on economic criteria beyond the existing SC/ST/OBC framework."},
+{no:104,year:2020,name:"Constitution (One Hundred and Fourth Amendment) Act",purpose:"Extended reservation of seats for Scheduled Castes and Scheduled Tribes in the Lok Sabha and State Assemblies, and discontinued nominated Anglo-Indian representation.",
+ articles:[330,332,334],schedules:[],added:"—",modified:"Article 334 (extended SC/ST reservation to 25 January 2030)",deleted:"Anglo-Indian nomination provisions (Articles 331, 333 effectively discontinued)",
+ notes:"In force from 25 January 2020; the seventh amendment since 1950 to extend this reservation window."},
+{no:105,year:2021,name:"Constitution (One Hundred and Fifth Amendment) Act",purpose:"Restored States' power to identify socially and educationally backward classes (SEBCs).",
+ articles:["338B","342A",366],schedules:[],added:"—",modified:"Article 342A",deleted:"—",
+ notes:"Responded to a Supreme Court ruling that had limited State-level OBC list-making power."},
+{no:106,year:2023,name:"Constitution (One Hundred and Sixth Amendment) Act",purpose:"Reserved seats for women in the Lok Sabha and State Legislative Assemblies (Nari Shakti Vandan Adhiniyam).",
+ articles:[239,330,332,334],schedules:[],added:"Articles 330A, 332A",modified:"Article 334",deleted:"—",
+ notes:"Implementation is linked to the first delimitation exercise following the relevant census."}
+];
+
+const ARTICLES = [
+{n:1,title:"Name and territory of the Union",part:"I",chapter:"The Union and its Territory",
+ summary:"India, that is Bharat, is described as a Union of States, with its territory comprising the States, Union territories and any acquired territory.",
+ clauses:[["1","India is described as a Union of States."],["2","The States and territories are specified in the First Schedule."],["3","Territory of India includes States, Union territories and territories that may be acquired."]],
+ explanation:"Establishes India as a 'Union' rather than a federation formed by agreement among States — States cannot secede, and Parliament can alter State boundaries by ordinary legislation.",
+ keyPoints:["'Union of States', not a 'Federation of States'","Territory is not fixed — Parliament can change it under Article 3"],
+ keywords:["Union","Territory","Federalism"],related:[2,3,4],schedules:[1],bodies:[],offices:[],amendments:[7],
+ foreign:[],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",
+ facts:["Often tested with the phrase 'Union of States' vs 'Federation'","Linked to Article 3 (formation of new States)"]}},
+{n:5,title:"Citizenship at the commencement of the Constitution",part:"II",chapter:"Citizenship",
+ summary:"Defines who was deemed a citizen of India when the Constitution commenced, based on domicile and birth or residence in Indian territory.",
+ clauses:[["Single Article","Domicile in India plus (a) birth in India, (b) parentage, or (c) five years' ordinary residence, conferred citizenship at commencement."]],
+ explanation:"Part II covers only the starting-point rules; Parliament was separately empowered under Article 11 to regulate citizenship going forward, which it did through the Citizenship Act, 1955.",
+ keyPoints:["Parliament regulates citizenship in detail via ordinary law (Article 11), not just this Article","Distinct from the Citizenship (Amendment) Act framework, which operates under that later law"],
+ keywords:["Citizenship","Domicile"],related:[6,11],schedules:[],bodies:["Parliament"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",
+ facts:["Only Part II Articles (5–11) deal with citizenship; day-to-day rules come from the Citizenship Act, 1955 under Article 11"]}},
+{n:3,title:"Formation of new States and alteration of boundaries",part:"I",chapter:"The Union and its Territory",
+ summary:"Parliament may by law form new States, alter boundaries, names, or areas of existing States.",
+ clauses:[["1","Parliament may form a new State by separation, union, or altering area/boundary/name."],["2","Requires prior recommendation of the President and reference to the affected State Legislature."]],
+ explanation:"Gives Parliament wide power to reorganise India's internal map through ordinary legislation, subject to the President's prior recommendation.",
+ keyPoints:["Ordinary majority is enough — not a constitutional amendment","State Legislature's view is sought but not binding"],
+ keywords:["States Reorganisation","Boundaries","Parliament"],related:[1,4],schedules:[1],bodies:["Parliament","President"],offices:["President"],amendments:[7],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["Basis for creation of Telangana (2014) and reorganisation of Jammu & Kashmir (2019)","State's consent is not required, only its views"]}},
+{n:14,title:"Equality before law",part:"III",chapter:"Fundamental Rights",
+ summary:"The State shall not deny to any person equality before the law or the equal protection of the laws within India.",
+ clauses:[["Single Article","Combines the British 'rule of law' idea (equality before law) with the American 'equal protection of laws'."]],
+ explanation:"Guarantees that all persons — citizens and non-citizens — are treated alike before the law, while permitting reasonable classification for legitimate purposes.",
+ keyPoints:["Applies to 'any person', not just citizens","Basis of the 'reasonable classification' test in Indian constitutional law"],
+ keywords:["Equality","Rule of Law","Reasonable Classification"],related:[15,16,17,18,19,21,32],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:["United Kingdom (rule of law)","United States (equal protection clause)"],
+ ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["Part of the 'Golden Triangle' with Articles 19 and 21","Foundation of anti-discrimination jurisprudence"]}},
+{n:15,title:"Prohibition of discrimination on certain grounds",part:"III",chapter:"Fundamental Rights",
+ summary:"Prohibits State discrimination on grounds of religion, race, caste, sex or place of birth, while permitting affirmative-action exceptions.",
+ clauses:[["1","No discrimination by the State on the listed grounds."],["3","Allows special provisions for women and children."],["4","Allows special provisions for socially and educationally backward classes, SCs and STs."],["6","Allows reservation for Economically Weaker Sections."]],
+ explanation:"Balances a general non-discrimination rule with express permission for the State to make protective and affirmative-action provisions.",
+ keyPoints:["Clause 6 (EWS) added by the 103rd Amendment (2019)","Distinct from Article 16, which deals specifically with public employment"],
+ keywords:["Equality","Reservation","Non-discrimination"],related:[14,16,17,46],schedules:[],bodies:[],offices:[],amendments:[103],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["Clause 6 (EWS reservation) added in 2019 — a frequently tested recent change","Distinguish carefully from Article 16 in MCQs"]}},
+{n:16,title:"Equality of opportunity in public employment",part:"III",chapter:"Fundamental Rights",
+ summary:"Guarantees equality of opportunity in matters of public employment and permits reservation for backward classes and EWS.",
+ clauses:[["1","Equality of opportunity in matters of employment under the State."],["4","Enables reservation for backward classes inadequately represented in services."],["6","Enables EWS reservation in public employment."]],
+ explanation:"Extends the equality principle specifically to State employment, while carving out reservation as a constitutionally sanctioned exception rather than a violation.",
+ keyPoints:["Basis of reservation policy in government jobs","Clause 6 added by the 103rd Amendment"],
+ keywords:["Reservation","Public Employment","Equality"],related:[14,15,335],schedules:[],bodies:["UPSC","State PSC"],offices:[],amendments:[103],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["Frequently paired with Article 335 (SC/ST claims in services)"]}},
+{n:19,title:"Protection of certain rights regarding freedom of speech, etc.",part:"III",chapter:"Fundamental Rights",
+ summary:"Guarantees six freedoms — speech, assembly, association, movement, residence and profession — subject to reasonable restrictions.",
+ clauses:[["1(a)","Freedom of speech and expression."],["1(b)","Freedom to assemble peaceably and without arms."],["1(g)","Freedom to practise any profession or carry on any occupation, trade or business."],["2–6","Permit 'reasonable restrictions' on each freedom for specified grounds."]],
+ explanation:"The core 'freedoms' article, available only to citizens, each freedom paired with a corresponding restriction clause.",
+ keyPoints:["Available to citizens only, unlike Articles 14 and 21","Right to property was removed from this Article by the 44th Amendment"],
+ keywords:["Freedom of Speech","Reasonable Restrictions","Citizens' Rights"],related:[14,21,32],schedules:[],bodies:[],offices:[],amendments:[44],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["Originally had 7 freedoms; right to property removed by the 44th Amendment"]}},
+{n:21,title:"Protection of life and personal liberty",part:"III",chapter:"Fundamental Rights",
+ summary:"No person shall be deprived of life or personal liberty except according to procedure established by law.",
+ clauses:[["Single Article","Judicially expanded to include a wide range of implied rights — privacy, dignity, livelihood, a clean environment, and more."]],
+ explanation:"One of the most expansively interpreted Articles; courts have read in rights not textually present, transforming it into the primary source of unenumerated fundamental rights.",
+ keyPoints:["Right to Privacy read in (Puttaswamy, 2017)","Basis for Article 21A (Right to Education)"],
+ keywords:["Liberty","Privacy","Due Process"],related:[14,19,21,22,32],schedules:[],bodies:["Supreme Court"],offices:[],amendments:[86],
+ foreign:["United States (due process)","Japan (procedure established by law)"],
+ ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["Right to Education (21A) inserted by the 86th Amendment, 2002","Subject of numerous landmark judgments — most-cited Article in Indian courts"]}},
+{n:32,title:"Remedies for enforcement of Fundamental Rights",part:"III",chapter:"Fundamental Rights",
+ summary:"Guarantees the right to move the Supreme Court directly for enforcement of Fundamental Rights, including through writs.",
+ clauses:[["1","Right to move the Supreme Court for enforcement of Fundamental Rights."],["2","Supreme Court may issue directions or writs — habeas corpus, mandamus, prohibition, quo warranto and certiorari."]],
+ explanation:"Dr. B.R. Ambedkar called this 'the heart and soul of the Constitution' — it makes Fundamental Rights enforceable rather than merely declaratory.",
+ keyPoints:["Itself a Fundamental Right — cannot ordinarily be suspended except during Emergency","Parallel writ jurisdiction of High Courts is under Article 226"],
+ keywords:["Writs","Supreme Court","Enforcement"],related:[14,19,21,226],schedules:[],bodies:["Supreme Court"],offices:[],amendments:[],
+ foreign:["United Kingdom (writ system)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["Called the 'heart and soul of the Constitution' by Ambedkar","Article 226 is the High Court equivalent — commonly confused in MCQs"]}},
+{n:36,title:"Definition (State, for Part IV)",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Defines 'State' for Part IV in the same manner as under Article 12, extending DPSPs to the same range of authorities as Fundamental Rights.",
+ clauses:[],explanation:"Keeps the meaning of 'State' consistent between Fundamental Rights (Part III) and Directive Principles (Part IV).",
+ keyPoints:["Mirrors Article 12's definition"],keywords:["DPSP","State","Definitions"],related:[12,37],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Occasional",recency:"Historical",facts:[]}},
+{n:39,title:"Certain principles of policy to be followed by the State",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to secure an adequate livelihood, equitable resource distribution, prevention of wealth concentration, and equal pay for equal work.",
+ clauses:[["a","Adequate means of livelihood for all citizens."],["d","Equal pay for equal work for men and women."],["e","Protection of workers' and children's health from abuse."]],
+ explanation:"A socialist-leaning directive shaping economic policy — non-justiciable but influential in framing labour and welfare legislation.",
+ keyPoints:["Basis for the Equal Remuneration Act","Non-justiciable but 'fundamental in governance'"],
+ keywords:["DPSP","Equal Pay","Livelihood","Women","Children"],related:[14,15,42],schedules:[],bodies:[],offices:[],amendments:[42],
+ foreign:["Ireland (Directive Principles concept)"],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Clause (d) often quoted alongside the Equal Remuneration Act, 1976"]}},
+{n:44,title:"Provision for uniform civil code (illustrative DPSP entry)",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to endeavour to secure a Uniform Civil Code for citizens throughout India.",
+ clauses:[["Single Article","A non-justiciable directive, not a binding mandate."]],
+ explanation:"One of the most politically discussed DPSPs; remains unimplemented at the national level as of this dataset's compilation.",
+ keyPoints:["Non-justiciable — cannot be enforced through courts","Frequently discussed in relation to Article 25 (freedom of religion)"],
+ keywords:["Uniform Civil Code","DPSP","Personal Law"],related:[25,44],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Very Recent",facts:["Frequently in current-affairs-linked GK questions"]}},
+{n:45,title:"Provision for early childhood care and education",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to endeavour to provide early childhood care and education for children below six years.",
+ clauses:[],explanation:"Originally directed free and compulsory education up to age 14; narrowed after the 86th Amendment shifted that guarantee into Article 21A as a Fundamental Right.",
+ keyPoints:["Reworded by the 86th Amendment, 2002"],keywords:["Education","DPSP","Children","Women"],related:[21,51],schedules:[],bodies:[],offices:[],amendments:[86],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:["Commonly paired with Article 21A in questions"]}},
+{n:51,title:"Promotion of international peace and security",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to promote international peace, foster respect for international law, and encourage settlement of disputes by arbitration.",
+ clauses:[],explanation:"Guides India's foreign-policy posture as a constitutional value rather than a binding rule.",
+ keyPoints:["Cited in discussions of India's non-alignment tradition"],keywords:["International Law","Foreign Policy","DPSP"],related:[51],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Occasional",recency:"Historical",facts:[]}},
+{n:"51A",title:"Fundamental Duties",part:"IVA",chapter:"Fundamental Duties",
+ summary:"Lists eleven duties of every citizen, including respecting the Constitution, protecting the environment, and striving for excellence.",
+ clauses:[["a","Abide by the Constitution and respect its ideals and institutions."],["g","Protect and improve the natural environment."],["k","Provide opportunities for education to a child/ward between six and fourteen (added by the 86th Amendment)."]],
+ explanation:"Added on the recommendation of the Swaran Singh Committee; modelled loosely on duties provisions in other constitutions, though non-justiciable.",
+ keyPoints:["Added by the 42nd Amendment, 1976 — originally 10 duties, an 11th added in 2002","Not enforceable by courts, but citable in judicial reasoning"],
+ keywords:["Fundamental Duties","Citizens","Environment"],related:[19,21,45],schedules:[],bodies:[],offices:[],amendments:[42,86],
+ foreign:["USSR/Russia (duties tradition)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["11 duties in total — a very frequently tested number","Swaran Singh Committee recommended their inclusion"]}},
+{n:52,title:"The President of India",part:"V",chapter:"The Union — Executive",
+ summary:"Establishes the office of the President of India as the constitutional head of the Union executive.",
+ clauses:[],explanation:"Vests executive power of the Union nominally in the President, exercised on the aid and advice of the Council of Ministers.",
+ keyPoints:["Executive power is exercised on ministerial advice, not personal discretion"],
+ keywords:["President","Executive"],related:[53,54,74],schedules:[2,3],bodies:[],offices:["President"],amendments:[],
+ foreign:["Ireland (nominal executive head)"],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:61,title:"Procedure for impeachment of the President",part:"V",chapter:"The Union — Executive",
+ summary:"Lays down the process by which the President may be removed for violation of the Constitution, through resolutions of both Houses.",
+ clauses:[],explanation:"Requires a two-thirds majority in both Houses following a charge and investigation process — no President has ever been impeached.",
+ keyPoints:["Two-thirds majority required in both Houses","No impeachment has occurred to date"],
+ keywords:["President","Impeachment"],related:[52,56],schedules:[],bodies:["Parliament"],offices:["President"],amendments:[],
+ foreign:["United States (impeachment concept)"],ssc:{importance:"Medium",frequency:"Frequent",recency:"Historical",facts:[]}},
+{n:63,title:"The Vice-President of India",part:"V",chapter:"The Union — Executive",
+ summary:"Establishes the office of Vice-President, who also serves as ex-officio Chairman of the Rajya Sabha.",
+ clauses:[],explanation:"A dual-role office combining a largely ceremonial Union position with the presiding function over the Upper House.",
+ keyPoints:["Ex-officio Chairman of the Rajya Sabha"],keywords:["Vice-President","Rajya Sabha"],related:[64,89],schedules:[2],bodies:["Rajya Sabha"],offices:["Vice-President"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:74,title:"Council of Ministers to aid and advise the President",part:"V",chapter:"The Union — Executive",
+ summary:"Provides for a Council of Ministers, headed by the Prime Minister, to aid and advise the President, whose advice binds the President.",
+ clauses:[["1","Council of Ministers headed by the PM aids and advises the President."],["1 proviso","President may require the Council to reconsider advice; must act per reconsidered advice."]],
+ explanation:"Establishes the parliamentary-executive model — the President is bound to act on ministerial advice, cementing real power in the Council of Ministers.",
+ keyPoints:["'Aid and advice' proviso added by the 44th Amendment"],keywords:["Council of Ministers","Prime Minister","Executive"],related:[75,78,163],schedules:[],bodies:["Council of Ministers"],offices:["Prime Minister","President"],amendments:[44],
+ foreign:["United Kingdom (parliamentary cabinet system)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",facts:[]}},
+{n:75,title:"Other provisions as to Ministers",part:"V",chapter:"The Union — Executive",
+ summary:"Covers appointment of the Prime Minister and Ministers, their term, salaries, and collective responsibility to the Lok Sabha.",
+ clauses:[["1B","Disqualifies a minister who is not a member of either House within six months."],["3","Council of Ministers is collectively responsible to the Lok Sabha."]],
+ explanation:"Defines the accountability chain of the executive to the directly elected House.",
+ keyPoints:["Collective responsibility is to the Lok Sabha specifically"],keywords:["Prime Minister","Council of Ministers","Collective Responsibility"],related:[74,78],schedules:[3],bodies:["Lok Sabha"],offices:["Prime Minister"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:79,title:"Constitution of Parliament",part:"V",chapter:"The Union — Parliament",
+ summary:"Parliament consists of the President and two Houses — the Council of States (Rajya Sabha) and House of the People (Lok Sabha).",
+ clauses:[],explanation:"The President, while not sitting in either House, is a constituent part of Parliament for purposes such as assent to Bills.",
+ keyPoints:["President is part of Parliament though not a member of either House"],keywords:["Parliament","Rajya Sabha","Lok Sabha"],related:[80,81,111],schedules:[],bodies:["Parliament"],offices:["President"],amendments:[],
+ foreign:["United Kingdom (bicameral model)"],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",facts:[]}},
+{n:80,title:"Composition of the Council of States",part:"V",chapter:"The Union — Parliament",
+ summary:"Provides for up to 250 members of the Rajya Sabha — elected State/UT representatives plus 12 nominated members.",
+ clauses:[["1","Not more than 238 elected representatives of States/UTs plus 12 members nominated by the President."]],
+ explanation:"Nominated members typically bring expertise in literature, science, art or social service.",
+ keyPoints:["12 members nominated by the President for distinguished contribution"],keywords:["Rajya Sabha","Nominated Members"],related:[63,89],schedules:[4],bodies:["Rajya Sabha"],offices:["President"],amendments:[7],
+ foreign:[],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",facts:["12 nominated members — a frequently tested number"]}},
+{n:81,title:"Composition of the House of the People",part:"V",chapter:"The Union — Parliament",
+ summary:"Provides for direct election of Lok Sabha members from territorial constituencies, subject to a maximum strength fixed by law.",
+ clauses:[],explanation:"Seats are allocated among States roughly in proportion to population, subject to delimitation freezes tied to census cycles.",
+ keyPoints:["Delimitation currently frozen pending the first post-2026 census, relevant to the 106th Amendment"],keywords:["Lok Sabha","Delimitation","Elections"],related:[82,170,330],schedules:[],bodies:["Lok Sabha","Election Commission"],offices:[],amendments:[42,84],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["Directly linked to the 106th Amendment's women's-reservation timeline"]}},
+{n:93,title:"The Speaker and Deputy Speaker of the House of the People",part:"V",chapter:"The Union — Parliament",
+ summary:"Requires the Lok Sabha to elect a Speaker and Deputy Speaker from among its members.",
+ clauses:[],explanation:"The Speaker presides over proceedings, decides on money-bill certification, and rules on anti-defection disqualification for the House.",
+ keyPoints:["Speaker certifies Money Bills under Article 110","Speaker decides defection cases under the Tenth Schedule"],
+ keywords:["Speaker","Lok Sabha"],related:[100,110],schedules:[10],bodies:["Lok Sabha"],offices:["Speaker","Deputy Speaker"],amendments:[],
+ foreign:["United Kingdom (Speaker tradition)"],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",facts:[]}},
+{n:110,title:"Definition of 'Money Bills'",part:"V",chapter:"The Union — Parliament",
+ summary:"Defines Money Bills and vests the Speaker with final authority to certify a Bill as a Money Bill.",
+ clauses:[],explanation:"Money Bills can only originate in the Lok Sabha and Rajya Sabha's role is limited to recommendations within 14 days.",
+ keyPoints:["Speaker's certification is final","Rajya Sabha cannot reject a Money Bill, only recommend changes"],
+ keywords:["Money Bill","Speaker","Rajya Sabha"],related:[109,93],schedules:[],bodies:["Lok Sabha","Rajya Sabha"],offices:["Speaker"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Very Recent",facts:["Frequently discussed in relation to Aadhaar Act litigation"]}},
+{n:124,title:"Establishment and constitution of the Supreme Court",part:"V",chapter:"The Union — Judiciary",
+ summary:"Establishes the Supreme Court of India with a Chief Justice and such other judges as Parliament may prescribe.",
+ clauses:[],explanation:"Apex constitutional court with original, appellate and advisory jurisdiction; judges appointed by the President following the collegium process.",
+ keyPoints:["99th Amendment (NJAC) attempted to change the appointment process but was struck down in 2015"],
+ keywords:["Supreme Court","Judiciary","Collegium"],related:[32,141,217],schedules:[2,3],bodies:["Supreme Court"],offices:["Chief Justice of India"],amendments:[99],
+ foreign:["United States (judicial review tradition)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["99th Amendment/NJAC struck down in 2015 — a frequently tested current-affairs-linked fact"]}},
+{n:141,title:"Law declared by Supreme Court to be binding on all courts",part:"V",chapter:"The Union — Judiciary",
+ summary:"Provides that law declared by the Supreme Court is binding on all courts within Indian territory.",
+ clauses:[],explanation:"Establishes the doctrine of binding precedent (stare decisis) for the Indian judicial hierarchy.",
+ keyPoints:["Basis for the doctrine of precedent in India"],keywords:["Precedent","Supreme Court"],related:[124,132],schedules:[],bodies:["Supreme Court"],offices:[],amendments:[],
+ foreign:["United Kingdom (common law precedent)"],ssc:{importance:"Medium",frequency:"Occasional",recency:"Historical",facts:[]}},
+{n:148,title:"Comptroller and Auditor-General of India",part:"V",chapter:"The Union — Comptroller and Auditor-General",
+ summary:"Establishes the office of the Comptroller and Auditor-General (CAG) of India, who audits the accounts of the Union and the States.",
+ clauses:[["1","There shall be a CAG appointed by the President."],["2","Removable in the same manner and on the same grounds as a Supreme Court judge, to preserve independence."]],
+ explanation:"The CAG safeguards public-fund accountability by auditing government expenditure and reporting to Parliament and State Legislatures; called the 'guardian of the public purse.'",
+ keyPoints:["Removable only like a Supreme Court judge — a strong independence safeguard","CAG's reports are laid before Parliament / State Legislature under Article 151"],
+ keywords:["CAG","Comptroller and Auditor-General","Audit"],related:[149,151,280],schedules:[2,3],bodies:["CAG"],offices:["Comptroller and Auditor-General"],amendments:[],
+ foreign:["United Kingdom (audit office tradition)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["Called the 'guardian of the public purse'","Removal process mirrors a Supreme Court judge — frequently tested parallel"]}},
+{n:153,title:"Governors of States",part:"VI",chapter:"The States — Executive",
+ summary:"Requires a Governor for each State, appointed by the President as the constitutional head of State executive.",
+ clauses:[["Single Article","One Governor per State; one person may be appointed Governor of more than one State (since the 7th Amendment)."]],
+ explanation:"Mirrors the President's role at the State level; the Governor acts largely on the aid and advice of the State Council of Ministers, with limited discretionary powers.",
+ keyPoints:["One person can be Governor of two or more States after the 7th Amendment","Appointed by the President, holds office at the President's pleasure"],
+ keywords:["Governor","State Executive"],related:[154,155,156,157,158,159,160,161,162,163,164,200,201,213,356],
+ schedules:[2,3],bodies:[],offices:["Governor","President"],amendments:[7],
+ foreign:["Government of India Act, 1935 (institutional lineage)"],
+ ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["Governor holds office at the President's pleasure","Discretionary powers (Article 163) are a frequent exam topic"]}},
+{n:161,title:"Power of Governor to grant pardons",part:"VI",chapter:"The States — Executive",
+ summary:"Empowers the Governor to grant pardons, reprieves, respites or remissions of punishment for offences under State law.",
+ clauses:[],explanation:"State-level counterpart to the President's Article 72 pardoning power, but the Governor cannot pardon a death sentence outright the way the President can.",
+ keyPoints:["Governor's pardon power does not extend to death-sentence commutation in the same way as the President's"],
+ keywords:["Governor","Pardon"],related:[72,153],schedules:[],bodies:[],offices:["Governor"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Frequently compared with Article 72 (President's pardoning power)"]}},
+{n:163,title:"Council of Ministers to aid and advise Governor",part:"VI",chapter:"The States — Executive",
+ summary:"Provides a State Council of Ministers headed by the Chief Minister to aid and advise the Governor, except where the Governor is required to act in discretion.",
+ clauses:[],explanation:"Defines the boundary between the Governor's ordinary constitutional obligation to follow ministerial advice and the narrow band of discretionary power.",
+ keyPoints:["'Discretion' clause is a recurring source of Governor-State government friction and litigation"],
+ keywords:["Governor","Council of Ministers","Discretion"],related:[74,153,164],schedules:[],bodies:["State Council of Ministers"],offices:["Governor","Chief Minister"],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["Discretionary powers frequently referenced in current-affairs GK on Governor-State disputes"]}},
+{n:200,title:"Assent to Bills (Governor)",part:"VI",chapter:"The States — Legislature",
+ summary:"Sets out the Governor's options on a State Bill — assent, withhold assent, return for reconsideration, or reserve for the President.",
+ clauses:[],explanation:"Frequently litigated where Governors delay action on Bills; the Supreme Court has read in an expectation of timely action.",
+ keyPoints:["No explicit time limit in the original text — a major point of recent litigation and debate"],
+ keywords:["Governor","Bills","Assent"],related:[153,163,201],schedules:[],bodies:["State Legislature"],offices:["Governor"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Very Frequent",recency:"Very Recent",facts:["Prominent in recent Governor-versus-State-government Supreme Court litigation"]}},
+{n:213,title:"Power of Governor to promulgate Ordinances",part:"VI",chapter:"The States — Legislature",
+ summary:"Allows the Governor to promulgate Ordinances when the State Legislature is not in session, with the same force as an Act.",
+ clauses:[],explanation:"State-level counterpart to the President's Article 123 Ordinance power; an Ordinance lapses six weeks after the Legislature reassembles unless approved.",
+ keyPoints:["Six-week lapse rule after reassembly of the Legislature"],keywords:["Governor","Ordinance"],related:[123,153],schedules:[],bodies:["State Legislature"],offices:["Governor"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Compare with Article 123 (President's Ordinance power)"]}},
+{n:243,title:"Definitions (Panchayats)",part:"IX",chapter:"The Panchayats",
+ summary:"Defines terms for Part IX, laying the groundwork for a three-tier Panchayati Raj structure at village, intermediate and district levels.",
+ clauses:[],explanation:"Added by the 73rd Amendment to give constitutional backing to rural local self-government, which previously existed only as a DPSP (Article 40).",
+ keyPoints:["Three-tier structure: Gram, Panchayat Samiti, Zila Parishad","Mandates reservation for SC/ST and women in Panchayats"],
+ keywords:["Panchayat","Local Government","Rural"],related:[40,243],schedules:[11],bodies:["Panchayats"],offices:[],amendments:[73],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",facts:["73rd Amendment (1992) — very frequently tested year"]}},
+{n:"243P",title:"Definitions (Municipalities)",part:"IXA",chapter:"The Municipalities",
+ summary:"Defines terms for Part IXA, giving constitutional status to urban local bodies — Nagar Panchayats, Municipal Councils and Municipal Corporations.",
+ clauses:[],explanation:"Added by the 74th Amendment as the urban counterpart to the 73rd Amendment's Panchayati Raj reform, mandating regular elections and reservation for SC/ST and women in urban local bodies.",
+ keyPoints:["Three types of urban bodies: Nagar Panchayat, Municipal Council, Municipal Corporation","Companion reform to Part IX (Panchayats)"],
+ keywords:["Municipalities","Local Government","Urban"],related:[243],schedules:[12],bodies:["Municipalities"],offices:[],amendments:[74],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["74th Amendment (1992) — same year as the 73rd Amendment, a common pairing in questions"]}},
+{n:244,title:"Administration of Scheduled Areas and Tribal Areas",part:"X",chapter:"Scheduled and Tribal Areas",
+ summary:"Provides special administrative arrangements for Scheduled Areas and Scheduled Tribes under the Fifth Schedule, and for tribal areas in certain North-Eastern States under the Sixth Schedule.",
+ clauses:[["1","Fifth Schedule applies to Scheduled Areas and Scheduled Tribes in States generally."],["2","Sixth Schedule applies to tribal areas in Assam, Meghalaya, Tripura and Mizoram."]],
+ explanation:"Recognises that certain tribal regions need distinct governance arrangements, ranging from Governor-supervised administration (Fifth Schedule) to autonomous district and regional councils (Sixth Schedule).",
+ keyPoints:["Fifth Schedule vs Sixth Schedule is a frequently confused distinction","Sixth Schedule areas have their own Autonomous District Councils"],
+ keywords:["Scheduled Areas","Tribal Areas","Scheduled Tribes"],related:[244],schedules:[5,6],bodies:["Autonomous District Councils"],offices:["Governor"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Fifth Schedule = general Scheduled Areas; Sixth Schedule = specific North-Eastern tribal areas — a classic distinction question"]}},
+{n:"246A",title:"Special provision with respect to Goods and Services Tax",part:"XI",chapter:"Relations Between the Union and the States",
+ summary:"Gives Parliament and State Legislatures concurrent power to make laws on Goods and Services Tax (GST), inserted to enable the GST regime.",
+ clauses:[["1","Parliament and every State Legislature have power to make GST laws."],["2","Parliament has exclusive power for GST on inter-State trade or commerce."]],
+ explanation:"Central enabling provision for India's GST framework, introduced alongside the GST Council mechanism to coordinate rates between the Union and States.",
+ keyPoints:["Inserted by the 101st Amendment, 2016","Works together with Article 279A (GST Council)"],
+ keywords:["GST","Goods and Services Tax","Taxation"],related:[246,279,280],schedules:[7],bodies:["GST Council"],offices:[],amendments:[101],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["101st Amendment, 2016 introduced GST — a very frequently tested year and number pairing"]}},
+{n:280,title:"Finance Commission",part:"XII",chapter:"Finance, Property, Contracts and Suits",
+ summary:"Provides for a Finance Commission, constituted by the President every five years, to recommend Union-State tax-revenue distribution.",
+ clauses:[],explanation:"A constitutional body central to Indian fiscal federalism, distinct from the (statutory) NITI Aayog.",
+ keyPoints:["Constituted every 5 years (or earlier if needed)","Recommends vertical and horizontal tax devolution"],
+ keywords:["Finance Commission","Fiscal Federalism"],related:[275,281],schedules:[],bodies:["Finance Commission"],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["Constituted every 5 years — a frequently tested number"]}},
+{n:315,title:"Public Service Commissions for the Union and States",part:"XIV",chapter:"Services Under the Union and the States",
+ summary:"Establishes the Union Public Service Commission (UPSC) and provides for State Public Service Commissions.",
+ clauses:[],explanation:"Constitutional bodies responsible for recruitment to civil services and advising on service matters.",
+ keyPoints:["UPSC members can be removed only via the process in Article 317"],keywords:["UPSC","State PSC","Recruitment"],related:[316,317,320],schedules:[2,3],bodies:["UPSC","State PSC"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",facts:[]}},
+{n:324,title:"Superintendence, direction and control of elections",part:"XV",chapter:"Elections",
+ summary:"Vests superintendence, direction and control of elections to Parliament, State Legislatures, and the offices of President and Vice-President in the Election Commission.",
+ clauses:[],explanation:"Establishes the Election Commission as an independent constitutional body safeguarding free and fair elections.",
+ keyPoints:["Composition and appointment process is a frequently updated/litigated area"],keywords:["Election Commission","Elections"],related:[325,326,329],schedules:[],bodies:["Election Commission"],offices:["Chief Election Commissioner"],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["Appointment process for the CEC has been a very recent current-affairs topic"]}},
+{n:326,title:"Elections on the basis of adult suffrage",part:"XV",chapter:"Elections",
+ summary:"Provides for elections to the Lok Sabha and State Legislative Assemblies on the basis of adult suffrage.",
+ clauses:[],explanation:"Guarantees universal adult suffrage as a constitutional right, with the voting age lowered from 21 to 18 by the 61st Amendment.",
+ keyPoints:["Voting age is 18 (lowered by the 61st Amendment, 1989)"],keywords:["Adult Suffrage","Voting Age"],related:[324,325],schedules:[],bodies:["Election Commission"],offices:[],amendments:[61],
+ foreign:[],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",facts:["61st Amendment (1989) reduced voting age 21→18 — a very frequently tested fact"]}},
+{n:343,title:"Official language of the Union",part:"XVII",chapter:"Official Language",
+ summary:"Declares Hindi in Devanagari script as the official language of the Union, with English continuing for specified purposes.",
+ clauses:[],explanation:"Reflects a compromise reached in the Constituent Assembly, later extended by the Official Languages Act.",
+ keyPoints:["English's continued use has been repeatedly extended by Parliament"],keywords:["Official Language","Hindi"],related:[344,351],schedules:[8],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:352,title:"Proclamation of Emergency",part:"XVIII",chapter:"Emergency Provisions",
+ summary:"Allows the President to proclaim a National Emergency on grounds of war, external aggression or armed rebellion.",
+ clauses:[],explanation:"'Internal disturbance' was replaced with 'armed rebellion' by the 44th Amendment to prevent misuse after the 1975–77 Emergency.",
+ keyPoints:["'Armed rebellion' replaced 'internal disturbance' via the 44th Amendment","Proclamation requires written Cabinet advice, added as a safeguard"],
+ keywords:["Emergency","National Emergency"],related:[353,354,355,356,358],schedules:[],bodies:["Union Cabinet"],offices:["President"],amendments:[38,44],
+ foreign:["Weimar Germany (emergency powers influence, debated)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["National Emergency proclaimed 3 times: 1962, 1971, 1975","'Armed rebellion' replaced 'internal disturbance' — 44th Amendment"]}},
+{n:356,title:"Failure of constitutional machinery in States",part:"XVIII",chapter:"Emergency Provisions",
+ summary:"Empowers the President to impose President's Rule in a State when its government cannot function according to the Constitution.",
+ clauses:[],explanation:"Also called 'State Emergency'; subject to the Supreme Court's landmark judicial-review safeguards in S.R. Bommai v. Union of India (1994).",
+ keyPoints:["S.R. Bommai case (1994) made proclamations under this Article subject to judicial review","Must be approved by Parliament within two months"],
+ keywords:["President's Rule","State Emergency"],related:[352,355,357,365],schedules:[],bodies:["Parliament"],offices:["President","Governor"],amendments:[44],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["S.R. Bommai (1994) is the landmark case — very frequently tested","Most frequently invoked Emergency provision historically"]}},
+{n:360,title:"Provisions as to financial emergency",part:"XVIII",chapter:"Emergency Provisions",
+ summary:"Allows the President to proclaim a Financial Emergency if India's financial stability or credit is threatened.",
+ clauses:[],explanation:"Never invoked as of this dataset's compilation, unlike Articles 352 and 356.",
+ keyPoints:["Never invoked in India's constitutional history"],keywords:["Financial Emergency"],related:[352,356],schedules:[],bodies:[],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:["Only Emergency type never invoked — a common 'which one has never happened' question"]}},
+{n:368,title:"Power of Parliament to amend the Constitution and procedure therefor",part:"XX",chapter:"Amendment of the Constitution",
+ summary:"Sets out three procedures for amending the Constitution: simple majority, special majority, and special majority with State ratification.",
+ clauses:[["1","Parliament may amend any provision by way of addition, variation or repeal."],["2","Special majority (majority of total membership + two-thirds of members present and voting) required in each House."],["2 proviso","Certain federal provisions additionally require ratification by at least half the State Legislatures."]],
+ explanation:"Subject to the 'Basic Structure Doctrine' laid down in Kesavananda Bharati (1973), which holds that Parliament cannot amend the Constitution's basic structure even via this Article.",
+ keyPoints:["Basic Structure Doctrine (Kesavananda Bharati, 1973) limits this power","Three distinct amendment procedures depending on the provision"],
+ keywords:["Amendment","Basic Structure","Parliament"],related:[13,245],schedules:[],bodies:["Parliament"],offices:[],amendments:[24,42],
+ foreign:["South Africa (basic structure parallels, debated)"],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",
+ facts:["Kesavananda Bharati (1973) — the single most frequently tested case name in this area","Three amendment procedures: simple majority / special majority / special majority + State ratification"]}},
+{n:370,title:"Temporary provisions with respect to Jammu and Kashmir",part:"XXI",chapter:"Temporary, Transitional and Special Provisions",
+ summary:"Historically granted special autonomous status to the State of Jammu and Kashmir; its operative special provisions were abrogated in 2019.",
+ clauses:[],explanation:"A Presidential Order in August 2019 effectively withdrew the special status, followed by the reorganisation of the State into two Union Territories under a separate Act; the Supreme Court upheld the abrogation in December 2023.",
+ keyPoints:["Special status abrogated by Presidential Order, August 2019","Supreme Court upheld the abrogation in December 2023"],
+ keywords:["Jammu and Kashmir","Special Status","Union Territory"],related:["35A",3],schedules:[1],bodies:["Parliament","Supreme Court"],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["Abrogated in August 2019 — one of the most tested current-affairs constitutional topics","Supreme Court upheld the move in December 2023 (In Re: Article 370)"]}},
+
+/* -------- Additional articles (research-backed expansion) -------- */
+{n:12,title:"Definition of 'State'",part:"III",chapter:"Fundamental Rights",
+ summary:"Defines 'State' for Part III to include the Union and State governments and legislatures, local authorities, and other authorities within Indian territory or under Union control.",
+ clauses:[],explanation:"This definition decides who Fundamental Rights can be enforced against — courts have interpreted 'other authorities' broadly to cover many statutory and government-controlled bodies, not just the government itself.",
+ keyPoints:["'Other authorities' has been interpreted expansively by courts to include many public-sector and statutory bodies","Sets the boundary of who Fundamental Rights bind"],
+ keywords:["State","Definitions","Fundamental Rights"],related:[13,14,36],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",facts:["'Other authorities' under Article 12 is a recurring definitional question"]}},
+{n:13,title:"Laws inconsistent with Fundamental Rights are void",part:"III",chapter:"Fundamental Rights",
+ summary:"Declares that any law inconsistent with, or in derogation of, Fundamental Rights is void to the extent of that inconsistency.",
+ clauses:[["1","Pre-constitutional laws inconsistent with Part III are void to that extent."],["2","The State shall not make any law that takes away or abridges Fundamental Rights."]],
+ explanation:"The textual foundation for judicial review of legislation against Fundamental Rights, and for the doctrine that even constitutional amendments cannot violate the 'basic structure' (per Kesavananda Bharati).",
+ keyPoints:["Basis of judicial review of ordinary legislation","'Law' under this Article includes ordinances, orders, bye-laws, rules, regulations, and customs having the force of law"],
+ keywords:["Judicial Review","Fundamental Rights","Void Laws"],related:[12,32,368],schedules:[],bodies:["Supreme Court"],offices:[],amendments:[24],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",facts:["Clause (2) is the textual basis for striking down unconstitutional laws"]}},
+{n:17,title:"Abolition of untouchability",part:"III",chapter:"Fundamental Rights",
+ summary:"Abolishes 'untouchability' and forbids its practice in any form; enforcing any disability arising from it is a punishable offence.",
+ clauses:[],explanation:"One of the few Fundamental Rights enforceable against private individuals, not just the State, reflecting the framers' intent to address a specific social evil directly.",
+ keyPoints:["Enforceable against private persons, unlike most Fundamental Rights","Backed by the Protection of Civil Rights Act, 1955 and the SC/ST (Prevention of Atrocities) Act, 1989"],
+ keywords:["Untouchability","Social Justice","Equality"],related:[14,15,16],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",facts:["Rare example of a Fundamental Right enforceable against private individuals"]}},
+{n:20,title:"Protection in respect of conviction for offences",part:"III",chapter:"Fundamental Rights",
+ summary:"Protects against ex-post-facto laws, double jeopardy, and self-incrimination in criminal proceedings.",
+ clauses:[["1","No conviction except for violation of a law in force at the time of the act (no retrospective criminal law)."],["2","No person can be prosecuted and punished for the same offence more than once."],["3","No person accused of an offence can be compelled to be a witness against themselves."]],
+ explanation:"A due-process safeguard available to 'any person', not just citizens, and one of the few Fundamental Rights that cannot be suspended even during a National Emergency.",
+ keyPoints:["Cannot be suspended even during Emergency (along with Article 21)","Clause 3 is the source of the 'right against self-incrimination'"],
+ keywords:["Criminal Law","Double Jeopardy","Self-Incrimination"],related:[21,22],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:["United States (double jeopardy, self-incrimination protections)"],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Articles 20 and 21 are the two Fundamental Rights that survive even a National Emergency"]}},
+{n:22,title:"Protection against arrest and detention in certain cases",part:"III",chapter:"Fundamental Rights",
+ summary:"Guarantees the right to be informed of grounds of arrest, to consult a lawyer, and to be produced before a magistrate within 24 hours, while carving out a separate regime for preventive detention.",
+ clauses:[["1–2","Rights on ordinary arrest: grounds of arrest, right to counsel, production before a magistrate within 24 hours."],["3–7","Separate, more limited procedural safeguards apply to preventive detention laws."]],
+ explanation:"Balances individual liberty against the State's power to detain a person without trial (preventive detention) — a uniquely broad power compared to most democracies.",
+ keyPoints:["24-hour production requirement excludes travel time to the nearest magistrate","Preventive detention laws follow a separate, weaker set of safeguards"],
+ keywords:["Arrest","Preventive Detention","Liberty"],related:[20,21],schedules:[],bodies:[],offices:[],amendments:[44],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["44th Amendment strengthened certain preventive-detention safeguards"]}},
+{n:23,title:"Prohibition of traffic in human beings and forced labour",part:"III",chapter:"Fundamental Rights",
+ summary:"Prohibits human trafficking, begar (forced uncompensated labour), and other similar forms of forced labour.",
+ clauses:[],explanation:"Enforceable against private individuals as well as the State; underpins later legislation such as the Bonded Labour System (Abolition) Act, 1976.",
+ keyPoints:["Enforceable against private individuals, like Article 17","Basis for anti-trafficking and bonded-labour legislation"],
+ keywords:["Forced Labour","Trafficking","Bonded Labour"],related:[24,17],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Basis of the Bonded Labour System (Abolition) Act, 1976"]}},
+{n:24,title:"Prohibition of employment of children in factories, etc.",part:"III",chapter:"Fundamental Rights",
+ summary:"Prohibits employment of children below 14 years in factories, mines, or other hazardous employment.",
+ clauses:[],explanation:"Works alongside Article 21A (Right to Education) and Article 39(e)-(f) DPSPs to protect children from economic exploitation.",
+ keyPoints:["Age threshold: below 14 years","Complements Article 21A and the DPSPs on child welfare"],
+ keywords:["Child Labour","Children"],related:[21,39],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Age threshold (14 years) is frequently tested and paired with Article 21A"]}},
+{n:25,title:"Freedom of conscience and free profession, practice and propagation of religion",part:"III",chapter:"Fundamental Rights",
+ summary:"Guarantees freedom of conscience and the right to freely profess, practise and propagate religion, subject to public order, morality, health and other Fundamental Rights.",
+ clauses:[["1","Freedom of conscience and religious practice for all persons, subject to restrictions."],["2","State can regulate secular economic/financial/political activity associated with religious practice, and open Hindu religious institutions to all classes."]],
+ explanation:"Foundational religious-freedom guarantee, available to 'all persons' (not just citizens), and interpreted through the judicially developed 'essential religious practices' test.",
+ keyPoints:["'Essential religious practices' test used by courts to decide what is protected","Available to all persons, not only citizens"],
+ keywords:["Freedom of Religion","Secularism"],related:[26,29,44],schedules:[],bodies:["Supreme Court"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Recent",facts:["Read together with Articles 26–28 as the 'religious freedom' cluster"]}},
+{n:26,title:"Freedom to manage religious affairs",part:"III",chapter:"Fundamental Rights",
+ summary:"Gives every religious denomination the right to establish institutions, manage its own affairs in religious matters, and own and administer property.",
+ clauses:[],explanation:"A group right (held by religious denominations) that complements the individual right in Article 25, subject to public order, morality and health.",
+ keyPoints:["A collective/group right, unlike Article 25's individual right","Property administration is subject to law, unlike core religious management"],
+ keywords:["Freedom of Religion","Religious Denominations"],related:[25,29],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:29,title:"Protection of interests of minorities",part:"III",chapter:"Fundamental Rights",
+ summary:"Protects any section of citizens with a distinct language, script or culture, and prohibits denial of admission to State-maintained educational institutions on grounds of religion, race, caste or language.",
+ clauses:[],explanation:"A cultural-rights guarantee distinct from Article 30's institutional right — Article 29 protects the right to conserve a distinct culture, while Article 30 protects minorities' right to run their own institutions.",
+ keyPoints:["Applies to 'any section of citizens', not just religious minorities","Frequently paired and confused with Article 30 in exams"],
+ keywords:["Minorities","Culture","Education"],related:[25,30],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Distinguish carefully from Article 30 — a very common exam trap"]}},
+{n:30,title:"Right of minorities to establish and administer educational institutions",part:"III",chapter:"Fundamental Rights",
+ summary:"Gives all religious and linguistic minorities the right to establish and administer educational institutions of their choice.",
+ clauses:[],explanation:"A protective right recognising minorities' need for institutional autonomy in education, including in matters of State aid, which cannot discriminate against minority-run institutions.",
+ keyPoints:["Covers both religious and linguistic minorities","State aid cannot be denied merely because an institution is minority-run"],
+ keywords:["Minorities","Education","Institutions"],related:[29,25],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:"39A",title:"Equal justice and free legal aid",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to secure equal justice and provide free legal aid so that opportunities for justice are not denied to any citizen by economic or other disability.",
+ clauses:[],explanation:"Basis for India's statutory legal-aid infrastructure — the National and State Legal Services Authorities — which provide free legal representation to eligible persons.",
+ keyPoints:["Inserted by the 42nd Amendment, 1976","Foundation of the Legal Services Authorities Act, 1987 and NALSA"],
+ keywords:["Legal Aid","DPSP","Justice"],related:[21,32],schedules:[],bodies:["Legal Services Authorities"],offices:[],amendments:[42],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Basis of NALSA (National Legal Services Authority)"]}},
+{n:40,title:"Organisation of Village Panchayats",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to organise village panchayats and endow them with powers to function as units of self-government.",
+ clauses:[],explanation:"A non-justiciable directive from 1950 that stayed largely unimplemented until the 73rd Amendment (1992) gave Panchayats binding constitutional status under Part IX.",
+ keyPoints:["The original 1950 seed for what became Part IX after the 73rd Amendment"],
+ keywords:["Panchayat","DPSP","Local Government"],related:[243],schedules:[],bodies:["Panchayats"],offices:[],amendments:[73],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:["Directly connects to Article 243 / the 73rd Amendment"]}},
+{n:"48A",title:"Protection and improvement of environment and forests and wildlife",part:"IV",chapter:"Directive Principles of State Policy",
+ summary:"Directs the State to protect and improve the environment and to safeguard forests and wildlife.",
+ clauses:[],explanation:"Paired with the citizen's Fundamental Duty in Article 51A(g); together they form the constitutional basis for India's environmental jurisprudence and legislation.",
+ keyPoints:["Inserted by the 42nd Amendment, 1976, alongside Article 51A","Read together with Article 51A(g) by courts in environmental cases"],
+ keywords:["Environment","DPSP","Forests"],related:["51A",21],schedules:[],bodies:[],offices:[],amendments:[42],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Frequently paired with Article 51A(g) in questions"]}},
+{n:72,title:"Power of President to grant pardons",part:"V",chapter:"The Union — Executive",
+ summary:"Empowers the President to grant pardons, reprieves, respites or remissions of punishment, including in death-sentence cases and court-martial sentences.",
+ clauses:[],explanation:"Broader than the Governor's Article 161 power — only the President can pardon a death sentence and sentences by court-martial.",
+ keyPoints:["Only the President (not a Governor) can pardon a death sentence outright","Also covers court-martial (military) sentences, unlike Article 161"],
+ keywords:["President","Pardon"],related:[161,52],schedules:[],bodies:[],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Very Frequent",recency:"Recent",facts:["Compare directly with Article 161 (Governor's more limited pardon power)"]}},
+{n:76,title:"Attorney General for India",part:"V",chapter:"The Union — Executive",
+ summary:"Provides for an Attorney General for India, appointed by the President, as the Union's chief law officer.",
+ clauses:[],explanation:"The Attorney General advises the Government of India on legal matters and has the right to appear in any court in India, but is not a member of the Council of Ministers.",
+ keyPoints:["Highest law officer of the Union","Has the right of audience in all Indian courts"],
+ keywords:["Attorney General","Law Officer"],related:[74,165],schedules:[],bodies:[],offices:["Attorney General","President"],amendments:[],
+ foreign:["United Kingdom (Attorney General office)"],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:["State-level equivalent is the Advocate General under Article 165"]}},
+{n:105,title:"Powers, privileges, etc., of the Houses of Parliament and members",part:"V",chapter:"The Union — Parliament",
+ summary:"Grants Members of Parliament freedom of speech in Parliament and certain privileges and immunities in relation to Parliamentary proceedings.",
+ clauses:[],explanation:"Protects legislative debate from ordinary defamation liability, while remaining subject to constitutional limits and the rules of procedure of each House.",
+ keyPoints:["State-level equivalent for MLAs is Article 194"],keywords:["Parliamentary Privilege","Freedom of Speech"],related:[79,194],schedules:[],bodies:["Parliament"],offices:[],amendments:[44],
+ foreign:["United Kingdom (parliamentary privilege tradition)"],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:123,title:"Power of President to promulgate Ordinances during recess of Parliament",part:"V",chapter:"The Union — Parliament",
+ summary:"Allows the President to promulgate Ordinances with the force of law when Parliament is not in session, on the advice of the Council of Ministers.",
+ clauses:[],explanation:"An emergency legislative tool, not a substitute for regular lawmaking; an Ordinance lapses six weeks after Parliament reassembles unless approved by both Houses.",
+ keyPoints:["Six-week lapse rule after Parliament reassembles","State-level equivalent is Article 213 (Governor's Ordinance power)"],
+ keywords:["Ordinance","President"],related:[213,85],schedules:[],bodies:["Parliament"],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["Compare directly with Article 213 (Governor's Ordinance power)"]}},
+{n:143,title:"Power of President to consult Supreme Court",part:"V",chapter:"The Union — Judiciary",
+ summary:"Allows the President to refer questions of law or fact of public importance to the Supreme Court for its advisory opinion.",
+ clauses:[],explanation:"Invokes the Supreme Court's advisory jurisdiction, distinct from its ordinary original and appellate jurisdiction; the Court's opinion in such references is advisory, not strictly binding as a judgment.",
+ keyPoints:["Advisory jurisdiction — distinct from ordinary binding judgments","Famously invoked in the Ayodhya land dispute reference (1993) and the Cauvery water dispute reference"],
+ keywords:["Supreme Court","Advisory Jurisdiction","President"],related:[124,141],schedules:[],bodies:["Supreme Court"],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:["Advisory opinions under Article 143 are not strictly binding, unlike ordinary Supreme Court judgments"]}},
+{n:165,title:"Advocate General for the State",part:"VI",chapter:"The States — Executive",
+ summary:"Provides for an Advocate General for each State, appointed by the Governor, as the State's chief law officer.",
+ clauses:[],explanation:"State-level counterpart to the Attorney General for India under Article 76.",
+ keyPoints:["State-level equivalent of the Attorney General (Article 76)"],keywords:["Advocate General","Law Officer","Governor"],related:[76,153],schedules:[],bodies:[],offices:["Advocate General","Governor"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:214,title:"High Courts for States",part:"VI",chapter:"The States — Judiciary",
+ summary:"Establishes a High Court for each State, though Parliament may establish a common High Court for two or more States.",
+ clauses:[],explanation:"High Courts sit at the apex of the State judicial system, with original, appellate and writ (Article 226) jurisdiction.",
+ keyPoints:["Common High Courts for multiple States are possible (e.g., historically for Punjab and Haryana)"],
+ keywords:["High Court","Judiciary"],related:[226,235],schedules:[2,3],bodies:["High Court"],offices:[],amendments:[7],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:235,title:"Control over subordinate courts",part:"VI",chapter:"The States — Judiciary",
+ summary:"Vests High Courts with control over subordinate courts within their jurisdiction, including postings, promotions and discipline of the subordinate judiciary.",
+ clauses:[],explanation:"Ensures judicial (not executive) control over lower courts, reinforcing separation of powers at the State level.",
+ keyPoints:["Keeps subordinate-court administration within judicial, not executive, control"],
+ keywords:["High Court","Subordinate Courts","Judiciary"],related:[214,226],schedules:[],bodies:["High Court"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Occasional",recency:"Historical",facts:[]}},
+{n:"239AA",title:"Special provisions with respect to Delhi",part:"VIII",chapter:"Union Territories",
+ summary:"Gives the National Capital Territory of Delhi a Legislative Assembly and Council of Ministers with limited legislative competence, distinct from other Union Territories.",
+ clauses:[],explanation:"Delhi's unique governance structure has produced repeated Centre–State-style disputes over the respective powers of the Lieutenant Governor and the elected government, addressed in Supreme Court rulings and subsequent legislation.",
+ keyPoints:["Inserted by the 69th Amendment, 1991","Ongoing source of Lieutenant Governor vs. elected government disputes"],
+ keywords:["Delhi","Union Territory","Lieutenant Governor"],related:[239],schedules:[],bodies:["Delhi Legislative Assembly"],offices:["Lieutenant Governor"],amendments:[69],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Very Recent",facts:["69th Amendment, 1991 created Delhi's special status","Frequent subject of recent Centre-versus-Delhi-government litigation"]}},
+{n:245,title:"Extent of laws made by Parliament and by State Legislatures",part:"XI",chapter:"Relations Between the Union and the States",
+ summary:"Defines the territorial extent of Parliament's and State Legislatures' law-making powers, and confirms no Indian law can be challenged as invalid merely for having extra-territorial effect.",
+ clauses:[],explanation:"Sets the baseline for the distribution of legislative power that Articles 246–254 then elaborate through the Union, State and Concurrent Lists.",
+ keyPoints:["Basis for the Union/State/Concurrent List structure detailed in Article 246"],
+ keywords:["Legislative Power","Parliament","State Legislature"],related:[246,254,368],schedules:[7],bodies:["Parliament"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:262,title:"Adjudication of disputes relating to waters of inter-State rivers",part:"XI",chapter:"Relations Between the Union and the States",
+ summary:"Allows Parliament to provide for adjudication of disputes over the waters of inter-State rivers or river valleys, and to bar such disputes from ordinary court jurisdiction.",
+ clauses:[],explanation:"Basis for the Inter-State River Water Disputes Act, 1956 and tribunals such as the Cauvery Water Disputes Tribunal.",
+ keyPoints:["Basis of the Inter-State River Water Disputes Act, 1956","Parliament can exclude Supreme Court/High Court jurisdiction over such disputes"],
+ keywords:["River Disputes","Inter-State","Water"],related:[131,143],schedules:[],bodies:["Parliament"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:["Cauvery and other river-water disputes are commonly linked current-affairs questions"]}},
+{n:279,title:"Calculation of 'net proceeds'",part:"XII",chapter:"Finance, Property, Contracts and Suits",
+ summary:"Defines how 'net proceeds' of a tax or duty is calculated and certified for purposes of Union-State revenue sharing under this Part.",
+ clauses:[],explanation:"A technical provision supporting the fiscal-federalism machinery that Articles 268–281 (including the Finance Commission under Article 280) build upon.",
+ keyPoints:["Certificate of the CAG is final on the calculation of 'net proceeds'"],
+ keywords:["Finance","Net Proceeds","Fiscal Federalism"],related:[280,148],schedules:[],bodies:["CAG"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Low",frequency:"Occasional",recency:"Historical",facts:[]}},
+{n:"279A",title:"Goods and Services Tax Council",part:"XII",chapter:"Finance, Property, Contracts and Suits",
+ summary:"Establishes the GST Council, chaired by the Union Finance Minister with State Finance Ministers as members, to recommend GST rates, exemptions and related matters.",
+ clauses:[],explanation:"The Council's decisions are meant to be taken by consensus/weighted voting, making it a distinctive cooperative-federalism body balancing Union and State interests on taxation.",
+ keyPoints:["Inserted by the 101st Amendment, 2016, alongside Article 246A","Chaired by the Union Finance Minister, with each State's Finance Minister as a member"],
+ keywords:["GST Council","GST","Finance"],related:["246A",280],schedules:[],bodies:["GST Council"],offices:["Finance Minister"],amendments:[101],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["Works together with Article 246A — commonly tested as a pair"]}},
+{n:301,title:"Freedom of trade, commerce and intercourse",part:"XIII",chapter:"Trade, Commerce and Intercourse",
+ summary:"Guarantees that trade, commerce and intercourse throughout Indian territory shall be free, subject to other provisions of this Part.",
+ clauses:[],explanation:"Establishes India as a single economic unit, preventing States from erecting internal trade barriers, subject to reasonable restrictions under Articles 302–305.",
+ keyPoints:["Basis for India being treated as one common economic market"],
+ keywords:["Trade","Commerce","Economic Unity"],related:[19,304],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:["Australia (analogous free-trade clause, debated)"],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:309,title:"Recruitment and conditions of service of persons serving the Union or a State",part:"XIV",chapter:"Services Under the Union and the States",
+ summary:"Empowers Parliament and State Legislatures to regulate recruitment and conditions of service for persons appointed to public services.",
+ clauses:[],explanation:"Underlies most civil-service rules and recruitment regulations, subject to the safeguards in Article 311.",
+ keyPoints:["Basis for most civil-service recruitment rules and regulations"],
+ keywords:["Civil Services","Recruitment","Public Employment"],related:[311,315],schedules:[],bodies:[],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:311,title:"Dismissal, removal or reduction in rank of persons employed in civil capacities",part:"XIV",chapter:"Services Under the Union and the States",
+ summary:"Protects civil servants from arbitrary dismissal, removal or rank-reduction by requiring a reasonable opportunity to be heard, with specified exceptions.",
+ clauses:[],explanation:"A key procedural-fairness safeguard for the civil services, ensuring due process before major disciplinary action, subject to narrow exceptions (e.g., conviction on a criminal charge).",
+ keyPoints:["Requires a 'reasonable opportunity of being heard' before major disciplinary action","Has specific, narrow exceptions where the safeguard doesn't apply"],
+ keywords:["Civil Services","Dismissal","Due Process"],related:[309,320],schedules:[],bodies:[],offices:[],amendments:[42],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:325,title:"No person to be ineligible for inclusion in electoral rolls on grounds of religion, race, caste or sex",part:"XV",chapter:"Elections",
+ summary:"Guarantees a single, general electoral roll for every territorial constituency, without separate rolls based on religion, race, caste or sex.",
+ clauses:[],explanation:"Rejects the colonial-era system of separate/communal electorates in favour of one common electoral roll for all citizens.",
+ keyPoints:["Rejects communal/separate electorates in favour of a single common roll"],
+ keywords:["Electoral Rolls","Elections","Equality"],related:[324,326],schedules:[],bodies:["Election Commission"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:330,title:"Reservation of seats for Scheduled Castes and Scheduled Tribes in the House of the People",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Reserves seats in the Lok Sabha for Scheduled Castes and Scheduled Tribes in proportion to their population.",
+ clauses:[],explanation:"Reservation of seats (not just of candidates) ensures minimum SC/ST representation in the directly elected House — all voters in a reserved constituency still vote, only candidature is reserved. A parallel provision (Article 332) applies to State Assemblies; the duration of both is governed separately by Article 334.",
+ keyPoints:["Parallel provision for State Assemblies is Article 332","Reservation applies to candidature only — every voter in the constituency still votes","Duration is set separately by Article 334, not by this Article"],
+ keywords:["Reservation","SC/ST","Lok Sabha"],related:[332,335,81,334],schedules:[],bodies:["Election Commission"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",facts:["Directly comparable to Article 332 (State Assemblies) and Article 334 (duration)"]}},
+{n:334,title:"Reservation of seats and special representation to cease after a specified period",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Sets the time limit on SC/ST seat reservation under Articles 330 and 332, and historically also governed nominated Anglo-Indian representation — extended by amendment seven times since 1950.",
+ clauses:[],explanation:"The reservation period has been repeatedly extended by amendment (8th, 23rd, 45th, 62nd, 79th, 95th and 104th) rather than being made permanent; the 104th Amendment (2020) extended SC/ST reservation to 2030 while discontinuing the separate Anglo-Indian nomination provision.",
+ keyPoints:["Extended seven times by amendment since 1950 — most recently by the 104th Amendment, 2020, to 25 January 2030","104th Amendment also ended Anglo-Indian nomination to the Lok Sabha and State Assemblies","SC/ST reservation in jobs/education under Articles 15–16 has no such time limit"],
+ keywords:["Reservation","SC/ST","Anglo-Indian"],related:[330,332],schedules:[],bodies:["Parliament"],offices:[],amendments:[104],
+ foreign:[],ssc:{importance:"Critical",frequency:"Very Frequent",recency:"Very Recent",
+ facts:["104th Amendment (2020) extended SC/ST reservation to 2030 and ended Anglo-Indian nomination","Reservation under Article 15/16 (jobs, education) has no expiry — don't confuse with this Article"]}},
+{n:335,title:"Claims of Scheduled Castes and Scheduled Tribes to services and posts",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Requires SC/ST claims to be considered, consistently with administrative efficiency, in appointments to Union and State services and posts.",
+ clauses:[],explanation:"Works alongside Article 16(4) reservation provisions, balancing representation goals against administrative-efficiency considerations.",
+ keyPoints:["Frequently read together with Article 16(4)"],keywords:["Reservation","SC/ST","Public Employment"],related:[16,330],schedules:[],bodies:["UPSC","State PSC"],offices:[],amendments:[],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:338,title:"National Commission for Scheduled Castes",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Establishes the National Commission for Scheduled Castes (NCSC) to monitor safeguards for SCs and investigate specific complaints.",
+ clauses:[],explanation:"Originally covered both SCs and STs jointly; split into separate Commissions (Articles 338 and 338A) by the 89th Amendment, 2003.",
+ keyPoints:["Split from a combined SC/ST Commission into two separate Commissions by the 89th Amendment, 2003","Companion body is the NCST under Article 338A"],
+ keywords:["National Commission for Scheduled Castes","SC/ST","Constitutional Bodies"],related:["338A",341],schedules:[],bodies:["National Commission for Scheduled Castes"],offices:[],amendments:[89],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["89th Amendment, 2003 split the joint SC/ST Commission into Articles 338 and 338A"]}},
+{n:"338A",title:"National Commission for Scheduled Tribes",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Establishes the National Commission for Scheduled Tribes (NCST), created by splitting the earlier joint National Commission for Scheduled Castes and Scheduled Tribes.",
+ clauses:[],explanation:"Inserted by the 89th Amendment Act, 2003 (effective 19 February 2004), giving Scheduled Tribes a dedicated constitutional body distinct from the NCSC.",
+ keyPoints:["Inserted by the 89th Amendment, 2003, effective 19 February 2004","Companion body to the NCSC under Article 338"],
+ keywords:["National Commission for Scheduled Tribes","Scheduled Tribes","Constitutional Bodies"],related:[338,342],schedules:[],bodies:["National Commission for Scheduled Tribes"],offices:[],amendments:[89],
+ foreign:[],ssc:{importance:"High",frequency:"Frequent",recency:"Recent",facts:["A very precisely dated fact: 89th Amendment, 2003, in force from 19 February 2004"]}},
+{n:341,title:"Scheduled Castes",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Empowers the President to specify, by public notification, the castes, races or tribes deemed Scheduled Castes for a State or Union Territory.",
+ clauses:[],explanation:"The formal legal mechanism by which specific communities become recognised as Scheduled Castes for constitutional purposes; only Parliament can subsequently amend the list.",
+ keyPoints:["Only Parliament (by law) can alter a notified SC list, not the President alone after the initial notification"],
+ keywords:["Scheduled Castes","Reservation"],related:[342,338],schedules:[],bodies:[],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:342,title:"Scheduled Tribes",part:"XVI",chapter:"Special Provisions Relating to Certain Classes",
+ summary:"Empowers the President to specify, by public notification, the tribes or tribal communities deemed Scheduled Tribes for a State or Union Territory.",
+ clauses:[],explanation:"Mirrors Article 341 for Scheduled Tribes; underlies the tribal-welfare and reservation framework alongside Articles 244 and 338A.",
+ keyPoints:["Mirrors Article 341's mechanism, but for Scheduled Tribes"],
+ keywords:["Scheduled Tribes","Reservation"],related:[341,244,"338A"],schedules:[5,6],bodies:[],offices:["President"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Frequent",recency:"Recent",facts:[]}},
+{n:361,title:"Protection of President and Governors",part:"XIX",chapter:"Miscellaneous",
+ summary:"Grants the President and Governors immunity from criminal proceedings while in office, and from civil proceedings for official acts, with certain procedural conditions.",
+ clauses:[],explanation:"Ensures the Head of State/Head of a State's executive can perform official functions without the threat of personal litigation during their term, though this immunity is not absolute for all civil matters.",
+ keyPoints:["Immunity applies while in office — it does not erase liability for acts before or after the term"],
+ keywords:["President","Governor","Immunity"],related:[52,153],schedules:[],bodies:[],offices:["President","Governor"],amendments:[],
+ foreign:[],ssc:{importance:"Medium",frequency:"Occasional",recency:"Historical",facts:[]}}
+
+];
+
+/* Short mnemonics for the Quick Reference table — hand-written for well-known
+   articles (matching common SSC memory-trick style), with a safe fallback
+   generator for every other article so the table is always complete. */
+const MNEMONICS = {
+ "1":"1 India — Article 1 opens the book: India is a Union.",
+ "3":"3 = Three ways: create, merge, rename States.",
+ "5":"5–11 = Citizen — Part II's citizenship block starts here.",
+ "14":"1+4 = Equal — five fingers each hand, equal on both sides.",
+ "15":"15 = No discrimination.",
+ "16":"16 = Government jobs, equal opportunity.",
+ "19":"19 = 6 freedoms guaranteed to citizens.",
+ "21":"21 = Right to Life — the article every court leans on.",
+ "32":"32 = Heart & soul (Ambedkar) — the right to enforce rights.",
+ "39":"39 = Equal pay, DPSP twin of Article 14.",
+ "44":"44 = UCC — a directive, one number before Article 45 (education).",
+ "45":"45 = Early childhood care — comes right after the UCC directive.",
+ "51A":"51A = 11 Duties — 51 + A for 'Added' in 1976.",
+ "52":"52 = President — Part V opens with the Union's head.",
+ "74":"74 = Council of Ministers aids the President — right next to Art 75 (Ministers' rules).",
+ "80":"80 = Rajya Sabha, max 250 seats, 12 nominated.",
+ "124":"124 = Supreme Court — the apex, one court above all.",
+ "153":"153 = Governor, one per State (7th Amendment allows one Governor for more than one State).",
+ "243":"243 = Panchayats — three tiers: village, block, district.",
+ "280":"280 = Finance Commission, constituted every 5 years.",
+ "324":"324 = Election Commission — controls elections end to end.",
+ "343":"343 = Hindi is the official language of the Union.",
+ "352":"352 = National Emergency — invoked 3 times (1962, 1971, 1975).",
+ "356":"356 = President's Rule — remember S.R. Bommai (1994) as its judicial check.",
+ "368":"368 = Amendment power — 3 procedures, subject to the Basic Structure Doctrine.",
+ "370":"370 = J&K special status — abrogated 2019, upheld by the Supreme Court in 2023.",
+ "17":"17 breaks social barriers — abolition of untouchability.",
+ "20":"20 = 2 zeros, 'no' twice: no retrospective law, no double punishment.",
+ "22":"22 = 24 hours to a magistrate — remember the near-match in digits.",
+ "25":"25 = a quarter of freedoms — conscience, profession, practice, propagation of religion.",
+ "29":"29 = culture protected; pairs with 30 (institutions) — don't mix the two up.",
+ "30":"30 = minorities run their own institutions — one number after Article 29's culture right.",
+ "72":"72 = President's full pardon power, including death sentences — bigger than 161 (Governor).",
+ "143":"143 = President asks, Supreme Court advises — an opinion, not a judgment.",
+ "239AA":"239AA = double-A for Delhi's double government — Lieutenant Governor and elected Assembly.",
+ "279A":"279A = GST Council — the 'A' rides along right after Article 279 (net proceeds).",
+ "330":"330 = Lok Sabha seats reserved for SC/ST — candidature only, everyone still votes.",
+ "334":"334 = the clock on reservation — extended seven times, now to 2030.",
+ "338":"338 = SC Commission; 338A = ST Commission — split apart by the 89th Amendment.",
+ "341":"341 = President notifies SC; 342 = President notifies ST — one digit apart, one list apart."
+};
+function mnemonicFor(a){
+ if(MNEMONICS[String(a.n)])return MNEMONICS[String(a.n)];
+ var kw=(a.keywords&&a.keywords[0])?a.keywords[0]:a.title.split(" ").slice(0,2).join(" ");
+ return "Art "+a.n+" → "+kw;
+}
+
+const TOPIC_CATEGORIES = [
+ "Fundamental Rights","Directive Principles of State Policy","Fundamental Duties","Union Government","State Government",
+ "President","Vice-President","Prime Minister","Council of Ministers","Parliament","Rajya Sabha","Lok Sabha","Speaker",
+ "Deputy Speaker","Supreme Court","High Courts","Governor","Chief Minister","Election Commission","Finance Commission",
+ "CAG","UPSC","Emergency Provisions","Elections","Panchayats","Municipalities","Constitutional Bodies","Citizenship",
+ "Official Language","Finance & Taxation","GST","Reservation","SC/ST/OBC/EWS","Women & Children","Scheduled & Tribal Areas"
+];
+
+/* Aliases bridge sidebar category labels to the keywords/tags actually used on
+   article records, so every category reliably returns a connected result set
+   even where wording differs (e.g. "CAG" vs "Comptroller and Auditor General"). */
+const CATEGORY_ALIASES = {
+ "Union Government":["union","executive","president","prime minister","council of ministers"],
+ "State Government":["state executive","governor","chief minister","state council of ministers"],
+ "High Courts":["high court","judiciary","writs"],
+ "Deputy Speaker":["speaker","lok sabha"],
+ "Vice-President":["vice-president","rajya sabha"],
+ "Constitutional Bodies":["election commission","finance commission","upsc","cag","comptroller"],
+ "Citizenship":["citizenship","citizen"],
+ "Finance & Taxation":["finance","taxation","tax","finance commission"],
+ "GST":["gst","goods and services tax"],
+ "SC/ST/OBC/EWS":["reservation","sc","st","obc","ews","backward classes"],
+ "Women & Children":["women","children","education"],
+ "Scheduled & Tribal Areas":["scheduled areas","tribal","scheduled tribes"],
+ "Official Language":["official language","hindi"],
+ "Reservation":["reservation","backward classes","ews"]
+};
+
+/* ======================================================================
+   HELPERS
+   ====================================================================== */
+function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function jarg(v){if(typeof v==="number")return String(v);return "'" + String(v).replace(/\\/g,"\\\\").replace(/'/g,"\\'") + "'"}
+function byArticle(n){return ARTICLES.find(function(a){return String(a.n)===String(n)})}
+function byPartRoman(r){return PARTS.find(function(p){return p.roman===r})}
+function byAmendNo(n){return AMENDMENTS.find(function(a){return a.no===parseInt(n)})}
+function bySchedule(n){return SCHEDULES.find(function(s){return s.id===parseInt(n)})}
+
+/* localStorage helpers */
+function lsGet(key){try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return []}}
+function lsSet(key,val){localStorage.setItem(key,JSON.stringify(val))}
+function recent(){return lsGet("ce_recent")}
+function saveRecent(q){q=String(q||"").trim();if(!q)return;var a=recent();a=[q].concat(a.filter(function(x){return x.toLowerCase()!==q.toLowerCase()})).slice(0,5);lsSet("ce_recent",a)}
+function bookmarks(){return lsGet("ce_bookmarks")}
+function isBookmarked(n){return bookmarks().some(function(x){return String(x)===String(n)})}
+function toggleBookmark(n){
+ var a=bookmarks(),i=a.findIndex(function(x){return String(x)===String(n)});
+ if(i>=0)a.splice(i,1);else a.unshift(n);
+ lsSet("ce_bookmarks",a);
+ updateBookmarkCount();
+ toast(i>=0?"Bookmark removed":"Article bookmarked");
+}
+function updateBookmarkCount(){
+ var c=bookmarks().length;
+ document.getElementById("bmCountTop").textContent=c?("("+c+")"):"";
+}
+
+/* navigation trail for breadcrumbs */
+var TRAIL=[{label:"Overview",fn:"showHome()"}];
+function pushTrail(label,fn){TRAIL.push({label:label,fn:fn});if(TRAIL.length>5)TRAIL=[TRAIL[0]].concat(TRAIL.slice(-4));renderCrumbs()}
+function resetTrail(label,fn){TRAIL=[{label:label,fn:fn}];renderCrumbs()}
+function renderCrumbs(){
+ var html="";
+ TRAIL.forEach(function(t,i){
+  var last=i===TRAIL.length-1;
+  html+='<span class="'+(last?"cur":"c")+'"'+(last?"":' onclick="'+t.fn+'"')+'>'+esc(t.label)+'</span>';
+  if(!last)html+='<span class="sep">›</span>';
+ });
+ document.getElementById("topCrumbs").innerHTML=html;
+ document.querySelectorAll("#content .crumbs").forEach(function(el){el.innerHTML=html.replace(/class="c"/g,'class="c"')});
+}
+function crumbBar(){
+ var html='<div class="crumbs">';
+ TRAIL.forEach(function(t,i){
+  var last=i===TRAIL.length-1;
+  html+='<span class="'+(last?"cur":"c")+'"'+(last?"":' onclick="'+t.fn+'"')+'>'+esc(t.label)+'</span>';
+  if(!last)html+='<span class="sep">›</span>';
+ });
+ return html+'</div>';
+}
+
+function setNav(key){
+ document.querySelectorAll(".nav-btn").forEach(function(x){x.classList.remove("active")});
+ var el=document.querySelector('.nav-btn[data-key="'+key+'"]');
+ if(el)el.classList.add("active");
+}
+
+function render(html){document.getElementById("content").innerHTML=crumbBar()+html;renderCrumbs()}
+
+function badgeRow(a){
+ return '<div class="badges"><span class="badge imp">Importance · '+esc(a.ssc.importance)+'</span>'+
+  '<span class="badge freq">SSC frequency · '+esc(a.ssc.frequency)+'</span>'+
+  '<span class="badge rec">Recency · '+esc(a.ssc.recency)+'</span></div>';
+}
+function tagRow(a){
+ var html='<div class="tagrow">';
+ (a.keywords||[]).forEach(function(t){html+='<span class="tag" onclick="event.stopPropagation();topic(\''+esc(t).replace(/'/g,"\\'")+'\')">'+esc(t)+'</span>'});
+ return html+'</div>';
+}
+function articleCard(a){
+ return '<div class="card clickable" onclick="showArticle('+jarg(a.n)+')">'+
+  '<div class="article-meta"><span class="article-no">ARTICLE '+esc(a.n)+'</span><span>·</span><span>Part '+esc(a.part)+'</span>'+
+  (isBookmarked(a.n)?'<span style="margin-left:auto;color:var(--saffron)">★ Saved</span>':'')+'</div>'+
+  '<h3>'+esc(a.title)+'</h3><p>'+esc(a.summary)+'</p>'+badgeRow(a)+tagRow(a)+'</div>';
+}
+function articleCards(list){
+ if(!list.length)return '<div class="empty">No articles in the current dataset match this filter yet. The data layer is ready for more records to be added.</div>';
+ return list.map(articleCard).join("");
+}
+
+/* ======================================================================
+   SIDEBAR
+   ====================================================================== */
+function buildSidebar(){
+ var html="";
+ html+='<div class="sb-label">Explore</div>';
+ html+=navBtn("home","⌂","Overview","showHome()");
+ html+=navBtn("preamble","॥","Preamble","showPreamble()");
+ html+=navBtn("articles","§","Articles","showArticlesList()",ARTICLES.length+"+");
+ html+=navBtn("reference","▦","Quick Reference Table","showReference()");
+ html+=navBtn("parts","◫","Parts I–XXII","showPartsList()",PARTS.length);
+ html+=navBtn("schedules","▤","Schedules","showSchedulesList()",SCHEDULES.length);
+ html+=navBtn("amendments","↻","Amendments","showAmendmentsList()",AMENDMENTS.length+"+");
+ html+='<div class="sb-label">Constitutional Categories</div>';
+ TOPIC_CATEGORIES.forEach(function(t){html+='<button class="nav-btn small" onclick="topic('+jarg(t)+',this)">'+esc(t)+'</button>'});
+ html+='<div class="sb-label">Your Library</div>';
+ html+=navBtn("bookmarks","☆","Bookmarks","showBookmarks()", null, "bmCountSide");
+ html+='<div class="sb-label">Official Source</div>';
+ html+='<a class="nav-btn" style="text-decoration:none" target="_blank" href="'+SOURCE_URL+'">↗ Legislative Department</a>';
+ document.getElementById("sidebarInner").innerHTML=html;
+ updateBookmarkCount();
+}
+function navBtn(key,icon,label,fn,num,numId){
+ return '<button class="nav-btn" data-key="'+key+'" onclick="'+fn+'">'+icon+' '+esc(label)+
+  (num!=null?'<span class="nav-num">'+esc(num)+'</span>':(numId?'<span class="nav-num" id="'+numId+'"></span>':''))+'</button>';
+}
+
+/* ======================================================================
+   VIEWS
+   ====================================================================== */
+function showHome(){
+ setNav("home"); resetTrail("Overview","showHome()");
+ var top=ARTICLES.filter(function(a){return a.ssc.importance==="Critical"}).slice(0,6);
+ var html='<section class="hero"><div class="eyebrow">Republic of India · Constitutional Knowledge Base</div>'+
+  '<h1>Constitution of India</h1><p>A structured, cross-referenced explorer covering the Preamble, all 22 Parts, 12 Schedules and every major amendment — built for reading, research and SSC-style exam preparation, not page-by-page PDF scrolling.</p>'+
+  '<div class="stats"><div class="stat"><strong>'+PARTS.length+'</strong><span>Parts indexed</span></div>'+
+  '<div class="stat"><strong>'+SCHEDULES.length+'</strong><span>Schedules</span></div>'+
+  '<div class="stat"><strong>'+AMENDMENTS.length+'</strong><span>Amendments tracked</span></div>'+
+  '<div class="stat"><strong>2026</strong><span>Current edition</span></div></div></section>';
+ html+='<div class="content-head"><div><h2>Start exploring</h2><p>Every path below is fully navigable.</p></div>'+
+  '<div class="actions"><button class="small-btn primary" onclick="openSearch()">⌕ Search the Constitution</button></div></div>';
+ html+='<div class="grid2">'+
+  '<div class="card clickable" onclick="showReference()"><div style="font-size:19px;color:var(--saffron)">▦</div><h3>Quick Reference Table</h3><p>A clean, scannable table — article, part, topic and memory trick — for fast revision.</p></div>'+
+  '<div class="card clickable" onclick="showArticlesList()"><div style="font-size:19px;color:var(--saffron)">§</div><h3>Articles</h3><p>Read structured articles with plain-language explanations, clauses and cross-references.</p></div>'+
+  '<div class="card clickable" onclick="showPartsList()"><div style="font-size:19px;color:var(--saffron)">◫</div><h3>Parts</h3><p>Move through the constitutional hierarchy from Part I to Part XXII.</p></div>'+
+  '<div class="card clickable" onclick="showAmendmentsList()"><div style="font-size:19px;color:var(--saffron)">↻</div><h3>Amendments</h3><p>Chronological, impact-oriented view of constitutional change.</p></div>'+
+  '<div class="card clickable" onclick="showSchedulesList()"><div style="font-size:19px;color:var(--saffron)">▤</div><h3>Schedules</h3><p>Browse all 12 Schedules and their related provisions.</p></div>'+
+ '</div>';
+ html+='<div class="content-head"><div><h2>Critical-importance articles</h2><p>Prioritised by this explorer\'s Importance / SSC-frequency / Recency model — a study aid, not an official classification.</p></div></div>';
+ html+=articleCards(top);
+ html+='<div class="content-head"><div><h2>Recent constitutional milestones</h2><p>Selected amendments, most recent first.</p></div></div>';
+ html+='<div class="card"><div class="timeline">'+AMENDMENTS.slice().reverse().slice(0,6).map(function(a){
+  return '<div class="event"><strong>'+a.year+' · '+a.no+ordinalSuffix(a.no)+' Amendment</strong><p>'+esc(a.purpose)+'</p><span class="link" onclick="showAmendment('+a.no+')">Open →</span></div>';
+ }).join("")+'</div></div>';
+ html+='<div class="callout"><b>Source note.</b> Article text on this page is a plain-language summary produced for this explorer, not the verbatim official text. For the authoritative consolidated Constitution, refer to the <a href="'+SOURCE_URL+'" target="_blank" style="color:inherit">Legislative Department\'s official edition</a>.</div>';
+ render(html);
+ renderRight(null);
+}
+
+function showPreamble(){
+ setNav(null); pushTrail("Preamble","showPreamble()");
+ var html='<div class="content-head"><div><div class="eyebrow">Introductory Text</div><h2>The Preamble</h2><p>The Constitution\'s statement of ideals and objectives.</p></div></div>';
+ html+='<div class="quote">WE, THE PEOPLE OF INDIA, having solemnly resolved to constitute India into a SOVEREIGN, SOCIALIST, SECULAR, DEMOCRATIC REPUBLIC and to secure to all its citizens: JUSTICE, social, economic and political; LIBERTY of thought, expression, belief, faith and worship; EQUALITY of status and of opportunity; and to promote among them all FRATERNITY assuring the dignity of the individual and the unity and integrity of the Nation...</div>';
+ html+='<div class="callout"><b>Note.</b> "Socialist" and "Secular" were inserted by the 42nd Amendment (1976); the Preamble is otherwise unchanged since 1950. Its amendability was confirmed in Kesavananda Bharati (1973), which also held it is part of the "basic structure."</div>';
+ html+='<div class="content-head"><div><h2>Key ideas</h2></div></div>';
+ html+='<div class="card"><ul class="clause-list">'+
+  '<li><b>Sovereign</b> — India is free from external control in internal and external affairs.</li>'+
+  '<li><b>Socialist</b> — added 1976; commits the State to reducing inequality.</li>'+
+  '<li><b>Secular</b> — added 1976; the State treats all religions equally.</li>'+
+  '<li><b>Democratic</b> — government derives authority from the people through elections.</li>'+
+  '<li><b>Republic</b> — the Head of State is elected, not hereditary.</li>'+
+ '</ul></div>';
+ document.getElementById("content").innerHTML=crumbBar()+html;renderCrumbs();
+ renderRight(null);
+}
+
+function showReference(){
+ setNav("reference"); resetTrail("Quick Reference Table","showReference()");
+ var sorted=ARTICLES.filter(function(a){return a.explanation}).slice().sort(function(x,y){
+  var nx=parseFloat(String(x.n)),ny=parseFloat(String(y.n));return nx-ny;
+ });
+ var html='<div class="content-head"><div><h2>Quick Reference Table</h2><p>Every article at a glance — number, part, topic and a short memory trick. Click any row to open the full article.</p></div>'+
+  '<div class="actions"><button class="small-btn primary" onclick="openSearch()">⌕ Search</button></div></div>';
+ html+='<div class="reftable-search"><input id="refFilter" placeholder="Type to filter this table…" oninput="filterReference(this.value)"></div>';
+ html+='<div class="reftable-wrap"><table class="reftable"><thead><tr><th>Article</th><th>Part</th><th>Topic</th><th>Memory trick</th></tr></thead>'+
+  '<tbody id="refTableBody">'+refRows(sorted)+'</tbody></table></div>';
+ html+='<div class="callout">Memory tricks are quick recall aids written for this explorer — a study aid, not official SSC material.</div>';
+ render(html); renderRight(null);
+}
+function refRows(list){
+ if(!list.length)return '<tr><td colspan="4" style="color:var(--muted);padding:16px">No matching articles.</td></tr>';
+ return list.map(function(a){
+  return '<tr onclick="showArticle('+jarg(a.n)+')">'+
+   '<td class="rt-art">'+esc(a.n)+'</td>'+
+   '<td class="rt-part">'+esc(a.part)+'</td>'+
+   '<td class="rt-topic">'+esc(a.title)+'</td>'+
+   '<td class="rt-trick">'+esc(mnemonicFor(a))+'</td></tr>';
+ }).join("");
+}
+function filterReference(q){
+ q=String(q||"").trim().toLowerCase();
+ var sorted=ARTICLES.filter(function(a){return a.explanation}).slice().sort(function(x,y){
+  var nx=parseFloat(String(x.n)),ny=parseFloat(String(y.n));return nx-ny;
+ });
+ var list=q?sorted.filter(function(a){
+  return (String(a.n)+" "+a.part+" "+a.title+" "+mnemonicFor(a)+" "+(a.keywords||[]).join(" ")).toLowerCase().indexOf(q)>=0;
+ }):sorted;
+ document.getElementById("refTableBody").innerHTML=refRows(list);
+}
+
+function showArticlesList(){
+ setNav("articles"); resetTrail("Articles","showArticlesList()");
+ var sorted=ARTICLES.filter(function(a){return a.clauses!==undefined&&a.explanation}).slice().sort(function(x,y){
+  var rank={Critical:4,High:3,Medium:2,Low:1};
+  return (rank[y.ssc.importance]||0)-(rank[x.ssc.importance]||0);
+ });
+ var html='<div class="content-head"><div><h2>Articles</h2><p>Open any article to read its structured summary, clauses, cross-references and amendment history.</p></div>'+
+  '<div class="actions"><button class="small-btn primary" onclick="openSearch()">⌕ Search</button></div></div>';
+ html+='<div class="callout"><b>SSC layer.</b> Importance, SSC frequency and Recency are study-priority indicators generated for this explorer — not official SSC classifications.</div>';
+ html+=articleCards(sorted);
+ render(html); renderRight(null);
+}
+
+function showArticle(n){
+ var a=byArticle(n);
+ if(!a||!a.explanation){toast("This article isn't in the current reading dataset yet.");return}
+ pushTrail("Article "+a.n,"showArticle("+jarg(n)+")");
+ setNav(null);
+ var html='<div class="content-head"><div><div class="eyebrow">'+esc(a.chapter)+'</div><h2>Article '+esc(a.n)+' — '+esc(a.title)+'</h2>'+
+  '<p>Part <span class="link" onclick="showPart('+jarg(a.part)+')">'+esc(a.part)+'</span> · Constitutional reading view</p></div>'+
+  '<div class="actions"><button class="small-btn '+(isBookmarked(a.n)?"saved":"")+'" onclick="toggleBookmark('+jarg(a.n)+');showArticle('+jarg(a.n)+')">'+(isBookmarked(a.n)?"★ Saved":"☆ Save")+'</button>'+
+  '<button class="small-btn" onclick="window.print()">Print</button>'+
+  '<button class="small-btn" onclick="toast(\'Export queued — PDF export is a UI placeholder in this build\')">Export PDF</button></div></div>';
+ html+=badgeRow(a);
+ html+='<div class="card"><div class="article-meta"><span class="article-no">ARTICLE '+esc(a.n)+'</span><span>·</span><span>Summary</span></div>'+
+  '<div class="quote">'+esc(a.summary)+'</div>'+tagRow(a)+'</div>';
+ if(a.clauses&&a.clauses.length){
+  html+='<div class="content-head"><div><h2>Clauses</h2><p>Structural breakdown of the article.</p></div></div>';
+  html+='<div class="card"><ul class="clause-list">'+a.clauses.map(function(c){return '<li><b>'+esc(c[0])+'</b>'+esc(c[1])+'</li>'}).join("")+'</ul></div>';
+ }
+ html+='<div class="content-head"><div><h2>Plain-language explanation</h2></div></div>';
+ html+='<div class="card"><p>'+esc(a.explanation)+'</p></div>';
+ if(a.keyPoints&&a.keyPoints.length){
+  html+='<div class="content-head"><div><h2>Key points</h2></div></div>';
+  html+='<div class="card"><ul class="clause-list">'+a.keyPoints.map(function(k){return '<li>'+esc(k)+'</li>'}).join("")+'</ul></div>';
+ }
+ html+='<div class="content-head"><div><h2>Related articles</h2><p>Each open link jumps directly to that article.</p></div></div><div class="card">';
+ (a.related||[]).forEach(function(r){
+  var q=byArticle(r);
+  html+='<div class="related"><span><b>Article '+esc(r)+'</b>'+(q&&q.explanation?' — '+esc(q.title):'')+'</span>'+
+   (q&&q.explanation?'<span class="link" onclick="showArticle('+jarg(r)+')">Open →</span>':'<span style="font-size:10px;color:var(--muted)">Indexed link</span>')+'</div>';
+ });
+ if(!(a.related||[]).length)html+='<div style="font-size:11.5px;color:var(--muted)">No cross-references recorded for this article yet.</div>';
+ html+='</div>';
+ if((a.amendments||[]).length){
+  html+='<div class="content-head"><div><h2>Amendment history</h2><p>Amendments that changed this article.</p></div></div><div class="card"><div class="timeline">';
+  a.amendments.forEach(function(no){
+   var am=byAmendNo(no);
+   html+='<div class="event"><strong>'+(am?am.year+" · "+am.name:no+ordinalSuffix(no)+" Amendment")+'</strong><p>'+(am?esc(am.purpose):"")+'</p>'+
+    (am?'<span class="link" onclick="showAmendment('+am.no+')">View amendment →</span>':'')+'</div>';
+  });
+  html+='</div></div>';
+ } else {
+  html+='<div class="content-head"><div><h2>Amendment history</h2></div></div><div class="card"><p style="color:var(--muted);font-size:12px">No amendments to this article are recorded in the current dataset.</p></div>';
+ }
+ if((a.foreign||[]).length){
+  html+='<div class="content-head"><div><h2>Borrowed / inspired provisions</h2><p>Constitutional traditions this provision draws on.</p></div></div>';
+  html+='<div class="card"><div class="pillset">'+a.foreign.map(function(f){return '<span class="pill-mini">'+esc(f)+'</span>'}).join("")+'</div></div>';
+ }
+ if((a.ssc.facts||[]).length){
+  html+='<div class="content-head"><div><h2>SSC-focused key facts</h2><p>Commonly tested concepts and numbers for this article.</p></div></div>';
+  html+='<div class="card"><ul class="clause-list">'+a.ssc.facts.map(function(f){return '<li>'+esc(f)+'</li>'}).join("")+'</ul></div>';
+ }
+ document.getElementById("content").innerHTML=crumbBar()+html;renderCrumbs();
+ renderRight(a);
+}
+
+function showPartsList(){
+ setNav("parts"); resetTrail("Parts","showPartsList()");
+ var html='<div class="content-head"><div><h2>Parts of the Constitution</h2><p>All 22 Parts (with lettered sub-Parts) — click any to open it.</p></div></div>';
+ html+=PARTS.map(function(p){
+  return '<div class="card clickable" onclick="showPart('+jarg(p.roman)+')"><div style="display:flex;align-items:center;gap:13px">'+
+   '<strong style="color:var(--saffron);min-width:34px;font-family:\'Source Serif Pro\',Georgia,serif;font-size:15px">'+esc(p.roman)+'</strong>'+
+   '<div style="flex:1"><b style="font-size:13.5px;font-family:\'Source Serif Pro\',Georgia,serif">'+esc(p.name)+'</b>'+
+   '<div style="font-size:10.5px;color:var(--muted);margin-top:3px">Articles '+esc(p.range)+'</div></div><span class="link">Open →</span></div></div>';
+ }).join("");
+ render(html); renderRight(null);
+}
+function showPart(roman){
+ var p=byPartRoman(roman); if(!p)return;
+ pushTrail("Part "+p.roman,"showPart("+jarg(roman)+")");
+ var related=ARTICLES.filter(function(a){return String(a.part)===String(roman)&&a.explanation});
+ var html='<div class="content-head"><div><div class="eyebrow">Constitutional Structure</div><h2>Part '+esc(p.roman)+' — '+esc(p.name)+'</h2><p>Article range: '+esc(p.range)+'</p></div></div>';
+ html+='<div class="callout">Articles from this Part that are in the current reading dataset are listed below. Additional articles can be added to the data layer without any UI changes.</div>';
+ html+=articleCards(related);
+ document.getElementById("content").innerHTML=crumbBar()+html;renderCrumbs();
+ renderRight(null);
+}
+
+function showSchedulesList(){
+ setNav("schedules"); resetTrail("Schedules","showSchedulesList()");
+ var html='<div class="content-head"><div><h2>Schedules</h2><p>All 12 Schedules of the Constitution.</p></div></div>';
+ html+=SCHEDULES.map(function(s){
+  return '<div class="card clickable" onclick="showSchedule('+s.id+')"><div style="display:flex;gap:13px">'+
+   '<strong style="color:var(--saffron);font-family:\'Source Serif Pro\',Georgia,serif">'+s.id+'</strong>'+
+   '<div style="flex:1"><b style="font-family:\'Source Serif Pro\',Georgia,serif">'+esc(s.title)+' — '+esc(s.name)+'</b>'+
+   '<p style="margin-top:5px">'+esc(s.summary)+'</p></div><span class="link">Open →</span></div></div>';
+ }).join("");
+ render(html); renderRight(null);
+}
+function showSchedule(n){
+ var s=bySchedule(n); if(!s)return;
+ pushTrail(s.title,"showSchedule("+n+")");
+ var relatedArticles=ARTICLES.filter(function(a){return (a.schedules||[]).indexOf(s.id)>=0 && a.explanation});
+ var relatedAmendments=AMENDMENTS.filter(function(am){return (am.schedules||[]).indexOf(s.id)>=0});
+ var html='<div class="content-head"><div><div class="eyebrow">Schedule</div><h2>'+esc(s.title)+' — '+esc(s.name)+'</h2><p>Structured schedule reading view</p></div></div>';
+ html+='<div class="card"><p>'+esc(s.summary)+'</p></div>';
+ html+='<div class="content-head"><div><h2>Related articles</h2></div></div>';
+ html+=relatedArticles.length?articleCards(relatedArticles):'<div class="empty">No linked articles recorded for this schedule yet.</div>';
+ if(relatedAmendments.length){
+  html+='<div class="content-head"><div><h2>Related amendments</h2></div></div><div class="card">';
+  relatedAmendments.forEach(function(am){html+='<div class="related"><span><b>'+am.no+ordinalSuffix(am.no)+' Amendment</b> — '+am.year+'</span><span class="link" onclick="showAmendment('+am.no+')">Open →</span></div>'});
+  html+='</div>';
+ }
+ document.getElementById("content").innerHTML=crumbBar()+html;renderCrumbs();
+ renderRight(null);
+}
+
+function showAmendmentsList(){
+ setNav("amendments"); resetTrail("Amendments","showAmendmentsList()");
+ var html='<div class="content-head"><div><h2>Constitutional Amendments</h2><p>Chronological, impact-oriented timeline.</p></div></div>';
+ html+='<div class="card"><div class="timeline">'+AMENDMENTS.slice().reverse().map(function(a){
+  return '<div class="event"><strong>'+a.year+' · '+a.no+ordinalSuffix(a.no)+' Amendment</strong><p>'+esc(a.purpose)+'</p><span class="link" onclick="showAmendment('+a.no+')">View impact →</span></div>';
+ }).join("")+'</div></div>';
+ render(html); renderRight(null);
+}
+function showAmendment(no){
+ var a=byAmendNo(no); if(!a)return;
+ pushTrail(a.no+ordinalSuffix(a.no)+" Amendment","showAmendment("+a.no+")");
+ var affected=(a.articles||[]).map(byArticle).filter(function(x){return x&&x.explanation});
+ var html='<div class="content-head"><div><div class="eyebrow">'+a.year+'</div><h2>'+esc(a.name)+'</h2><p>Amendment reading view</p></div></div>';
+ html+='<div class="card"><h3>Purpose</h3><p>'+esc(a.purpose)+'</p>'+
+  '<div class="badges"><span class="badge imp">Year · '+a.year+'</span><span class="badge freq">'+a.no+ordinalSuffix(a.no)+' Amendment</span></div></div>';
+ html+='<div class="card"><ul class="clause-list">'+
+  '<li><b>Added:</b> '+esc(a.added||"—")+'</li>'+
+  '<li><b>Modified:</b> '+esc(a.modified||"—")+'</li>'+
+  '<li><b>Deleted / omitted:</b> '+esc(a.deleted||"—")+'</li>'+
+  '<li><b>Articles affected:</b> '+(a.articles&&a.articles.length?a.articles.join(", "):"—")+'</li>'+
+  '<li><b>Schedules affected:</b> '+(a.schedules&&a.schedules.length?a.schedules.map(function(s){return "Schedule "+s}).join(", "):"—")+'</li>'+
+ '</ul></div>';
+ html+='<div class="callout"><b>Historical context.</b> '+esc(a.notes)+'</div>';
+ if(affected.length){
+  html+='<div class="content-head"><div><h2>Articles affected (in reading dataset)</h2></div></div>';
+  html+=articleCards(affected);
+ }
+ document.getElementById("content").innerHTML=crumbBar()+html;renderCrumbs();
+ renderRight(null);
+}
+
+var STOPWORDS={"and":1,"of":1,"the":1,"in":1,"for":1,"to":1,"a":1,"&":1};
+function tokens(s){
+ return String(s).toLowerCase().replace(/[\/&]/g," ").split(/[\s,]+/).filter(function(w){return w&&!STOPWORDS[w]});
+}
+function articleHaystack(a){
+ return [a.title,a.chapter,"part "+a.part].concat(a.keywords||[],a.bodies||[],a.offices||[]).join(" ").toLowerCase();
+}
+function hasWord(hay,tok){
+ if(tok.length<4){
+  var re=new RegExp("(^|[^a-z0-9])"+tok.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"($|[^a-z0-9])");
+  return re.test(hay);
+ }
+ return hay.indexOf(tok)>=0;
+}
+function topicMatch(article,queryTerms){
+ var hay=articleHaystack(article);
+ return queryTerms.some(function(term){
+  var termTokens=tokens(term);
+  if(!termTokens.length)return false;
+  return termTokens.every(function(tok){return hasWord(hay,tok)});
+ });
+}
+function topic(t,el){
+ setNav(null); pushTrail(t,"topic("+jarg(t)+")");
+ var terms=[t].concat(CATEGORY_ALIASES[t]||[]);
+ var list=ARTICLES.filter(function(a){return a.explanation && topicMatch(a,terms)});
+ var html='<div class="content-head"><div><div class="eyebrow">Constitutional Category</div><h2>'+esc(t)+'</h2><p>Every article in the reading dataset connected to this subject, matched by tag, office, body and chapter.</p></div></div>';
+ if(!list.length){
+  html+='<div class="empty">No articles are linked to <b>'+esc(t)+'</b> in the current reading dataset yet. The category is indexed and will populate automatically as matching articles are added to the data layer.</div>';
+  html+='<div class="content-head"><div><h2>Related categories to try</h2></div></div><div class="card"><div class="pillset">'+
+   TOPIC_CATEGORIES.slice(0,10).map(function(c){return '<span class="pill-mini" onclick="topic('+jarg(c)+')">'+esc(c)+'</span>'}).join("")+'</div></div>';
+ } else {
+  html+=articleCards(list);
+ }
+ render(html); renderRight(null);
+}
+
+function showBookmarks(){
+ setNav("bookmarks"); resetTrail("Bookmarks","showBookmarks()");
+ var saved=bookmarks().map(byArticle).filter(function(a){return a&&a.explanation});
+ var html='<div class="content-head"><div><h2>Bookmarks</h2><p>Saved locally in this browser.</p></div></div>';
+ html+=saved.length?articleCards(saved):'<div class="empty">No bookmarks yet. Open an article and use "☆ Save".</div>';
+ render(html); renderRight(null);
+}
+
+/* ======================================================================
+   RIGHT SIDEBAR
+   ====================================================================== */
+function renderRight(a){
+ var html='<div class="side-card"><h4>Current edition</h4><div class="status"><i class="dot"></i> Official source tracked</div>'+
+  '<p>2026 consolidated English edition, published 12 June 2026 by the Legislative Department.</p></div>';
+ if(a){
+  html+='<div class="side-card"><h4>Quick summary</h4><p>'+esc(a.summary)+'</p></div>';
+  html+='<div class="side-card"><h4>Related articles</h4>'+
+   ((a.related||[]).length?(a.related.slice(0,8).map(function(r){return '<div class="related"><span>Article '+esc(r)+'</span><span class="link" onclick="showArticle('+jarg(r)+')">Open</span></div>'}).join("")):'<p>None recorded.</p>')+'</div>';
+  html+='<div class="side-card"><h4>Related part</h4><p><span class="link" onclick="showPart('+jarg(a.part)+')">Part '+esc(a.part)+'</span></p></div>';
+  if((a.schedules||[]).length)html+='<div class="side-card"><h4>Related schedules</h4><div class="pillset">'+a.schedules.map(function(s){return '<span class="pill-mini" onclick="showSchedule('+s+')">Schedule '+s+'</span>'}).join("")+'</div></div>';
+  if((a.bodies||[]).length||(a.offices||[]).length)html+='<div class="side-card"><h4>Related bodies / offices</h4><div class="pillset">'+
+   (a.bodies||[]).concat(a.offices||[]).map(function(b){return '<span class="pill-mini" onclick="topic(\''+esc(b).replace(/'/g,"\\'")+'\')">'+esc(b)+'</span>'}).join("")+'</div></div>';
+  if((a.amendments||[]).length)html+='<div class="side-card"><h4>Related amendments</h4>'+
+   a.amendments.map(function(no){var am=byAmendNo(no);return '<div class="related"><span>'+no+ordinalSuffix(no)+' Amendment</span>'+(am?'<span class="link" onclick="showAmendment('+no+')">Open</span>':'')+'</div>'}).join("")+'</div>';
+ } else {
+  html+='<div class="side-card"><h4>For SSC aspirants</h4><p>Every article is tagged with <b>Importance</b>, <b>SSC frequency</b> and <b>Recency</b> to speed up revision-oriented browsing.</p></div>';
+  html+='<div class="side-card"><h4>Navigation</h4><p>Every relationship shown on this page — articles, parts, topics, amendments, schedules and breadcrumbs — is clickable.</p></div>';
+ }
+ document.getElementById("rightInner").innerHTML=html;
+}
+
+/* ======================================================================
+   SEARCH
+   ====================================================================== */
+function openSearch(){
+ document.getElementById("searchModal").classList.add("open");
+ renderRecentPills();
+ var input=document.getElementById("modalSearch");input.value="";runSearch("");
+ setTimeout(function(){input.focus()},40);
+}
+function closeSearch(){document.getElementById("searchModal").classList.remove("open")}
+function renderRecentPills(){
+ var arr=recent(),box=document.getElementById("recentPills");
+ box.innerHTML=arr.length?arr.map(function(q){return '<button class="recent-pill" onclick="searchFromPill('+jarg(q)+')">'+esc(q)+'</button>'}).join(""):'<span style="font-size:10.5px;color:var(--muted)">No recent searches yet.</span>';
+}
+function searchFromPill(q){document.getElementById("modalSearch").value=q;runSearch(q)}
+function allSearchRecords(){
+ var all=[];
+ ARTICLES.forEach(function(a){if(a.explanation)all.push({type:"Article "+a.n,title:a.title,text:a.summary,fn:function(){showArticle(a.n)}})});
+ PARTS.forEach(function(p){all.push({type:"Part "+p.roman,title:p.name,text:"Articles "+p.range,fn:function(){showPart(p.roman)}})});
+ SCHEDULES.forEach(function(s){all.push({type:s.title,title:s.name,text:s.summary,fn:function(){showSchedule(s.id)}})});
+ AMENDMENTS.forEach(function(a){all.push({type:a.no+ordinalSuffix(a.no)+" Amendment",title:a.name,text:a.year+" · "+a.purpose,fn:function(){showAmendment(a.no)}})});
+ TOPIC_CATEGORIES.forEach(function(t){all.push({type:"Category",title:t,text:"Browse articles related to "+t,fn:function(){topic(t)}})});
+ return all;
+}
+function runSearch(q){
+ q=String(q||"").trim();
+ var records=allSearchRecords();
+ var hit=q?records.filter(function(x){return (x.type+" "+x.title+" "+x.text).toLowerCase().indexOf(q.toLowerCase())>=0}).slice(0,24)
+  :records.filter(function(x){return x.type.indexOf("Article")===0}).slice(0,10);
+ var html="";
+ if(!q)html='<div class="empty">Search by article number, part, topic, amendment, office, schedule or concept.</div>';
+ else if(!hit.length)html='<div class="empty">No matching constitutional records.</div>';
+ else hit.forEach(function(x,i){html+='<div class="result" data-i="'+i+'"><small>'+esc(x.type)+'</small><b>'+esc(x.title)+'</b><span>'+esc(x.text)+'</span></div>'});
+ document.getElementById("results").innerHTML=html;
+ document.querySelectorAll("[data-i]").forEach(function(node){
+  var i=parseInt(node.getAttribute("data-i"));
+  node.onclick=function(){saveRecent(q);closeSearch();hit[i].fn();renderRecentPills()};
+ });
+}
+
+/* ======================================================================
+   MISC
+   ====================================================================== */
+function toast(t){
+ var x=document.getElementById("toast");x.textContent=t;x.style.display="block";
+ clearTimeout(window.__ceToast);window.__ceToast=setTimeout(function(){x.style.display="none"},1900);
+}
+
+buildSidebar();
+showHome();
+
+/* ---- close to dashboard (fullscreen overlay) ---- */
+function doExit(){
+  try{ window.parent.postMessage({ type:"closeFullscreen" }, "*"); }
+  catch(e){ window.close(); }
+}
+window.addEventListener("keydown", function(e){
+  var t=e.target;
+  if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable)) return;
+  if(e.key==="b" || e.key==="B"){ e.preventDefault(); doExit(); }
+});
+document.querySelectorAll(".topbar .tbtn.ghost").forEach(function(btn){
+  btn.title="Close (B)";
+  btn.onclick=doExit;
+});
+</script>
+</body>
+</html>

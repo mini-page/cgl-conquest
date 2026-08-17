@@ -1,0 +1,2796 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometry &amp; Mensuration Atlas — SSC CGL &amp; CHSL</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#05080d;
+  --bg-alt:#0a1119;
+  --panel:rgba(16,24,36,0.72);
+  --panel-solid:#0d1520;
+  --line:rgba(148,175,199,0.14);
+  --line-strong:rgba(148,175,199,0.28);
+  --text:#e7edf3;
+  --text-dim:#8ea0b3;
+  --text-faint:#546274;
+  --accent:#19c37d;
+  --accent-dim:#0f7a52;
+  --cyan:#22d3ee;
+  --amber:#f0a839;
+  --purple:#a78bfa;
+  --red:#f0554d;
+  --rose:#ea5757;
+  --mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+  --radius: 10px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 18% -8%, rgba(25,195,125,0.12), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 100% 10%, rgba(34,211,238,0.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  overflow:hidden;
+  height:100vh;
+}
+::selection{background:rgba(25,195,125,0.35);}
+::-webkit-scrollbar{width:7px; height:7px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--line-strong); border-radius:8px;}
+
+.app{
+  display:grid;
+  grid-template-rows: 56px 1fr;
+  grid-template-columns: 270px 1fr;
+  grid-template-areas:
+    "top top"
+    "side main";
+  height:100vh;
+  gap:1px;
+  background:var(--line);
+}
+.app > *{background:var(--bg);}
+
+/* TOPBAR */
+.topbar{
+  grid-area:top;
+  display:flex; align-items:center; gap:14px;
+  padding:0 18px;
+  background:linear-gradient(180deg, var(--bg-alt), var(--bg));
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  display:flex; align-items:center; gap:9px;
+  font-family:var(--mono);
+  font-size:14px;
+  letter-spacing:0.5px;
+  color:var(--text);
+  white-space:nowrap;
+}
+.brand .dot{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 10px 2px rgba(25,195,125,0.7);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.5; transform:scale(0.75);}}
+
+.nav-tabs{
+  display:flex; gap:4px; flex-wrap:nowrap; overflow-x:auto;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:3px;
+  scrollbar-width:none;
+}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{
+  border:none; background:transparent; color:var(--text-dim);
+  font-family:var(--mono); font-size:10.5px; letter-spacing:0.5px;
+  padding:6px 12px; border-radius:999px; cursor:pointer;
+  transition: all .18s ease; text-transform:uppercase; white-space:nowrap;
+  display:flex; align-items:center; gap:6px;
+}
+.nav-tab:hover{color:var(--text); background:rgba(255,255,255,0.05);}
+.nav-tab.active{background:var(--cyan); color:#04140c; font-weight:700; box-shadow:0 0 12px rgba(34,211,238,0.3);}
+
+.search-wrap{position:relative; flex:1; max-width:280px; margin-left:auto;}
+.search-wrap input{
+  width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--line);
+  color:var(--text); padding:7px 12px 7px 32px; border-radius:8px;
+  font-family:var(--sans); font-size:12.5px; outline:none; transition:border-color .15s;
+}
+.search-wrap input:focus{border-color:var(--accent);}
+.search-wrap svg{position:absolute; left:10px; top:50%; transform:translateY(-50%); width:14px; height:14px; color:var(--text-faint); pointer-events:none;}
+.search-results{
+  position:absolute; top:calc(100%+6px); left:0; right:0;
+  background:var(--panel-solid); border:1px solid var(--line-strong); border-radius:8px;
+  max-height:400px; overflow-y:auto; z-index:60; box-shadow:0 20px 40px rgba(0,0,0,0.6); display:none;
+}
+.search-results.show{display:block;}
+.search-item{padding:9px 12px; cursor:pointer; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--line); font-size:12px;}
+.search-item:last-child{border-bottom:none;}
+.search-item:hover{background:rgba(255,255,255,0.06);}
+.search-item .tag{font-family:var(--mono); font-size:9px; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.06); color:var(--text-faint); text-transform:uppercase;}
+
+.close-btn{
+  display:flex; align-items:center; justify-content:center; width:32px; height:32px;
+  border-radius:8px; background:rgba(255,255,255,0.04); border:1px solid var(--line);
+  color:var(--text-dim); cursor:pointer; transition:all .15s; flex-shrink:0;
+}
+.close-btn:hover{border-color:var(--accent); color:var(--accent); background:rgba(255,255,255,0.08);}
+
+/* SIDEBAR */
+.sidebar{
+  grid-area:side; background:var(--bg-alt); border-right:1px solid var(--line);
+  overflow-y:auto; padding:14px 12px; display:flex; flex-direction:column; gap:14px;
+}
+.side-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;}
+.side-header h4{font-family:var(--mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--cyan); margin:0; font-weight:700;}
+.side-count{font-family:var(--mono); font-size:10px; color:var(--text-faint); background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;}
+.shape-list{display:flex; flex-direction:column; gap:3px;}
+.shape-item{
+  padding:8px 10px; border-radius:7px; cursor:pointer; font-size:12.5px;
+  color:var(--text-dim); display:flex; align-items:center; gap:9px;
+  transition:all .12s ease; border:1px solid transparent;
+}
+.shape-item:hover{background:rgba(255,255,255,0.04); color:var(--text); transform:translateX(2px);}
+.shape-item.active{background:rgba(34,211,238,0.1); border-color:rgba(34,211,238,0.3); color:var(--cyan); font-weight:600;}
+.shape-item .icon{width:20px; text-align:center; font-size:13px; flex-shrink:0;}
+.shape-item .name{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.shape-item .badge-mini{font-family:var(--mono); font-size:8px; padding:1px 4px; border-radius:3px; background:rgba(240,168,57,0.15); color:var(--amber); font-weight:600;}
+
+.reset-btn{
+  margin-top:auto; background:rgba(255,255,255,0.04); border:1px solid var(--line);
+  color:var(--text-dim); font-family:var(--mono); font-size:10.5px; padding:9px; border-radius:8px;
+  cursor:pointer; letter-spacing:0.5px; text-transform:uppercase; transition:.15s; width:100%;
+}
+.reset-btn:hover{border-color:var(--accent); color:var(--accent); background:rgba(25,195,125,0.08);}
+
+/* MAIN CONTENT CONTAINER - FULL REMAINING WIDTH */
+.main{
+  grid-area:main; overflow-y:auto; padding:24px 36px 80px; width:100%; max-width:100%;
+}
+
+/* CARDS & UI COMPONENTS */
+.card-header-bar{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:16px;}
+.card-eyebrow{font-family:var(--mono); font-size:10.5px; letter-spacing:1.2px; text-transform:uppercase; color:var(--cyan); margin-bottom:4px; display:flex; align-items:center; gap:8px;}
+.card-title{font-size:28px; font-weight:800; margin:0 0 6px 0; letter-spacing:-0.4px; line-height:1.2;}
+.card-sub{font-size:13px; color:var(--text-dim); font-family:var(--mono); line-height:1.5; max-width:900px;}
+
+.badge{display:inline-block; font-size:9.5px; padding:3px 8px; border-radius:5px; text-transform:uppercase; letter-spacing:0.5px; font-family:var(--mono); font-weight:700;}
+.badge.easy{background:rgba(25,195,125,0.12); color:var(--accent); border:1px solid rgba(25,195,125,0.3);}
+.badge.medium{background:rgba(240,168,57,0.12); color:var(--amber); border:1px solid rgba(240,168,57,0.3);}
+.badge.hard{background:rgba(240,85,77,0.12); color:var(--red); border:1px solid rgba(240,85,77,0.3);}
+
+.section-h{
+  font-family:var(--mono); font-size:11px; letter-spacing:1px;
+  text-transform:uppercase; color:var(--text-faint); margin:26px 0 12px 0;
+  padding-top:14px; border-top:1px solid var(--line); display:flex; align-items:center; gap:8px;
+}
+.section-h:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+
+/* DIAGRAM BOX & CUT CONTROLS */
+.diagram-container{margin:16px 0 24px;}
+.slice-bar{
+  display:flex; gap:6px; margin-bottom:8px; justify-content:center;
+}
+.slice-btn{
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text-dim);
+  font-family:var(--mono); font-size:10px; padding:4px 10px; border-radius:6px; cursor:pointer; transition:.15s;
+}
+.slice-btn:hover{color:var(--text); border-color:var(--cyan);}
+.slice-btn.active{background:rgba(34,211,238,0.15); color:var(--cyan); border-color:var(--cyan); font-weight:600;}
+
+.diagram-box{
+  background:linear-gradient(135deg, rgba(16,24,36,0.85), rgba(10,17,25,0.95));
+  border:1px solid var(--line-strong); border-radius:14px;
+  padding:20px; text-align:center; min-height:240px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.4); position:relative; overflow:hidden;
+}
+.diagram-box::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, var(--cyan), transparent); opacity:0.4;
+}
+.diagram-box svg{max-width:100%; height:auto; max-height:260px; filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));}
+
+/* TABLES & GRIDS */
+.formula-table{width:100%; border-collapse:collapse; font-size:12.5px; font-family:var(--mono); margin:10px 0;}
+.formula-table th{text-align:left; color:var(--text-dim); font-weight:700; padding:9px 12px; font-size:10.5px; text-transform:uppercase; letter-spacing:0.6px; border-bottom:2px solid var(--line-strong); background:rgba(255,255,255,0.02);}
+.formula-table td{padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:middle;}
+.formula-table tr:hover td{background:rgba(255,255,255,0.03);}
+.formula-table .formula{font-family:var(--mono); font-size:13.5px; color:var(--cyan); font-weight:600;}
+.formula-table .var{font-style:italic; color:var(--amber); font-weight:600;}
+
+.props-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px; margin:10px 0;}
+.prop-item{
+  background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:8px;
+  padding:10px 12px; font-size:12.5px; color:var(--text-dim); display:flex; align-items:flex-start; gap:9px; line-height:1.5;
+}
+.prop-item:before{content:'✓'; color:var(--accent); font-weight:700; font-size:12px; margin-top:1px; flex-shrink:0;}
+
+.info-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin:10px 0;}
+.info-cell{background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:9px; padding:10px 12px;}
+.info-cell label{display:block; font-family:var(--mono); font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:4px;}
+.info-cell .val{font-size:13.5px; color:var(--text); font-weight:600; line-height:1.4;}
+.info-cell .desc{font-size:11px; color:var(--text-dim); margin-top:2px; line-height:1.3;}
+
+/* LIVE CALCULATOR */
+.calculator{
+  background:linear-gradient(180deg, var(--panel-solid), rgba(13,21,32,0.7));
+  border:1px solid var(--line-strong); border-radius:12px; padding:18px 20px; margin:16px 0;
+  box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+.calc-formula{font-family:var(--mono); font-size:13px; color:var(--cyan); margin-bottom:16px; text-align:center; font-weight:700;}
+.calc-formula .var{color:var(--amber);}
+.calc-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:14px; margin-bottom:16px;}
+.calc-field{display:flex; flex-direction:column; gap:5px;}
+.calc-field label{font-family:var(--mono); font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.5px;}
+.calc-field input{
+  padding:8px 12px; border:1px solid var(--line-strong); border-radius:7px;
+  background:rgba(255,255,255,0.05); color:var(--text); font-family:var(--mono); font-size:13px; outline:none; transition:border-color .15s;
+}
+.calc-field input:focus{border-color:var(--accent); background:rgba(255,255,255,0.08);}
+
+/* RELATED CONCEPTS ACCORDION */
+.related-accordion{display:flex; flex-direction:column; gap:8px; margin:10px 0 20px;}
+.acc-item{
+  background:rgba(255,255,255,0.025); border:1px solid var(--line); border-radius:10px; overflow:hidden;
+  transition: border-color .15s;
+}
+.acc-item.open{border-color:var(--line-strong);}
+.acc-head{
+  display:flex; align-items:center; gap:11px; padding:13px 15px; cursor:pointer; user-select:none;
+}
+.acc-head:hover{background:rgba(255,255,255,0.03);}
+.acc-icon{font-size:17px; width:22px; text-align:center; flex-shrink:0;}
+.acc-title{font-size:13.5px; font-weight:700; color:var(--text); flex-shrink:0;}
+.acc-sub{font-size:11.5px; color:var(--text-faint); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.acc-chev{font-size:11px; color:var(--text-faint); transition:transform .2s; flex-shrink:0;}
+.acc-item.open .acc-chev{transform:rotate(180deg);}
+.acc-body{
+  max-height:0; overflow:hidden; transition:max-height .3s ease; padding:0 15px;
+}
+.acc-item.open .acc-body{max-height:900px; padding:0 15px 16px;}
+.acc-diagram{background:rgba(0,0,0,0.15); border-radius:8px; padding:6px; margin-top:2px;}
+.acc-diagram svg{width:100%; height:auto; display:block; max-height:160px;}
+.calc-result{
+  background:rgba(25,195,125,0.08); border:1px solid rgba(25,195,125,0.3); border-radius:9px; padding:14px; text-align:center; margin-top:14px;
+}
+.calc-result .label{font-family:var(--mono); font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.8px;}
+.calc-result .value{font-size:22px; font-weight:800; color:var(--accent); font-family:var(--mono); margin-top:4px;}
+
+/* NOTES & CALLOUTS */
+.note-card{
+  background:rgba(240,168,57,0.06); border:1px solid rgba(240,168,57,0.22); border-radius:9px;
+  padding:12px 14px; font-size:13px; line-height:1.6; color:var(--text-dim); margin:10px 0; position:relative; padding-left:34px;
+}
+.note-card:before{content:'★'; position:absolute; left:12px; top:12px; color:var(--amber); font-size:13px;}
+
+.mistake-card{
+  background:rgba(240,85,77,0.08); border-left:3px solid var(--red); border-radius:0 9px 9px 0;
+  padding:11px 14px; font-size:13px; color:var(--text-dim); margin:10px 0; line-height:1.5;
+}
+.mistake-card b{color:var(--red);}
+
+.mnemonic{
+  background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.25); border-radius:9px;
+  padding:12px 16px; font-size:13px; margin:10px 0; font-style:italic; color:var(--text-dim); line-height:1.5;
+}
+.mnemonic b{color:var(--purple); font-style:normal;}
+
+/* COMPARISON MODE STYLES */
+.compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+.compare-card{background:var(--panel-solid); border:1px solid var(--line-strong); border-radius:12px; padding:16px;}
+.compare-select{
+  width:100%; padding:8px 12px; border-radius:7px; background:rgba(255,255,255,0.05);
+  border:1px solid var(--line-strong); color:var(--text); font-family:var(--mono); font-size:12.5px; margin-bottom:14px; outline:none;
+}
+.compare-select option{background:#0d1520; color:#fff;}
+.ratio-banner{
+  background:rgba(34,211,238,0.08); border:1px solid rgba(34,211,238,0.3); border-radius:10px;
+  padding:14px 18px; margin:16px 0; text-align:center; font-family:var(--mono);
+}
+.ratio-banner .r-title{font-size:11px; text-transform:uppercase; color:var(--text-faint); letter-spacing:1px;}
+.ratio-banner .r-val{font-size:20px; font-weight:800; color:var(--cyan); margin-top:4px;}
+
+/* QUIZ & FLASHCARD STYLES */
+.quiz-box{background:var(--panel-solid); border:1px solid var(--line-strong); border-radius:12px; padding:20px; margin-top:16px;}
+.quiz-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:16px 0;}
+.quiz-opt{
+  padding:12px 14px; border-radius:8px; background:rgba(255,255,255,0.03); border:1px solid var(--line);
+  color:var(--text); font-family:var(--mono); font-size:13px; text-align:left; cursor:pointer; transition:all .15s;
+}
+.quiz-opt:hover{background:rgba(255,255,255,0.07); border-color:var(--cyan);}
+.quiz-opt.correct{background:rgba(25,195,125,0.15) !important; border-color:var(--accent) !important; color:var(--accent); font-weight:700;}
+.quiz-opt.wrong{background:rgba(240,85,77,0.15) !important; border-color:var(--red) !important; color:var(--red);}
+
+@media (max-width:980px){
+  .app{grid-template-columns:1fr; grid-template-areas:"top""main"; grid-template-rows:auto 1fr;}
+  .sidebar{display:none;}
+  .main{padding:18px;}
+  .compare-grid{grid-template-columns:1fr;}
+  .quiz-options{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>GEOMETRY ATLAS</span>
+    </div>
+    <nav class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-tab="fundamentals"><i class="fa-solid fa-circle-dot"></i> Fundamentals</button>
+      <button class="nav-tab" data-tab="2d"><i class="fa-solid fa-shapes"></i> 2D Shapes</button>
+      <button class="nav-tab" data-tab="3d"><i class="fa-solid fa-cube"></i> 3D Solids</button>
+      <button class="nav-tab" data-tab="coordinate"><i class="fa-solid fa-chart-line"></i> Coordinate Geometry</button>
+      <button class="nav-tab" data-tab="trigonometry"><i class="fa-solid fa-calculator"></i> Trigonometry</button>
+      <button class="nav-tab" data-tab="theorems"><i class="fa-solid fa-graduation-cap"></i> Theorems Index</button>
+    </nav>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="Search shapes, formulas, tangents..." autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <button id="atlasCloseBtn" class="close-btn" title="Close Atlas (B)">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+  </div>
+  <div class="sidebar" id="sidebar">
+    <div class="side-header">
+      <h4 id="sidebarTitle">2D Shapes</h4>
+      <span class="side-count" id="sidebarCount">26 items</span>
+    </div>
+    <div class="shape-list" id="shapeList"></div>
+    <button class="reset-btn" id="resetBtn">↺ Reset View</button>
+  </div>
+  <div class="main" id="mainContent">
+    <!-- Main content rendered dynamically -->
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// ====================
+// HIGH-FREQUENCY SSC CGL SHAPES ORDERED BY FREQUENCY
+// ====================
+
+const FUNDAMENTALS = [
+  {id:"point", name:"Point (Dot)", icon:"•", color:"#22d3ee", group:"fundamentals", star:true},
+  {id:"line", name:"Line", icon:"—", color:"#22d3ee", group:"fundamentals", star:true},
+  {id:"ray", name:"Ray", icon:"→", color:"#22d3ee", group:"fundamentals", star:true},
+  {id:"line-segment", name:"Line Segment", icon:"⎯", color:"#22d3ee", group:"fundamentals", star:true},
+  {id:"angle-types", name:"Angle & Its Types", icon:"∠", color:"#f0a839", group:"fundamentals", star:true},
+  {id:"parallel-transversal", name:"Parallel Lines & Transversal", icon:"∥", color:"#a78bfa", group:"fundamentals", star:true}
+];
+
+const SHAPES_2D = [
+  {id:"circle", name:"Circle Basics", icon:"○", color:"#22d3ee", group:"2d", star:true},
+  {id:"equilateral-triangle", name:"Equilateral Triangle", icon:"△", color:"#f0a839", group:"2d", star:true},
+  {id:"right-triangle", name:"Right Triangle & Triples", icon:"△", color:"#f0a839", group:"2d", star:true},
+  {id:"rhombus", name:"Rhombus & Diagonals", icon:"◊", color:"#a78bfa", group:"2d", star:true},
+  {id:"trapezium", name:"Trapezium & Midline", icon:"⌕", color:"#a78bfa", group:"2d", star:true},
+  {id:"hexagon", name:"Regular Hexagon", icon:"⬡", color:"#19c37d", group:"2d", star:true},
+  {id:"cyclic-quadrilateral", name:"Cyclic Quadrilateral", icon:"⌫", color:"#a78bfa", group:"2d", star:true},
+  {id:"square", name:"Square & Diagonals", icon:"□", color:"#a78bfa", group:"2d", star:true},
+  {id:"rectangle", name:"Rectangle & Paths", icon:"▭", color:"#a78bfa", group:"2d", star:true},
+  {id:"sector", name:"Sector of Circle", icon:"⌒", color:"#fbbf24", group:"2d", star:true},
+  {id:"annulus", name:"Annulus (Circular Ring)", icon:"⭕", color:"#fbbf24", group:"2d", star:true},
+  {id:"regular-polygon", name:"Regular Polygon (n-gon)", icon:"⬡", color:"#19c37d", group:"2d", star:true},
+  {id:"triangle", name:"General Triangle", icon:"△", color:"#f0a839", group:"2d"},
+  {id:"isosceles-triangle", name:"Isosceles Triangle", icon:"△", color:"#f0a839", group:"2d"},
+  {id:"scalene-triangle", name:"Scalene Triangle", icon:"△", color:"#f0a839", group:"2d"},
+  {id:"parallelogram", name:"Parallelogram", icon:"▱", color:"#a78bfa", group:"2d"},
+  {id:"segment", name:"Segment of Circle", icon:"⌒", color:"#fbbf24", group:"2d"},
+  {id:"semicircle", name:"Semi-Circle", icon:"⋎", color:"#22d3ee", group:"2d"},
+  {id:"quarter-circle", name:"Quarter Circle", icon:"⊗", color:"#22d3ee", group:"2d"},
+  {id:"kite", name:"Kite", icon:"<>", color:"#a78bfa", group:"2d"},
+  {id:"pentagon", name:"Pentagon", icon:"⬟", color:"#19c37d", group:"2d"},
+  {id:"octagon", name:"Octagon", icon:"⬢", color:"#19c37d", group:"2d"},
+  {id:"ellipse", name:"Ellipse", icon:"⚬", color:"#fbbf24", group:"2d"},
+  {id:"composite-2d", name:"Composite Figures", icon:"≡", color:"#94a3b8", group:"2d"}
+];
+
+const SHAPES_3D = [
+  {id:"cube", name:"Cube", icon:"⬛", color:"#fbbf24", group:"3d", star:true},
+  {id:"cuboid", name:"Cuboid & Room Walls", icon:"📦", color:"#fbbf24", group:"3d", star:true},
+  {id:"sphere", name:"Sphere & Recasting", icon:"⚽", color:"#22d3ee", group:"3d", star:true},
+  {id:"hemisphere", name:"Hemisphere (CSA/TSA)", icon:"☽", color:"#22d3ee", group:"3d", star:true},
+  {id:"cylinder", name:"Cylinder & Pipe Flow", icon:"🛢", color:"#19c37d", group:"3d", star:true},
+  {id:"cone", name:"Cone & Canvas Tents", icon:"🔺", color:"#19c37d", group:"3d", star:true},
+  {id:"frustum", name:"Frustum of Cone (Bucket)", icon:"⌵", color:"#19c37d", group:"3d", star:true},
+  {id:"square-pyramid", name:"Square Pyramid", icon:"🔺", color:"#a78bfa", group:"3d", star:true},
+  {id:"tetrahedron", name:"Regular Tetrahedron", icon:"🔺", color:"#a78bfa", group:"3d", star:true},
+  {id:"triangular-prism", name:"Triangular Prism", icon:"◸", color:"#f0a839", group:"3d"},
+  {id:"hexagonal-prism", name:"Hexagonal Prism", icon:"◸", color:"#f0a839", group:"3d"},
+  {id:"octahedron", name:"Octahedron", icon:"🔷", color:"#a78bfa", group:"3d"},
+  {id:"torus", name:"Torus (Doughnut)", icon:"🍩", color:"#ea5757", group:"3d"},
+  {id:"capsule", name:"Capsule (Spherocylinder)", icon:"🛢", color:"#ea5757", group:"3d"},
+  {id:"polyhedra", name:"Polyhedra & Euler's Rule", icon:"◆", color:"#94a3b8", group:"3d"}
+];
+
+const CIRCLE_TANGENTS = [
+  {id:"tangent-properties", name:"Tangent & Radius (90°)", icon:"⟂", color:"#19c37d", group:"circle", star:true},
+  {id:"external-tangents", name:"Tangents from External Point", icon:"⋏", color:"#19c37d", group:"circle", star:true},
+  {id:"direct-common-tangents", name:"Direct Common Tangents (DCT)", icon:"⇶", color:"#f0a839", group:"circle", star:true},
+  {id:"transverse-common-tangents", name:"Transverse Common Tangents (TCT)", icon:"⤲", color:"#f0a839", group:"circle", star:true},
+  {id:"secant-tangent", name:"Secant & Tangent Theorem (PT²)", icon:"⟀", color:"#22d3ee", group:"circle", star:true},
+  {id:"alternate-segment", name:"Alternate Segment Theorem", icon:"⊿", color:"#a78bfa", group:"circle", star:true},
+  {id:"intersecting-chords", name:"Intersecting Chords Theorem", icon:"✕", color:"#22d3ee", group:"circle", star:true},
+  {id:"incircle-circumcircle", name:"Incircle & Circumcircle", icon:"⨀", color:"#fbbf24", group:"circle", star:true},
+  {id:"circle", name:"Circle Fundamentals", icon:"○", color:"#22d3ee", group:"circle"}
+];
+
+const THEOREMS = [
+  {id:"tangent-radius", name:"Tangent-Radius Orthogonality", category:"Circle", content:"A tangent at any point of a circle is perpendicular to the radius through the point of contact (Angle = 90°)."},
+  {id:"tangents-equal", name:"Equal Tangents Theorem", category:"Circle", content:"The lengths of tangents drawn from an external point to a circle are equal (PA = PB)."},
+  {id:"direct-common-tangent", name:"Direct Common Tangent (DCT)", category:"Circle", content:"Length of DCT = √(d² - (r₁ - r₂)²), where d is the distance between centers."},
+  {id:"transverse-common-tangent", name:"Transverse Common Tangent (TCT)", category:"Circle", content:"Length of TCT = √(d² - (r₁ + r₂)²), where d is the distance between centers."},
+  {id:"alternate-segment-th", name:"Alternate Segment Theorem", category:"Circle", content:"The angle between a tangent and a chord equals the angle subtended by the chord in the alternate segment."},
+  {id:"power-of-point", name:"Secant-Tangent Theorem", category:"Circle", content:"If a tangent PT and secant P-A-B are drawn from external point P, then PT² = PA × PB."},
+  {id:"chord-intersecting-th", name:"Intersecting Chords Theorem", category:"Circle", content:"When two chords AB and CD intersect inside a circle at point P: PA × PB = PC × PD."},
+  {id:"pythagoras", name:"Pythagorean Theorem", category:"Triangle", content:"In a right-angled triangle, hypotenuse² = base² + height² (c² = a² + b²)."}
+];
+
+const CONVERSIONS = [
+  {id:"area-units", name:"Area Unit Conversions", items:[["1 cm²","0.0001 m²"],["1 m²","10,000 cm²"],["1 km²","1,000,000 m² = 100 hectares"],["1 hectare","10,000 m²"],["1 acre","4,046.86 m² ≈ 0.4047 hectares"]]},
+  {id:"volume-units", name:"Volume Unit Conversions", items:[["1 L","1,000 cm³ = 0.001 m³"],["1 m³","1,000 L = 1,000,000 cm³"],["1 mL","1 cm³"],["1 gallon (US)","3.785 L"]]}
+];
+
+const COORDINATE_DATA = [
+  {id:"co-distance", name:"Distance Formula", icon:"↔", color:"#22d3ee", group:"coordinate", star:true},
+  {id:"co-midpoint", name:"Midpoint Formula", icon:"◦", color:"#22d3ee", group:"coordinate", star:true},
+  {id:"co-section", name:"Section Formula", icon:"÷", color:"#22d3ee", group:"coordinate"},
+  {id:"co-centroid", name:"Centroid of Triangle", icon:"△", color:"#f0a839", group:"coordinate", star:true},
+  {id:"co-slope", name:"Slope of a Line", icon:"╱", color:"#a78bfa", group:"coordinate", star:true},
+  {id:"co-line-eq", name:"Equation of a Line", icon:"ℓ", color:"#a78bfa", group:"coordinate"},
+  {id:"co-circle-eq", name:"Equation of a Circle", icon:"○", color:"#19c37d", group:"coordinate"}
+];
+
+const TRIGONOMETRY_DATA = [
+  {id:"trig-ratios", name:"Trig Ratios (SOH-CAH-TOA)", icon:"∠", color:"#f0a839", group:"trigonometry", star:true},
+  {id:"trig-identities", name:"Fundamental Identities", icon:"≡", color:"#22d3ee", group:"trigonometry", star:true},
+  {id:"trig-values", name:"Standard Angle Values Table", icon:"▦", color:"#a78bfa", group:"trigonometry", star:true},
+  {id:"trig-heights", name:"Heights & Distances", icon:"⛰", color:"#19c37d", group:"trigonometry", star:true},
+  {id:"trig-sine-cosine-rule", name:"Sine & Cosine Rules", icon:"△", color:"#f0a839", group:"trigonometry"}
+];
+
+const TABS = [
+  {id:"fundamentals", name:"Fundamentals", data:FUNDAMENTALS, type:"shape"},
+  {id:"2d", name:"2D Shapes", data:SHAPES_2D, type:"shape"},
+  {id:"3d", name:"3D Solids", data:SHAPES_3D, type:"shape"},
+  {id:"coordinate", name:"Coordinate Geometry", data:COORDINATE_DATA, type:"shape"},
+  {id:"trigonometry", name:"Trigonometry", data:TRIGONOMETRY_DATA, type:"shape"},
+  {id:"theorems", name:"Theorems Index", data:THEOREMS, type:"theorem"}
+];
+
+// ====================
+// COMPLETE SHAPE DETAILS FOR ALL SHAPES
+// ====================
+
+const SHAPE_DETAILS = {
+
+"point": {
+  name:"Point (Dot)", subtitle:"The most basic building block of geometry — an exact location with no size",
+  icon:"•", color:"#22d3ee", difficulty:"easy",
+  overview:"A point marks an exact position in space. It has no length, width, height, or thickness — zero dimensions. It's usually shown as a small dot and named with a capital letter, like P.",
+  properties:[
+    "Zero-dimensional — no length, width, or height, only position",
+    "Named using a capital letter (e.g. Point A)",
+    "Infinitely many points lie on any line",
+    "Through a single point, infinitely many lines can pass",
+    "Through any two distinct points, exactly ONE line can pass",
+    "Points on the same line are called collinear points",
+    "Points that don't all lie on one line are non-collinear"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"line": {
+  name:"Line", subtitle:"A straight, one-dimensional figure that extends forever in both directions",
+  icon:"—", color:"#22d3ee", difficulty:"easy",
+  overview:"A line is a straight path of points extending infinitely in both directions, with no endpoints and no thickness. It's drawn with arrowheads on both ends to show it never stops.",
+  properties:[
+    "Extends infinitely in both directions — no endpoints",
+    "Has length (infinite) but no width or thickness — one-dimensional",
+    "Exactly one line passes through two given distinct points",
+    "Two distinct lines meet at exactly one point, or never meet (parallel)",
+    "Named using two points on it (line AB) or a single lowercase letter"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"ray": {
+  name:"Ray", subtitle:"Part of a line with one fixed starting point, extending forever in one direction",
+  icon:"→", color:"#22d3ee", difficulty:"easy",
+  overview:"A ray starts at one fixed point (the origin/endpoint) and extends infinitely in a single direction — like a beam of light. It has a beginning but no end.",
+  properties:[
+    "Has exactly ONE endpoint (the origin) — the other end is unbounded",
+    "Named starting with the endpoint first, e.g. ray AB starts at A, passes through B, and continues forever",
+    "Ray AB and ray BA are NOT the same ray — direction matters",
+    "Two rays sharing a common endpoint form an angle"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"line-segment": {
+  name:"Line Segment", subtitle:"Part of a line with two fixed endpoints — the only one of these with a measurable length",
+  icon:"⎯", color:"#22d3ee", difficulty:"easy",
+  overview:"A line segment is a straight path between two fixed endpoints. Unlike a line or ray, it doesn't extend forever — it has a definite, measurable length. Nearly every side of every polygon you'll study is a line segment.",
+  properties:[
+    "Has exactly TWO endpoints, e.g. segment AB",
+    "Has a fixed, measurable length (unlike a line or ray)",
+    "The midpoint of a segment divides it into two equal halves",
+    "A perpendicular bisector cuts a segment in half at 90°"
+  ],
+  variables:[{symbol:"AB",name:"Segment Length",desc:"Distance between endpoints A and B"}],
+  formulas:[{quantity:"Midpoint (on number line)",formula:"M = (A + B) / 2",example:"A=2, B=10 → M=6"}],
+  calc:{a:{label:"Point A (number line)",unit:""},b:{label:"Point B (number line)",unit:""},len:{formula:"Math.abs(b-a)",label:"Length AB"}}
+},
+"angle-types": {
+  name:"Angle & Its Types", subtitle:"Formed where two rays meet at a common endpoint (the vertex)",
+  icon:"∠", color:"#f0a839", difficulty:"easy",
+  overview:"An angle is the figure formed when two rays share a common endpoint, called the vertex. Angles are measured in degrees (°), and SSC questions constantly test whether you can name and classify them correctly.",
+  properties:[
+    "Acute angle: greater than 0° and less than 90°",
+    "Right angle: exactly 90°",
+    "Obtuse angle: greater than 90° and less than 180°",
+    "Straight angle: exactly 180° (a straight line)",
+    "Reflex angle: greater than 180° and less than 360°",
+    "Full (complete) angle: exactly 360°",
+    "Complementary angles: two angles that add up to 90°",
+    "Supplementary angles: two angles that add up to 180°",
+    "Vertically opposite angles (formed by two crossing lines) are always equal"
+  ],
+  variables:[{symbol:"θ",name:"Angle measure",desc:"Measured in degrees or radians"}],
+  formulas:[
+    {quantity:"Angles on a straight line",formula:"Sum = 180°",example:"Adjacent angles on a line add to 180°"},
+    {quantity:"Angles around a point",formula:"Sum = 360°",example:"All angles meeting at one point add to 360°"},
+    {quantity:"Complementary pair",formula:"θ + (90° − θ) = 90°",example:"35° and 55° are complementary"},
+    {quantity:"Supplementary pair",formula:"θ + (180° − θ) = 180°",example:"110° and 70° are supplementary"}
+  ],
+  calc:{theta:{label:"Angle θ (°)",unit:"°"},comp:{formula:"90-theta",label:"Complement (90°−θ)"},supp:{formula:"180-theta",label:"Supplement (180°−θ)"}}
+},
+"parallel-transversal": {
+  name:"Parallel Lines & Transversal", subtitle:"Two parallel lines cut by a third line create 8 angles with predictable relationships",
+  icon:"∥", color:"#a78bfa", difficulty:"medium",
+  overview:"Parallel lines never meet and stay the same distance apart. When a third line (a transversal) crosses both, it creates 8 angles. The relationships between these angles are one of the most frequently tested SSC geometry concepts.",
+  properties:[
+    "Corresponding angles (same position at each intersection) are EQUAL",
+    "Alternate interior angles (opposite sides, between the lines) are EQUAL",
+    "Alternate exterior angles (opposite sides, outside the lines) are EQUAL",
+    "Co-interior / allied angles (same side, between the lines) are SUPPLEMENTARY (sum = 180°)",
+    "Vertically opposite angles at each intersection are EQUAL",
+    "If corresponding angles are equal, the two lines MUST be parallel (converse also true)"
+  ],
+  variables:[], 
+  formulas:[
+    {quantity:"Corresponding angles",formula:"∠1 = ∠5 (equal)",example:"Same relative position at each crossing"},
+    {quantity:"Alternate interior angles",formula:"∠3 = ∠5 (equal)",example:"Opposite sides of the transversal, both between the lines — Z-shape pattern"},
+    {quantity:"Co-interior angles",formula:"∠4 + ∠5 = 180°",example:"Same side of the transversal, both between the lines — C/U-shape pattern, supplementary"}
+  ],
+  calc:{}
+},
+
+circle: {
+  name:"Circle", subtitle:"Set of all points in a plane equidistant from a fixed center",
+  icon:"○", color:"#22d3ee", difficulty:"easy",
+  overview:"A circle is a 2D curve bounded by points equidistant from center O. Crucial concepts include radius, diameter, circumference, chord, sector, segment, and tangent lines.",
+  properties:["All radii equal in length","Diameter = 2 × radius","Total angle subtended at center = 360°","Tangent line is perpendicular to radius at point of contact","Perpendicular from center to chord bisects the chord"],
+  variables:[{symbol:"r",name:"Radius",desc:"Distance from center to edge"},{symbol:"d",name:"Diameter",desc:"d = 2r"},{symbol:"C",name:"Circumference",desc:"C = 2πr"},{symbol:"A",name:"Area",desc:"A = πr²"}],
+  formulas:[{quantity:"Circumference",formula:"C = 2πr = πd",example:"r=7cm → C = 44cm"},{quantity:"Area",formula:"A = πr²",example:"r=7cm → A = 154cm²"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},circum:{formula:"2*Math.PI*r",label:"Circumference"},area:{formula:"Math.PI*r*r",label:"Area"}},
+  relatedIds:["tangent-properties","external-tangents","direct-common-tangents","transverse-common-tangents","secant-tangent","alternate-segment","intersecting-chords","incircle-circumcircle"]
+},
+"secant-tangent": {
+  name:"Secant-Tangent Theorem", subtitle:"Power of a Point — relates a tangent's length to a secant's two intersection distances",
+  icon:"⟀", color:"#22d3ee", difficulty:"hard",
+  overview:"From an external point P, draw a tangent PT touching the circle at T, and a secant that cuts the circle at two points A (nearer) and B (farther). Then PT² = PA × PB. This is a special case of the more general 'Power of a Point' rule.",
+  properties:[
+    "PT² = PA × PB (tangent-squared equals product of the whole secant and its external part)",
+    "If two different secants are drawn from the same external point P, then PA × PB = PC × PD",
+    "This is called the 'Power of the Point' with respect to the circle",
+    "Works only when P is OUTSIDE the circle"
+  ],
+  variables:[{symbol:"PT",name:"Tangent length",desc:"From P to point of contact T"},{symbol:"PA",name:"Near intersection",desc:"P to nearer point A"},{symbol:"PB",name:"Far intersection",desc:"P to farther point B"}],
+  formulas:[{quantity:"Secant-Tangent",formula:"PT² = PA × PB",example:"PA=4, PB=9 → PT=6"}],
+  calc:{pa:{label:"PA (near)",unit:"cm"},pb:{label:"PB (far)",unit:"cm"},pt:{formula:"Math.sqrt(pa*pb)",label:"Tangent PT"}}
+},
+"alternate-segment": {
+  name:"Alternate Segment Theorem", subtitle:"The angle between a tangent and a chord equals the inscribed angle on the other side",
+  icon:"⊿", color:"#a78bfa", difficulty:"hard",
+  overview:"When a tangent and a chord meet at the point of contact, the angle they form equals the angle subtended by that same chord in the alternate (opposite) segment of the circle. This lets you find unknown angles without ever measuring anything.",
+  properties:[
+    "∠ between tangent and chord = ∠ in the alternate segment",
+    "Applies at the exact point where the tangent touches the circle",
+    "Extremely common in 'find the angle' SSC questions combined with triangle angle sum"
+  ],
+  variables:[], 
+  formulas:[{quantity:"Alternate Segment",formula:"∠(tangent, chord) = ∠(inscribed, alternate segment)",example:"If tangent-chord angle = 50°, the inscribed angle on the far side is also 50°"}],
+  calc:{}
+},
+"intersecting-chords": {
+  name:"Intersecting Chords Theorem", subtitle:"When two chords cross inside a circle, the products of their segments are equal",
+  icon:"✕", color:"#22d3ee", difficulty:"medium",
+  overview:"If two chords AB and CD intersect inside a circle at a point P, then the products of the two segments of each chord are equal: PA × PB = PC × PD. If the chords (as secants) meet OUTSIDE the circle instead, the same product relationship still holds.",
+  properties:[
+    "PA × PB = PC × PD when chords intersect INSIDE the circle",
+    "Also called the 'Intersecting Secants' theorem when extended outside the circle",
+    "A special case of the general Power of a Point rule"
+  ],
+  variables:[{symbol:"PA, PB",name:"Segments of chord AB"},{symbol:"PC, PD",name:"Segments of chord CD"}],
+  formulas:[{quantity:"Intersecting Chords",formula:"PA × PB = PC × PD",example:"PA=3, PB=8, PC=4 → PD=6"}],
+  calc:{pa:{label:"PA",unit:"cm"},pb:{label:"PB",unit:"cm"},pc:{label:"PC",unit:"cm"},pd:{formula:"(pa*pb)/pc",label:"PD"}}
+},
+"incircle-circumcircle": {
+  name:"Incircle & Circumcircle", subtitle:"The circle inside a triangle vs. the circle around it",
+  icon:"⨀", color:"#fbbf24", difficulty:"hard",
+  overview:"The Incircle touches all three sides of a triangle from inside; its center (the incenter) is where the three angle bisectors meet. The Circumcircle passes through all three vertices; its center (the circumcenter) is where the three perpendicular bisectors of the sides meet.",
+  properties:[
+    "Incenter = intersection of the three angle bisectors",
+    "Circumcenter = intersection of the three perpendicular bisectors of the sides",
+    "Inradius r = Area / s, where s is the semi-perimeter",
+    "Circumradius R = (a × b × c) / (4 × Area)",
+    "For a right triangle, the circumcenter is the MIDPOINT of the hypotenuse, and R = hypotenuse / 2",
+    "For an equilateral triangle of side a: r = a/(2√3) and R = a/√3 (so R = 2r)"
+  ],
+  variables:[{symbol:"r",name:"Inradius"},{symbol:"R",name:"Circumradius"},{symbol:"s",name:"Semi-perimeter",desc:"s=(a+b+c)/2"}],
+  formulas:[
+    {quantity:"Inradius",formula:"r = Area / s",example:"Area=24, s=12 → r=2"},
+    {quantity:"Circumradius",formula:"R = (a·b·c) / (4·Area)",example:"a=3,b=4,c=5,Area=6 → R=2.5"},
+    {quantity:"Right triangle circumradius",formula:"R = hypotenuse / 2",example:"3-4-5 triangle → R = 2.5"}
+  ],
+  calc:{a:{label:"Side a",unit:"cm"},b:{label:"Side b",unit:"cm"},c:{label:"Side c",unit:"cm"},area:{label:"Area",unit:"cm²"},r:{formula:"area/((a+b+c)/2)",label:"Inradius r"},R:{formula:"(a*b*c)/(4*area)",label:"Circumradius R"}}
+},
+
+"co-distance": {
+  name:"Distance Formula", subtitle:"The straight-line distance between two points on a coordinate plane",
+  icon:"↔", color:"#22d3ee", difficulty:"easy",
+  overview:"The distance formula finds the straight-line length between two points (x₁,y₁) and (x₂,y₂) using the Pythagorean theorem — the horizontal and vertical gaps form the two legs of a right triangle.",
+  properties:["Derived directly from the Pythagorean theorem","Distance is always non-negative","Distance from a point to itself is 0"],
+  variables:[{symbol:"(x₁,y₁)",name:"First point"},{symbol:"(x₂,y₂)",name:"Second point"}],
+  formulas:[{quantity:"Distance",formula:"d = √[(x₂−x₁)² + (y₂−y₁)²]",example:"(0,0) & (3,4) → d = 5"}],
+  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},d:{formula:"Math.sqrt((x2-x1)**2+(y2-y1)**2)",label:"Distance"}}
+},
+"co-midpoint": {
+  name:"Midpoint Formula", subtitle:"The exact center point between two coordinates",
+  icon:"◦", color:"#22d3ee", difficulty:"easy",
+  overview:"The midpoint of a segment joining two points is simply the average of their x-coordinates and the average of their y-coordinates.",
+  properties:["Midpoint lies exactly halfway between the two points","Used to find the center of a diameter given its two endpoints"],
+  variables:[], 
+  formulas:[{quantity:"Midpoint",formula:"M = ((x₁+x₂)/2, (y₁+y₂)/2)",example:"(2,4) & (8,10) → M=(5,7)"}],
+  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},mx:{formula:"(x1+x2)/2",label:"Midpoint x"},my:{formula:"(y1+y2)/2",label:"Midpoint y"}}
+},
+"co-section": {
+  name:"Section Formula", subtitle:"Finds a point that divides a segment in a given ratio",
+  icon:"÷", color:"#22d3ee", difficulty:"medium",
+  overview:"The section formula finds the coordinates of a point that divides the segment joining two points in a given ratio m:n. When m=n, it reduces to the midpoint formula.",
+  properties:["Internal division: point lies BETWEEN the two given points","External division uses the same idea but with a minus sign","Midpoint formula is the special case m:n = 1:1"],
+  variables:[], 
+  formulas:[{quantity:"Internal Section (m:n)",formula:"P = ((mx₂+nx₁)/(m+n), (my₂+ny₁)/(m+n))",example:"Divides AB in ratio m:n from A"}],
+  calc:{}
+},
+"co-centroid": {
+  name:"Centroid of Triangle", subtitle:"The 'balance point' where all three medians of a triangle meet",
+  icon:"△", color:"#f0a839", difficulty:"medium",
+  overview:"The centroid is the average position of a triangle's three vertices — it's also the point where the three medians intersect, and it divides each median in a 2:1 ratio from the vertex.",
+  properties:["Centroid divides each median 2:1 (vertex side is longer)","Always lies INSIDE the triangle","Also the triangle's center of mass"],
+  variables:[],
+  formulas:[{quantity:"Centroid",formula:"G = ((x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3)",example:"(0,0),(6,0),(3,9) → G=(3,3)"}],
+  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},x3:{label:"x₃",unit:""},y3:{label:"y₃",unit:""},gx:{formula:"(x1+x2+x3)/3",label:"Centroid x"},gy:{formula:"(y1+y2+y3)/3",label:"Centroid y"}}
+},
+"co-slope": {
+  name:"Slope of a Line", subtitle:"How steep a line is — the ratio of vertical change to horizontal change",
+  icon:"╱", color:"#a78bfa", difficulty:"easy",
+  overview:"Slope measures a line's steepness and direction: rise (change in y) over run (change in x) between any two points on the line.",
+  properties:["Positive slope → line rises left to right","Negative slope → line falls left to right","Slope = 0 → horizontal line","Slope is undefined → vertical line","Parallel lines have EQUAL slopes","Perpendicular lines have slopes that multiply to −1"],
+  variables:[],
+  formulas:[{quantity:"Slope",formula:"m = (y₂−y₁)/(x₂−x₁)",example:"(1,2) & (4,11) → m=3"}],
+  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},m:{formula:"(y2-y1)/(x2-x1)",label:"Slope m"}}
+},
+"co-line-eq": {
+  name:"Equation of a Line", subtitle:"Different standard ways to write a straight line algebraically",
+  icon:"ℓ", color:"#a78bfa", difficulty:"medium",
+  overview:"A straight line can be written in several equivalent forms depending on what information you're given — slope & intercept, slope & one point, or two points.",
+  properties:["All forms describe the same line — just rearranged","Slope-intercept form is easiest to read the slope & y-intercept directly from"],
+  variables:[],
+  formulas:[
+    {quantity:"Slope-Intercept Form",formula:"y = mx + c",example:"m=slope, c=y-intercept"},
+    {quantity:"Point-Slope Form",formula:"y − y₁ = m(x − x₁)",example:"Line through (x₁,y₁) with slope m"},
+    {quantity:"Two-Point Form",formula:"(y−y₁)/(x−x₁) = (y₂−y₁)/(x₂−x₁)",example:"Line through two known points"}
+  ],
+  calc:{}
+},
+"co-circle-eq": {
+  name:"Equation of a Circle", subtitle:"The algebraic form describing every point on a circle",
+  icon:"○", color:"#19c37d", difficulty:"medium",
+  overview:"A circle with center (h,k) and radius r consists of every point (x,y) at exactly distance r from the center — which is exactly the distance formula set equal to r.",
+  properties:["Center (h,k), radius r","When centered at the origin, simplifies to x² + y² = r²"],
+  variables:[],
+  formulas:[{quantity:"Circle Equation",formula:"(x−h)² + (y−k)² = r²",example:"Center (2,3), r=5 → (x−2)²+(y−3)²=25"}],
+  calc:{h:{label:"Center h",unit:""},k:{label:"Center k",unit:""},r:{label:"Radius r",unit:""}}
+},
+
+"trig-ratios": {
+  name:"Trig Ratios (SOH-CAH-TOA)", subtitle:"The six ratios relating a right triangle's angle to its side lengths",
+  icon:"∠", color:"#f0a839", difficulty:"easy",
+  overview:"In a right triangle, each trig ratio compares two of the three sides relative to a chosen angle θ. SOH-CAH-TOA is the classic memory aid for the first three.",
+  properties:["sin θ = Opposite / Hypotenuse","cos θ = Adjacent / Hypotenuse","tan θ = Opposite / Adjacent","cosec θ = 1/sin θ, sec θ = 1/cos θ, cot θ = 1/tan θ","tan θ = sin θ / cos θ"],
+  variables:[],
+  formulas:[
+    {quantity:"Sine",formula:"sin θ = Opp/Hyp",example:""},
+    {quantity:"Cosine",formula:"cos θ = Adj/Hyp",example:""},
+    {quantity:"Tangent",formula:"tan θ = Opp/Adj",example:""}
+  ],
+  calc:{}
+},
+"trig-identities": {
+  name:"Fundamental Trig Identities", subtitle:"Equations true for every value of θ — the algebra engine behind trigonometry",
+  icon:"≡", color:"#22d3ee", difficulty:"medium",
+  overview:"These three Pythagorean identities are derived directly from the Pythagorean theorem applied to a right triangle, and they're used constantly to simplify trig expressions.",
+  properties:["sin²θ + cos²θ = 1","1 + tan²θ = sec²θ","1 + cot²θ = cosec²θ","All three are algebraically equivalent — divide the first by sin²θ or cos²θ to get the others"],
+  variables:[],
+  formulas:[
+    {quantity:"Identity 1",formula:"sin²θ + cos²θ = 1",example:""},
+    {quantity:"Identity 2",formula:"1 + tan²θ = sec²θ",example:""},
+    {quantity:"Identity 3",formula:"1 + cot²θ = cosec²θ",example:""}
+  ],
+  calc:{}
+},
+"trig-values": {
+  name:"Standard Angle Values Table", subtitle:"Exact trig ratio values for 0°, 30°, 45°, 60°, 90° — memorise these cold",
+  icon:"▦", color:"#a78bfa", difficulty:"easy",
+  overview:"SSC questions constantly assume instant recall of these five standard angles. Knowing this table cold — not calculating it — is what saves time in the exam.",
+  properties:[
+    "sin: 0, 1/2, 1/√2, √3/2, 1 (for 0°,30°,45°,60°,90°)",
+    "cos: 1, √3/2, 1/√2, 1/2, 0 (mirror image of sin)",
+    "tan: 0, 1/√3, 1, √3, undefined",
+    "Trick: sin values are √0/2, √1/2, √2/2, √3/2, √4/2 in order"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"trig-heights": {
+  name:"Heights & Distances", subtitle:"Using angles of elevation/depression to find unknown heights or distances",
+  icon:"⛰", color:"#19c37d", difficulty:"medium",
+  overview:"This is the most common real-world application of trigonometry in SSC exams — using a known distance and an angle of elevation (looking up) or depression (looking down) to find a height or distance you can't measure directly.",
+  properties:[
+    "Angle of Elevation = angle from horizontal UP to an object",
+    "Angle of Depression = angle from horizontal DOWN to an object",
+    "Angle of elevation from A to B = angle of depression from B to A (alternate angles, since the horizontals are parallel)",
+    "Always draw the right triangle first — height is Opposite, base distance is Adjacent"
+  ],
+  variables:[],
+  formulas:[{quantity:"Height from distance & angle",formula:"h = d × tan θ",example:"d=50m, θ=30° → h=50×(1/√3)≈28.9m"}],
+  calc:{d:{label:"Base distance (d)",unit:"m"},theta:{label:"Angle θ (°)",unit:"°"},h:{formula:"d*Math.tan(theta*Math.PI/180)",label:"Height h"}}
+},
+"trig-sine-cosine-rule": {
+  name:"Sine & Cosine Rules", subtitle:"Solve ANY triangle — not just right triangles — for missing sides or angles",
+  icon:"△", color:"#f0a839", difficulty:"hard",
+  overview:"The Sine and Cosine Rules extend trigonometry beyond right triangles, letting you solve for unknown sides or angles in any triangle when you know enough other parts.",
+  properties:["Sine Rule connects each side to the sine of its opposite angle, all equal to 2R (R = circumradius)","Cosine Rule is a generalised Pythagorean theorem — use it when you know two sides and the included angle, or all three sides"],
+  variables:[],
+  formulas:[
+    {quantity:"Sine Rule",formula:"a/sin A = b/sin B = c/sin C = 2R",example:""},
+    {quantity:"Cosine Rule",formula:"cos A = (b² + c² − a²) / (2bc)",example:""}
+  ],
+  calc:{}
+},
+
+
+"tangent-properties": {
+  name:"Tangent & Radius Theorem", subtitle:"Orthogonality of tangent line to circle radius at point of contact",
+  icon:"⟂", color:"#19c37d", difficulty:"medium",
+  overview:"A tangent is a straight line that touches the circle at exactly ONE point (Point of Contact T). The radius OT is perpendicular to the tangent line at T (Angle = 90°).",
+  properties:["Tangent touches circle at exactly one point T","Radius OT ⊥ Tangent Line at point T","Distance from center O to tangent line equals radius r"],
+  variables:[{symbol:"r",name:"Radius",desc:"Distance OT"},{symbol:"PT",name:"Tangent Segment",desc:"Touch length"}],
+  formulas:[{quantity:"Orthogonality",formula:"OT ⊥ Tangent Line (∠OTP = 90°)",example:"Radius to tangent is always right-angled"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},pt:{label:"Tangent Segment (PT)",unit:"cm"},op:{formula:"Math.sqrt(r*r+pt*pt)",label:"Distance OP"}}
+},
+
+"external-tangents": {
+  name:"Tangents from External Point", subtitle:"Equal length tangent segments drawn from a point outside circle",
+  icon:"⋏", color:"#19c37d", difficulty:"medium",
+  overview:"From any external point P outside a circle, exactly TWO tangents PA and PB can be drawn to the circle. The lengths of these tangent segments are equal (PA = PB).",
+  properties:["Lengths of tangents are equal: PA = PB","Line OP bisects the angle between tangents (∠APO = ∠BPO)","Quadrilateral OAPB is cyclic (∠OAP + ∠OBP = 180°)"],
+  variables:[{symbol:"d",name:"Distance OP",desc:"Center O to external point P"},{symbol:"r",name:"Radius",desc:"OA = OB = r"}],
+  formulas:[{quantity:"Tangent Length",formula:"PA = PB = √(d² - r²)",example:"d=13, r=5 → PA = 12cm"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},d:{label:"Distance OP (d)",unit:"cm"},pa:{formula:"Math.sqrt(d*d-r*r)",label:"Tangent PA = PB"}}
+},
+
+"direct-common-tangents": {
+  name:"Direct Common Tangents (DCT)", subtitle:"Tangents touching two circles without crossing center line",
+  icon:"⇶", color:"#f0a839", difficulty:"hard",
+  overview:"A Direct Common Tangent (DCT) touches two non-intersecting or touching circles such that both circles lie on the same side of the tangent line.",
+  properties:["Both circles lie on the same side of the DCT line","DCT length is shorter than center distance d","If circles touch externally, DCT = 2√(r₁r₂)"],
+  variables:[{symbol:"d",name:"Center Distance",desc:"Distance O₁O₂"},{symbol:"r₁",name:"Radius 1",desc:"Larger circle radius"},{symbol:"r₂",name:"Radius 2",desc:"Smaller circle radius"}],
+  formulas:[{quantity:"DCT Length",formula:"DCT = √(d² - (r₁ - r₂)²)",example:"d=13, r₁=8, r₂=3 → DCT = 12cm"}],
+  calc:{r1:{label:"Radius r₁",unit:"cm"},r2:{label:"Radius r₂",unit:"cm"},d:{label:"Distance d",unit:"cm"},dct:{formula:"Math.sqrt(d*d-(r1-r2)*(r1-r2))",label:"DCT Length"}}
+},
+
+"transverse-common-tangents": {
+  name:"Transverse Common Tangents (TCT)", subtitle:"Tangents crossing between two circles across center line",
+  icon:"⤲", color:"#f0a839", difficulty:"hard",
+  overview:"A Transverse Common Tangent crosses the line segment joining the centers of two circles. The circles lie on opposite sides of the TCT line.",
+  properties:["Circles lie on opposite sides of the TCT line","TCT uses PLUS radii: √(d² - (r₁ + r₂)²)"],
+  variables:[{symbol:"d",name:"Center Distance",desc:"Distance O₁O₂"},{symbol:"r₁",name:"Radius 1",desc:"First circle radius"},{symbol:"r₂",name:"Radius 2",desc:"Second circle radius"}],
+  formulas:[{quantity:"TCT Length",formula:"TCT = √(d² - (r₁ + r₂)²)",example:"d=13, r₁=7, r₂=5 → TCT = 5cm"}],
+  calc:{r1:{label:"Radius r₁",unit:"cm"},r2:{label:"Radius r₂",unit:"cm"},d:{label:"Distance d",unit:"cm"},tct:{formula:"Math.sqrt(d*d-(r1+r2)*(r1+r2))",label:"TCT Length"}}
+},
+
+"equilateral-triangle": {
+  name:"Equilateral Triangle", subtitle:"Triangle with all 3 sides equal and all angles 60°",
+  icon:"△", color:"#f0a839", difficulty:"easy",
+  overview:"An equilateral triangle has three congruent sides and three congruent angles of 60°. All four centers coincide.",
+  properties:["All 3 sides equal (a)","All interior angles = 60°","Height h = (√3/2)a","Area = (√3/4)a²","Ratio R : r = 2 : 1"],
+  variables:[{symbol:"a",name:"Side Length",desc:"Length of edge"},{symbol:"h",name:"Height",desc:"h = (√3/2)a"}],
+  formulas:[{quantity:"Area",formula:"A = (√3 / 4) a²",example:"a=4cm → A = 4√3cm²"},{quantity:"Height",formula:"h = (√3 / 2) a",example:"a=6cm → h = 3√3cm"}],
+  calc:{a:{label:"Side (a)",unit:"cm"},height:{formula:"(Math.sqrt(3)/2)*a",label:"Height h"},area:{formula:"(Math.sqrt(3)/4)*a*a",label:"Area"}}
+},
+
+"right-triangle": {
+  name:"Right Triangle & Triples", subtitle:"Triangle with one 90° right angle",
+  icon:"△", color:"#f0a839", difficulty:"easy",
+  overview:"A right triangle has one angle equal to 90°. Governed by Pythagoras theorem: a² + b² = c².",
+  properties:["One angle = 90°","Pythagorean theorem: a² + b² = c²","Circumcenter is midpoint of hypotenuse (R = c/2)"],
+  variables:[{symbol:"a,b",name:"Legs",desc:"Perpendicular sides"},{symbol:"c",name:"Hypotenuse",desc:"c = √(a² + b²)"}],
+  formulas:[{quantity:"Pythagoras",formula:"c² = a² + b²",example:"3,4 → c = 5cm"},{quantity:"Area",formula:"A = ½ a b",example:"a=6, b=8 → A = 24cm²"}],
+  calc:{a:{label:"Leg a",unit:"cm"},b:{label:"Leg b",unit:"cm"},c:{formula:"Math.sqrt(a*a+b*b)",label:"Hypotenuse c"},area:{formula:"0.5*a*b",label:"Area"}}
+},
+
+square: {
+  name:"Square", subtitle:"Regular 4-sided polygon with equal sides and 90° angles",
+  icon:"□", color:"#a78bfa", difficulty:"easy",
+  overview:"A square is a regular quadrilateral with four equal sides and four right angles. Diagonals are equal (d = a√2) and perpendicular.",
+  properties:["All 4 sides equal (a)","Diagonals equal d = a√2","Area = a² = ½d²"],
+  variables:[{symbol:"a",name:"Side Length",desc:"Edge length"},{symbol:"d",name:"Diagonal",desc:"d = a√2"}],
+  formulas:[{quantity:"Area",formula:"A = a² = ½d²",example:"a=5cm → A = 25cm²"},{quantity:"Diagonal",formula:"d = a√2",example:"a=5cm → d = 5√2cm"}],
+  calc:{a:{label:"Side (a)",unit:"cm"},diag:{formula:"a*Math.sqrt(2)",label:"Diagonal d"},area:{formula:"a*a",label:"Area"}}
+},
+
+rectangle: {
+  name:"Rectangle", subtitle:"4-sided polygon with four 90° angles",
+  icon:"▭", color:"#a78bfa", difficulty:"easy",
+  overview:"A rectangle has four right angles. Opposite sides are parallel and equal (length l, width w). Diagonals d = √(l² + w²).",
+  properties:["Opposite sides equal and parallel","Area = l × w","Perimeter = 2(l + w)","Diagonal = √(l² + w²)"],
+  variables:[{symbol:"l",name:"Length",desc:"Longer side"},{symbol:"w",name:"Width",desc:"Shorter side"}],
+  formulas:[{quantity:"Area",formula:"A = l × w",example:"l=8, w=5 → A = 40cm²"},{quantity:"Perimeter",formula:"P = 2(l + w)",example:"l=8, w=5 → P = 26cm"}],
+  calc:{l:{label:"Length (l)",unit:"cm"},w:{label:"Width (w)",unit:"cm"},area:{formula:"l*w",label:"Area"},perimeter:{formula:"2*(l+w)",label:"Perimeter"}}
+},
+
+rhombus: {
+  name:"Rhombus & Diagonals", subtitle:"Parallelogram with 4 equal sides and perpendicular diagonals",
+  icon:"◊", color:"#a78bfa", difficulty:"medium",
+  overview:"A rhombus has four equal sides. Diagonals bisect each other at right angles (90°). Side relationship: 4a² = d₁² + d₂².",
+  properties:["All 4 sides equal (a)","Diagonals bisect at 90°","Area = ½ d₁ d₂","4a² = d₁² + d₂²"],
+  variables:[{symbol:"a",name:"Side",desc:"Edge length"},{symbol:"d₁",name:"Diagonal 1",desc:"First diagonal"},{symbol:"d₂",name:"Diagonal 2",desc:"Second diagonal"}],
+  formulas:[{quantity:"Area",formula:"A = ½ d₁ d₂",example:"d₁=12, d₂=16 → A = 96cm²"},{quantity:"Side",formula:"a = ½ √(d₁² + d₂²)",example:"d₁=12, d₂=16 → a = 10cm"}],
+  calc:{d1:{label:"Diagonal d₁",unit:"cm"},d2:{label:"Diagonal d₂",unit:"cm"},area:{formula:"0.5*d1*d2",label:"Area"},side:{formula:"0.5*Math.sqrt(d1*d1+d2*d2)",label:"Side"}}
+},
+
+trapezium: {
+  name:"Trapezium & Midline", subtitle:"Quadrilateral with one pair of parallel sides",
+  icon:"⌕", color:"#a78bfa", difficulty:"medium",
+  overview:"A trapezium has one pair of parallel sides (bases a and b) and height h. Area = ½(a + b)h.",
+  properties:["Parallel bases a and b","Height h perpendicular distance","Area = ½(a + b)h","Midline = (a + b)/2"],
+  variables:[{symbol:"a,b",name:"Parallel Bases",desc:"Base lengths"},{symbol:"h",name:"Height",desc:"Perpendicular distance"}],
+  formulas:[{quantity:"Area",formula:"A = ½ (a + b) h",example:"a=10, b=6, h=5 → A = 40cm²"}],
+  calc:{a:{label:"Base a",unit:"cm"},b:{label:"Base b",unit:"cm"},h:{label:"Height h",unit:"cm"},area:{formula:"0.5*(a+b)*h",label:"Area"}}
+},
+
+hexagon: {
+  name:"Regular Hexagon", subtitle:"6-sided regular polygon composed of 6 equilateral triangles",
+  icon:"⬡", color:"#19c37d", difficulty:"medium",
+  overview:"A regular hexagon has 6 equal sides and 6 interior angles of 120°. Made of 6 equilateral triangles of side a.",
+  properties:["6 equal sides (a)","6 interior angles = 120°","Area = (3√3/2)a²","Long diagonal = 2a","Short diagonal = a√3"],
+  variables:[{symbol:"a",name:"Side Length",desc:"Edge length"}],
+  formulas:[{quantity:"Area",formula:"A = (3√3 / 2) a²",example:"a=4cm → A = 24√3cm²"},{quantity:"Long Diagonal",formula:"D_long = 2a",example:"a=5cm → D = 10cm"}],
+  calc:{a:{label:"Side (a)",unit:"cm"},area:{formula:"(3*Math.sqrt(3)/2)*a*a",label:"Area"},longDiag:{formula:"2*a",label:"Long Diagonal"}}
+},
+
+cube: {
+  name:"Cube", subtitle:"Regular 3D solid bounded by 6 equal square faces",
+  icon:"⬛", color:"#fbbf24", difficulty:"easy",
+  overview:"A cube is a regular 3D solid with 6 square faces, 12 equal edges, and 8 vertices.",
+  properties:["6 square faces","Volume = a³","TSA = 6a²","Body Diagonal = a√3"],
+  variables:[{symbol:"a",name:"Edge Length",desc:"Length of edge"}],
+  formulas:[{quantity:"Volume",formula:"V = a³",example:"a=5cm → V = 125cm³"},{quantity:"TSA",formula:"TSA = 6a²",example:"a=5cm → TSA = 150cm²"}],
+  calc:{a:{label:"Edge (a)",unit:"cm"},vol:{formula:"a*a*a",label:"Volume"},tsa:{formula:"6*a*a",label:"TSA"}}
+},
+
+cuboid: {
+  name:"Cuboid & Room Walls", subtitle:"3D solid bounded by 6 rectangular faces",
+  icon:"📦", color:"#fbbf24", difficulty:"easy",
+  overview:"A cuboid has length l, width w, height h. Volume = lwh, TSA = 2(lw+wh+lh), 4 walls area = 2h(l+w).",
+  properties:["6 rectangular faces","Volume = lwh","4 walls area = 2h(l + w)","Body diagonal = √(l² + w² + h²)"],
+  variables:[{symbol:"l",name:"Length",desc:"First edge"},{symbol:"w",name:"Width",desc:"Second edge"},{symbol:"h",name:"Height",desc:"Third edge"}],
+  formulas:[{quantity:"Volume",formula:"V = l × w × h",example:"5,4,3 → V = 60cm³"},{quantity:"4 Walls Area",formula:"LSA = 2h(l + w)",example:"5,4,3 → LSA = 54cm²"}],
+  calc:{l:{label:"Length (l)",unit:"cm"},w:{label:"Width (w)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},vol:{formula:"l*w*h",label:"Volume"},walls:{formula:"2*h*(l+w)",label:"4 Walls Area"}}
+},
+
+sphere: {
+  name:"Sphere & Recasting", subtitle:"Perfectly symmetrical 3D round solid",
+  icon:"⚽", color:"#22d3ee", difficulty:"medium",
+  overview:"A sphere is a round 3D solid of radius r. Volume = (4/3)πr³, Surface Area = 4πr².",
+  properties:["Surface Area = 4πr²","Volume = (4/3)πr³","Recasting N small spheres into 1 big sphere: N r³ = R³"],
+  variables:[{symbol:"r",name:"Radius",desc:"Center to surface"}],
+  formulas:[{quantity:"Volume",formula:"V = (4/3)πr³",example:"r=3cm → V = 36πcm³"},{quantity:"Surface Area",formula:"SA = 4πr²",example:"r=7cm → SA = 616cm²"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},sa:{formula:"4*Math.PI*r*r",label:"Surface Area"},vol:{formula:"(4/3)*Math.PI*r*r*r",label:"Volume"}}
+},
+
+hemisphere: {
+  name:"Hemisphere (CSA/TSA)", subtitle:"Half of a sphere cut by a plane through center",
+  icon:"☽", color:"#22d3ee", difficulty:"medium",
+  overview:"A hemisphere has 1 curved dome + 1 flat circular base. CSA = 2πr², TSA = 3πr², Volume = (2/3)πr³.",
+  properties:["Curved SA = 2πr²","Total SA = 3πr² (includes flat base)","Volume = (2/3)πr³"],
+  variables:[{symbol:"r",name:"Radius",desc:"Dome radius"}],
+  formulas:[{quantity:"Volume",formula:"V = (2/3)πr³",example:"r=7cm → V = 718.67cm³"},{quantity:"Total SA",formula:"TSA = 3πr²",example:"r=7cm → TSA = 462cm²"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},tsa:{formula:"3*Math.PI*r*r",label:"Total SA"},vol:{formula:"(2/3)*Math.PI*r*r*r",label:"Volume"}}
+},
+
+cylinder: {
+  name:"Cylinder & Pipe Flow", subtitle:"3D solid with two parallel congruent circular bases",
+  icon:"🛢", color:"#19c37d", difficulty:"easy",
+  overview:"A cylinder has base radius r and height h. Volume = πr²h, CSA = 2πrh, TSA = 2πr(r+h).",
+  properties:["Volume = πr²h","CSA = 2πrh","Road roller area covered = CSA × revolutions"],
+  variables:[{symbol:"r",name:"Radius",desc:"Base radius"},{symbol:"h",name:"Height",desc:"Perpendicular height"}],
+  formulas:[{quantity:"Volume",formula:"V = πr²h",example:"r=7, h=10 → V = 1540cm³"},{quantity:"Curved SA",formula:"CSA = 2πrh",example:"r=7, h=10 → CSA = 440cm²"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},vol:{formula:"Math.PI*r*r*h",label:"Volume"},csa:{formula:"2*Math.PI*r*h",label:"Curved SA"}}
+},
+
+cone: {
+  name:"Cone & Canvas Tents", subtitle:"3D solid with circular base tapering to an apex",
+  icon:"🔺", color:"#19c37d", difficulty:"medium",
+  overview:"A cone has base radius r, height h, slant height l = √(r² + h²). Volume = (1/3)πr²h, CSA = πrl.",
+  properties:["Slant height l = √(r² + h²)","Volume = (1/3)πr²h","Canvas for tent = CSA = πrl"],
+  variables:[{symbol:"r",name:"Radius",desc:"Base radius"},{symbol:"h",name:"Height",desc:"Perpendicular height"}],
+  formulas:[{quantity:"Slant Height",formula:"l = √(r² + h²)",example:"r=3, h=4 → l = 5cm"},{quantity:"Volume",formula:"V = (1/3)πr²h",example:"r=3, h=4 → V = 12πcm³"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},slant:{formula:"Math.sqrt(r*r+h*h)",label:"Slant Height"},vol:{formula:"(1/3)*Math.PI*r*r*h",label:"Volume"}}
+},
+
+frustum: {
+  name:"Frustum of Cone (Bucket)", subtitle:"Truncated cone cut by a plane parallel to base",
+  icon:"⌵", color:"#19c37d", difficulty:"hard",
+  overview:"A frustum is a truncated cone with top radius r, bottom radius R, height h. Volume = (1/3)πh(R² + r² + Rr).",
+  properties:["Slant height l = √(h² + (R - r)²)","Volume = (1/3)πh (R² + r² + R r)","Bucket capacity in liters = Volume in cm³ / 1000"],
+  variables:[{symbol:"R",name:"Bottom Radius",desc:"Larger base"},{symbol:"r",name:"Top Radius",desc:"Smaller base"},{symbol:"h",name:"Height",desc:"Perpendicular height"}],
+  formulas:[{quantity:"Volume",formula:"V = (1/3)πh(R²+r²+Rr)",example:"R=7, r=3, h=6 → V = 158πcm³"}],
+  calc:{R:{label:"Bottom R",unit:"cm"},r:{label:"Top r",unit:"cm"},h:{label:"Height h",unit:"cm"},vol:{formula:"(1/3)*Math.PI*h*(R*R+r*r+R*r)",label:"Volume"}}
+},
+"triangle": {
+  name:"General Triangle", subtitle:"Three sides, three angles — the base unit of most geometry problems",
+  icon:"△", color:"#f0a839", difficulty:"easy",
+  overview:"A triangle is a 3-sided polygon — the simplest possible polygon. Every other polygon can be broken down into triangles, which is why triangle rules underpin most of geometry.",
+  properties:[
+    "The three interior angles always sum to exactly 180°",
+    "Triangle Inequality: the sum of any two sides must be GREATER than the third side",
+    "Exterior Angle Theorem: an exterior angle equals the sum of the two non-adjacent interior angles",
+    "The longest side is always opposite the largest angle",
+    "Classified by sides: scalene, isosceles, equilateral",
+    "Classified by angles: acute, right, obtuse"
+  ],
+  variables:[{symbol:"a, b, c",name:"Side lengths"},{symbol:"s",name:"Semi-perimeter",desc:"s = (a+b+c)/2"}],
+  formulas:[
+    {quantity:"Area (base-height)",formula:"A = ½ × base × height",example:"b=10,h=6 → A=30"},
+    {quantity:"Area (Heron's)",formula:"A = √[s(s−a)(s−b)(s−c)]",example:"a=5,b=6,c=7 → A≈14.7"},
+    {quantity:"Perimeter",formula:"P = a + b + c",example:""}
+  ],
+  calc:{base:{label:"Base",unit:"cm"},height:{label:"Height",unit:"cm"},area:{formula:"0.5*base*height",label:"Area"}},
+  relatedIds:["triangle-congruence","triangle-similarity","herons-formula","triangle-angle-sum"]
+},
+"isosceles-triangle": {
+  name:"Isosceles Triangle", subtitle:"Two equal sides, two equal base angles",
+  icon:"△", color:"#f0a839", difficulty:"easy",
+  overview:"An isosceles triangle has exactly two sides of equal length. The angles opposite those two equal sides are also equal to each other — a fact used constantly to find missing angles.",
+  properties:[
+    "Two sides equal (the 'legs'), the third is the 'base'",
+    "Base angles (opposite the equal sides) are equal",
+    "The altitude from the apex to the base bisects BOTH the base and the apex angle",
+    "This altitude is also the median and the perpendicular bisector — all the same line"
+  ],
+  variables:[{symbol:"a",name:"Equal side (leg)"},{symbol:"b",name:"Base"}],
+  formulas:[
+    {quantity:"Height (from apex)",formula:"h = √(a² − (b/2)²)",example:"a=5,b=6 → h=4"},
+    {quantity:"Area",formula:"A = (b/4)√(4a² − b²)",example:"a=5,b=6 → A=12"}
+  ],
+  calc:{a:{label:"Equal side (a)",unit:"cm"},b:{label:"Base (b)",unit:"cm"},h:{formula:"Math.sqrt(a*a-(b/2)*(b/2))",label:"Height"},area:{formula:"0.5*b*Math.sqrt(a*a-(b/2)*(b/2))",label:"Area"}},
+  relatedIds:["triangle-congruence","triangle-angle-sum"]
+},
+"scalene-triangle": {
+  name:"Scalene Triangle", subtitle:"All three sides different, all three angles different",
+  icon:"△", color:"#f0a839", difficulty:"medium",
+  overview:"A scalene triangle has no equal sides and no equal angles — no symmetry to lean on. Its area must be found using Heron's formula, the base-height formula, or trigonometry (½ab sin C).",
+  properties:[
+    "No two sides are equal; no two angles are equal",
+    "Still obeys triangle inequality and the 180° angle sum",
+    "The largest angle is always opposite the longest side"
+  ],
+  variables:[{symbol:"a, b, c",name:"Three unequal sides"}],
+  formulas:[{quantity:"Area (Heron's)",formula:"A = √[s(s−a)(s−b)(s−c)]",example:"a=7,b=8,c=9 → A≈26.8"}],
+  calc:{a:{label:"Side a",unit:"cm"},b:{label:"Side b",unit:"cm"},c:{label:"Side c",unit:"cm"},area:{formula:"(function(){var s=(a+b+c)/2; return Math.sqrt(Math.max(s*(s-a)*(s-b)*(s-c),0));})()",label:"Area (Heron's)"}},
+  relatedIds:["herons-formula","triangle-similarity"]
+},
+"parallelogram": {
+  name:"Parallelogram", subtitle:"Opposite sides parallel and equal — a slanted rectangle",
+  icon:"▱", color:"#a78bfa", difficulty:"easy",
+  overview:"A parallelogram has two pairs of parallel, equal sides. Its diagonals bisect each other (but aren't equal, unlike a rectangle). Squares, rectangles, and rhombuses are all special parallelograms.",
+  properties:[
+    "Opposite sides are equal AND parallel",
+    "Opposite angles are equal; consecutive angles are supplementary (sum to 180°)",
+    "Diagonals bisect each other (cut each other exactly in half)",
+    "Diagonals are NOT necessarily equal in length (unlike a rectangle)"
+  ],
+  variables:[{symbol:"b",name:"Base"},{symbol:"h",name:"Height (perpendicular)"}],
+  formulas:[
+    {quantity:"Area",formula:"A = base × height",example:"b=10,h=6 → A=60"},
+    {quantity:"Area (using sides & angle)",formula:"A = a × b × sin θ",example:""}
+  ],
+  calc:{base:{label:"Base",unit:"cm"},height:{label:"Height",unit:"cm"},area:{formula:"base*height",label:"Area"}},
+  relatedIds:["rectangle","rhombus"]
+},
+"cyclic-quadrilateral": {
+  name:"Cyclic Quadrilateral", subtitle:"A quadrilateral with all 4 vertices lying on one circle",
+  icon:"⌫", color:"#a78bfa", difficulty:"hard",
+  overview:"When all four vertices of a quadrilateral touch the same circle, powerful relationships appear between its angles, sides, and diagonals — most famously Ptolemy's theorem.",
+  properties:[
+    "Opposite angles are SUPPLEMENTARY — they always sum to 180°",
+    "An exterior angle equals the interior angle at the opposite vertex",
+    "Every rectangle and square is automatically cyclic",
+    "A trapezium is cyclic only if it's isosceles"
+  ],
+  variables:[{symbol:"a,b,c,d",name:"The four sides in order"},{symbol:"p,q",name:"The two diagonals"}],
+  formulas:[
+    {quantity:"Area (Brahmagupta's)",formula:"A = √[(s−a)(s−b)(s−c)(s−d)]",example:"s = semi-perimeter"},
+    {quantity:"Ptolemy's Theorem",formula:"p × q = a×c + b×d",example:"diagonals product = sum of opposite-side products"}
+  ],
+  calc:{a:{label:"Side a",unit:"cm"},b:{label:"Side b",unit:"cm"},c:{label:"Side c",unit:"cm"},d:{label:"Side d",unit:"cm"},area:{formula:"(function(){var s=(a+b+c+d)/2; return Math.sqrt(Math.max((s-a)*(s-b)*(s-c)*(s-d),0));})()",label:"Area (Brahmagupta's)"}},
+  relatedIds:["ptolemys-theorem","incircle-circumcircle"]
+},
+"sector": {
+  name:"Sector of a Circle", subtitle:"A 'pie slice' bounded by two radii and an arc",
+  icon:"⌒", color:"#fbbf24", difficulty:"medium",
+  overview:"A sector is the pie-slice-shaped region between two radii and the arc connecting them. Both its arc length and area scale proportionally with the sector's central angle out of the full 360°.",
+  properties:[
+    "Minor sector: angle less than 180°. Major sector: angle greater than 180°",
+    "A semicircle is a sector with a 180° angle",
+    "Area = ½ × r × (arc length) — a neat shortcut once you know the arc length"
+  ],
+  variables:[{symbol:"r",name:"Radius"},{symbol:"θ",name:"Central angle (degrees)"}],
+  formulas:[
+    {quantity:"Arc Length",formula:"l = (θ/360) × 2πr",example:"r=7,θ=90° → l≈11"},
+    {quantity:"Sector Area",formula:"A = (θ/360) × πr²",example:"r=7,θ=90° → A≈38.5"}
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},theta:{label:"Angle θ",unit:"°"},arc:{formula:"(theta/360)*2*Math.PI*r",label:"Arc Length"},area:{formula:"(theta/360)*Math.PI*r*r",label:"Sector Area"}},
+  relatedIds:["segment","circle"]
+},
+"annulus": {
+  name:"Annulus (Circular Ring)", subtitle:"The flat ring-shaped region between two concentric circles",
+  icon:"⭕", color:"#fbbf24", difficulty:"medium",
+  overview:"An annulus is the region left over between a larger circle and a smaller circle that share the same center — like a washer or a CD. Its area is simply the big circle's area minus the small circle's area.",
+  properties:[
+    "Both circles share the same center (concentric)",
+    "Width of the ring = R − r",
+    "Area difference factorises neatly using the difference of squares"
+  ],
+  variables:[{symbol:"R",name:"Outer radius"},{symbol:"r",name:"Inner radius"}],
+  formulas:[{quantity:"Area",formula:"A = π(R² − r²) = π(R+r)(R−r)",example:"R=10,r=6 → A=64π≈201.1"}],
+  calc:{R:{label:"Outer radius (R)",unit:"cm"},r:{label:"Inner radius (r)",unit:"cm"},area:{formula:"Math.PI*(R*R-r*r)",label:"Area"}},
+  relatedIds:["circle"]
+},
+"regular-polygon": {
+  name:"Regular Polygon (n-gon)", subtitle:"A polygon with all sides and all angles equal",
+  icon:"⬡", color:"#19c37d", difficulty:"medium",
+  overview:"A regular polygon has n equal sides and n equal interior angles. As n grows larger, a regular polygon looks more and more like a circle.",
+  properties:[
+    "Sum of interior angles = (n−2) × 180°",
+    "Each interior angle = (n−2) × 180° / n",
+    "Exterior angles ALWAYS sum to 360°, no matter how many sides",
+    "Each exterior angle = 360° / n",
+    "Number of diagonals = n(n−3)/2"
+  ],
+  variables:[{symbol:"n",name:"Number of sides"},{symbol:"s",name:"Side length"}],
+  formulas:[
+    {quantity:"Area",formula:"A = (1/4) n s² cot(180°/n)",example:""},
+    {quantity:"Perimeter",formula:"P = n × s",example:""},
+    {quantity:"Each interior angle",formula:"(n−2)×180°/n",example:"n=6 → 120°"}
+  ],
+  calc:{n:{label:"Sides (n)",unit:""},s:{label:"Side length (s)",unit:"cm"},perimeter:{formula:"n*s",label:"Perimeter"},area:{formula:"0.25*n*s*s/Math.tan(Math.PI/n)",label:"Area"},intAngle:{formula:"(n-2)*180/n",label:"Interior Angle"}},
+  relatedIds:["polygon-angle-formulas","hexagon","pentagon","octagon"]
+},
+"segment": {
+  name:"Segment of a Circle", subtitle:"The region trapped between a chord and its arc",
+  icon:"⌒", color:"#fbbf24", difficulty:"hard",
+  overview:"Draw a chord across a circle — it splits the circle into two segments. A segment's area equals its sector's area minus the triangle formed by the two radii and the chord.",
+  properties:[
+    "Minor segment: the smaller piece (paired with the minor sector)",
+    "Major segment: the larger piece",
+    "The straight-line chord is what separates a 'segment' from a 'sector' (which uses two radii instead)"
+  ],
+  variables:[{symbol:"r",name:"Radius"},{symbol:"θ",name:"Central angle (degrees)"}],
+  formulas:[{quantity:"Segment Area",formula:"A = (θ/360)πr² − ½r²sin θ",example:"Sector area minus triangle area"}],
+  calc:{r:{label:"Radius (r)",unit:"cm"},theta:{label:"Angle θ",unit:"°"},area:{formula:"(theta/360)*Math.PI*r*r - 0.5*r*r*Math.sin(theta*Math.PI/180)",label:"Segment Area"}},
+  relatedIds:["sector","circle"]
+},
+"semicircle": {
+  name:"Semi-Circle", subtitle:"Exactly half a circle, cut along a diameter",
+  icon:"⋎", color:"#22d3ee", difficulty:"easy",
+  overview:"A semicircle is formed by cutting a circle in half along a diameter. It comes with one of the most useful facts in circle geometry: Thales' Theorem.",
+  properties:[
+    "Thales' Theorem: an angle inscribed in a semicircle is ALWAYS a right angle (90°)",
+    "The straight edge is the diameter; the curved edge is half the circumference",
+    "A special case of a sector with θ = 180°"
+  ],
+  variables:[{symbol:"r",name:"Radius"}],
+  formulas:[
+    {quantity:"Area",formula:"A = πr²/2",example:"r=7 → A≈77"},
+    {quantity:"Perimeter",formula:"P = πr + 2r",example:"straight edge + curved edge"}
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},area:{formula:"Math.PI*r*r/2",label:"Area"},perimeter:{formula:"Math.PI*r+2*r",label:"Perimeter"}},
+  relatedIds:["circle","quarter-circle"]
+},
+"quarter-circle": {
+  name:"Quarter Circle", subtitle:"A 90° sector — one quarter of a full circle",
+  icon:"⊗", color:"#22d3ee", difficulty:"easy",
+  overview:"A quarter circle is exactly what it sounds like: a 90° sector, bounded by two perpendicular radii and a quarter of the circumference.",
+  properties:["A special case of a sector with θ = 90°","The two straight edges meet at a right angle"],
+  variables:[{symbol:"r",name:"Radius"}],
+  formulas:[
+    {quantity:"Area",formula:"A = πr²/4",example:"r=14 → A≈154"},
+    {quantity:"Perimeter",formula:"P = (πr/2) + 2r",example:"quarter arc + two radii"}
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},area:{formula:"Math.PI*r*r/4",label:"Area"},perimeter:{formula:"(Math.PI*r/2)+2*r",label:"Perimeter"}},
+  relatedIds:["semicircle","sector"]
+},
+"kite": {
+  name:"Kite", subtitle:"Two pairs of adjacent equal sides — diagonals always cross at 90°",
+  icon:"◈", color:"#a78bfa", difficulty:"medium",
+  overview:"A kite has two distinct pairs of adjacent (touching) sides that are equal — unlike a parallelogram, where equal sides are opposite each other. Its diagonals always intersect at right angles.",
+  properties:[
+    "Two pairs of adjacent equal sides (not opposite, like a parallelogram)",
+    "Diagonals intersect at exactly 90°",
+    "One diagonal bisects the other",
+    "Exactly one pair of opposite angles are equal (the ones between the unequal sides)"
+  ],
+  variables:[{symbol:"d₁, d₂",name:"The two diagonals"}],
+  formulas:[{quantity:"Area",formula:"A = ½ × d₁ × d₂",example:"d1=8,d2=6 → A=24"}],
+  calc:{d1:{label:"Diagonal d₁",unit:"cm"},d2:{label:"Diagonal d₂",unit:"cm"},area:{formula:"0.5*d1*d2",label:"Area"}},
+  relatedIds:["rhombus"]
+},
+"pentagon": {
+  name:"Pentagon", subtitle:"A 5-sided polygon — each interior angle is 108° when regular",
+  icon:"⬟", color:"#19c37d", difficulty:"medium",
+  overview:"A regular pentagon has 5 equal sides and 5 equal angles of 108° each. It's the shape behind the Pentagon building and most classic 'star' constructions.",
+  properties:["Interior angle sum = 540°","Each interior angle (regular) = 108°","Each exterior angle = 72°","Has 5 diagonals"],
+  variables:[{symbol:"s",name:"Side length"}],
+  formulas:[{quantity:"Area (regular)",formula:"A = ¼√(5(5+2√5)) × s²",example:"s=6 → A≈61.9"}],
+  calc:{s:{label:"Side length (s)",unit:"cm"},area:{formula:"0.25*Math.sqrt(5*(5+2*Math.sqrt(5)))*s*s",label:"Area"}},
+  relatedIds:["regular-polygon","polygon-angle-formulas"]
+},
+"octagon": {
+  name:"Octagon", subtitle:"An 8-sided polygon — each interior angle is 135° when regular",
+  icon:"⬢", color:"#19c37d", difficulty:"medium",
+  overview:"A regular octagon has 8 equal sides — the classic stop-sign shape. Each interior angle measures 135°.",
+  properties:["Interior angle sum = 1080°","Each interior angle (regular) = 135°","Each exterior angle = 45°","Has 20 diagonals"],
+  variables:[{symbol:"s",name:"Side length"}],
+  formulas:[{quantity:"Area (regular)",formula:"A = 2(1+√2) × s²",example:"s=5 → A≈120.7"}],
+  calc:{s:{label:"Side length (s)",unit:"cm"},area:{formula:"2*(1+Math.sqrt(2))*s*s",label:"Area"}},
+  relatedIds:["regular-polygon","polygon-angle-formulas"]
+},
+"ellipse": {
+  name:"Ellipse", subtitle:"An 'oval' — a circle stretched along one axis",
+  icon:"⬭", color:"#fbbf24", difficulty:"hard",
+  overview:"An ellipse is like a circle that's been stretched — it has a semi-major axis (the longer radius) and a semi-minor axis (the shorter radius). A circle is simply an ellipse where both axes are equal.",
+  properties:["When a = b, an ellipse becomes a circle","Has two foci; the sum of distances from any point on the ellipse to both foci is constant","Perimeter has no simple exact formula — only approximations"],
+  variables:[{symbol:"a",name:"Semi-major axis (longer)"},{symbol:"b",name:"Semi-minor axis (shorter)"}],
+  formulas:[
+    {quantity:"Area",formula:"A = π × a × b",example:"a=5,b=3 → A≈47.1"},
+    {quantity:"Perimeter (approx.)",formula:"P ≈ π[3(a+b) − √((3a+b)(a+3b))]",example:"Ramanujan's approximation"}
+  ],
+  calc:{a:{label:"Semi-major axis (a)",unit:"cm"},b:{label:"Semi-minor axis (b)",unit:"cm"},area:{formula:"Math.PI*a*b",label:"Area"},perimeter:{formula:"Math.PI*(3*(a+b)-Math.sqrt((3*a+b)*(a+3*b)))",label:"Perimeter (approx.)"}},
+  relatedIds:["circle"]
+},
+"composite-2d": {
+  name:"Composite Figures", subtitle:"Irregular shapes built by combining or cutting basic shapes",
+  icon:"◫", color:"#94a3b8", difficulty:"hard",
+  overview:"Most 'real-world shaped' SSC questions aren't a single textbook shape — they're a combination. The entire skill is recognising which basic shapes are hiding inside the figure.",
+  properties:[
+    "Step 1: split the figure into recognisable basic shapes (rectangles, triangles, semicircles...)",
+    "Step 2: for an ADDED region (an L-shape, a shape with a bump), ADD the areas",
+    "Step 3: for a REMOVED region (a shape with a hole cut out), SUBTRACT the areas",
+    "Always redraw the figure and label every new line you add — most errors come from missing a piece"
+  ],
+  variables:[], formulas:[], calc:{},
+  relatedIds:[]
+},
+
+"square-pyramid": {
+  name:"Square Pyramid", subtitle:"A square base with four triangular faces meeting at an apex",
+  icon:"🔺", color:"#a78bfa", difficulty:"medium",
+  overview:"A square pyramid has a square base and four triangular lateral faces that all meet at a single apex point directly above the base's center (for a right pyramid).",
+  properties:["5 faces total (1 square + 4 triangles), 5 vertices, 8 edges","Volume is exactly ⅓ of a cuboid/prism with the same base and height","Slant height (l) is the height of each triangular face, different from the pyramid's vertical height (h)"],
+  variables:[{symbol:"a",name:"Base side"},{symbol:"h",name:"Vertical height"},{symbol:"l",name:"Slant height"}],
+  formulas:[
+    {quantity:"Slant Height",formula:"l = √(h² + (a/2)²)",example:""},
+    {quantity:"Volume",formula:"V = (1/3) × a² × h",example:"a=6,h=4 → V=48"},
+    {quantity:"Lateral Surface Area",formula:"LSA = 2 × a × l",example:""},
+    {quantity:"Total Surface Area",formula:"TSA = a² + 2al",example:""}
+  ],
+  calc:{a:{label:"Base side (a)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},l:{formula:"Math.sqrt(h*h+(a/2)*(a/2))",label:"Slant Height"},vol:{formula:"(1/3)*a*a*h",label:"Volume"},tsa:{formula:"a*a+2*a*Math.sqrt(h*h+(a/2)*(a/2))",label:"Total Surface Area"}},
+  relatedIds:["tetrahedron","eulers-formula","surface-area-types"]
+},
+"tetrahedron": {
+  name:"Regular Tetrahedron", subtitle:"4 equilateral-triangle faces — the simplest possible 3D solid",
+  icon:"🔺", color:"#a78bfa", difficulty:"hard",
+  overview:"A regular tetrahedron is made of 4 identical equilateral triangles. It's one of the five Platonic solids and the 3D shape with the fewest possible faces.",
+  properties:["4 faces, 4 vertices, 6 edges","Every face is an identical equilateral triangle","One of the 5 Platonic (perfectly regular) solids"],
+  variables:[{symbol:"a",name:"Edge length"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = a³ / (6√2)",example:"a=6 → V≈25.5"},
+    {quantity:"Surface Area",formula:"S = √3 × a²",example:"a=6 → S≈62.4"},
+    {quantity:"Height",formula:"h = a√(2/3)",example:""}
+  ],
+  calc:{a:{label:"Edge length (a)",unit:"cm"},vol:{formula:"(a*a*a)/(6*Math.sqrt(2))",label:"Volume"},sa:{formula:"Math.sqrt(3)*a*a",label:"Surface Area"}},
+  relatedIds:["square-pyramid","octahedron","eulers-formula"]
+},
+"triangular-prism": {
+  name:"Triangular Prism", subtitle:"Two triangular ends connected by three rectangular sides",
+  icon:"◸", color:"#f0a839", difficulty:"medium",
+  overview:"A triangular prism has two identical, parallel triangular bases connected by three rectangular lateral faces — like a tent or a Toblerone bar.",
+  properties:["5 faces (2 triangles + 3 rectangles), 6 vertices, 9 edges","Any prism's volume = base area × length, regardless of the base shape","Lateral surface = perimeter of base × length"],
+  variables:[{symbol:"Ab",name:"Base (triangle) area"},{symbol:"L",name:"Length of prism"},{symbol:"P",name:"Perimeter of triangular base"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = Base Area × L",example:""},
+    {quantity:"Total Surface Area",formula:"TSA = 2×Base Area + P×L",example:""}
+  ],
+  calc:{baseArea:{label:"Base (triangle) area",unit:"cm²"},basePerimeter:{label:"Base perimeter",unit:"cm"},length:{label:"Prism length (L)",unit:"cm"},vol:{formula:"baseArea*length",label:"Volume"},tsa:{formula:"2*baseArea+basePerimeter*length",label:"Total Surface Area"}},
+  relatedIds:["hexagonal-prism","eulers-formula"]
+},
+"hexagonal-prism": {
+  name:"Hexagonal Prism", subtitle:"Two regular hexagonal ends connected by six rectangular sides",
+  icon:"◸", color:"#f0a839", difficulty:"medium",
+  overview:"A hexagonal prism has two parallel regular-hexagon bases connected by six rectangular faces — the classic shape of an unsharpened pencil or a nut/bolt head.",
+  properties:["8 faces (2 hexagons + 6 rectangles), 12 vertices, 18 edges","Volume = hexagon base area × height, same base-area × length rule as any prism"],
+  variables:[{symbol:"s",name:"Hexagon side length"},{symbol:"h",name:"Prism height"}],
+  formulas:[
+    {quantity:"Hexagon Base Area",formula:"Ab = (3√3/2) × s²",example:""},
+    {quantity:"Volume",formula:"V = (3√3/2) × s² × h",example:"s=4,h=10 → V≈415.7"}
+  ],
+  calc:{s:{label:"Hexagon side (s)",unit:"cm"},h:{label:"Prism height (h)",unit:"cm"},vol:{formula:"(3*Math.sqrt(3)/2)*s*s*h",label:"Volume"}},
+  relatedIds:["triangular-prism","regular-polygon"]
+},
+"octahedron": {
+  name:"Octahedron", subtitle:"8 equilateral-triangle faces — like two square pyramids glued base-to-base",
+  icon:"🔷", color:"#a78bfa", difficulty:"hard",
+  overview:"A regular octahedron has 8 identical equilateral-triangle faces. Picture two square pyramids joined at their square bases — that's exactly what it is.",
+  properties:["8 faces, 6 vertices, 12 edges","Another of the 5 Platonic solids","Dual of the cube (swap faces↔vertices and you get a cube)"],
+  variables:[{symbol:"a",name:"Edge length"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = (√2/3) × a³",example:"a=5 → V≈58.9"},
+    {quantity:"Surface Area",formula:"S = 2√3 × a²",example:"a=5 → S≈86.6"}
+  ],
+  calc:{a:{label:"Edge length (a)",unit:"cm"},vol:{formula:"(Math.sqrt(2)/3)*a*a*a",label:"Volume"},sa:{formula:"2*Math.sqrt(3)*a*a",label:"Surface Area"}},
+  relatedIds:["tetrahedron","eulers-formula"]
+},
+"torus": {
+  name:"Torus (Doughnut)", subtitle:"A ring solid formed by sweeping a circle around an axis",
+  icon:"🍩", color:"#ea5757", difficulty:"hard",
+  overview:"A torus is generated by rotating a small circle (the tube) around an axis that lies outside that circle — the classic doughnut or inner-tube shape.",
+  properties:["R = distance from the torus's center to the center of the tube","r = radius of the tube itself (must have R > r for a proper ring shape)"],
+  variables:[{symbol:"R",name:"Distance to tube center"},{symbol:"r",name:"Tube radius"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = 2π² × R × r²",example:"R=5,r=2 → V≈394.8"},
+    {quantity:"Surface Area",formula:"S = 4π² × R × r",example:"R=5,r=2 → V≈394.8"}
+  ],
+  calc:{R:{label:"Center distance (R)",unit:"cm"},r:{label:"Tube radius (r)",unit:"cm"},vol:{formula:"2*Math.PI*Math.PI*R*r*r",label:"Volume"},sa:{formula:"4*Math.PI*Math.PI*R*r",label:"Surface Area"}},
+  relatedIds:["sphere"]
+},
+"capsule": {
+  name:"Capsule (Spherocylinder)", subtitle:"A cylinder capped with a hemisphere on each end",
+  icon:"🛢", color:"#ea5757", difficulty:"hard",
+  overview:"A capsule is a cylinder with a hemisphere attached at each flat end — literally the shape of a medicine capsule. The two hemispherical caps combine into exactly one full sphere's worth of volume.",
+  properties:["The two hemisphere caps together = exactly one full sphere","h refers to the height of the CYLINDRICAL part only, not the total length"],
+  variables:[{symbol:"r",name:"Radius"},{symbol:"h",name:"Cylindrical section height"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = πr²h + (4/3)πr³",example:"cylinder + full sphere"},
+    {quantity:"Surface Area",formula:"S = 2πrh + 4πr²",example:"cylinder's curved area + full sphere's area"}
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},h:{label:"Cylinder height (h)",unit:"cm"},vol:{formula:"Math.PI*r*r*h+(4/3)*Math.PI*r*r*r",label:"Volume"},sa:{formula:"2*Math.PI*r*h+4*Math.PI*r*r",label:"Surface Area"}},
+  relatedIds:["cylinder","sphere"]
+},
+"polyhedra": {
+  name:"Polyhedra & Euler's Rule", subtitle:"Any solid with flat polygonal faces — and the formula that always governs them",
+  icon:"◆", color:"#94a3b8", difficulty:"medium",
+  overview:"A polyhedron is any 3D solid whose faces are all flat polygons — cubes, pyramids, prisms, and the Platonic solids are all polyhedra. Euler's formula is the single rule that connects their vertices, edges, and faces.",
+  properties:[
+    "Euler's Formula: V − E + F = 2 for any simple convex polyhedron",
+    "The 5 Platonic solids (all faces identical regular polygons): Tetrahedron, Cube, Octahedron, Dodecahedron, Icosahedron",
+    "A prism has 2 identical polygon bases; a pyramid has just 1 base and triangular sides meeting at an apex"
+  ],
+  variables:[{symbol:"V",name:"Number of vertices"},{symbol:"E",name:"Number of edges"},{symbol:"F",name:"Number of faces"}],
+  formulas:[{quantity:"Euler's Formula",formula:"V − E + F = 2",example:"Cube: 8−12+6=2 ✓"}],
+  calc:{v:{label:"Vertices (V)",unit:""},e:{label:"Edges (E)",unit:""},f:{formula:"2-v+e",label:"Faces (F)"}},
+  relatedIds:["eulers-formula","tetrahedron","octahedron"]
+},
+
+"triangle-congruence": {
+  name:"Triangle Congruence Rules", subtitle:"The 5 ways to prove two triangles are exact copies of each other",
+  icon:"≅", color:"#f0a839", difficulty:"medium",
+  overview:"Two triangles are congruent if they're identical in shape AND size — one is just a copy of the other (possibly rotated or flipped). You don't need to check all 6 parts (3 sides, 3 angles) — these 5 shortcut rules are enough.",
+  properties:[
+    "SSS — all 3 sides match",
+    "SAS — 2 sides and the INCLUDED angle between them match",
+    "ASA — 2 angles and the INCLUDED side between them match",
+    "AAS — 2 angles and any non-included side match",
+    "RHS — Right angle, Hypotenuse, and one Side match (right triangles only)",
+    "'AAA' is NOT a congruence rule — same angles only guarantees similarity, not congruence"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"triangle-similarity": {
+  name:"Triangle Similarity Rules", subtitle:"Same shape, different size — and what that implies about area",
+  icon:"∼", color:"#f0a839", difficulty:"medium",
+  overview:"Two triangles are similar if they have the same shape (matching angles, proportional sides) but not necessarily the same size — one is a scaled copy of the other.",
+  properties:[
+    "AA — 2 matching angles is enough (the third automatically matches, since angles sum to 180°)",
+    "SAS similarity — 2 sides in the same ratio, with the included angle equal",
+    "SSS similarity — all 3 sides in the same ratio",
+    "Ratio of AREAS of similar triangles = (ratio of corresponding SIDES)²",
+    "Ratio of PERIMETERS = ratio of corresponding sides (not squared)"
+  ],
+  variables:[],
+  formulas:[{quantity:"Area ratio",formula:"A₁/A₂ = (s₁/s₂)²",example:"Sides ratio 2:3 → area ratio 4:9"}],
+  calc:{}
+},
+"herons-formula": {
+  name:"Heron's Formula", subtitle:"Find any triangle's area from its 3 side lengths alone — no height needed",
+  icon:"√", color:"#f0a839", difficulty:"medium",
+  overview:"Heron's formula lets you compute a triangle's area using only its three side lengths — extremely useful for scalene triangles where you don't have a convenient height.",
+  properties:["Works for ANY triangle — equilateral, isosceles, or scalene","No angle or height measurement required, just the 3 sides","s (semi-perimeter) must be calculated first"],
+  variables:[{symbol:"s",name:"Semi-perimeter",desc:"s = (a+b+c)/2"}],
+  formulas:[{quantity:"Heron's Formula",formula:"A = √[s(s−a)(s−b)(s−c)]",example:"a=13,b=14,c=15 → A=84"}],
+  calc:{a:{label:"Side a",unit:"cm"},b:{label:"Side b",unit:"cm"},c:{label:"Side c",unit:"cm"},area:{formula:"(function(){var s=(a+b+c)/2; return Math.sqrt(Math.max(s*(s-a)*(s-b)*(s-c),0));})()",label:"Area"}}
+},
+"triangle-angle-sum": {
+  name:"Triangle Angle Sum & Exterior Angle", subtitle:"Every triangle's angles sum to 180° — plus the shortcut that follows from it",
+  icon:"Σ", color:"#f0a839", difficulty:"easy",
+  overview:"The angle sum property is the single most-used fact in triangle geometry, and the Exterior Angle Theorem is its most useful direct consequence.",
+  properties:[
+    "The three interior angles of ANY triangle always sum to exactly 180°",
+    "Exterior Angle Theorem: an exterior angle = the sum of the two non-adjacent (remote) interior angles",
+    "An exterior angle and its adjacent interior angle are always supplementary (sum to 180°)"
+  ],
+  variables:[],
+  formulas:[{quantity:"Angle Sum",formula:"∠A + ∠B + ∠C = 180°",example:""},{quantity:"Exterior Angle",formula:"Exterior = ∠A + ∠B (the two remote interior angles)",example:""}],
+  calc:{}
+},
+"pythagorean-triples": {
+  name:"Pythagorean Triples", subtitle:"Whole-number side combinations that satisfy a² + b² = c² exactly",
+  icon:"²", color:"#22d3ee", difficulty:"medium",
+  overview:"A Pythagorean triple is a set of three positive integers (a, b, c) where a² + b² = c². Recognising these instantly — without a calculator — is a huge time-saver in SSC exams.",
+  properties:[
+    "3-4-5 (and its multiples: 6-8-10, 9-12-15, 30-40-50...)",
+    "5-12-13 (and multiples: 10-24-26...)",
+    "8-15-17",
+    "7-24-25",
+    "20-21-29",
+    "If (a,b,c) is a triple, so is (ka, kb, kc) for any whole number k"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"special-right-triangles": {
+  name:"Special Right Triangles (30-60-90 & 45-45-90)", subtitle:"Two side-ratio patterns worth memorising cold",
+  icon:"◺", color:"#22d3ee", difficulty:"medium",
+  overview:"These two right-triangle angle combinations produce fixed, predictable side ratios — memorising them means you never need to calculate them from scratch mid-exam.",
+  properties:[
+    "45°-45°-90°: sides are in ratio 1 : 1 : √2 (an isosceles right triangle, half a square)",
+    "30°-60°-90°: sides are in ratio 1 : √3 : 2 (half of an equilateral triangle)",
+    "In 30-60-90: side opposite 30° is the SHORTEST; side opposite 60° is √3 times that; hypotenuse is double the shortest"
+  ],
+  variables:[],
+  formulas:[
+    {quantity:"45-45-90 ratio",formula:"1 : 1 : √2",example:"legs=5 → hypotenuse=5√2"},
+    {quantity:"30-60-90 ratio",formula:"1 : √3 : 2",example:"short leg=4 → long leg=4√3, hyp=8"}
+  ],
+  calc:{}
+},
+"polygon-angle-formulas": {
+  name:"Polygon Angle Formulas", subtitle:"Interior & exterior angle rules that work for ANY polygon, regular or not",
+  icon:"⬠", color:"#19c37d", difficulty:"medium",
+  overview:"These formulas apply to every simple polygon — triangles, quadrilaterals, pentagons, and beyond — not just regular ones.",
+  properties:[
+    "Sum of interior angles = (n−2) × 180°, where n = number of sides",
+    "Exterior angles of ANY convex polygon always sum to 360° — no exceptions",
+    "For a REGULAR polygon only: each interior angle = (n−2)×180°/n, each exterior = 360°/n",
+    "Number of diagonals = n(n−3)/2"
+  ],
+  variables:[{symbol:"n",name:"Number of sides"}],
+  formulas:[
+    {quantity:"Interior Angle Sum",formula:"(n−2) × 180°",example:"n=6 → 720°"},
+    {quantity:"Diagonals",formula:"n(n−3)/2",example:"n=6 → 9 diagonals"}
+  ],
+  calc:{n:{label:"Number of sides (n)",unit:""},sum:{formula:"(n-2)*180",label:"Interior Angle Sum"},diag:{formula:"n*(n-3)/2",label:"Diagonals"}}
+},
+"ptolemys-theorem": {
+  name:"Ptolemy's Theorem", subtitle:"For any cyclic quadrilateral: the diagonals' product equals the sum of opposite-side products",
+  icon:"⌗", color:"#a78bfa", difficulty:"hard",
+  overview:"Ptolemy's Theorem applies specifically to cyclic quadrilaterals (all 4 vertices on one circle) and links the two diagonals to the four sides in one clean equation.",
+  properties:["Only valid for CYCLIC quadrilaterals — doesn't work for a general quadrilateral","A useful check: if this relationship holds, the quadrilateral must be cyclic"],
+  variables:[{symbol:"a,b,c,d",name:"Sides in order"},{symbol:"p,q",name:"The two diagonals"}],
+  formulas:[{quantity:"Ptolemy's Theorem",formula:"p × q = a×c + b×d",example:""}],
+  calc:{}
+},
+"eulers-formula": {
+  name:"Euler's Formula for Polyhedra", subtitle:"Vertices minus edges plus faces always equals 2",
+  icon:"⬡", color:"#94a3b8", difficulty:"medium",
+  overview:"For any simple, convex 3D solid made of flat polygonal faces, this single equation always holds true — a quick way to sanity-check or find a missing face/edge/vertex count.",
+  properties:["V − E + F = 2 for every simple convex polyhedron","Works for cubes, pyramids, prisms, and all 5 Platonic solids","If you know any two of V, E, F, you can always find the third"],
+  variables:[{symbol:"V",name:"Vertices"},{symbol:"E",name:"Edges"},{symbol:"F",name:"Faces"}],
+  formulas:[{quantity:"Euler's Formula",formula:"V − E + F = 2",example:"Cube: 8 − 12 + 6 = 2"}],
+  calc:{v:{label:"Vertices (V)",unit:""},e:{label:"Edges (E)",unit:""},f:{formula:"2-v+e",label:"Faces (F)"}}
+},
+"surface-area-types": {
+  name:"CSA vs LSA vs TSA", subtitle:"The three surface-area terms SSC uses — and why mixing them up costs marks",
+  icon:"▦", color:"#fbbf24", difficulty:"medium",
+  overview:"Solids have multiple 'surface area' terms depending on which faces you're including. Misreading which one a question asks for is one of the most common avoidable SSC mistakes.",
+  properties:[
+    "CSA (Curved Surface Area) — only the curved part (used for cylinder, cone, sphere)",
+    "LSA (Lateral Surface Area) — all side faces, EXCLUDING the top and bottom bases (used for cubes, cuboids, prisms, pyramids)",
+    "TSA (Total Surface Area) — absolutely everything, including all bases",
+    "For a cylinder: TSA = CSA + area of BOTH circular ends",
+    "For a cone: TSA = CSA + area of the ONE circular base"
+  ],
+  variables:[], formulas:[], calc:{}
+},
+"solid-volume-relationships": {
+  name:"Volume Relationships Between Solids", subtitle:"How a cone, cylinder, and sphere secretly relate to each other",
+  icon:"⇄", color:"#19c37d", difficulty:"medium",
+  overview:"Several everyday 3D solids have volumes that relate to each other in clean, memorable ratios — recognising these shortcuts saves real time in the exam.",
+  properties:[
+    "A cone is exactly ⅓ the volume of a cylinder with the SAME base radius and height",
+    "A sphere's volume equals exactly ⅔ of a cylinder that tightly circumscribes it (radius = sphere's radius, height = diameter)",
+    "Melting/recasting problems always work by equating VOLUMES of the before and after shapes — the material amount doesn't change, only the shape"
+  ],
+  variables:[],
+  formulas:[{quantity:"Cone vs Cylinder",formula:"V(cone) = (1/3) × V(cylinder)",example:"same r and h"}],
+  calc:{}
+}
+
+};
+
+// ====================
+// SEARCH INDEX SETUP
+// ====================
+
+// Patch relatedIds onto pre-existing shape entries that didn't have them yet
+(function(){
+  var RELATED_MAP = {
+    "equilateral-triangle": ["triangle-congruence","herons-formula","incircle-circumcircle","triangle-angle-sum"],
+    "right-triangle": ["pythagorean-triples","special-right-triangles","incircle-circumcircle","triangle-congruence"],
+    "rhombus": ["square","kite","parallelogram"],
+    "trapezium": ["parallelogram","polygon-angle-formulas"],
+    "hexagon": ["regular-polygon","polygon-angle-formulas","pentagon","octagon"],
+    "square": ["rectangle","rhombus"],
+    "rectangle": ["square","parallelogram"],
+    "cube": ["cuboid","surface-area-types","eulers-formula"],
+    "cuboid": ["cube","surface-area-types"],
+    "sphere": ["hemisphere","solid-volume-relationships","torus"],
+    "hemisphere": ["sphere","surface-area-types"],
+    "cylinder": ["cone","solid-volume-relationships","surface-area-types","capsule"],
+    "cone": ["cylinder","frustum","solid-volume-relationships"],
+    "frustum": ["cone","cylinder"]
+  };
+  Object.keys(RELATED_MAP).forEach(function(k){
+    if (SHAPE_DETAILS[k]) SHAPE_DETAILS[k].relatedIds = RELATED_MAP[k];
+  });
+})();
+
+const SEARCH_INDEX = (function(){
+  var idx = [];
+  FUNDAMENTALS.forEach(s => idx.push({type:"shape", label:s.name, sub:"Fundamentals", category:"fundamentals", id:s.id}));
+  SHAPES_2D.forEach(s => idx.push({type:"shape", label:s.name, sub:"2D Shape", category:"2d", id:s.id}));
+  SHAPES_3D.forEach(s => idx.push({type:"shape", label:s.name, sub:"3D Solid", category:"3d", id:s.id}));
+  CIRCLE_TANGENTS.forEach(s => { if(s.id !== "circle") idx.push({type:"shape", label:s.name, sub:"Circle Concept", category:"2d", id:"circle"}); });
+  COORDINATE_DATA.forEach(s => idx.push({type:"shape", label:s.name, sub:"Coordinate Geometry", category:"coordinate", id:s.id}));
+  TRIGONOMETRY_DATA.forEach(s => idx.push({type:"shape", label:s.name, sub:"Trigonometry", category:"trigonometry", id:s.id}));
+  THEOREMS.forEach(t => idx.push({type:"theorem", label:t.name, sub:t.category, category:"theorems", id:t.id}));
+  return idx;
+})();
+
+// ====================
+// DYNAMIC SVG RENDERER WITH 3D CROSS-SECTION CUTS
+// ====================
+
+function renderShapeSVG(shapeId, customInputs, viewMode) {
+  var mode = viewMode || "default";
+  var svgHead = '<svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">';
+  var svgFoot = '</svg>';
+  var content = '';
+
+  if (mode === "slice-vert") {
+    if (shapeId === "cone") {
+      content = `
+        <polygon points="200,40 120,190 280,190" fill="rgba(25,195,125,0.12)" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="200" y1="40" x2="200" y2="190" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="205" y="120" fill="#22d3ee" font-size="12" font-family="monospace">h</text>
+        <text x="195" y="208" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">Base 2r</text>
+        <rect x="250" y="30" width="135" height="30" rx="6" fill="rgba(25,195,125,0.15)" stroke="rgba(25,195,125,0.4)"/>
+        <text x="258" y="50" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">Vertical Slice: Triangle</text>
+      `;
+      return svgHead + content + svgFoot;
+    } else if (shapeId === "cylinder") {
+      content = `
+        <rect x="120" y="50" width="160" height="130" fill="rgba(25,195,125,0.12)" stroke="#19c37d" stroke-width="2.5"/>
+        <text x="190" y="40" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">Width 2r</text>
+        <text x="290" y="120" fill="#22d3ee" font-size="12" font-weight="bold" font-family="monospace">Height h</text>
+        <rect x="230" y="200" width="155" height="30" rx="6" fill="rgba(25,195,125,0.15)" stroke="rgba(25,195,125,0.4)"/>
+        <text x="238" y="220" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">Vertical Slice: Rectangle</text>
+      `;
+      return svgHead + content + svgFoot;
+    } else if (shapeId === "frustum") {
+      content = `
+        <polygon points="150,50 250,50 290,190 110,190" fill="rgba(25,195,125,0.12)" stroke="#19c37d" stroke-width="2.5"/>
+        <text x="190" y="40" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">Top 2r</text>
+        <text x="190" y="210" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">Bottom 2R</text>
+        <rect x="230" y="100" width="160" height="30" rx="6" fill="rgba(25,195,125,0.15)" stroke="rgba(25,195,125,0.4)"/>
+        <text x="238" y="120" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">Vertical Slice: Trapezium</text>
+      `;
+      return svgHead + content + svgFoot;
+    }
+  }
+
+  if (mode === "slice-horiz") {
+    if (shapeId === "cone" || shapeId === "cylinder" || shapeId === "sphere" || shapeId === "frustum") {
+      content = `
+        <circle cx="200" cy="115" r="70" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="200" cy="115" r="4" fill="#22d3ee"/>
+        <line x1="200" y1="115" x2="270" y2="115" stroke="#f0a839" stroke-width="2"/>
+        <text x="230" y="110" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">r'</text>
+        <rect x="230" y="30" width="155" height="30" rx="6" fill="rgba(34,211,238,0.15)" stroke="rgba(34,211,238,0.4)"/>
+        <text x="238" y="50" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">Horizontal Cut: Circle</text>
+      `;
+      return svgHead + content + svgFoot;
+    }
+  }
+
+  // Standard Wireframe SVG
+  switch(shapeId) {
+    case "circle":
+      content = `
+        <circle cx="200" cy="115" r="70" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="200" cy="115" r="4" fill="#22d3ee"/>
+        <line x1="200" y1="115" x2="270" y2="115" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="232" y="110" fill="#22d3ee" font-size="13" font-weight="bold" font-family="monospace">r</text>
+        <rect x="280" y="70" width="105" height="28" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="288" y="88" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">C = 2πr</text>
+        <rect x="280" y="130" width="105" height="28" rx="6" fill="rgba(25,195,125,0.1)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="288" y="148" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">A = πr²</text>
+      `;
+      break;
+
+    case "tangent-properties":
+      content = `
+        <circle cx="160" cy="120" r="60" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="160" cy="120" r="4" fill="#22d3ee"/>
+        <line x1="160" y1="120" x2="220" y2="120" stroke="#22d3ee" stroke-width="2"/>
+        <circle cx="220" cy="120" r="4" fill="#19c37d"/>
+        <line x1="220" y1="40" x2="220" y2="200" stroke="#19c37d" stroke-width="2.5"/>
+        <rect x="15" y="20" width="130" height="40" rx="6" fill="rgba(25,195,125,0.12)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="25" y="38" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">OT ⊥ Tangent Line</text>
+      `;
+      break;
+
+    case "external-tangents":
+      content = `
+        <circle cx="140" cy="120" r="55" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="320" cy="120" r="5" fill="#f0a839"/>
+        <line x1="320" y1="120" x2="175" y2="77" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="320" y1="120" x2="175" y2="163" stroke="#19c37d" stroke-width="2.5"/>
+        <rect x="210" y="20" width="165" height="32" rx="6" fill="rgba(25,195,125,0.12)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="220" y="40" fill="#19c37d" font-size="12" font-weight="bold" font-family="monospace">PA = PB = √(d² - r²)</text>
+      `;
+      break;
+
+    case "direct-common-tangents":
+      content = `
+        <circle cx="110" cy="120" r="50" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <circle cx="280" cy="120" r="32" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <line x1="110" y1="70" x2="280" y2="88" stroke="#f0a839" stroke-width="2.5"/>
+        <rect x="90" y="180" width="220" height="34" rx="6" fill="rgba(240,168,57,0.12)" stroke="rgba(240,168,57,0.3)"/>
+        <text x="100" y="202" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">DCT = √(d² - (r₁ - r₂)²)</text>
+      `;
+      break;
+
+    case "transverse-common-tangents":
+      content = `
+        <circle cx="110" cy="120" r="45" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <circle cx="280" cy="120" r="30" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <line x1="110" y1="75" x2="280" y2="150" stroke="#a78bfa" stroke-width="2.5"/>
+        <rect x="90" y="180" width="220" height="34" rx="6" fill="rgba(167,139,250,0.12)" stroke="rgba(167,139,250,0.3)"/>
+        <text x="100" y="202" fill="#a78bfa" font-size="12" font-weight="bold" font-family="monospace">TCT = √(d² - (r₁ + r₂)²)</text>
+      `;
+      break;
+
+    case "cone":
+      content = `
+        <ellipse cx="200" cy="180" rx="70" ry="20" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2"/>
+        <line x1="200" y1="35" x2="130" y2="180" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="200" y1="35" x2="270" y2="180" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="200" y1="35" x2="200" y2="180" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="200" y1="180" x2="270" y2="180" stroke="#f0a839" stroke-width="2"/>
+        <text x="205" y="110" fill="#22d3ee" font-size="12" font-family="monospace">h</text>
+        <text x="230" y="175" fill="#f0a839" font-size="12" font-family="monospace">r</text>
+        <text x="245" y="100" fill="#19c37d" font-size="13" font-weight="bold" font-family="monospace">l = √(r²+h²)</text>
+        <rect x="280" y="40" width="115" height="30" rx="6" fill="rgba(25,195,125,0.12)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="288" y="60" fill="#19c37d" font-size="12" font-weight="bold" font-family="monospace">V = (1/3)πr²h</text>
+      `;
+      break;
+
+    case "cylinder":
+      content = `
+        <ellipse cx="200" cy="55" rx="65" ry="18" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2"/>
+        <ellipse cx="200" cy="175" rx="65" ry="18" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2"/>
+        <line x1="135" y1="55" x2="135" y2="175" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="265" y1="55" x2="265" y2="175" stroke="#19c37d" stroke-width="2.5"/>
+        <text x="280" y="115" fill="#19c37d" font-size="12" font-weight="bold" font-family="monospace">V = πr²h</text>
+      `;
+      break;
+
+
+    case "point":
+      content = `
+        <line x1="40" y1="115" x2="360" y2="115" stroke="#233348" stroke-width="1"/>
+        <line x1="200" y1="20" x2="200" y2="210" stroke="#233348" stroke-width="1"/>
+        <circle cx="200" cy="115" r="6" fill="#22d3ee"/>
+        <text x="216" y="108" fill="#22d3ee" font-size="16" font-weight="bold" font-family="monospace">P</text>
+        <rect x="120" y="170" width="160" height="30" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="132" y="190" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">No length · No width</text>
+      `;
+      break;
+
+    case "line":
+      content = `
+        <line x1="55" y1="115" x2="345" y2="115" stroke="#22d3ee" stroke-width="2.5"/>
+        <polygon points="45,115 60,108 60,122" fill="#22d3ee"/>
+        <polygon points="355,115 340,108 340,122" fill="#22d3ee"/>
+        <circle cx="150" cy="115" r="4.5" fill="#22d3ee"/>
+        <circle cx="250" cy="115" r="4.5" fill="#22d3ee"/>
+        <text x="144" y="100" fill="#22d3ee" font-size="14" font-weight="bold" font-family="monospace">A</text>
+        <text x="244" y="100" fill="#22d3ee" font-size="14" font-weight="bold" font-family="monospace">B</text>
+        <rect x="105" y="160" width="190" height="30" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="113" y="180" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">Extends forever both ways</text>
+      `;
+      break;
+
+    case "ray":
+      content = `
+        <line x1="90" y1="115" x2="345" y2="115" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="90" cy="115" r="5.5" fill="#22d3ee"/>
+        <polygon points="355,115 340,108 340,122" fill="#22d3ee"/>
+        <circle cx="220" cy="115" r="4" fill="#22d3ee"/>
+        <text x="80" y="100" fill="#22d3ee" font-size="14" font-weight="bold" font-family="monospace">A</text>
+        <text x="213" y="100" fill="#22d3ee" font-size="14" font-weight="bold" font-family="monospace">B</text>
+        <rect x="95" y="160" width="210" height="30" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="103" y="180" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">One endpoint, infinite other way</text>
+      `;
+      break;
+
+    case "line-segment":
+      content = `
+        <line x1="100" y1="115" x2="300" y2="115" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="100" cy="115" r="5.5" fill="#22d3ee"/>
+        <circle cx="300" cy="115" r="5.5" fill="#22d3ee"/>
+        <text x="92" y="100" fill="#22d3ee" font-size="14" font-weight="bold" font-family="monospace">A</text>
+        <text x="296" y="100" fill="#22d3ee" font-size="14" font-weight="bold" font-family="monospace">B</text>
+        <line x1="100" y1="145" x2="300" y2="145" stroke="#f0a839" stroke-width="1.5"/>
+        <line x1="100" y1="139" x2="100" y2="151" stroke="#f0a839" stroke-width="1.5"/>
+        <line x1="300" y1="139" x2="300" y2="151" stroke="#f0a839" stroke-width="1.5"/>
+        <text x="175" y="168" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">Fixed length AB</text>
+      `;
+      break;
+
+    case "angle-types":
+      content = `
+        <line x1="110" y1="190" x2="110" y2="45" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="110" y1="190" x2="300" y2="115" stroke="#f0a839" stroke-width="2.5"/>
+        <path d="M 150 190 A 40 40 0 0 0 128 152" fill="none" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="150" y="168" fill="#22d3ee" font-size="15" font-weight="bold" font-family="monospace">θ</text>
+        <circle cx="110" cy="190" r="4.5" fill="#f0a839"/>
+        <text x="70" y="210" fill="#f0a839" font-size="11" font-weight="bold" font-family="monospace">Vertex</text>
+        <rect x="215" y="30" width="165" height="30" rx="6" fill="rgba(240,168,57,0.1)" stroke="rgba(240,168,57,0.3)"/>
+        <text x="223" y="50" fill="#f0a839" font-size="11" font-weight="bold" font-family="monospace">2 rays, common vertex</text>
+      `;
+      break;
+
+    case "parallel-transversal":
+      content = `
+        <line x1="30" y1="75" x2="370" y2="75" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="30" y1="175" x2="370" y2="175" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="110" y1="25" x2="290" y2="225" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="375" y="79" fill="#a78bfa" font-size="12" font-family="monospace">ℓ₁</text>
+        <text x="375" y="179" fill="#a78bfa" font-size="12" font-family="monospace">ℓ₂</text>
+        <text x="150" y="63" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">1</text>
+        <text x="188" y="63" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">2</text>
+        <text x="140" y="97" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">4</text>
+        <text x="188" y="97" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">3</text>
+        <text x="203" y="163" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">5</text>
+        <text x="243" y="163" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">6</text>
+        <text x="203" y="197" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">8</text>
+        <text x="243" y="197" fill="#f0a839" font-size="12" font-weight="bold" font-family="monospace">7</text>
+      `;
+      break;
+
+    case "secant-tangent":
+      content = `
+        <circle cx="170" cy="120" r="55" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <circle cx="335" cy="120" r="4.5" fill="#f0a839"/>
+        <text x="342" y="115" fill="#f0a839" font-size="13" font-weight="bold" font-family="monospace">P</text>
+        <line x1="335" y1="120" x2="213" y2="75" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="213" cy="75" r="4" fill="#19c37d"/>
+        <text x="215" y="62" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">T</text>
+        <line x1="335" y1="120" x2="118" y2="120" stroke="#a78bfa" stroke-width="2.5"/>
+        <circle cx="215" cy="120" r="4" fill="#a78bfa"/>
+        <circle cx="118" cy="120" r="4" fill="#a78bfa"/>
+        <text x="218" y="140" fill="#a78bfa" font-size="10" font-family="monospace">A</text>
+        <text x="105" y="140" fill="#a78bfa" font-size="10" font-family="monospace">B</text>
+        <rect x="15" y="20" width="175" height="30" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="25" y="40" fill="#22d3ee" font-size="12" font-weight="bold" font-family="monospace">PT² = PA × PB</text>
+      `;
+      break;
+
+    case "alternate-segment":
+      content = `
+        <circle cx="200" cy="115" r="68" fill="none" stroke="#a78bfa" stroke-width="2"/>
+        <line x1="125" y1="183" x2="285" y2="183" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="183" r="4.5" fill="#19c37d"/>
+        <line x1="200" y1="183" x2="245" y2="60" stroke="#f0a839" stroke-width="2.5"/>
+        <circle cx="245" cy="60" r="4" fill="#f0a839"/>
+        <text x="250" y="52" fill="#f0a839" font-size="11" font-family="monospace">C</text>
+        <text x="195" y="200" fill="#19c37d" font-size="10" font-family="monospace">T</text>
+        <rect x="20" y="18" width="220" height="30" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)"/>
+        <text x="28" y="38" fill="#a78bfa" font-size="11" font-weight="bold" font-family="monospace">∠tangent-chord = ∠alt. segment</text>
+      `;
+      break;
+
+    case "intersecting-chords":
+      content = `
+        <circle cx="200" cy="120" r="68" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <line x1="145" y1="65" x2="255" y2="175" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="145" y1="175" x2="255" y2="65" stroke="#a78bfa" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="4.5" fill="#fff"/>
+        <text x="207" y="115" fill="#fff" font-size="12" font-family="monospace">P</text>
+        <text x="130" y="55" fill="#f0a839" font-size="11" font-family="monospace">A</text>
+        <text x="258" y="185" fill="#f0a839" font-size="11" font-family="monospace">B</text>
+        <text x="258" y="55" fill="#a78bfa" font-size="11" font-family="monospace">C</text>
+        <text x="128" y="185" fill="#a78bfa" font-size="11" font-family="monospace">D</text>
+        <rect x="270" y="95" width="115" height="50" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="278" y="115" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">PA×PB</text>
+        <text x="278" y="133" fill="#22d3ee" font-size="11" font-weight="bold" font-family="monospace">=PC×PD</text>
+      `;
+      break;
+
+    case "incircle-circumcircle":
+      content = `
+        <polygon points="200,30 90,205 310,205" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+        <circle cx="200" cy="150" r="38" fill="none" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="130" r="103" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <text x="163" y="153" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">Incircle</text>
+        <text x="60" y="45" fill="#a78bfa" font-size="11" font-weight="bold" font-family="monospace">Circumcircle</text>
+      `;
+      break;
+
+    case "co-distance":
+    case "co-midpoint":
+      content = `
+        <line x1="70" y1="185" x2="70" y2="45" stroke="#233348" stroke-width="1"/>
+        <line x1="70" y1="185" x2="350" y2="185" stroke="#233348" stroke-width="1"/>
+        <circle cx="120" cy="160" r="5" fill="#22d3ee"/>
+        <circle cx="280" cy="75" r="5" fill="#22d3ee"/>
+        <text x="95" y="180" fill="#22d3ee" font-size="11" font-family="monospace">(x₁,y₁)</text>
+        <text x="285" y="70" fill="#22d3ee" font-size="11" font-family="monospace">(x₂,y₂)</text>
+        <line x1="120" y1="160" x2="280" y2="75" stroke="#22d3ee" stroke-width="2.5"/>
+        <line x1="120" y1="160" x2="280" y2="160" stroke="#f0a839" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <line x1="280" y1="160" x2="280" y2="75" stroke="#f0a839" stroke-width="1.5" stroke-dasharray="3,2"/>
+        ${shapeId === "co-midpoint" ? '<circle cx="200" cy="117" r="5" fill="#a78bfa"/><text x="205" y="112" fill="#a78bfa" font-size="11" font-weight="bold" font-family="monospace">M</text>' : ''}
+      `;
+      break;
+
+    case "co-slope":
+      content = `
+        <line x1="60" y1="200" x2="60" y2="40" stroke="#233348" stroke-width="1"/>
+        <line x1="60" y1="200" x2="360" y2="200" stroke="#233348" stroke-width="1"/>
+        <line x1="90" y1="175" x2="300" y2="70" stroke="#a78bfa" stroke-width="2.5"/>
+        <circle cx="120" cy="160" r="5" fill="#a78bfa"/>
+        <circle cx="260" cy="90" r="5" fill="#a78bfa"/>
+        <line x1="120" y1="160" x2="260" y2="160" stroke="#f0a839" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <line x1="260" y1="160" x2="260" y2="90" stroke="#f0a839" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="175" y="177" fill="#f0a839" font-size="11" font-family="monospace">run</text>
+        <text x="268" y="128" fill="#f0a839" font-size="11" font-family="monospace">rise</text>
+        <rect x="215" y="25" width="150" height="28" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)"/>
+        <text x="223" y="44" fill="#a78bfa" font-size="11" font-weight="bold" font-family="monospace">m = rise/run</text>
+      `;
+      break;
+
+    case "co-circle-eq":
+      content = `
+        <circle cx="200" cy="120" r="70" fill="none" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="4.5" fill="#19c37d"/>
+        <text x="207" y="115" fill="#19c37d" font-size="12" font-weight="bold" font-family="monospace">(h,k)</text>
+        <line x1="200" y1="120" x2="260" y2="120" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="222" y="113" fill="#22d3ee" font-size="12" font-weight="bold" font-family="monospace">r</text>
+        <rect x="235" y="25" width="150" height="30" rx="6" fill="rgba(25,195,125,0.1)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="243" y="45" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">(x-h)²+(y-k)²=r²</text>
+      `;
+      break;
+
+    case "trig-ratios":
+    case "trig-heights":
+      content = `
+        <polygon points="80,190 340,190 340,60" fill="rgba(240,168,57,0.06)" stroke="#f0a839" stroke-width="2.5"/>
+        <path d="M 105 190 A 25 25 0 0 0 118 168" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <text x="112" y="178" fill="#22d3ee" font-size="13" font-weight="bold" font-family="monospace">θ</text>
+        <rect x="320" y="170" width="20" height="20" fill="none" stroke="#f0a839" stroke-width="1.5"/>
+        <text x="195" y="207" fill="#f0a839" font-size="12" font-family="monospace">Adjacent</text>
+        <text x="352" y="130" fill="#f0a839" font-size="12" font-family="monospace" transform="rotate(90 352 130)">Opposite</text>
+        <text x="180" y="115" fill="#22d3ee" font-size="12" font-family="monospace">Hypotenuse</text>
+      `;
+      break;
+
+
+    case "equilateral-triangle":
+      content = `
+        <polygon points="200,42 108,192 292,192" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="145" y="130" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="248" y="130" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="192" y="210" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <path d="M 195 55 A 16 16 0 0 1 210 60" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+        <path d="M 122 175 A 16 16 0 0 1 128 160" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+        <path d="M 272 160 A 16 16 0 0 1 278 175" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="205" y="72" fill="#22d3ee" font-size="10" font-family="monospace">60°</text>
+      `;
+      break;
+
+    case "right-triangle":
+      content = `
+        <polygon points="95,195 95,55 320,195" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <rect x="95" y="177" width="18" height="18" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="70" y="130" fill="#f0a839" font-size="12" font-family="monospace">height</text>
+        <text x="180" y="212" fill="#f0a839" font-size="12" font-family="monospace">base</text>
+        <text x="215" y="115" fill="#22d3ee" font-size="12" font-family="monospace">hypotenuse</text>
+      `;
+      break;
+
+    case "rhombus":
+      content = `
+        <polygon points="200,35 300,120 200,205 100,120" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="35" x2="200" y2="205" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="100" y1="120" x2="300" y2="120" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="205" y="70" fill="#22d3ee" font-size="10" font-family="monospace">d₁</text>
+        <text x="230" y="115" fill="#22d3ee" font-size="10" font-family="monospace">d₂</text>
+        <rect x="192" y="112" width="16" height="16" fill="none" stroke="#f0a839" stroke-width="1.2" transform="rotate(45 200 120)"/>
+      `;
+      break;
+
+    case "trapezium":
+      content = `
+        <polygon points="145,60 255,60 315,190 85,190" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="105" y1="125" x2="295" y2="125" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="185" y="50" fill="#a78bfa" font-size="11" font-family="monospace">a (top ∥ side)</text>
+        <text x="170" y="207" fill="#a78bfa" font-size="11" font-family="monospace">b (bottom ∥ side)</text>
+        <text x="300" y="120" fill="#22d3ee" font-size="10" font-family="monospace">midline</text>
+      `;
+      break;
+
+    case "hexagon":
+      content = `
+        <polygon points="200,42 267.5,81 267.5,159 200,198 132.5,159 132.5,81" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="2.5" fill="#19c37d"/>
+        <line x1="200" y1="120" x2="200" y2="42" stroke="#19c37d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="205" y="85" fill="#19c37d" font-size="10" font-family="monospace">s</text>
+        <text x="150" y="130" fill="#8ea0b3" font-size="10" font-family="monospace">6 equal sides</text>
+      `;
+      break;
+
+    case "cyclic-quadrilateral":
+      content = `
+        <circle cx="200" cy="120" r="82" fill="none" stroke="#374151" stroke-width="1.3" stroke-dasharray="3,3"/>
+        <polygon points="200,38 278,95 235,202 118,150" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <circle cx="200" cy="38" r="3" fill="#a78bfa"/><circle cx="278" cy="95" r="3" fill="#a78bfa"/>
+        <circle cx="235" cy="202" r="3" fill="#a78bfa"/><circle cx="118" cy="150" r="3" fill="#a78bfa"/>
+        <text x="150" y="30" fill="#8ea0b3" font-size="10" font-family="monospace">all 4 vertices on one circle</text>
+      `;
+      break;
+
+    case "square":
+      content = `
+        <rect x="130" y="50" width="140" height="140" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="130" y1="50" x2="270" y2="190" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="270" y1="50" x2="130" y2="190" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="192" y="42" fill="#a78bfa" font-size="12" font-family="monospace">a</text>
+        <text x="278" y="125" fill="#a78bfa" font-size="12" font-family="monospace">a</text>
+        <rect x="132" y="52" width="12" height="12" fill="none" stroke="#f0a839" stroke-width="1.2"/>
+      `;
+      break;
+
+    case "rectangle":
+      content = `
+        <rect x="95" y="70" width="210" height="100" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="95" y1="70" x2="305" y2="170" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="190" y="62" fill="#a78bfa" font-size="12" font-family="monospace">length (l)</text>
+        <text x="312" y="125" fill="#a78bfa" font-size="12" font-family="monospace" transform="rotate(90 312 125)">width (w)</text>
+        <text x="150" y="130" fill="#22d3ee" font-size="10" font-family="monospace">diagonal</text>
+        <rect x="97" y="72" width="12" height="12" fill="none" stroke="#f0a839" stroke-width="1.2"/>
+      `;
+      break;
+
+    case "sector":
+      content = `
+        <circle cx="200" cy="120" r="78" fill="none" stroke="#374151" stroke-width="1"/>
+        <path d="M 200 120 L 200 42 A 78 78 0 0 1 267.5 159 Z" fill="rgba(251,191,36,0.15)" stroke="#fbbf24" stroke-width="2.5"/>
+        <text x="195" y="80" fill="#fbbf24" font-size="11" font-family="monospace">r</text>
+        <text x="240" y="145" fill="#fbbf24" font-size="11" font-family="monospace">r</text>
+        <path d="M 218 120 A 18 18 0 0 1 210 138" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="220" y="140" fill="#22d3ee" font-size="10" font-family="monospace">θ</text>
+      `;
+      break;
+
+    case "annulus":
+      content = `
+        <circle cx="200" cy="120" r="80" fill="rgba(251,191,36,0.14)" stroke="#fbbf24" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="42" fill="#0a1420" stroke="#fbbf24" stroke-width="2.5"/>
+        <line x1="200" y1="120" x2="200" y2="40" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <line x1="200" y1="120" x2="200" y2="78" stroke="#f0a839" stroke-width="1.5"/>
+        <text x="205" y="65" fill="#22d3ee" font-size="11" font-family="monospace">R</text>
+        <text x="205" y="100" fill="#f0a839" font-size="11" font-family="monospace">r</text>
+      `;
+      break;
+
+    case "regular-polygon":
+      content = `
+        <polygon points="200,42 261,71.4 276,137.4 233.8,190.3 166.2,190.3 124,137.4 139,71.4" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="2.5" fill="#19c37d"/>
+        <rect x="290" y="30" width="95" height="28" rx="6" fill="rgba(25,195,125,0.1)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="298" y="48" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">n sides</text>
+      `;
+      break;
+
+    case "triangle":
+      content = `
+        <polygon points="115,192 355,168 225,48" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="150" y="135" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="290" y="115" fill="#f0a839" font-size="12" font-family="monospace">b</text>
+        <text x="225" y="200" fill="#f0a839" font-size="12" font-family="monospace">c</text>
+      `;
+      break;
+
+    case "isosceles-triangle":
+      content = `
+        <polygon points="200,44 120,192 280,192" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="200" y1="44" x2="200" y2="192" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="150" y="125" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="245" y="125" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="195" y="207" fill="#f0a839" font-size="12" font-family="monospace">b (base)</text>
+        <text x="150" y="98" fill="#f0a839" font-size="11" font-family="monospace">⟍</text>
+        <text x="235" y="98" fill="#f0a839" font-size="11" font-family="monospace">⟋</text>
+      `;
+      break;
+
+    case "scalene-triangle":
+      content = `
+        <polygon points="90,182 262,198 322,68" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="150" y="205" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="300" y="140" fill="#f0a839" font-size="12" font-family="monospace">b</text>
+        <text x="185" y="115" fill="#f0a839" font-size="12" font-family="monospace">c</text>
+        <text x="60" y="30" fill="#8ea0b3" font-size="10" font-family="monospace">a ≠ b ≠ c, all angles different</text>
+      `;
+      break;
+
+    case "parallelogram":
+      content = `
+        <polygon points="135,68 325,68 265,192 75,192" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="150" y1="68" x2="140" y2="80" stroke="#22d3ee" stroke-width="2"/>
+        <line x1="240" y1="192" x2="230" y2="180" stroke="#22d3ee" stroke-width="2"/>
+        <text x="215" y="60" fill="#a78bfa" font-size="11" font-family="monospace">base (b)</text>
+        <line x1="75" y1="192" x2="135" y2="68" stroke="#f0a839" stroke-width="1.2" stroke-dasharray="2,2"/>
+        <text x="60" y="130" fill="#f0a839" font-size="10" font-family="monospace">h</text>
+      `;
+      break;
+
+    case "segment":
+      content = `
+        <circle cx="200" cy="120" r="78" fill="none" stroke="#374151" stroke-width="1"/>
+        <path d="M 155 62 A 78 78 0 0 0 155 178 Z" fill="rgba(251,191,36,0.18)" stroke="#fbbf24" stroke-width="2.5"/>
+        <line x1="155" y1="62" x2="155" y2="178" stroke="#fbbf24" stroke-width="2"/>
+        <text x="110" y="55" fill="#fbbf24" font-size="10" font-family="monospace">chord</text>
+        <text x="170" y="122" fill="#fbbf24" font-size="10" font-family="monospace">segment</text>
+      `;
+      break;
+
+    case "semicircle":
+      content = `
+        <path d="M 122 120 A 78 78 0 0 1 278 120 Z" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2.5"/>
+        <line x1="122" y1="120" x2="278" y2="120" stroke="#22d3ee" stroke-width="2.5"/>
+        <circle cx="180" cy="72" r="3" fill="#f0a839"/>
+        <line x1="122" y1="120" x2="180" y2="72" stroke="#f0a839" stroke-width="1.5"/>
+        <line x1="278" y1="120" x2="180" y2="72" stroke="#f0a839" stroke-width="1.5"/>
+        <rect x="168" y="82" width="12" height="12" fill="none" stroke="#f0a839" stroke-width="1.2"/>
+        <text x="180" y="185" fill="#22d3ee" font-size="11" font-family="monospace">diameter</text>
+      `;
+      break;
+
+    case "quarter-circle":
+      content = `
+        <path d="M 200 120 L 200 42 A 78 78 0 0 1 278 120 Z" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2.5"/>
+        <rect x="200" y="104" width="16" height="16" fill="none" stroke="#f0a839" stroke-width="1.5"/>
+        <text x="205" y="80" fill="#22d3ee" font-size="11" font-family="monospace">r</text>
+        <text x="235" y="150" fill="#22d3ee" font-size="11" font-family="monospace">r</text>
+      `;
+      break;
+
+    case "kite":
+      content = `
+        <polygon points="200,38 262,110 200,202 138,110" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="38" x2="200" y2="202" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="138" y1="110" x2="262" y2="110" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <rect x="192" y="102" width="16" height="16" fill="none" stroke="#f0a839" stroke-width="1.2"/>
+        <text x="160" y="70" fill="#a78bfa" font-size="10" font-family="monospace">a</text>
+        <text x="215" y="70" fill="#a78bfa" font-size="10" font-family="monospace">a</text>
+        <text x="150" y="165" fill="#a78bfa" font-size="10" font-family="monospace">b</text>
+        <text x="225" y="165" fill="#a78bfa" font-size="10" font-family="monospace">b</text>
+      `;
+      break;
+
+    case "pentagon":
+      content = `
+        <polygon points="200,42 274.2,95.9 245.8,183.1 154.2,183.1 125.8,95.9" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="2.5" fill="#19c37d"/>
+        <text x="205" y="72" fill="#19c37d" font-size="10" font-family="monospace">108°</text>
+      `;
+      break;
+
+    case "octagon":
+      content = `
+        <polygon points="200,42 255.2,64.8 278,120 255.2,175.2 200,198 144.8,175.2 122,120 144.8,64.8" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2.5"/>
+        <circle cx="200" cy="120" r="2.5" fill="#19c37d"/>
+        <text x="205" y="60" fill="#19c37d" font-size="10" font-family="monospace">135°</text>
+      `;
+      break;
+
+    case "ellipse":
+      content = `
+        <ellipse cx="200" cy="120" rx="105" ry="55" fill="rgba(251,191,36,0.08)" stroke="#fbbf24" stroke-width="2.5"/>
+        <line x1="95" y1="120" x2="305" y2="120" stroke="#22d3ee" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <line x1="200" y1="65" x2="200" y2="175" stroke="#22d3ee" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <circle cx="160" cy="120" r="3" fill="#f0a839"/><circle cx="240" cy="120" r="3" fill="#f0a839"/>
+        <text x="150" y="105" fill="#f0a839" font-size="9" font-family="monospace">focus</text>
+        <text x="220" y="105" fill="#f0a839" font-size="9" font-family="monospace">focus</text>
+        <text x="245" y="115" fill="#22d3ee" font-size="10" font-family="monospace">a</text>
+        <text x="205" y="90" fill="#22d3ee" font-size="10" font-family="monospace">b</text>
+      `;
+      break;
+
+    case "composite-2d":
+      content = `
+        <polygon points="90,60 250,60 250,120 320,120 320,190 90,190" fill="rgba(148,163,184,0.1)" stroke="#94a3b8" stroke-width="2.5"/>
+        <line x1="250" y1="60" x2="250" y2="190" stroke="#22d3ee" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="140" y="100" fill="#94a3b8" font-size="11" font-family="monospace">Rect. 1</text>
+        <text x="270" y="160" fill="#94a3b8" font-size="11" font-family="monospace">Rect. 2</text>
+        <text x="90" y="45" fill="#8ea0b3" font-size="10" font-family="monospace">Split → solve separately → combine</text>
+      `;
+      break;
+
+
+    case "cube":
+      content = `
+        <polygon points="110,90 230,90 230,210 110,210" fill="rgba(251,191,36,0.08)" stroke="#fbbf24" stroke-width="2.5"/>
+        <polygon points="160,45 280,45 280,165 160,165" fill="rgba(251,191,36,0.04)" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="110" y1="90" x2="160" y2="45" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="230" y1="90" x2="280" y2="45" stroke="#fbbf24" stroke-width="2.5"/>
+        <line x1="230" y1="210" x2="280" y2="165" stroke="#fbbf24" stroke-width="2.5"/>
+        <line x1="110" y1="210" x2="160" y2="165" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="150" y="155" fill="#fbbf24" font-size="12" font-family="monospace">a</text>
+        <text x="300" y="105" fill="#fbbf24" font-size="12" font-family="monospace">a</text>
+      `;
+      break;
+
+    case "cuboid":
+      content = `
+        <polygon points="90,100 260,100 260,205 90,205" fill="rgba(251,191,36,0.08)" stroke="#fbbf24" stroke-width="2.5"/>
+        <polygon points="130,55 300,55 300,160 260,205" fill="none" stroke="none"/>
+        <polygon points="130,55 300,55 300,160 260,160 260,100 90,100" fill="rgba(251,191,36,0.04)" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="90" y1="100" x2="130" y2="55" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="260" y1="100" x2="300" y2="55" stroke="#fbbf24" stroke-width="2.5"/>
+        <line x1="260" y1="205" x2="300" y2="160" stroke="#fbbf24" stroke-width="2.5"/>
+        <text x="160" y="220" fill="#fbbf24" font-size="11" font-family="monospace">l</text>
+        <text x="65" y="155" fill="#fbbf24" font-size="11" font-family="monospace">w</text>
+        <text x="310" y="110" fill="#fbbf24" font-size="11" font-family="monospace">h</text>
+      `;
+      break;
+
+    case "sphere":
+      content = `
+        <circle cx="200" cy="120" r="78" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2.5"/>
+        <ellipse cx="200" cy="120" rx="78" ry="22" fill="none" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="4,3"/>
+        <path d="M 122 120 A 30 78 0 0 0 200 198" fill="none" stroke="#22d3ee" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="200" y1="120" x2="255" y2="80" stroke="#f0a839" stroke-width="2"/>
+        <text x="225" y="90" fill="#f0a839" font-size="12" font-family="monospace">r</text>
+      `;
+      break;
+
+    case "hemisphere":
+      content = `
+        <path d="M 122 120 A 78 78 0 0 1 278 120" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2.5"/>
+        <ellipse cx="200" cy="120" rx="78" ry="20" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-width="2.5"/>
+        <path d="M 145 108 A 55 60 0 0 0 200 195" fill="none" stroke="#22d3ee" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="200" y1="120" x2="255" y2="120" stroke="#f0a839" stroke-width="2"/>
+        <text x="220" y="115" fill="#f0a839" font-size="11" font-family="monospace">r</text>
+      `;
+      break;
+
+    case "frustum":
+      content = `
+        <ellipse cx="200" cy="55" rx="42" ry="14" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2"/>
+        <ellipse cx="200" cy="185" rx="80" ry="20" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2"/>
+        <line x1="158" y1="55" x2="120" y2="185" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="242" y1="55" x2="280" y2="185" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="200" y1="55" x2="200" y2="185" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="4,3"/>
+        <text x="205" y="120" fill="#22d3ee" font-size="10" font-family="monospace">h</text>
+        <text x="205" y="48" fill="#19c37d" font-size="10" font-family="monospace">r</text>
+        <text x="205" y="212" fill="#19c37d" font-size="10" font-family="monospace">R</text>
+      `;
+      break;
+
+    case "square-pyramid":
+      content = `
+        <polygon points="120,175 280,175 240,205 80,205" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <circle cx="180" cy="190" r="2" fill="#a78bfa"/>
+        <line x1="200" y1="40" x2="80" y2="205" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="40" x2="240" y2="205" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="40" x2="120" y2="175" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="200" y1="40" x2="280" y2="175" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="40" x2="180" y2="190" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="3,2"/>
+        <text x="205" y="110" fill="#22d3ee" font-size="10" font-family="monospace">h</text>
+      `;
+      break;
+
+    case "tetrahedron":
+      content = `
+        <polygon points="100,180 300,180 210,205" fill="rgba(167,139,250,0.06)" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="200" y1="40" x2="100" y2="180" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="40" x2="300" y2="180" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="40" x2="210" y2="205" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="150" y="200" fill="#a78bfa" font-size="11" font-family="monospace">a</text>
+      `;
+      break;
+
+    case "triangular-prism":
+      content = `
+        <polygon points="90,190 220,190 155,90" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <polygon points="150,150 280,150 215,50" fill="rgba(240,168,57,0.04)" stroke="#f0a839" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="90" y1="190" x2="150" y2="150" stroke="#f0a839" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="220" y1="190" x2="280" y2="150" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="155" y1="90" x2="215" y2="50" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="230" y="175" fill="#f0a839" font-size="10" font-family="monospace">L</text>
+      `;
+      break;
+
+    case "hexagonal-prism":
+      content = `
+        <polygon points="120,150 155,130 190,150 190,190 155,210 120,190" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <polygon points="190,110 225,90 260,110 260,150 225,170 190,150" fill="rgba(240,168,57,0.04)" stroke="#f0a839" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="120" y1="150" x2="190" y2="110" stroke="#f0a839" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="120" y1="190" x2="190" y2="150" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="190" y1="190" x2="260" y2="150" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="155" y1="210" x2="225" y2="170" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="265" y="130" fill="#f0a839" font-size="10" font-family="monospace">h</text>
+      `;
+      break;
+
+    case "octahedron":
+      content = `
+        <polygon points="120,120 200,95 280,120 200,145" fill="rgba(167,139,250,0.06)" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="200" y1="35" x2="120" y2="120" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="35" x2="280" y2="120" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="35" x2="200" y2="95" stroke="#a78bfa" stroke-width="2" stroke-dasharray="3,2"/>
+        <line x1="200" y1="205" x2="120" y2="120" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="205" x2="280" y2="120" stroke="#a78bfa" stroke-width="2.5"/>
+        <line x1="200" y1="205" x2="200" y2="145" stroke="#a78bfa" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="150" y="115" fill="#a78bfa" font-size="10" font-family="monospace">a</text>
+      `;
+      break;
+
+    case "torus":
+      content = `
+        <ellipse cx="200" cy="120" rx="95" ry="55" fill="none" stroke="#ea5757" stroke-width="2.5"/>
+        <ellipse cx="200" cy="120" rx="40" ry="22" fill="#0a1420" stroke="#ea5757" stroke-width="2.5"/>
+        <path d="M 200 65 A 95 55 0 0 1 295 120" fill="none" stroke="#ea5757" stroke-width="10" opacity="0.15"/>
+        <line x1="200" y1="120" x2="240" y2="120" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <line x1="240" y1="120" x2="260" y2="120" stroke="#f0a839" stroke-width="2"/>
+        <text x="205" y="112" fill="#22d3ee" font-size="9" font-family="monospace">R</text>
+        <text x="242" y="112" fill="#f0a839" font-size="9" font-family="monospace">r</text>
+      `;
+      break;
+
+    case "capsule":
+      content = `
+        <path d="M 130 60 A 42 42 0 0 0 130 195" fill="rgba(234,87,87,0.08)" stroke="#ea5757" stroke-width="2.5"/>
+        <path d="M 270 60 A 42 42 0 0 1 270 195" fill="rgba(234,87,87,0.08)" stroke="#ea5757" stroke-width="2.5"/>
+        <line x1="130" y1="60" x2="270" y2="60" stroke="#ea5757" stroke-width="2.5"/>
+        <line x1="130" y1="195" x2="270" y2="195" stroke="#ea5757" stroke-width="2.5"/>
+        <line x1="130" y1="128" x2="270" y2="128" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="4,3"/>
+        <text x="185" y="122" fill="#22d3ee" font-size="10" font-family="monospace">h</text>
+        <text x="105" y="130" fill="#ea5757" font-size="10" font-family="monospace">r</text>
+      `;
+      break;
+
+    case "polyhedra":
+      content = `
+        <polygon points="110,90 230,90 230,210 110,210" fill="rgba(148,163,184,0.06)" stroke="#94a3b8" stroke-width="2"/>
+        <polygon points="160,45 280,45 280,165 160,165" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="110" y1="90" x2="160" y2="45" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="230" y1="90" x2="280" y2="45" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="230" y1="210" x2="280" y2="165" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="110" y1="210" x2="160" y2="165" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="230" cy="90" r="3.5" fill="#fbbf24"/>
+        <rect x="290" y="30" width="100" height="70" rx="6" fill="rgba(148,163,184,0.1)" stroke="rgba(148,163,184,0.3)"/>
+        <text x="298" y="48" fill="#fbbf24" font-size="10" font-family="monospace">V = vertices</text>
+        <text x="298" y="65" fill="#94a3b8" font-size="10" font-family="monospace">E = edges</text>
+        <text x="298" y="82" fill="#94a3b8" font-size="10" font-family="monospace">F = faces</text>
+      `;
+      break;
+
+
+    case "co-section":
+      content = `
+        <line x1="60" y1="150" x2="340" y2="150" stroke="#374151" stroke-width="1"/>
+        <circle cx="90" cy="150" r="5" fill="#22d3ee"/><circle cx="310" cy="150" r="5" fill="#22d3ee"/>
+        <circle cx="190" cy="150" r="5" fill="#a78bfa"/>
+        <text x="82" y="135" fill="#22d3ee" font-size="11" font-family="monospace">A</text>
+        <text x="303" y="135" fill="#22d3ee" font-size="11" font-family="monospace">B</text>
+        <text x="185" y="132" fill="#a78bfa" font-size="11" font-weight="bold" font-family="monospace">P</text>
+        <text x="130" y="175" fill="#f0a839" font-size="11" font-family="monospace">m</text>
+        <text x="245" y="175" fill="#f0a839" font-size="11" font-family="monospace">n</text>
+        <text x="110" y="70" fill="#a78bfa" font-size="11" font-weight="bold" font-family="monospace">P divides AB in ratio m:n</text>
+      `;
+      break;
+
+    case "co-centroid":
+      content = `
+        <polygon points="200,45 100,195 300,195" fill="rgba(240,168,57,0.06)" stroke="#f0a839" stroke-width="2.5"/>
+        <line x1="200" y1="45" x2="200" y2="195" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="3,2"/>
+        <line x1="100" y1="195" x2="250" y2="120" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="3,2"/>
+        <line x1="300" y1="195" x2="150" y2="120" stroke="#22d3ee" stroke-width="1.3" stroke-dasharray="3,2"/>
+        <circle cx="200" cy="145" r="4.5" fill="#a78bfa"/>
+        <text x="207" y="142" fill="#a78bfa" font-size="12" font-weight="bold" font-family="monospace">G</text>
+      `;
+      break;
+
+    case "co-line-eq":
+      content = `
+        <line x1="60" y1="200" x2="60" y2="40" stroke="#374151" stroke-width="1"/>
+        <line x1="60" y1="200" x2="360" y2="200" stroke="#374151" stroke-width="1"/>
+        <line x1="90" y1="180" x2="310" y2="70" stroke="#a78bfa" stroke-width="2.5"/>
+        <circle cx="60" cy="150" r="4" fill="#f0a839"/>
+        <text x="30" y="147" fill="#f0a839" font-size="11" font-family="monospace">c</text>
+        <rect x="230" y="35" width="120" height="28" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)"/>
+        <text x="238" y="54" fill="#a78bfa" font-size="12" font-weight="bold" font-family="monospace">y = mx + c</text>
+      `;
+      break;
+
+    case "trig-identities":
+      content = `
+        <polygon points="90,190 320,190 320,70" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-width="2.5"/>
+        <rect x="298" y="168" width="20" height="20" fill="none" stroke="#f0a839" stroke-width="1.5"/>
+        <text x="185" y="207" fill="#22d3ee" font-size="11" font-family="monospace">cos θ</text>
+        <text x="330" y="135" fill="#22d3ee" font-size="11" font-family="monospace" transform="rotate(90 330 135)">sin θ</text>
+        <text x="170" y="120" fill="#f0a839" font-size="11" font-family="monospace">1 (hyp)</text>
+        <path d="M 115 190 A 25 25 0 0 0 128 168" fill="none" stroke="#a78bfa" stroke-width="2"/>
+        <text x="122" y="178" fill="#a78bfa" font-size="12" font-weight="bold" font-family="monospace">θ</text>
+      `;
+      break;
+
+    case "trig-values":
+      content = `
+        <rect x="55" y="50" width="290" height="140" rx="6" fill="rgba(167,139,250,0.05)" stroke="#a78bfa" stroke-width="1.5"/>
+        <line x1="55" y1="85" x2="345" y2="85" stroke="#a78bfa" stroke-width="1"/>
+        <line x1="103" y1="50" x2="103" y2="190" stroke="#a78bfa" stroke-width="1" opacity="0.4"/>
+        <text x="65" y="72" fill="#a78bfa" font-size="10" font-weight="bold" font-family="monospace">θ</text>
+        <text x="115" y="72" fill="#a78bfa" font-size="10" font-family="monospace">0°  30°  45°  60°  90°</text>
+        <text x="65" y="105" fill="#22d3ee" font-size="10" font-family="monospace">sin</text>
+        <text x="115" y="105" fill="#8ea0b3" font-size="10" font-family="monospace">0   ½   1/√2  √3/2  1</text>
+        <text x="65" y="135" fill="#f0a839" font-size="10" font-family="monospace">cos</text>
+        <text x="115" y="135" fill="#8ea0b3" font-size="10" font-family="monospace">1  √3/2  1/√2   ½   0</text>
+        <text x="65" y="165" fill="#fbbf24" font-size="10" font-family="monospace">tan</text>
+        <text x="115" y="165" fill="#8ea0b3" font-size="10" font-family="monospace">0  1/√3   1    √3   ∞</text>
+      `;
+      break;
+
+    case "trig-sine-cosine-rule":
+      content = `
+        <polygon points="90,180 310,195 250,50" fill="rgba(240,168,57,0.06)" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="60" y="60" fill="#f0a839" font-size="12" font-family="monospace">A</text>
+        <text x="315" y="205" fill="#f0a839" font-size="12" font-family="monospace">B</text>
+        <text x="255" y="45" fill="#f0a839" font-size="12" font-family="monospace">C</text>
+        <text x="185" y="200" fill="#22d3ee" font-size="11" font-family="monospace">c</text>
+        <text x="290" y="125" fill="#22d3ee" font-size="11" font-family="monospace">a</text>
+        <text x="150" y="110" fill="#22d3ee" font-size="11" font-family="monospace">b</text>
+      `;
+      break;
+
+    case "triangle-congruence":
+      content = `
+        <polygon points="70,190 170,190 120,80" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <polygon points="230,190 330,190 280,80" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="195" y="130" fill="#8ea0b3" font-size="16" font-family="monospace">≅</text>
+        <text x="105" y="207" fill="#8ea0b3" font-size="10" font-family="monospace">exact copy</text>
+        <text x="255" y="207" fill="#8ea0b3" font-size="10" font-family="monospace">exact copy</text>
+      `;
+      break;
+
+    case "triangle-similarity":
+      content = `
+        <polygon points="60,190 130,190 95,120" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <polygon points="180,195 340,195 260,55" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="145" y="140" fill="#8ea0b3" font-size="16" font-family="monospace">∼</text>
+        <text x="65" y="207" fill="#8ea0b3" font-size="10" font-family="monospace">small</text>
+        <text x="240" y="215" fill="#8ea0b3" font-size="10" font-family="monospace">scaled up, same shape</text>
+      `;
+      break;
+
+    case "herons-formula":
+      content = `
+        <polygon points="90,190 300,175 220,55" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="150" y="205" fill="#f0a839" font-size="12" font-family="monospace">a</text>
+        <text x="270" y="130" fill="#f0a839" font-size="12" font-family="monospace">b</text>
+        <text x="140" y="115" fill="#f0a839" font-size="12" font-family="monospace">c</text>
+        <rect x="80" y="25" width="240" height="28" rx="6" fill="rgba(240,168,57,0.1)" stroke="rgba(240,168,57,0.3)"/>
+        <text x="88" y="44" fill="#f0a839" font-size="11" font-weight="bold" font-family="monospace">A = √[s(s−a)(s−b)(s−c)]</text>
+      `;
+      break;
+
+    case "triangle-angle-sum":
+      content = `
+        <polygon points="200,45 100,195 300,195" fill="rgba(240,168,57,0.06)" stroke="#f0a839" stroke-width="2.5"/>
+        <path d="M 190 62 A 20 20 0 0 1 212 65" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <path d="M 118 180 A 20 20 0 0 1 128 165" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <path d="M 272 165 A 20 20 0 0 1 282 180" fill="none" stroke="#22d3ee" stroke-width="2"/>
+        <text x="195" y="80" fill="#22d3ee" font-size="10" font-family="monospace">A</text>
+        <text x="132" y="172" fill="#22d3ee" font-size="10" font-family="monospace">B</text>
+        <text x="262" y="172" fill="#22d3ee" font-size="10" font-family="monospace">C</text>
+        <line x1="300" y1="195" x2="340" y2="195" stroke="#a78bfa" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="300" y="212" fill="#a78bfa" font-size="9" font-family="monospace">exterior</text>
+        <rect x="60" y="20" width="280" height="26" rx="6" fill="rgba(240,168,57,0.1)" stroke="rgba(240,168,57,0.3)"/>
+        <text x="70" y="38" fill="#f0a839" font-size="11" font-weight="bold" font-family="monospace">∠A + ∠B + ∠C = 180°</text>
+      `;
+      break;
+
+    case "pythagorean-triples":
+      content = `
+        <polygon points="90,190 90,70 330,190" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2.5"/>
+        <rect x="90" y="172" width="18" height="18" fill="none" stroke="#f0a839" stroke-width="1.5"/>
+        <text x="65" y="135" fill="#22d3ee" font-size="12" font-family="monospace">3</text>
+        <text x="195" y="207" fill="#22d3ee" font-size="12" font-family="monospace">4</text>
+        <text x="215" y="120" fill="#22d3ee" font-size="12" font-family="monospace">5</text>
+        <rect x="100" y="25" width="150" height="28" rx="6" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)"/>
+        <text x="108" y="44" fill="#22d3ee" font-size="12" font-weight="bold" font-family="monospace">3² + 4² = 5²</text>
+      `;
+      break;
+
+    case "special-right-triangles":
+      content = `
+        <polygon points="70,190 70,90 210,190" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2"/>
+        <text x="45" y="145" fill="#22d3ee" font-size="10" font-family="monospace">1</text>
+        <text x="130" y="207" fill="#22d3ee" font-size="10" font-family="monospace">1</text>
+        <text x="150" y="130" fill="#22d3ee" font-size="10" font-family="monospace">√2</text>
+        <text x="80" y="80" fill="#8ea0b3" font-size="9" font-family="monospace">45-45-90</text>
+        <polygon points="240,190 240,60 355,190" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2"/>
+        <text x="215" y="130" fill="#f0a839" font-size="10" font-family="monospace">√3</text>
+        <text x="290" y="207" fill="#f0a839" font-size="10" font-family="monospace">1</text>
+        <text x="300" y="120" fill="#f0a839" font-size="10" font-family="monospace">2</text>
+        <text x="255" y="50" fill="#8ea0b3" font-size="9" font-family="monospace">30-60-90</text>
+      `;
+      break;
+
+    case "polygon-angle-formulas":
+      content = `
+        <polygon points="200,42 274.2,95.9 245.8,183.1 154.2,183.1 125.8,95.9" fill="rgba(25,195,125,0.06)" stroke="#19c37d" stroke-width="2.5"/>
+        <rect x="60" y="20" width="290" height="28" rx="6" fill="rgba(25,195,125,0.1)" stroke="rgba(25,195,125,0.3)"/>
+        <text x="68" y="39" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">Interior sum = (n−2)×180°</text>
+      `;
+      break;
+
+    case "ptolemys-theorem":
+      content = `
+        <circle cx="200" cy="120" r="80" fill="none" stroke="#374151" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <polygon points="200,40 275,95 232,198 120,150" fill="rgba(167,139,250,0.06)" stroke="#a78bfa" stroke-width="2"/>
+        <line x1="200" y1="40" x2="232" y2="198" stroke="#22d3ee" stroke-width="1.5"/>
+        <line x1="275" y1="95" x2="120" y2="150" stroke="#f0a839" stroke-width="1.5"/>
+        <rect x="60" y="15" width="290" height="26" rx="6" fill="rgba(167,139,250,0.1)" stroke="rgba(167,139,250,0.3)"/>
+        <text x="68" y="33" fill="#a78bfa" font-size="10" font-weight="bold" font-family="monospace">p·q = a·c + b·d</text>
+      `;
+      break;
+
+    case "eulers-formula":
+      content = `
+        <polygon points="110,90 230,90 230,210 110,210" fill="rgba(148,163,184,0.06)" stroke="#94a3b8" stroke-width="2"/>
+        <polygon points="160,45 280,45 280,165 160,165" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="110" y1="90" x2="160" y2="45" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="230" y1="90" x2="280" y2="45" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="230" y1="210" x2="280" y2="165" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="110" y1="210" x2="160" y2="165" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <rect x="290" y="70" width="100" height="80" rx="6" fill="rgba(148,163,184,0.1)" stroke="rgba(148,163,184,0.3)"/>
+        <text x="298" y="90" fill="#94a3b8" font-size="10" font-family="monospace">V=8, E=12</text>
+        <text x="298" y="108" fill="#94a3b8" font-size="10" font-family="monospace">F=6</text>
+        <text x="298" y="130" fill="#fbbf24" font-size="11" font-weight="bold" font-family="monospace">8-12+6=2</text>
+      `;
+      break;
+
+    case "surface-area-types":
+      content = `
+        <ellipse cx="200" cy="55" rx="65" ry="18" fill="rgba(251,191,36,0.25)" stroke="#fbbf24" stroke-width="2"/>
+        <ellipse cx="200" cy="175" rx="65" ry="18" fill="rgba(251,191,36,0.25)" stroke="#fbbf24" stroke-width="2"/>
+        <rect x="135" y="55" width="130" height="120" fill="rgba(34,211,238,0.1)" stroke="none"/>
+        <line x1="135" y1="55" x2="135" y2="175" stroke="#22d3ee" stroke-width="2.5"/>
+        <line x1="265" y1="55" x2="265" y2="175" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="145" y="120" fill="#22d3ee" font-size="10" font-family="monospace">CSA (curved)</text>
+        <text x="145" y="50" fill="#fbbf24" font-size="10" font-family="monospace">+ 2 bases = TSA</text>
+      `;
+      break;
+
+    case "solid-volume-relationships":
+      content = `
+        <ellipse cx="120" cy="180" rx="55" ry="15" fill="rgba(25,195,125,0.08)" stroke="#19c37d" stroke-width="2"/>
+        <line x1="65" y1="180" x2="120" y2="60" stroke="#19c37d" stroke-width="2.5"/>
+        <line x1="175" y1="180" x2="120" y2="60" stroke="#19c37d" stroke-width="2.5"/>
+        <text x="105" y="130" fill="#19c37d" font-size="10" font-family="monospace">cone</text>
+        <ellipse cx="300" cy="55" rx="55" ry="15" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2"/>
+        <ellipse cx="300" cy="180" rx="55" ry="15" fill="rgba(34,211,238,0.08)" stroke="#22d3ee" stroke-width="2"/>
+        <line x1="245" y1="55" x2="245" y2="180" stroke="#22d3ee" stroke-width="2.5"/>
+        <line x1="355" y1="55" x2="355" y2="180" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="280" y="120" fill="#22d3ee" font-size="10" font-family="monospace">cylinder</text>
+        <text x="130" y="30" fill="#fbbf24" font-size="11" font-weight="bold" font-family="monospace">V(cone) = ⅓ V(cylinder)</text>
+      `;
+      break;
+
+    default:
+      content = `
+        <circle cx="200" cy="115" r="60" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4,4"/>
+        <polygon points="200,45 270,165 130,165" fill="rgba(34,211,238,0.06)" stroke="#22d3ee" stroke-width="2.5"/>
+        <text x="200" y="120" text-anchor="middle" fill="#8ea0b3" font-size="13" font-family="monospace">${shapeId.toUpperCase()}</text>
+      `;
+      break;
+  }
+
+  return svgHead + content + svgFoot;
+}
+
+// ====================
+// RENDER CONTROLLER
+// ====================
+
+var activeShape = null, activeTab = "2d", currentSliceMode = "default";
+
+function renderSidebar() {
+  var title = document.getElementById("sidebarTitle");
+  var count = document.getElementById("sidebarCount");
+  var list = document.getElementById("shapeList");
+  if (!title || !list) return;
+
+  var tab = TABS.find(t => t.id === activeTab);
+  if (!tab) { list.innerHTML = ""; return; }
+
+  title.textContent = tab.name;
+  if (count) count.textContent = (tab.data ? tab.data.length : 0) + " items";
+  list.innerHTML = "";
+
+  if (tab.type === "shape") {
+    tab.data.forEach(item => {
+      var div = document.createElement("div");
+      div.className = "shape-item" + (activeShape === item.id ? " active" : "");
+      div.dataset.id = item.id;
+      div.innerHTML = `<span class="icon" style="color:${item.color}">${item.icon}</span><span class="name">${item.name}</span>`
+        + (item.star ? '<span class="badge-mini">CGL</span>' : '');
+      div.onclick = function() { selectShape(item.id); };
+      list.appendChild(div);
+    });
+  } else if (tab.type === "theorem") {
+    tab.data.forEach(item => {
+      var div = document.createElement("div");
+      div.className = "shape-item" + (activeShape === item.id ? " active" : "");
+      div.innerHTML = `<span class="icon" style="color:var(--amber);">★</span><span class="name">${item.name}</span>`;
+      div.onclick = function() { selectTheorem(item.id); };
+      list.appendChild(div);
+    });
+  }
+}
+
+function selectShape(shapeId) {
+  var detail = SHAPE_DETAILS[shapeId] || {
+    name: shapeId.replace(/-/g,' ').toUpperCase(), subtitle: "High-Yield CGL Reference", icon: "○", color: "#22d3ee",
+    difficulty: "easy", overview: "Detailed geometry parameters for " + shapeId, properties: ["Standard geometric properties apply"], variables: [], formulas: [], calc: {}
+  };
+  activeShape = shapeId;
+  renderSidebar();
+  renderShapePage(shapeId, detail);
+}
+
+function selectTheorem(theoremId) {
+  activeShape = theoremId;
+  renderSidebar();
+  var t = THEOREMS.find(e => e.id === theoremId);
+  var main = document.getElementById("mainContent");
+  if (!main || !t) return;
+  main.innerHTML = `
+    <div class="card-eyebrow" style="color:var(--amber);"><i class="fa-solid fa-graduation-cap"></i> Theorem</div>
+    <h1 class="card-title" style="color:var(--amber);">${t.name}</h1>
+    <div class="note-card" style="font-size:14px; line-height:1.7; margin-top:16px;">${t.content}</div>
+  `;
+}
+
+// ====================
+// SHAPE PAGE RENDERER
+// ====================
+
+function renderShapePage(shapeId, detail) {
+  var main = document.getElementById("mainContent");
+  if (!main) return;
+
+  var is3D = (shapeId === "cone" || shapeId === "cylinder" || shapeId === "sphere" || shapeId === "frustum" || shapeId === "cube");
+
+  var html = `
+    <div class="card-header-bar">
+      <div>
+        <div class="card-eyebrow" style="color:${detail.color}">
+          <i class="fa-solid fa-shapes"></i> ${detail.name}
+        </div>
+        <h1 class="card-title">${detail.name}</h1>
+        <div class="card-sub">${detail.subtitle}</div>
+      </div>
+      <span class="badge ${detail.difficulty}">${detail.difficulty}</span>
+    </div>
+
+    <!-- DYNAMIC SVG DIAGRAM & 3D CUT TOGGLE -->
+    <div class="diagram-container">
+      ${is3D ? `
+        <div class="slice-bar">
+          <button class="slice-btn active" onclick="setSliceMode('${shapeId}', 'default')"><i class="fa-solid fa-cube"></i> 3D View</button>
+          <button class="slice-btn" onclick="setSliceMode('${shapeId}', 'slice-vert')"><i class="fa-solid fa-scissors"></i> Vertical Cut</button>
+          <button class="slice-btn" onclick="setSliceMode('${shapeId}', 'slice-horiz')"><i class="fa-solid fa-layer-group"></i> Horizontal Cut</button>
+        </div>
+      ` : ''}
+      <div class="diagram-box" id="diagramBox">
+        ${renderShapeSVG(shapeId, {}, currentSliceMode)}
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="section-h"><i class="fa-solid fa-circle-info"></i> Overview &amp; Definition</div>
+    <p style="font-size:14px; line-height:1.7; color:var(--text-dim); margin-bottom:12px;">${detail.overview}</p>
+
+    <!-- KEY FACTS / PROPERTIES -->
+    ${detail.properties && detail.properties.length ? `
+      <div class="section-h"><i class="fa-solid fa-list-check"></i> Key Facts — Short &amp; Memorable</div>
+      <div class="props-grid">
+        ${detail.properties.map(p => `<div class="prop-item">${p}</div>`).join('')}
+      </div>
+    ` : ''}
+
+    <!-- VARIABLES / SYMBOLS -->
+    ${detail.variables && detail.variables.length ? `
+      <div class="section-h"><i class="fa-solid fa-font"></i> Symbols Used</div>
+      <div class="info-grid">
+        ${detail.variables.map(v => `<div class="info-cell"><label>${v.symbol}</label><div class="val">${v.name}</div>${v.desc ? `<div class="desc">${v.desc}</div>` : ''}</div>`).join('')}
+      </div>
+    ` : ''}
+
+    <!-- FORMULA REFERENCE -->
+    ${detail.formulas && detail.formulas.length ? `
+      <div class="section-h"><i class="fa-solid fa-calculator"></i> Formulas</div>
+      <table class="formula-table">
+        <thead><tr><th>Quantity</th><th>Formula</th><th>Example</th></tr></thead>
+        <tbody>
+          ${detail.formulas.map(f => `
+            <tr>
+              <td style="font-weight:700;">${f.quantity}</td>
+              <td class="formula">${f.formula}</td>
+              <td class="var">${f.example || "—"}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    ` : ''}
+
+    <!-- LIVE CALCULATOR -->
+    ${detail.calc && Object.keys(detail.calc).length ? `
+      <div class="section-h"><i class="fa-solid fa-sliders"></i> Interactive Live Calculator</div>
+      <div class="calculator">
+        <div class="calc-formula">${detail.name} <span class="var">Live Calculator</span></div>
+        <div class="calc-grid">
+          ${Object.keys(detail.calc).map(key => {
+            var f = detail.calc[key];
+            if (f.formula || f.calc) {
+              return `<div class="calc-field"><label>${f.label}</label><input type="number" id="calc-${key}" readonly style="background:rgba(255,255,255,0.02); color:var(--accent);"></div>`;
+            } else {
+              return `<div class="calc-field"><label>${f.label}</label><input type="number" id="calc-${key}" min="0" step="any" placeholder="Enter value"></div>`;
+            }
+          }).join('')}
+        </div>
+        <div class="calc-result">
+          <div class="label">Calculated Result</div>
+          <div class="value" id="calcResultDisplay">Enter values above</div>
+        </div>
+      </div>
+    ` : ''}
+
+    <!-- RELATED CONCEPTS (deep dive — everything else tied to this shape) -->
+    ${detail.relatedIds && detail.relatedIds.length ? `
+      <div class="section-h"><i class="fa-solid fa-diagram-project"></i> Related Concepts — Everything Else About ${detail.name}</div>
+      <div class="related-accordion" id="relatedAccordion">
+        ${detail.relatedIds.map((rid, i) => {
+          var rd = SHAPE_DETAILS[rid];
+          if (!rd) return '';
+          return `
+          <div class="acc-item" id="acc-${rid}">
+            <div class="acc-head" onclick="toggleAccordion('${rid}')">
+              <span class="acc-icon" style="color:${rd.color}">${rd.icon}</span>
+              <span class="acc-title">${rd.name}</span>
+              <span class="acc-sub">${rd.subtitle}</span>
+              <i class="fa-solid fa-chevron-down acc-chev"></i>
+            </div>
+            <div class="acc-body">
+              <div class="acc-diagram">${renderShapeSVG(rid, {}, 'default')}</div>
+              <p style="font-size:13px; line-height:1.65; color:var(--text-dim); margin:10px 0;">${rd.overview}</p>
+              ${rd.properties && rd.properties.length ? `
+                <div class="props-grid" style="margin-bottom:10px;">
+                  ${rd.properties.map(p => `<div class="prop-item" style="font-size:11.5px;">${p}</div>`).join('')}
+                </div>` : ''}
+              ${rd.formulas && rd.formulas.length ? `
+                <table class="formula-table">
+                  <thead><tr><th>Quantity</th><th>Formula</th><th>Example</th></tr></thead>
+                  <tbody>${rd.formulas.map(f => `<tr><td style="font-weight:700;">${f.quantity}</td><td class="formula">${f.formula}</td><td class="var">${f.example||"—"}</td></tr>`).join('')}</tbody>
+                </table>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    ` : ''}
+  `;
+
+  main.innerHTML = html;
+  setupCalculator(shapeId, detail);
+}
+
+window.toggleAccordion = function(rid) {
+  var item = document.getElementById("acc-" + rid);
+  if (item) item.classList.toggle("open");
+};
+
+window.setSliceMode = function(shapeId, mode) {
+  currentSliceMode = mode;
+  var btns = document.querySelectorAll(".slice-btn");
+  btns.forEach(b => b.classList.remove("active"));
+
+  var box = document.getElementById("diagramBox");
+  if (box) box.innerHTML = renderShapeSVG(shapeId, {}, mode);
+};
+
+function setupCalculator(shapeId, detail) {
+  var calc = detail.calc;
+  if (!calc) return;
+  Object.keys(calc).forEach(key => {
+    var el = document.getElementById("calc-" + key);
+    if (!el) return;
+    if (!calc[key].formula && !calc[key].calc) {
+      el.addEventListener("input", function() {
+        computeCalculator(shapeId, detail, calc);
+      });
+    }
+  });
+}
+
+function computeCalculator(shapeId, detail, calc) {
+  var inputs = {};
+  Object.keys(calc).forEach(k => {
+    var el = document.getElementById("calc-" + k);
+    inputs[k] = el ? (parseFloat(el.value) || 0) : 0;
+  });
+
+  var box = document.getElementById("diagramBox");
+  if (box) box.innerHTML = renderShapeSVG(shapeId, inputs, currentSliceMode);
+
+  var resultLines = [];
+  Object.keys(calc).forEach(k => {
+    var f = calc[k];
+    var expr = f.calc || f.formula;
+    if (expr) {
+      var val = evalExpr(expr, inputs);
+      var el = document.getElementById("calc-" + k);
+      if (el) el.value = formatResult(val);
+      if (f.formula) resultLines.push(f.label + ": <b style=\"color:var(--accent)\">" + formatResult(val) + "</b>");
+    }
+  });
+
+  var display = document.getElementById("calcResultDisplay");
+  if (display) {
+    display.innerHTML = resultLines.length ? resultLines.join("<br>") : "Enter values above";
+  }
+}
+
+function evalExpr(expr, vars) {
+  try {
+    var fn = new Function(...Object.keys(vars), "return " + expr + ";");
+    return fn(...Object.values(vars));
+  } catch (err) { return NaN; }
+}
+
+function formatResult(n) {
+  if (isNaN(n) || n === null || n === undefined) return "—";
+  return Math.round(n * 100) / 100;
+}
+
+function switchTab(tabId) {
+  activeTab = tabId;
+  activeShape = null;
+
+  var tabs = document.querySelectorAll(".nav-tab");
+  tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === tabId));
+
+  var tab = TABS.find(t => t.id === tabId);
+  if (tab && tab.data && tab.data.length) {
+    if (tab.type === "theorem") {
+      selectTheorem(tab.data[0].id);
+    } else {
+      selectShape(tab.data[0].id);
+    }
+  }
+  renderSidebar();
+}
+
+// Search
+var searchInput = document.getElementById("searchInput");
+var searchResults = document.getElementById("searchResults");
+if (searchInput) {
+  searchInput.addEventListener("input", function() {
+    var q = searchInput.value.trim().toLowerCase();
+    if (!q) { searchResults.classList.remove("show"); return; }
+    var matches = SEARCH_INDEX.filter(i => i.label.toLowerCase().includes(q)).slice(0, 8);
+    searchResults.innerHTML = matches.map((m, i) => `
+      <div class="search-item" onclick="switchTab('${m.category}'); ${m.type === 'theorem' ? `selectTheorem('${m.id}')` : `selectShape('${m.id}')`};"><b>${m.label}</b><br><span style="font-size:10px; color:var(--text-faint);">${m.sub}</span></div>
+    `).join('');
+    searchResults.classList.add("show");
+  });
+}
+
+document.getElementById("resetBtn").onclick = function() { switchTab(activeTab); };
+document.querySelectorAll(".nav-tab").forEach(tab => {
+  tab.addEventListener("click", function() { switchTab(tab.dataset.tab); });
+});
+
+var closeBtn = document.getElementById("atlasCloseBtn");
+if (closeBtn) {
+  closeBtn.addEventListener("click", function() {
+    window.parent.postMessage({ type: "closeFullscreen" }, "*");
+  });
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "b" || e.key === "B") {
+    window.parent.postMessage({ type: "closeFullscreen" }, "*");
+  }
+});
+
+window.selectShape = selectShape;
+window.switchTab = switchTab;
+switchTab("2d");
+
+})();
+</script>
+</body>
+</html>

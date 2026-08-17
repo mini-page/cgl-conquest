@@ -52,7 +52,8 @@ function renderWeakDropdownOptions(query = "") {
     let html = "";
 
     SYLLABUS_DATA.forEach(topic => {
-        topic.subtopics.forEach(sub => {
+        const subtopics = topic.subtopics || [topic];
+        subtopics.forEach(sub => {
             const text = `${topic.subject} - ${sub.name}`.toLowerCase();
             if (cleanQuery === "" || text.includes(cleanQuery)) {
                 const isSelected = selectedWeakTopicIds.includes(sub.id);
@@ -773,7 +774,7 @@ function renderRevisionRadar() {
                         </div>
                         <h4 class="text-xs font-semibold text-white truncate">${details.name}</h4>
                     </div>
-                    <button onclick="window.openStudyViewer('${studySubtopicId}')" class="shrink-0 bg-accentCyan/10 hover:bg-accentCyan/20 text-accentCyan border border-accentCyan/25 hover:border-accentCyan/40 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition">
+                    <button onclick="window.renderStudyContent('${studySubtopicId}')" class="shrink-0 bg-accentCyan/10 hover:bg-accentCyan/20 text-accentCyan border border-accentCyan/25 hover:border-accentCyan/40 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition">
                         <i class="fa-solid fa-book-open mr-1"></i> Revise
                     </button>
                 </div>

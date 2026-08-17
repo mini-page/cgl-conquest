@@ -56,6 +56,220 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Atlas-inspired Study Zone CSS -->
+    <style>
+      :root {
+        --study-bg: #05080d;
+        --study-bg-alt: #0a1119;
+        --study-panel: rgba(10, 17, 25, 0.55);
+        --study-line: rgba(148,175,199,.12);
+        --study-line-strong: rgba(148,175,199,.28);
+        --study-text: #e7edf3;
+        --study-text-dim: #8ea0b3;
+        --study-text-faint: #546274;
+        --study-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+      }
+
+      /* ===== Subject-specific accent overrides ===== */
+      .study-zone[data-subject="quant"]       { --subject-accent: #19c37d; --subject-amber: #f0a839; }
+      .study-zone[data-subject="english"]     { --subject-accent: #f0a839; --subject-amber: #f59e0b; }
+      .study-zone[data-subject="reasoning"]   { --subject-accent: #22d3ee; --subject-amber: #2dd3ee; }
+      .study-zone[data-subject="gk_gs"]       { --subject-accent: #c084fc; --subject-amber: #c084fc; }
+      .study-zone[data-subject="gk_polity"]    { --subject-accent: #a78baa; --subject-amber: #a78baa; }
+      .study-zone[data-subject="gk_geography"]{ --subject-accent: #22d3ee; --subject-amber: #2dd3ee; }
+      .study-zone[data-subject="gk_history"]  { --subject-accent: #c084fc; --subject-amber: #c084fc; }
+      .study-zone[data-subject="gk_science"]  { --subject-accent: #4ade80; --subject-amber: #4ade80; }
+      .study-zone[data-subject="computer"]    { --subject-accent: #f0a839; --subject-amber: #f59e0b; }
+      .study-zone[data-subject="general_rules"]   { --subject-accent: #a78baa; --subject-amber: #a78baa; }
+      .study-zone[data-subject="conquest_patterns"] { --subject-accent: #f0554d; --subject-amber: #f0554d; }
+
+      /* ===== Study Zone base ===== */
+      .study-zone {
+        background: var(--study-bg);
+        color: var(--study-text);
+        font-family: var(--study-mono);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+      .study-zone h3 {
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: -.3px;
+        color: var(--subject-accent, #19c37d);
+        margin-bottom: 4px;
+      }
+      .study-zone h4 {
+        font-family: var(--study-mono);
+        font-size: 10.5px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--subject-accent, #19c37d);
+        margin: 16px 0 8px;
+        padding-top: 12px;
+        border-top: 1px solid var(--study-line);
+      }
+      .study-zone h4:first-of-type {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 6px;
+      }
+
+      /* ===== Reader typography ===== */
+      .study-zone .reader-content p {
+        color: var(--study-text);
+        margin: 0 0 10px 0;
+        text-shadow: 0 1px 1px rgba(0,0,0,.6);
+      }
+      .study-zone .reader-content p:last-child {
+        margin-bottom: 0;
+      }
+      .study-zone code {
+        font-family: var(--study-mono);
+        font-size: 11px;
+        background: rgba(0,0,0,.4);
+        padding: 1px 5px;
+        border-radius: 4px;
+        color: var(--subject-accent, #19c37d);
+        border: 1px solid var(--study-line-strong);
+      }
+      .study-zone pre {
+        background: rgba(0,0,0,.45);
+        border: 1px solid var(--study-line-strong);
+        border-radius: 7px;
+        padding: 12px;
+        margin: 10px 0;
+        overflow-x: auto;
+      }
+      .study-zone pre code {
+        background: transparent;
+        padding: 0;
+        border: none;
+        font-size: 10.5px;
+        line-height: 1.5;
+      }
+
+      /* ===== Fact-card style for tips ===== */
+      .study-zone .fact-card {
+        background: rgba(240,168,57,.06);
+        border: 1px solid rgba(240,168,57,.22);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin: 8px 0;
+        font-size: 12.5px;
+        line-height: 1.5;
+        position: relative;
+      }
+      .study-zone .fact-card::before {
+        content: '★';
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        color: var(--subject-amber, #f0a839);
+        font-size: 12px;
+      }
+      .study-zone .note-card {
+        background: rgba(34,211,238,.06);
+        border: 1px solid rgba(34,211,238,.25);
+      }
+      .study-zone .note-card::before { content: '◆'; }
+
+      /* ===== Tags ===== */
+      .study-zone .tag-pill {
+        font-family: var(--study-mono);
+        font-size: 10px;
+        letter-spacing: .5px;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid var(--study-line);
+        color: var(--study-text-faint);
+      }
+
+      /* ===== Info cells ===== */
+      .study-zone .info-cell {
+        background: rgba(255,255,255,.03);
+        border: 1px solid var(--study-line);
+        border-radius: 7px;
+        padding: 8px 10px;
+      }
+      .study-zone .info-cell label {
+        font-family: var(--study-mono);
+        font-size: 9px;
+        color: var(--study-text-faint);
+        text-transform: uppercase;
+        letter-spacing: .5px;
+      }
+      .study-zone .info-cell .val {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--study-text);
+        margin-top: 2px;
+      }
+
+      /* ===== Table styling ===== */
+      .study-zone table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 12px 0;
+        font-size: 11px;
+        font-family: var(--study-mono);
+      }
+      .study-zone th {
+        background: rgba(0,0,0,.3);
+        color: var(--subject-accent, #19c37d);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        font-size: 9px;
+        padding: 6px 8px;
+        border-bottom: 2px solid var(--subject-accent, #19c37d);
+      }
+      .study-zone td {
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--study-line);
+        color: var(--study-text-dim);
+      }
+      .study-zone tbody tr:hover {
+        background: rgba(255,255,255,.02);
+      }
+
+      /* ===== Section card ===== */
+      .study-zone .section-card {
+        background: rgba(255,255,255,.015);
+        border: 1px solid var(--study-line);
+        border-radius: 8px;
+        padding: 14px;
+        margin-bottom: 12px;
+      }
+
+      /* ===== Scrollbar ===== */
+      .study-zone ::-webkit-scrollbar { width: 6px; height: 6px; }
+      .study-zone ::-webkit-scrollbar-track { background: transparent; }
+      .study-zone ::-webkit-scrollbar-thumb { background: var(--study-line-strong); border-radius: 6px; }
+
+      /* ===== Reader prose ===== */
+      .study-zone .reader-content {
+        font-family: var(--sans, -apple-system, BlinkMacSystemFont, sans-serif);
+      }
+      .study-zone .reader-content ul {
+        margin: 6px 0;
+        padding-left: 20px;
+      }
+      .study-zone .reader-content li {
+        margin-bottom: 3px;
+        color: var(--study-text);
+      }
+      .study-zone .reader-content blockquote {
+        border-left: 2px solid var(--subject-amber, #f0a839);
+        color: var(--study-text-dim);
+        margin: 8px 0;
+        padding: 4px 12px;
+        font-style: italic;
+        background: rgba(0,0,0,.2);
+      }
+    </style>
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
 
@@ -622,30 +836,43 @@
 
         <!-- 5. STUDY TOOLKIT PAGE (MIGRATED DOCUMENTATION SYSTEM) -->
         <section id="page-toolkit" class="content-page hidden space-y-6">
-            <!-- Embedded Page Heading with Search -->
-            <div class="flex justify-between items-center pb-2.5 mb-4 flex-wrap gap-4 border-b border-white/10 pb-4">
-                <div class="flex items-center gap-3">
-                    <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight">
-                        <i class="fa-solid fa-toolbox text-accentGreen mr-2"></i> Study
-                    </h2>
-                </div>
-                <!-- Global Study Search -->
-                <div class="relative w-full sm:w-80">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-gray-400 text-xs"></i>
-                    <input type="text" id="study-global-search" placeholder="Search formulas, concepts, articles..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-white/10 bg-bgCard/50 hover:bg-white/5 text-xs text-white outline-none focus:border-accentCyan transition duration-200 backdrop-blur-xl">
-                    <!-- Search Results Dropdown -->
-                    <div id="study-search-results" class="absolute right-0 top-11 w-full sm:w-96 bg-bgCard/60 border border-white/10 shadow-2xl z-50 rounded-2xl p-4 hidden select-none max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
-                        <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest border-b border-white/5 pb-2 mb-2">Search Results</div>
-                        <div id="study-search-list" class="space-y-2">
-                            <!-- Injected dynamically -->
+            <!-- Page Heading & Hero Search Bar -->
+            <div class="bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl p-5 sm:p-6 shadow-2xl backdrop-blur-2xl relative overflow-hidden">
+                <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 space-y-4">
+                    <div class="flex items-center justify-between flex-wrap gap-3">
+                        <div>
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                                SSC CGL 2026 Interactive Study Deck
+                            </div>
+                            <h2 class="font-heading font-black text-2xl sm:text-3xl text-white tracking-tight flex items-center gap-2">
+                                <i class="fa-solid fa-toolbox text-accentGreen"></i> Study Command Hub
+                            </h2>
+                        </div>
+                    </div>
+                    
+                    <!-- Direct Study Surface Search Bar -->
+                    <div class="relative w-full max-w-3xl">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 text-sm"></i>
+                        <input type="text" id="study-global-search" placeholder="Search master books, atlases, formulas & PYQs (e.g. Grammar, Geometry, Constitution, History)..."
+                            class="w-full bg-slate-950/80 border border-cyan-500/40 rounded-xl pl-11 pr-10 py-3 text-xs sm:text-sm text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 shadow-inner transition duration-200">
+                        <button id="btn-study-search-clear" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white text-xs font-bold px-1.5 py-0.5 rounded bg-white/10">✕</button>
+                        
+                        <!-- Search Results Dropdown -->
+                        <div id="study-search-results" class="absolute left-0 right-0 top-14 w-full bg-bgCard/95 border border-cyan-500/40 shadow-2xl z-50 rounded-2xl p-4 hidden select-none max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-2xl">
+                            <div class="text-[10px] text-cyan-400 font-extrabold uppercase tracking-widest border-b border-white/10 pb-2 mb-2">Instant Search Results</div>
+                            <div id="study-search-list" class="space-y-2">
+                                <!-- Injected dynamically -->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Subject Grid Area -->
-            <div id="study-subject-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                <!-- Dynamically loaded from subjects.json -->
+            <!-- Topic Cards Grouped by Subject Sections -->
+            <div id="study-subject-grid" class="space-y-7">
+                <!-- Subject sections with topic cards, dynamically rendered from subjects.js -->
             </div>
 
             <!-- Topic/Subtopic Accordion Panel -->
@@ -661,12 +888,7 @@
                 
                 <!-- Filter Panel and View Selectors for Study Notes (Replica of Syllabus Console) -->
                 <div class="bg-bgCard/50 rounded-2xl p-4 border border-white/10 shadow-md flex flex-col gap-3 backdrop-blur-xl">
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <div class="relative flex-grow min-w-[200px]">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
-                            <input id="study-search" type="text" placeholder="Search study notes..."
-                                class="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-xs text-white focus:outline-none focus:border-accentCyan focus:ring-1 focus:ring-accentCyan transition duration-200" />
-                        </div>
+                    <div class="flex flex-col sm:flex-row justify-end gap-3">
                         <div class="relative shrink-0" id="study-sort-dropdown-wrap"></div>
                         <div class="relative shrink-0" id="study-view-dropdown-wrap"></div>
                     </div>
@@ -681,6 +903,56 @@
 
                 <!-- Empty State -->
                 <p id="study-empty-state" class="hidden text-center text-gray-500 text-xs py-16">No notes match these filters. Try widening the search.</p>
+            </div>
+
+            <!-- Inline Study Content Viewer (replaces modal-study-viewer) -->
+            <div id="study-content-viewer" class="study-zone border border-white/10 rounded-2xl shadow-lg backdrop-blur-xl hidden flex flex-col h-[calc(100vh-220px)] data-[subject:auto]" data-subject="auto" style="background:var(--study-bg); border-color:var(--study-line-strong);">
+                <!-- Viewer Header -->
+                <div class="flex items-center justify-between border-b border-white/10 pb-3.5 flex-shrink-0">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <button id="btn-content-back" title="Back to Topics" class="text-gray-400 hover:text-white transition text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 bg-white/5 hover:bg-white/10 px-2.5 py-1.5 rounded-xl border border-white/5">
+                            <i class="fa-solid fa-arrow-left"></i> <span class="hidden sm:inline">Back</span>
+                        </button>
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div id="content-subject-icon" class="w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-accentCyan text-sm flex-shrink-0"></div>
+                            <div class="min-w-0">
+                                <h3 id="content-title" class="font-heading font-extrabold text-sm text-white uppercase tracking-wider truncate"></h3>
+                                <div id="content-breadcrumb" class="text-[9px] text-gray-500 font-mono truncate hidden sm:block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="content-tags" class="flex flex-wrap gap-1 mb-2"></div>
+                </div>
+
+                <!-- Viewer Action Buttons -->
+                <div id="content-action-bar" class="flex items-center gap-1.5 flex-shrink-0 mb-3 hidden sm:flex">
+                    <button id="btn-content-star" onclick="toggleViewerProgress('starred')" title="Star" class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition">
+                        <i class="fa-regular fa-star"></i>
+                    </button>
+                    <button id="btn-content-learned" onclick="toggleViewerProgress('learned')" title="Learned" class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </button>
+                    <button id="btn-content-bookmark" onclick="toggleViewerProgress('bookmarked')" title="Bookmark" class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/5 bg-white/5 text-gray-400 hover:text-white transition">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+                    <span class="w-px h-4 bg-white/10 mx-1"></span>
+                    <span id="content-progress-label" class="text-[9px] text-gray-500 font-mono">0% Read</span>
+                    <span id="content-difficulty" class="text-[9px] px-2 py-0.5 rounded-full bg-white/5 border border-white/5 text-gray-400 uppercase tracking-widest font-extrabold"></span>
+                </div>
+
+                <!-- Main Reading Document Area -->
+                <article id="content-document-body" class="flex-1 overflow-y-auto space-y-6 scroll-smooth select-text px-1"></article>
+
+                <!-- Footer Navigation -->
+                <div class="flex justify-between items-center border-t border-white/10 px-4 py-3 flex-shrink-0">
+                    <button id="btn-content-prev" onclick="navigateViewer(-1)" title="Previous Topic" class="text-xs text-gray-400 hover:text-white transition font-bold uppercase tracking-wider flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/5">
+                        <i class="fa-solid fa-arrow-left"></i> <span class="hidden sm:inline">Previous</span>
+                    </button>
+                    <span id="content-progress-pct" class="text-[9px] text-gray-500 font-mono">0%</span>
+                    <button id="btn-content-next" onclick="navigateViewer(1)" title="Next Topic" class="text-xs text-gray-400 hover:text-white transition font-bold uppercase tracking-wider flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/5">
+                        <span class="hidden sm:inline">Next</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Custom Notes (Mistake Book) Area -->
@@ -737,12 +1009,12 @@
                 <hr class="border-white/5">
 
                 <!-- Notes filter list -->
-                    <div class="flex gap-2 flex-wrap">
-                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition active-nav-tab border border-white/10 hover:border-white/20" data-category="all">All Saved Notes</button>
-                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="mistake">Mistakes</button>
-                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="formula">Formulas/Tricks</button>
-                        <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="gk">GK Notes</button>
-                    </div>
+                <div class="flex gap-2 flex-wrap">
+                    <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition active-nav-tab border border-white/10 hover:border-white/20" data-category="all">All Saved Notes</button>
+                    <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="mistake">Mistakes</button>
+                    <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="formula">Formulas/Tricks</button>
+                    <button class="note-filter-btn px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-[10px] font-bold uppercase transition border border-white/10 hover:border-white/20" data-category="gk">GK Notes</button>
+                </div>
 
                 <!-- Notes container list -->
                 <div id="notes-container" class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
@@ -752,12 +1024,11 @@
         </section>
 
         <!-- 6. SPEED DRILLS / MAKE IT FAST PAGE -->
-                <section id="page-speed" class="content-page hidden space-y-6">
+        <section id="page-speed" class="content-page hidden space-y-6">
             <!-- Embedded Page Heading -->
             <div class="pb-2.5 mb-4">
                 <h2 class="font-heading font-extrabold text-xl text-white uppercase tracking-tight"><i class="fa-solid fa-bolt text-accentRose mr-2"></i> Drilling</h2>
             </div>
-            <!-- Speed Drills Sub-Tabs -->
             <div class="flex items-center justify-between border-b border-white/10 mb-3 pb-3 gap-4">
                 <!-- Subtabs (scrollable left area) -->
                 <div class="flex gap-2 overflow-x-auto scrollbar-none whitespace-nowrap py-1">
@@ -1254,6 +1525,14 @@
         </div>
     </div>
 
+    <!-- Full-Screen Page Overlay (for atlas, maps, and special topic pages) -->
+    <div id="fullscreen-page" class="fixed inset-0 bg-black z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 hidden">
+        <iframe id="fullscreen-page-frame" class="w-full h-full border-0" frameborder="0"></iframe>
+        <button id="btn-fullscreen-close" class="hidden fixed top-4 right-4 z-[210] text-gray-400 hover:text-white bg-black/40 hover:bg-white/10 border border-white/10 rounded-xl p-3 transition">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+    </div>
+
     <!-- App Scripts -->
     <script src="study/subjects.js"></script>
     <!-- App Components -->
@@ -1261,6 +1540,7 @@
     <script src="js/components/tooltip.js"></script>
     <script src="js/components/dropdown.js"></script>
     <script src="js/state.js"></script>
+    <script src="js/study_content.js"></script>
     <script src="js/navigation.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/syllabus.js"></script>

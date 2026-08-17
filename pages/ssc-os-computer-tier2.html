@@ -1,0 +1,1321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSC-OS — Tier 2 Computer Proficiency</title>
+<style>
+:root{
+  --bg:#0a1420;
+  --taskbar:#0d1b2a;
+  --window:#0f1c2b;
+  --panel:rgba(15,28,43,0.85);
+  --line:rgba(148,175,199,0.16);
+  --line-strong:rgba(148,175,199,0.3);
+  --text:#e7edf3;
+  --text-dim:#8ea0b3;
+  --text-faint:#546274;
+  --accent:#38bdf8;
+  --accent-dim:#0284c7;
+  --mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{height:100%; margin:0;}
+body{
+  font-family:var(--sans);
+  color:var(--text);
+  overflow:hidden;
+  height:100vh;
+  background:
+    radial-gradient(ellipse 1000px 600px at 20% -10%, rgba(56,189,248,0.08), transparent 60%),
+    radial-gradient(ellipse 900px 600px at 100% 100%, rgba(167,139,250,0.06), transparent 55%),
+    var(--bg);
+}
+::-webkit-scrollbar{width:8px; height:8px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--line-strong); border-radius:8px;}
+::selection{background:rgba(56,189,248,0.35);}
+
+/* ---------------- BOOT SCREEN ---------------- */
+#bootScreen{
+  position:fixed; inset:0; background:#04080c; z-index:999;
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  font-family:var(--mono); color:#38bdf8;
+  transition:opacity .5s ease;
+}
+#bootScreen .boot-logo{font-size:15px; letter-spacing:4px; margin-bottom:22px; opacity:0.9;}
+#bootScreen .boot-bar{width:280px; height:3px; background:rgba(56,189,248,0.15); border-radius:3px; overflow:hidden;}
+#bootScreen .boot-bar-fill{height:100%; width:0%; background:#38bdf8; box-shadow:0 0 10px #38bdf8; transition:width 1.4s cubic-bezier(.3,.7,.3,1);}
+#bootScreen .boot-lines{margin-top:18px; font-size:10.5px; color:#3a5a70; text-align:left; width:280px; height:70px; overflow:hidden;}
+#bootScreen .boot-lines div{opacity:0; animation:bootline .3s forwards;}
+@keyframes bootline{to{opacity:1;}}
+#bootScreen.hide{opacity:0; pointer-events:none;}
+
+/* ---------------- DESKTOP ---------------- */
+#desktop{
+  position:absolute; inset:0; bottom:52px;
+  padding:26px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, 92px);
+  grid-auto-rows:96px;
+  gap:6px;
+  align-content:start;
+}
+.icon{
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  cursor:pointer; padding:8px 4px; border-radius:8px;
+  text-align:center; user-select:none;
+  transition:background .12s;
+}
+.icon:hover{background:rgba(255,255,255,0.06);}
+.icon:active{background:rgba(56,189,248,0.15);}
+.icon .ibox{
+  width:42px; height:42px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(155deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border:1px solid var(--line);
+}
+.icon .ibox svg{width:22px; height:22px;}
+.icon span{font-size:10.5px; color:var(--text-dim); line-height:1.25; font-family:var(--sans);}
+
+/* ---------------- TASKBAR ---------------- */
+#taskbar{
+  position:absolute; left:0; right:0; bottom:0; height:52px;
+  background:var(--taskbar);
+  border-top:1px solid var(--line);
+  display:flex; align-items:center; gap:8px; padding:0 10px;
+  z-index:200;
+}
+#startBtn{
+  display:flex; align-items:center; gap:8px;
+  background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3);
+  color:#38bdf8; padding:8px 14px; border-radius:8px; cursor:pointer;
+  font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:0.5px;
+  transition:.15s;
+}
+#startBtn:hover{background:rgba(56,189,248,0.2);}
+#startBtn svg{width:15px; height:15px;}
+
+.taskbar-search{
+  flex:0 1 320px; display:flex; align-items:center; gap:8px;
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:8px;
+  padding:7px 12px;
+}
+.taskbar-search input{
+  background:transparent; border:none; outline:none; color:var(--text);
+  font-size:12.5px; width:100%; font-family:var(--sans);
+}
+.taskbar-search svg{width:14px; height:14px; color:var(--text-faint); flex-shrink:0;}
+
+#taskApps{display:flex; gap:6px; flex:1;}
+.task-app-btn{
+  display:flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,0.05); border:1px solid var(--line); color:var(--text-dim);
+  padding:7px 12px; border-radius:7px; cursor:pointer; font-size:11.5px; font-family:var(--mono);
+}
+.task-app-btn.active{border-color:var(--accent); color:var(--accent); background:rgba(56,189,248,0.12);}
+
+#clock{font-family:var(--mono); font-size:12px; color:var(--text-dim); text-align:right; padding:0 8px; line-height:1.3; flex-shrink:0;}
+#clock .d{font-size:9.5px; color:var(--text-faint);}
+</style>
+</head>
+<style>
+/* ---------------- WINDOW ---------------- */
+#windowLayer{
+  position:absolute; inset:0; bottom:52px;
+  display:flex; justify-content:center;
+  padding:26px;
+  z-index:100;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition: opacity .18s ease;
+}
+#windowLayer.show{opacity:1; visibility:visible; pointer-events:auto;}
+.window{
+  width:100%; max-width:960px; height:100%;
+  background:var(--window);
+  border:1px solid var(--line-strong);
+  border-radius:12px;
+  display:flex; flex-direction:column;
+  box-shadow:0 30px 70px rgba(0,0,0,0.55);
+  overflow:hidden;
+  transform: translateY(14px) scale(0.97);
+  opacity:0;
+  transition: transform .28s cubic-bezier(.2,.85,.25,1), opacity .22s ease, border-radius .25s ease, max-width .25s ease;
+}
+#windowLayer.show .window{ transform:none; opacity:1; }
+@keyframes winIn{from{opacity:0; transform:translateY(14px) scale(0.98);} to{opacity:1; transform:none;}}
+.content-fade{ animation: contentIn .3s cubic-bezier(.2,.8,.2,1); }
+.win-titlebar{
+  display:flex; align-items:center; gap:10px; justify-content:space-between;
+  padding:9px 12px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
+}
+.win-dots{display:flex; gap:8px; margin-left:auto;}
+.wdot{
+  width:26px; height:26px; border-radius:8px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition: filter .12s, transform .12s;
+}
+.wdot svg{width:14px; height:14px;}
+.wdot:hover{filter:brightness(1.15); transform:translateY(-1px);}
+.wdot.red{background:rgba(248,113,113,0.18); color:#f87171; border:1px solid rgba(248,113,113,0.35);}
+.wdot.yellow{background:rgba(251,191,36,0.18); color:#fbbf24; border:1px solid rgba(251,191,36,0.35);}
+.wdot.green{background:rgba(52,211,153,0.18); color:#34d399; border:1px solid rgba(52,211,153,0.35);}
+.win-titlebar .wt-title{font-family:var(--mono); font-size:12.5px; color:var(--text-dim); letter-spacing:0.4px;}
+.win-titlebar .wt-icon{width:16px; height:16px;}
+
+.window.fullscreen{
+  position:fixed; inset:0; max-width:none; height:100vh; border-radius:0; z-index:400;
+}
+.window.fullscreen .wdot.green svg{ transform:rotate(180deg); }
+
+.win-body{flex:1; overflow-y:auto; padding:22px 26px 40px;}
+
+/* two-pane topic window */
+.win-body.split{display:flex; padding:0; overflow:hidden;}
+.topic-nav{
+  width:230px; flex-shrink:0; border-right:1px solid var(--line);
+  overflow-y:auto; padding:14px 10px; background:rgba(255,255,255,0.015);
+}
+.topic-nav-item{
+  padding:10px 12px; border-radius:8px; cursor:pointer; font-size:12.5px; color:var(--text-dim);
+  margin-bottom:3px; transition: background .15s, color .15s, transform .15s;
+  display:flex; align-items:center; gap:8px;
+}
+.topic-nav-item:hover{background:rgba(255,255,255,0.05); transform:translateX(2px);}
+.topic-nav-item.active{background:rgba(255,255,255,0.07); color:var(--text); font-weight:600;}
+.topic-nav-item .tn-dot{width:6px; height:6px; border-radius:50%; flex-shrink:0;}
+.topic-content{flex:1; overflow-y:auto; padding:24px 28px 44px;}
+.topic-content-inner{animation: contentIn .28s cubic-bezier(.2,.8,.2,1);}
+@keyframes contentIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+
+/* topic viewer */
+.topic-blurb{color:var(--text-dim); font-size:13px; margin-bottom:18px; line-height:1.55; padding-bottom:16px; border-bottom:1px solid var(--line);}
+.tsec{margin-bottom:20px;}
+.tsec-h{display:flex; align-items:center; gap:8px; font-size:14.5px; font-weight:700; margin-bottom:10px;}
+.pyq-badge{
+  font-family:var(--mono); font-size:9px; padding:2px 7px; border-radius:999px;
+  background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.4); color:#fbbf24;
+  letter-spacing:0.4px;
+}
+.tsec ul{margin:0; padding-left:0; list-style:none;}
+.tsec li{
+  position:relative; padding:7px 0 7px 20px; font-size:13px; color:var(--text-dim); line-height:1.55;
+  border-bottom:1px dashed var(--line);
+}
+.tsec li:last-child{border-bottom:none;}
+.tsec li::before{content:'▸'; position:absolute; left:0; color:var(--accent);}
+
+/* content tables */
+.ctable-wrap{overflow-x:auto; margin:4px 0 14px; border-radius:10px; border:1px solid var(--line);}
+.ctable{width:100%; border-collapse:collapse; font-size:12.5px;}
+.ctable th{
+  text-align:left; padding:9px 13px; background:rgba(255,255,255,0.05);
+  font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-faint);
+  border-bottom:1px solid var(--line-strong);
+}
+.ctable td{padding:10px 13px; border-bottom:1px solid var(--line); color:var(--text-dim); line-height:1.5;}
+.ctable tr:last-child td{border-bottom:none;}
+.ctable tr:hover td{background:rgba(255,255,255,0.02); color:var(--text);}
+.ctable td:first-child{color:var(--text); font-weight:600;}
+
+.diff-badge{
+  font-family:var(--mono); font-size:9px; padding:2px 7px; border-radius:999px; letter-spacing:0.4px; text-transform:uppercase;
+}
+.diff-badge.easy{background:rgba(52,211,153,0.15); border:1px solid rgba(52,211,153,0.4); color:#34d399;}
+.diff-badge.medium{background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.4); color:#fbbf24;}
+.diff-badge.hard{background:rgba(248,113,113,0.15); border:1px solid rgba(248,113,113,0.4); color:#f87171;}
+
+/* topic index (desktop-like grid inside window for topic hub, unused but kept minimal) */
+
+/* shortcuts app */
+.shortcut-tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px;}
+.sc-tab{
+  padding:8px 13px; border-radius:8px; cursor:pointer; font-size:11.5px; font-family:var(--mono);
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text-dim);
+}
+.sc-tab.active{border-color:var(--accent); color:var(--accent); background:rgba(56,189,248,0.12);}
+.sc-table{width:100%; border-collapse:collapse;}
+.sc-table tr{border-bottom:1px solid var(--line);}
+.sc-table td{padding:10px 8px; font-size:12.5px; vertical-align:middle;}
+.sc-key{
+  font-family:var(--mono); font-size:11.5px; color:#38bdf8; background:rgba(56,189,248,0.08);
+  border:1px solid rgba(56,189,248,0.25); padding:4px 9px; border-radius:6px; white-space:nowrap; display:inline-block;
+}
+.sc-desc{color:var(--text-dim);}
+.sc-pyq{width:30px; text-align:center;}
+
+/* abbreviations app */
+.abbr-search{
+  width:100%; padding:10px 14px; border-radius:8px; margin-bottom:16px;
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text);
+  font-size:13px; outline:none; font-family:var(--sans);
+}
+.abbr-search:focus{border-color:var(--accent);}
+.abbr-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+.abbr-item{
+  background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:8px;
+  padding:9px 12px;
+}
+.abbr-item b{font-family:var(--mono); color:#38bdf8; font-size:12.5px;}
+.abbr-item div{font-size:11.5px; color:var(--text-dim); margin-top:2px;}
+
+/* quiz app */
+.quiz-topic-row{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px;}
+.quiz-topic-chip{
+  padding:6px 12px; border-radius:999px; cursor:pointer; font-size:11px; font-family:var(--mono);
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text-dim);
+}
+.quiz-topic-chip.active{background:rgba(56,189,248,0.15); border-color:var(--accent); color:var(--accent);}
+.quiz-score-row{display:flex; gap:10px; margin-bottom:18px;}
+.qz-box{flex:1; text-align:center; padding:10px; border-radius:8px; background:rgba(255,255,255,0.03); border:1px solid var(--line);}
+.qz-box .n{font-family:var(--mono); font-size:20px; font-weight:800;}
+.qz-box .l{font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.5px;}
+.qz-prompt{
+  background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px;
+  padding:18px; margin-bottom:16px;
+}
+.qz-prompt .qn{font-family:var(--mono); font-size:10px; color:var(--text-faint); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;}
+.qz-prompt .qt{font-size:15px; font-weight:600; line-height:1.5;}
+.qz-options{display:flex; flex-direction:column; gap:8px;}
+.qz-opt{
+  padding:12px 14px; border-radius:8px; cursor:pointer; font-size:13px;
+  background:rgba(255,255,255,0.03); border:1px solid var(--line); transition:.12s;
+}
+.qz-opt:hover{border-color:var(--accent);}
+.qz-opt.correct{background:rgba(52,211,153,0.15); border-color:#34d399; color:#34d399;}
+.qz-opt.wrong{background:rgba(248,113,113,0.15); border-color:#f87171; color:#f87171;}
+.qz-next{
+  width:100%; padding:12px; border-radius:8px; border:none; cursor:pointer; margin-top:14px;
+  background:var(--accent); color:#04222f; font-weight:700; font-size:12.5px;
+}
+
+/* notepad */
+#notepadArea{
+  width:100%; height:100%; min-height:400px; background:transparent; border:none; outline:none;
+  color:var(--text); font-family:var(--mono); font-size:13px; line-height:1.6; resize:none;
+}
+
+/* search overlay */
+#searchOverlay{
+  position:fixed; inset:0; background:rgba(4,8,12,0.7); backdrop-filter:blur(6px);
+  z-index:500; display:none; align-items:flex-start; justify-content:center; padding-top:14vh;
+}
+#searchOverlay.show{display:flex;}
+.search-box{width:100%; max-width:560px;}
+.search-box input{
+  width:100%; padding:16px 18px; border-radius:12px; font-size:15px;
+  background:var(--panel); border:1px solid var(--line-strong); color:var(--text); outline:none;
+  font-family:var(--sans);
+}
+.search-hits{margin-top:10px; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; max-height:50vh; overflow-y:auto;}
+.search-hit{padding:12px 16px; cursor:pointer; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px;}
+.search-hit:last-child{border-bottom:none;}
+.search-hit:hover{background:rgba(255,255,255,0.05);}
+.search-hit .sh-tag{font-family:var(--mono); font-size:9px; padding:3px 7px; border-radius:5px; background:rgba(56,189,248,0.12); color:#38bdf8; text-transform:uppercase;}
+.search-hit .sh-title{font-size:13px; color:var(--text);}
+.search-hit .sh-sub{font-size:11px; color:var(--text-faint); margin-left:auto;}
+
+/* start menu */
+#startMenu{
+  position:absolute; left:10px; bottom:60px; width:300px;
+  background:var(--panel); backdrop-filter:blur(14px); border:1px solid var(--line-strong);
+  border-radius:12px; padding:10px; z-index:300; display:none;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+#startMenu.show{display:block;}
+.sm-item{
+  display:flex; align-items:center; gap:10px; padding:10px 10px; border-radius:8px; cursor:pointer; font-size:12.5px;
+}
+.sm-item:hover{background:rgba(255,255,255,0.06);}
+.sm-item svg{width:16px; height:16px; color:var(--accent);}
+.sm-divider{height:1px; background:var(--line); margin:6px 4px;}
+
+@media (max-width:820px){
+  #desktop{grid-template-columns:repeat(auto-fill, 78px); grid-auto-rows:84px; padding:14px; gap:2px;}
+  .icon .ibox{width:36px; height:36px;}
+  .taskbar-search{display:none;}
+}
+
+/* ---------------- mnemonic / trick callout ---------------- */
+.trick-box{
+  display:flex; gap:10px; align-items:flex-start;
+  background:linear-gradient(135deg, rgba(251,191,36,0.09), rgba(251,191,36,0.03));
+  border:1px solid rgba(251,191,36,0.28); border-radius:10px;
+  padding:12px 14px; margin:10px 0 4px; font-size:12.5px; line-height:1.6; color:#fde68a;
+}
+.trick-box .tb-emoji{font-size:16px; flex-shrink:0;}
+.trick-box b{color:#fbbf24;}
+
+/* ---------------- flashcards ---------------- */
+.flash-deck-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+.flash-deck-btn{
+  flex:0 1 auto; text-align:center; padding:9px 14px; border-radius:8px; cursor:pointer; font-size:11.5px; font-family:var(--mono);
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text-dim); transition:.15s;
+}
+.flash-deck-btn.active{background:rgba(244,114,182,0.15); border-color:#f472b6; color:#f472b6;}
+.flash-progress{text-align:center; font-family:var(--mono); font-size:11px; color:var(--text-faint); margin-bottom:12px;}
+.flash-card{
+  min-height:220px; border-radius:14px; cursor:pointer; perspective:1000px;
+  margin-bottom:18px;
+}
+.flash-card-inner{
+  position:relative; width:100%; height:220px; text-align:center;
+  transition: transform 0.5s; transform-style:preserve-3d;
+}
+.flash-card.flipped .flash-card-inner{ transform:rotateY(180deg); }
+.flash-face{
+  position:absolute; inset:0; backface-visibility:hidden;
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;
+  border-radius:14px; padding:24px; border:1px solid var(--line-strong);
+}
+.flash-front{ background:linear-gradient(150deg, rgba(244,114,182,0.14), rgba(244,114,182,0.03)); }
+.flash-front .ff-label{font-family:var(--mono); font-size:9.5px; color:#f472b6; text-transform:uppercase; letter-spacing:1.2px;}
+.flash-front .ff-term{font-size:19px; font-weight:700;}
+.flash-back{
+  background:linear-gradient(150deg, rgba(56,189,248,0.14), rgba(56,189,248,0.03));
+  transform:rotateY(180deg); font-size:13.5px; line-height:1.6; color:var(--text-dim);
+}
+.flash-hint{text-align:center; font-size:10.5px; color:var(--text-faint); margin-bottom:14px; font-family:var(--mono);}
+.flash-nav{display:flex; gap:8px;}
+.flash-nav button{
+  flex:1; padding:11px; border-radius:8px; border:1px solid var(--line); cursor:pointer;
+  background:rgba(255,255,255,0.04); color:var(--text-dim); font-size:12px; font-family:var(--mono);
+}
+.flash-nav button.primary{background:#f472b6; border-color:#f472b6; color:#2a0a19; font-weight:700;}
+
+/* ---------------- typing test ---------------- */
+.dest-info-row{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
+.dest-stat{
+  flex:1; min-width:90px; text-align:center; padding:10px 6px; border-radius:8px;
+  background:rgba(255,255,255,0.03); border:1px solid var(--line);
+}
+.dest-stat .n{font-family:var(--mono); font-size:19px; font-weight:800; color:#38bdf8;}
+.dest-stat .l{font-size:9px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.5px;}
+.dest-passage{
+  background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px;
+  padding:16px 18px; font-family:var(--mono); font-size:14px; line-height:1.85; letter-spacing:0.2px;
+  margin-bottom:14px; max-height:180px; overflow-y:auto; user-select:none;
+}
+.dest-passage span.correct{color:#34d399;}
+.dest-passage span.wrong{color:#f87171; background:rgba(248,113,113,0.18); border-radius:2px;}
+.dest-passage span.pending{color:var(--text-faint);}
+.dest-passage span.current{background:rgba(56,189,248,0.35); border-radius:2px;}
+.dest-input{
+  width:100%; min-height:110px; padding:14px; border-radius:10px; resize:none;
+  background:rgba(0,0,0,0.25); border:1px solid var(--line-strong); color:var(--text);
+  font-family:var(--mono); font-size:14px; line-height:1.7; outline:none;
+}
+.dest-input:focus{border-color:#38bdf8;}
+.dest-controls{display:flex; gap:10px; margin-top:14px;}
+.dest-btn{
+  flex:1; padding:12px; border-radius:8px; border:none; cursor:pointer; font-weight:700; font-size:12.5px; font-family:var(--mono);
+}
+.dest-btn.start{background:#38bdf8; color:#04222f;}
+.dest-btn.submit{background:#f87171; color:#2a0808;}
+.dest-btn:disabled{opacity:0.4; cursor:not-allowed;}
+.dest-result{
+  border-radius:12px; padding:22px; text-align:center; margin-bottom:16px;
+}
+.dest-result.pass{background:rgba(52,211,153,0.1); border:1px solid rgba(52,211,153,0.35);}
+.dest-result.fail{background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.35);}
+.dest-result .verdict{font-size:22px; font-weight:800; margin-bottom:6px;}
+.dest-result.pass .verdict{color:#34d399;}
+.dest-result.fail .verdict{color:#f87171;}
+.dest-result .verdict-sub{font-size:12px; color:var(--text-dim);}
+.dest-note{font-size:11px; color:var(--text-faint); line-height:1.6; margin-top:10px;}
+
+/* typing mode toggle */
+.dest-mode-row{display:flex; gap:8px; margin-bottom:16px;}
+.dest-mode-btn{
+  flex:1; padding:10px; text-align:center; border-radius:8px; cursor:pointer; font-size:11.5px; font-family:var(--mono);
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text-dim); transition:.15s;
+}
+.dest-mode-btn.active{background:rgba(56,189,248,0.15); border-color:#38bdf8; color:#38bdf8;}
+.dest-length-row{display:flex; gap:8px; margin-bottom:16px;}
+.dest-len-btn{
+  padding:7px 12px; border-radius:999px; cursor:pointer; font-size:10.5px; font-family:var(--mono);
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--text-dim); transition:.15s;
+}
+.dest-len-btn.active{background:rgba(52,211,153,0.15); border-color:#34d399; color:#34d399;}
+
+/* ---------------- formula lab ---------------- */
+.flab-grid-wrap{margin-bottom:18px; border-radius:10px; overflow:hidden; border:1px solid var(--line);}
+.flab-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+.flab-table th{background:rgba(56,189,248,0.08); color:#38bdf8; font-family:var(--mono); padding:8px; text-align:center; border:1px solid var(--line);}
+.flab-table td{padding:8px; text-align:center; border:1px solid var(--line); color:var(--text-dim);}
+.flab-table td:first-child, .flab-table th:first-child{background:rgba(255,255,255,0.04); font-family:var(--mono); color:var(--text-faint);}
+.flab-progress{font-family:var(--mono); font-size:11px; color:var(--text-faint); margin-bottom:10px;}
+.flab-task{
+  background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px;
+  padding:16px 18px; margin-bottom:14px; font-size:13.5px; line-height:1.6;
+}
+.flab-task .fl-diff{margin-bottom:8px;}
+.flab-input-row{display:flex; gap:8px; margin-bottom:12px;}
+.flab-input{
+  flex:1; padding:12px 14px; border-radius:8px; background:rgba(0,0,0,0.25);
+  border:1px solid var(--line-strong); color:#38bdf8; font-family:var(--mono); font-size:13.5px; outline:none;
+}
+.flab-input:focus{border-color:#38bdf8;}
+.flab-input.correct{border-color:#34d399; color:#34d399;}
+.flab-input.wrong{border-color:#f87171; color:#f87171;}
+.flab-btn{padding:12px 16px; border-radius:8px; border:none; cursor:pointer; font-weight:700; font-size:12px; font-family:var(--mono);}
+.flab-btn.check{background:#38bdf8; color:#04222f;}
+.flab-btn.hint{background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.4); color:#fbbf24;}
+.flab-btn.next{background:#34d399; color:#052015; width:100%; margin-top:10px;}
+.flab-hint-box{
+  background:rgba(251,191,36,0.08); border:1px solid rgba(251,191,36,0.25); border-radius:8px;
+  padding:10px 13px; font-size:12px; color:#fde68a; margin-bottom:12px; display:none;
+}
+.flab-hint-box.show{display:block; animation:contentIn .25s;}
+.flab-feedback{font-family:var(--mono); font-size:12px; margin-bottom:10px; padding:10px; border-radius:8px; display:none;}
+.flab-feedback.show{display:block; animation:contentIn .25s;}
+.flab-feedback.correct{background:rgba(52,211,153,0.1); color:#34d399;}
+.flab-feedback.wrong{background:rgba(248,113,113,0.1); color:#f87171;}
+.flab-score{display:flex; gap:10px; margin-bottom:16px;}
+</style>
+<body>
+
+<div id="bootScreen">
+  <div class="boot-logo">SSC-OS</div>
+  <div class="boot-bar"><div class="boot-bar-fill" id="bootFill"></div></div>
+  <div class="boot-lines" id="bootLines"></div>
+</div>
+
+<div id="desktop"></div>
+
+<div id="windowLayer">
+  <div class="window">
+    <div class="win-titlebar">
+      <span class="wt-title" id="winTitle">— APP —</span>
+      <div class="win-dots">
+        <span class="wdot yellow" id="winMin" title="Minimize">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+        <span class="wdot green" id="winFullscreen" title="Fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </span>
+        <span class="wdot red" id="winClose" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="win-body" id="winBody"></div>
+  </div>
+</div>
+
+<div id="startMenu"></div>
+
+<div id="taskbar">
+  <div id="startBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+    SSC-OS
+  </div>
+  <div class="taskbar-search" id="taskbarSearch">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" placeholder="Search topics, shortcuts, abbreviations…" id="taskSearchInput" readonly>
+  </div>
+  <div id="taskApps"></div>
+  <div id="clock"><div id="clockTime">00:00</div><div class="d" id="clockDate">—</div></div>
+</div>
+
+<div id="searchOverlay">
+  <div class="search-box">
+    <input type="text" id="globalSearchInput" placeholder="Search everything… topics, shortcuts, abbreviations, quiz" autocomplete="off">
+    <div class="search-hits" id="searchHits"></div>
+  </div>
+</div>
+
+<script>
+const CONTENT = {"topics":[{"id":"basics","title":"Computer Basics","icon":"cpu","color":"#22d3ee","blurb":"Organization, I/O devices, memory & storage, backup & ports.","subtopics":[{"id":"organization","title":"Computer Organization","pyq":true,"blocks":[{"type":"list","items":["The CPU (Central Processing Unit) is the 'brain' of the computer \u2014 it fetches, decodes, and executes instructions.","Motherboard is the main circuit board that connects the CPU, memory, and all other components."]},{"type":"table","headers":["Component","Function"],"rows":[["ALU (Arithmetic Logic Unit)","Performs arithmetic (+,-,\u00d7,\u00f7) and logical (AND, OR, NOT) operations"],["CU (Control Unit)","Directs & coordinates operations \u2014 tells other parts what to do and when"],["Registers","Tiny, ultra-fast storage inside the CPU holding data currently being processed"],["Accumulator","Register that stores the result of ALU operations"],["Program Counter (PC)","Holds the address of the NEXT instruction to be executed"],["MAR / MDR","Memory Address Register / Memory Data Register \u2014 hold the address & data being read/written"]]},{"type":"table","headers":["Motherboard Part","Purpose"],"rows":[["CPU Socket","Holds & connects the processor"],["RAM Slots","Hold memory modules"],["Chipset","Manages data flow between CPU, RAM & peripherals"],["BIOS/UEFI Chip","Stores firmware that boots the system"],["Expansion Slots (PCIe)","Let you add graphics cards, sound cards, etc."]]},{"type":"trick","text":"CPU Organization = CU + ALU + Registers. CU tells, ALU does, Registers hold \u2014 like a manager (CU), a worker (ALU), and a clipboard (Registers)."}]},{"id":"io","title":"Input and Output Devices","pyq":true,"blocks":[{"type":"table","headers":["Input Device","What it does"],"rows":[["Keyboard / Mouse","Manual text entry / pointing"],["Scanner","Converts a physical document into a digital image"],["OMR (Optical Mark Recognition)","Reads filled-in bubbles \u2014 e.g. exam answer sheets"],["OCR (Optical Character Recognition)","Converts scanned/printed text into editable digital text"],["MICR (Magnetic Ink Character Recognition)","Reads the special ink numbers on bank cheques"],["Joystick / Light Pen / Webcam","Gaming input / screen drawing input / video capture"]]},{"type":"table","headers":["Monitor Type","Key Trait"],"rows":[["CRT (Cathode Ray Tube)","Older, bulky, uses an electron gun \u2014 largely obsolete"],["LCD (Liquid Crystal Display)","Flat, uses liquid crystals + backlight, energy efficient"],["LED (Light Emitting Diode)","An LCD variant backlit by LEDs \u2014 thinner, better contrast"]]},{"type":"table","headers":["Printer Type","Examples","Trait"],"rows":[["Impact","Dot-matrix","Physically strikes the paper \u2014 noisy, can print carbon copies"],["Non-impact","Inkjet, Laser","No physical strike \u2014 quieter; Laser is fastest & highest quality"]]},{"type":"list","items":["Plotter \u2014 draws large, precise technical images (maps, architectural/engineering drawings) using pens.","Projector \u2014 displays a computer's output onto a large external screen."]}]},{"id":"memory","title":"Memory and Storage","pyq":true,"blocks":[{"type":"table","headers":["Unit","Equals"],"rows":[["1 Byte","8 Bits"],["1 KB","1024 Bytes"],["1 MB","1024 KB"],["1 GB","1024 MB"],["1 TB","1024 GB"],["1 PB (Petabyte)","1024 TB"],["1 EB (Exabyte)","1024 PB"]]},{"type":"table","headers":["RAM Type","Trait"],"rows":[["SRAM (Static)","Faster, more expensive, used as cache \u2014 doesn't need refreshing"],["DRAM (Dynamic)","Slower, cheaper, used as main RAM \u2014 needs constant refreshing"]]},{"type":"table","headers":["ROM Type","Trait"],"rows":[["PROM","Programmable once by the user, then permanent"],["EPROM","Erasable using ultraviolet light, then reprogrammable"],["EEPROM","Electrically erasable & reprogrammable \u2014 no UV light needed"]]},{"type":"table","headers":["Cache Level","Location & Speed"],"rows":[["L1","Built into the CPU core \u2014 smallest, fastest"],["L2","Slightly further from the core \u2014 larger, a bit slower than L1"],["L3","Shared across CPU cores \u2014 largest, slowest of the three (still far faster than RAM)"]]},{"type":"table","headers":["Secondary Storage","Trait"],"rows":[["HDD","Magnetic spinning disk, cheaper per GB, slower, moving parts"],["SSD","Flash memory, no moving parts, much faster, more expensive per GB"],["Magnetic Tape","Sequential access, very cheap per GB, used for long-term backup/archival"]]},{"type":"trick","text":"Every step in the memory unit ladder is \u00d71024, NOT \u00d71000 \u2014 SSC's favourite trap question."}]},{"id":"backup","title":"Backup Devices and Ports","pyq":true,"blocks":[{"type":"table","headers":["Backup Device","Trait"],"rows":[["Flash/USB Drive","Small, portable, flash-based"],["External HDD/SSD","Large capacity, portable, connects via USB"],["CD","~700 MB capacity, optical disc"],["DVD","4.7 GB (single layer) optical disc \u2014 much more than a CD"],["Blu-ray","25\u201350 GB+ optical disc \u2014 highest capacity of the three"]]},{"type":"table","headers":["Port","Use"],"rows":[["USB Type-A","Classic rectangular USB connector"],["USB Type-B","Squarish connector, often used for printers"],["USB Type-C","Reversible, modern, found on most new laptops/phones"],["Serial Port","Legacy, transmits data one bit at a time"],["Parallel Port","Legacy, transmits multiple bits at once \u2014 was common for printers"],["HDMI","Digital video + audio in a single cable"],["VGA","Older analog video-only port"],["PS/2","Legacy round port for keyboard/mouse"]]}]}]},{"id":"software","title":"Software & OS","icon":"layers","color":"#a78bfa","blurb":"OS foundations, Windows basics, system vs application software.","subtopics":[{"id":"osfound","title":"Operating System Foundations","pyq":true,"blocks":[{"type":"list","items":["An OS is system software that manages hardware and provides a platform for applications to run on."]},{"type":"table","headers":["OS Function","What it means"],"rows":[["Process Management","Decides which program runs when, and for how long"],["Memory Management","Allocates & frees RAM for running programs"],["Device Management","Coordinates hardware via drivers"],["File Management","Organizes, names, and stores files & folders"]]},{"type":"table","headers":["Interface","Trait"],"rows":[["GUI (Graphical)","Icons, windows, mouse-driven \u2014 user friendly, e.g. Windows desktop"],["CLI (Command Line)","Typed text commands \u2014 faster for experts, e.g. Terminal/Command Prompt"]]},{"type":"table","headers":["OS Type","Trait"],"rows":[["Batch","Jobs collected & processed in groups with no user interaction during execution"],["Multi-programming","Multiple programs held in memory at once, CPU switches between them"],["Time-sharing","CPU time is divided into slices so multiple users feel they have simultaneous access"],["Real-time","Guarantees a response within a strict, predictable time \u2014 e.g. traffic control systems"]]}]},{"id":"windows","title":"Windows OS Basics","pyq":true,"blocks":[{"type":"list","items":["File Explorer (Windows Explorer) is used to browse, move, copy, and organize files & folders.","Directory navigation follows a tree: Drive \u2192 Folder \u2192 Sub-folder \u2192 File."]},{"type":"table","headers":["Extension","File Type"],"rows":[[".docx",".xlsx / .pptx (Word / Excel / PowerPoint)"],[".pdf","Portable Document Format"],[".jpg / .png","Image files"],[".mp3 / .mp4","Audio / video files"],[".exe","Executable program"],[".zip","Compressed archive"],[".txt / .html","Plain text / web page"]]},{"type":"list","items":["Desktop \u2014 the main screen holding icons & shortcuts.","Taskbar \u2014 the bar (usually bottom) showing the Start button, open apps, and system tray/clock.","Control Panel \u2014 where system settings (display, network, users, programs) are managed."]}]},{"id":"sysapp","title":"System & Application Software","pyq":false,"blocks":[{"type":"table","headers":["System Software","Job"],"rows":[["Compiler","Translates an ENTIRE high-level program into machine code at once, before running"],["Interpreter","Translates & executes code line-by-line, on the fly"],["Assembler","Translates assembly language into machine code"],["Device Driver","Lets the OS communicate with a specific piece of hardware"]]},{"type":"table","headers":["Application Software","Example"],"rows":[["General purpose","MS Word, browsers \u2014 usable for many different tasks"],["Customized / specific-purpose","Hospital billing software, payroll software \u2014 built for one job"]]},{"type":"trick","text":"Compiler = translates the whole book before you read it. Interpreter = translates sentence-by-sentence as you read."}]}]},{"id":"word","title":"MS Word","icon":"file-text","color":"#38bdf8","blurb":"Document creation, formatting, page setup, and advanced tools.","subtopics":[{"id":"docbasics","title":"Document Creation, Editing & Saving","pyq":true,"blocks":[{"type":"list","items":["New documents open with Ctrl+N; save with Ctrl+S; Save As lets you choose format/location.","Default file extension is .docx (older format: .doc); can export directly to PDF via Save As.","Undo (Ctrl+Z) / Redo (Ctrl+Y) let you step backward/forward through edits."]}]},{"id":"formatting","title":"Text Formatting","pyq":true,"blocks":[{"type":"table","headers":["Element","Options"],"rows":[["Font","Typeface, size, colour, bold/italic/underline"],["Paragraph","Alignment (left/centre/right/justify), indentation"],["Line spacing","Single, 1.5, double, or custom"]]}]},{"id":"pagesetup","title":"Page Setup","pyq":false,"blocks":[{"type":"table","headers":["Setting","Purpose"],"rows":[["Margins","Blank space around the edge of each page"],["Orientation","Portrait (tall) or Landscape (wide)"],["Header / Footer","Repeated content at the top/bottom of every page"],["Page Numbers","Auto-inserted numbering, placed in header/footer"]]}]},{"id":"advtools","title":"Advanced Tools","pyq":true,"blocks":[{"type":"table","headers":["Tool","What it does"],"rows":[["Mail Merge","Combines a form letter with a data source to send personalised copies to many people"],["Tables","Organize content into rows & columns within the document"],["WordArt","Stylized, decorative text effects"],["Hyperlink","Clickable link to a webpage, file, or another part of the document"],["Track Changes","Records every edit a reviewer makes without altering the original text"],["Find & Replace (Ctrl+H)","Search and swap text across the whole document"]]}]}]},{"id":"excel","title":"MS Excel","icon":"grid","color":"#34d399","blurb":"Workbook mechanics, data tools, charts, formulas, and referencing.","subtopics":[{"id":"mechanics","title":"Workbook & Worksheet Mechanics","pyq":true,"blocks":[{"type":"list","items":["A Workbook (.xlsx file) contains multiple Worksheets (tabs).","A Worksheet is a grid of Cells, each identified by Column letter + Row number (e.g. B5).","A Range is a group of cells written as A1:A10 (start:end)."]}]},{"id":"datatools","title":"Data Entry, Sorting, Filtering & Formatting","pyq":false,"blocks":[{"type":"list","items":["Sort \u2014 arranges rows by a column's values (ascending/descending).","Filter \u2014 temporarily hides rows that don't match a condition.","Conditional Formatting \u2014 automatically changes a cell's appearance (colour, icon) based on its value."]}]},{"id":"charts","title":"Charts","pyq":false,"blocks":[{"type":"table","headers":["Chart Type","Best for"],"rows":[["Bar / Column","Comparing values across categories"],["Line","Showing trends over time"],["Pie","Showing proportion of a whole"],["Scatter","Showing the relationship between two numeric variables"]]}]},{"id":"formulas","title":"Formulas & Functions","pyq":true,"blocks":[{"type":"list","items":["Every formula in Excel starts with an equals sign ( = )."]},{"type":"table","headers":["Function","Syntax","Use"],"rows":[["SUM","=SUM(range)","Adds up all values in a range"],["AVERAGE","=AVERAGE(range)","Mean of the values in a range"],["COUNT / COUNTIF","=COUNTIF(range, criteria)","Counts cells, optionally matching a condition"],["IF","=IF(condition, true_val, false_val)","Conditional logic"],["VLOOKUP","=VLOOKUP(value, table, col_index, [exact])","Looks up a value in a table's first column"],["MAX / MIN","=MAX(range) / =MIN(range)","Largest / smallest value in a range"]]}]},{"id":"referencing","title":"Cell Referencing","pyq":true,"blocks":[{"type":"table","headers":["Type","Written as","Behaviour when copied"],"rows":[["Relative","A1","Changes to match the new location"],["Absolute","$A$1","Stays completely fixed"],["Mixed","A$1 or $A1","Locks only the row, or only the column"]]},{"type":"trick","text":"F4 cycles through relative \u2192 absolute \u2192 mixed \u2192 mixed while editing a formula \u2014 a genuine time-saver worth memorising."}]}]},{"id":"ppt","title":"MS PowerPoint","icon":"monitor","color":"#f472b6","blurb":"Slide creation, views, animation & transition effects.","subtopics":[{"id":"slidebasics","title":"Slide Creation, Layouts & Themes","pyq":false,"blocks":[{"type":"list","items":["A Layout defines the placeholders (title, content, image) arranged on a slide.","A Theme applies a consistent colour palette, fonts, and effects across every slide.","Slide Master controls formatting applied to ALL slides at once."]}]},{"id":"views","title":"Presentation Views","pyq":true,"blocks":[{"type":"table","headers":["View","Purpose"],"rows":[["Normal","Default view for editing a single slide"],["Slide Sorter","Thumbnail view of all slides \u2014 great for reordering"],["Reading View","Runs the show within the app window (not full screen)"],["Slide Show (F5)","Full-screen presentation, starts from slide 1 (Shift+F5 starts from current slide)"]]}]},{"id":"animations","title":"Animations","pyq":true,"blocks":[{"type":"table","headers":["Category","Effect"],"rows":[["Entrance","How an object first appears on the slide"],["Emphasis","Draws attention to an object already on screen"],["Exit","How an object leaves/disappears from the slide"]]}]},{"id":"transitions","title":"Slide Transitions and Timing","pyq":false,"blocks":[{"type":"list","items":["A Transition is the effect that plays BETWEEN two slides (e.g. Fade, Push) \u2014 different from an animation, which affects an object WITHIN one slide.","Timing can be set to advance On Mouse Click or Automatically After a set number of seconds."]}]}]},{"id":"internet","title":"Internet and E-mails","icon":"globe","color":"#fbbf24","blurb":"Browsing, transfer protocols, e-mail management, digital services.","subtopics":[{"id":"browsing","title":"Web Browsing & Searching","pyq":true,"blocks":[{"type":"table","headers":["Term","Meaning"],"rows":[["History","List of pages you've previously visited"],["Cache","Locally stored copies of page data, for faster reloading"],["Cookies","Small files a site stores in your browser to remember you"],["Bookmarks","Saved shortcuts to pages you want to revisit"]]},{"type":"list","items":["Search engines index billions of pages and rank them by relevance to your query.","Search operators (like quotes for an exact phrase) refine results."]},{"type":"table","headers":["URL Part","Example"],"rows":[["Protocol","https://"],["Domain Name","www.example.com"],["Path","/page-name"]]}]},{"id":"transfer","title":"Data Transfer Protocols","pyq":false,"blocks":[{"type":"list","items":["Downloading \u2014 copying a file FROM a server TO your device.","Uploading \u2014 copying a file FROM your device TO a server.","Client-Server model: your browser (client) requests data; a remote computer (server) responds with it."]}]},{"id":"email","title":"E-mail Management","pyq":true,"blocks":[{"type":"table","headers":["Field","Meaning"],"rows":[["To","Primary recipient(s)"],["CC (Carbon Copy)","Visible copy to others \u2014 everyone can see who else got it"],["BCC (Blind Carbon Copy)","Hidden copy \u2014 recipients can't see each other"],["Subject","One-line summary of the email"],["Body","The main message content"]]},{"type":"table","headers":["Protocol","Direction & Behaviour"],"rows":[["SMTP","Sends outgoing mail"],["POP3","Downloads mail to ONE device, removes it from the server"],["IMAP","Keeps mail on the server, syncs across ALL your devices"]]},{"type":"list","items":["Spam is unsolicited bulk mail. Attachments are files sent with an email. Folders (Inbox, Sent, Trash, Spam) organize mail."]}]},{"id":"digital","title":"Digital Services","pyq":true,"blocks":[{"type":"table","headers":["Method","Trait"],"rows":[["NEFT","Batch-processed, near real-time fund transfer"],["RTGS","Instant, one-to-one, for HIGH-VALUE transfers"],["IMPS","Instant, 24\u00d77, smaller amounts"],["UPI","Links multiple bank accounts to one mobile app/ID"],["USSD (*99#)","Mobile banking without internet, via a USSD code"]]},{"type":"list","items":["E-commerce = buying/selling goods online. E-governance = government services delivered digitally (e.g. applying for certificates online)."]}]}]},{"id":"network","title":"Networking and Cyber Security","icon":"share-2","color":"#fb7185","blurb":"Devices, network types & protocols, threats, and defences.","subtopics":[{"id":"devices","title":"Networking Devices","pyq":true,"blocks":[{"type":"table","headers":["Physical Layer","Role"],"rows":[["Hub","Broadcasts data to every connected port, no intelligence"],["Repeater","Boosts/regenerates a weak signal over long distances"],["Coaxial / Fiber Optic / Twisted Pair Cable","Physical cabling \u2014 fiber optic is fastest & most immune to interference"]]},{"type":"table","headers":["Data/Network Layer","Role"],"rows":[["Switch","Sends data only to the intended device (smarter than a hub)"],["Router","Connects different networks and directs traffic between them"],["Bridge","Connects & filters traffic between two LAN segments"],["Gateway","Connects networks using DIFFERENT protocols"],["Modem","Converts digital signals to analog (and back) for transmission over phone/cable lines"]]}]},{"id":"types","title":"Network Types & Protocols","pyq":true,"blocks":[{"type":"table","headers":["Type","Typical Range"],"rows":[["PAN","A few metres (e.g. Bluetooth)"],["LAN","A building/campus"],["MAN","A city"],["WAN","Country/globe \u2014 Internet is the largest WAN"],["WLAN","A LAN connected wirelessly"]]},{"type":"table","headers":["Topology","Layout"],"rows":[["Star","All devices connect to one central hub/switch \u2014 most common today"],["Bus","All devices share a single central cable"],["Ring","Devices form a closed loop, data flows one direction"],["Mesh","Every device connects to every other device \u2014 most fault-tolerant"],["Tree","Hierarchical combination of star networks"],["Hybrid","A mix of two or more topologies"]]},{"type":"table","headers":["Protocol","Purpose"],"rows":[["TCP/IP","The core protocol suite the entire Internet runs on"],["HTTP / HTTPS","Transfers web pages (HTTPS = encrypted)"],["FTP / SFTP","File transfer (SFTP = secure, encrypted version)"],["DNS","Translates domain names (example.com) into IP addresses"],["DHCP","Automatically assigns IP addresses to devices on a network"]]},{"type":"table","headers":["Address Type","Trait"],"rows":[["IPv4","32-bit, e.g. 192.168.1.1 \u2014 limited number of addresses"],["IPv6","128-bit, much larger address space, the newer standard"],["MAC Address","A unique physical hardware address burned into a network device"]]}]},{"id":"threats","title":"Cyber Security Threats","pyq":true,"blocks":[{"type":"table","headers":["Malware","Trait"],"rows":[["Virus","Attaches to a file, needs a host & user action to spread"],["Worm","Self-replicates across a network with NO host file & NO user action needed"],["Trojan Horse","Disguises as legitimate software; doesn't self-replicate"],["Spyware","Secretly monitors user activity"],["Ransomware","Encrypts files & demands payment to unlock them"],["Keylogger","Secretly records every keystroke you type"]]},{"type":"table","headers":["Attack","Trait"],"rows":[["Phishing","Fraudulent messages tricking users into revealing sensitive data"],["Spoofing","Disguising communication to appear from a trusted source"],["DoS / DDoS","Flooding a system with traffic to make it unavailable (DDoS = from many sources at once)"],["MitM (Man-in-the-Middle)","Attacker secretly intercepts communication between two parties"]]},{"type":"list","items":["Social Engineering \u2014 manipulating people (not machines) into giving up confidential info. Hacking \u2014 unauthorised access to a system or network."]}]},{"id":"prevention","title":"Preventive Measures","pyq":true,"blocks":[{"type":"list","items":["Firewall (hardware or software) \u2014 monitors & filters network traffic based on security rules.","Antivirus / Anti-malware \u2014 detects & removes malicious software from files."]},{"type":"table","headers":["Encryption","Trait"],"rows":[["Symmetric","One shared key encrypts AND decrypts (e.g. AES)"],["Asymmetric","A public/private key pair (e.g. RSA)"],["SSL/TLS Certificate","Verifies a website's identity & encrypts data in transit (the padlock icon)"]]},{"type":"list","items":["Incognito/Private browsing doesn't save history/cookies locally. Two-Factor Authentication (2FA) adds a second verification step beyond your password."]}]}]}],"abbr":[["CPU","Central Processing Unit"],["ALU","Arithmetic Logic Unit"],["CU","Control Unit"],["RAM","Random Access Memory"],["ROM","Read Only Memory"],["BIOS","Basic Input Output System"],["USB","Universal Serial Bus"],["HDMI","High-Definition Multimedia Interface"],["VGA","Video Graphics Array"],["LAN","Local Area Network"],["WAN","Wide Area Network"],["MAN","Metropolitan Area Network"],["PAN","Personal Area Network"],["URL","Uniform Resource Locator"],["HTTP","HyperText Transfer Protocol"],["HTTPS","HTTP Secure"],["HTML","HyperText Markup Language"],["FTP","File Transfer Protocol"],["TCP/IP","Transmission Control Protocol / Internet Protocol"],["SMTP","Simple Mail Transfer Protocol"],["POP3","Post Office Protocol version 3"],["IMAP","Internet Message Access Protocol"],["IP","Internet Protocol"],["ISP","Internet Service Provider"],["WWW","World Wide Web"],["GUI","Graphical User Interface"],["CLI","Command Line Interface"],["OS","Operating System"],["PDF","Portable Document Format"],["JPEG","Joint Photographic Experts Group"],["PNG","Portable Network Graphics"],["MP3","MPEG Audio Layer 3"],["MP4","MPEG-4 Part 14"],["GIF","Graphics Interchange Format"],["CD","Compact Disc"],["DVD","Digital Versatile Disc"],["SSD","Solid State Drive"],["HDD","Hard Disk Drive"],["KB","Kilobyte"],["MB","Megabyte"],["GB","Gigabyte"],["TB","Terabyte"],["WiFi","Wireless Fidelity"],["Bluetooth","short-range wireless technology standard"],["PPT","PowerPoint (presentation file)"],["DOC","Document (Word file)"],["XLS","Excel Spreadsheet"],["NEFT","National Electronic Funds Transfer"],["RTGS","Real Time Gross Settlement"],["IMPS","Immediate Payment Service"],["UPI","Unified Payments Interface"],["ATM","Automated Teller Machine"],["PIN","Personal Identification Number"],["OCR","Optical Character Recognition"],["OMR","Optical Mark Recognition"],["MICR","Magnetic Ink Character Recognition"],["VoIP","Voice over Internet Protocol"],["SaaS","Software as a Service"],["IoT","Internet of Things"],["AI","Artificial Intelligence"],["ML","Machine Learning"],["DBMS","Database Management System"],["SQL","Structured Query Language"],["RDBMS","Relational Database Management System"],["VPN","Virtual Private Network"],["DNS","Domain Name System"],["IoE","Internet of Everything"],["2FA","Two-Factor Authentication"],["OTP","One Time Password"],["CAPTCHA","Completely Automated Public Turing test to tell Computers and Humans Apart"],["EEPROM","Electrically Erasable Programmable Read-Only Memory"],["PROM","Programmable Read-Only Memory"],["EPROM","Erasable Programmable Read-Only Memory"],["ASCII","American Standard Code for Information Interchange"],["UNICODE","Universal Character Encoding Standard"],["EXE","Executable file"],["ZIP","compressed archive file format"],["RSS","Really Simple Syndication"],["SEO","Search Engine Optimization"],["ERP","Enterprise Resource Planning"]],"shortcuts":{"Windows General":[["Ctrl + C","Copy",true],["Ctrl + X","Cut",true],["Ctrl + V","Paste",true],["Ctrl + Z","Undo",true],["Ctrl + Y","Redo",false],["Ctrl + A","Select All",true],["Ctrl + S","Save",true],["Ctrl + P","Print",true],["Ctrl + F","Find",true],["Alt + Tab","Switch between open windows/apps",true],["Alt + F4","Close the active window",true],["Windows + E","Open File Explorer",true],["Windows + D","Show/hide the desktop",true],["Windows + L","Lock the computer",true],["Windows + R","Open the Run dialog box",true],["Ctrl + Shift + Esc","Open Task Manager directly",true],["Ctrl + Alt + Delete","Open security/lock screen options",true],["Shift + Delete","Delete a file permanently (skip Recycle Bin)",true],["F2","Rename the selected file/folder",true],["F5","Refresh the current window",true],["Ctrl + N","Open a new window/document",false],["Ctrl + W","Close the current window/tab",false]],"MS Word":[["Ctrl + B","Bold",true],["Ctrl + I","Italic",true],["Ctrl + U","Underline",true],["Ctrl + H","Find & Replace",true],["Ctrl + K","Insert a hyperlink",false],["Ctrl + Enter","Insert a page break",true],["Ctrl + E","Center align text",true],["Ctrl + L","Left align text",false],["Ctrl + R","Right align text",false],["Ctrl + J","Justify text",false],["Shift + F7","Open Thesaurus",true],["Ctrl + Shift + C","Toggle word count on status bar",false],["Ctrl + End","Jump to the end of the document",false],["Ctrl + Home","Jump to the start of the document",false]],"MS Excel":[["F4","Toggle relative/absolute cell reference while editing a formula",true],["Ctrl + Arrow key","Jump to the edge of a data region",false],["Ctrl + Space","Select the entire column",true],["Shift + Space","Select the entire row",true],["Ctrl + ; (semicolon)","Insert today's date",true],["Ctrl + Shift + ;","Insert the current time",false],["Alt + =","AutoSum the selected range",true],["Ctrl + 1","Open Format Cells dialog",true],["Ctrl + Page Down / Up","Move to the next/previous sheet",false],["F2","Edit the active cell",true],["Ctrl + Shift + L","Toggle AutoFilter on the data range",false]],"MS PowerPoint":[["F5","Start the slide show from the beginning",true],["Shift + F5","Start the slide show from the current slide",true],["Ctrl + M","Insert a new slide",true],["Ctrl + D","Duplicate the selected slide/object",false],["Esc","End the slide show",true],["Ctrl + Shift + C / V","Copy / paste formatting (Format Painter shortcut)",false],["B","During a slide show, black out the screen (press again to resume)",false],["W","During a slide show, white out the screen",false]],"Browser (Chrome/Edge/Firefox)":[["Ctrl + T","Open a new tab",true],["Ctrl + Shift + T","Reopen the last closed tab",true],["Ctrl + Tab","Switch to the next tab",false],["Ctrl + W","Close the current tab",true],["Ctrl + L or Alt + D","Select/focus the address bar",false],["Ctrl + D","Bookmark the current page",true],["Ctrl + H","Open browsing history",false],["Ctrl + J","Open downloads",false],["F11","Toggle full-screen mode",false],["Ctrl + Shift + N","Open an Incognito/Private window",true]]},"quiz":[{"q":"Which generation of computers introduced the microprocessor?","options":["2nd","3rd","4th","5th"],"a":2,"topic":"basics","pyq":true,"diff":"easy"},{"q":"1 GB equals how many MB?","options":["512","1000","1024","2048"],"a":2,"topic":"basics","pyq":true,"diff":"easy"},{"q":"Which device reads cheques using magnetic ink?","options":["OMR","OCR","MICR","Barcode reader"],"a":2,"topic":"basics","pyq":true,"diff":"medium"},{"q":"Which memory is volatile?","options":["ROM","RAM","Hard Disk","SSD"],"a":1,"topic":"basics","pyq":true,"diff":"easy"},{"q":"Which CPU part performs arithmetic & logical operations?","options":["Control Unit","ALU","Register","Cache"],"a":1,"topic":"basics","pyq":true,"diff":"easy"},{"q":"Which register holds the address of the NEXT instruction?","options":["Accumulator","MDR","Program Counter","MAR"],"a":2,"topic":"basics","pyq":false,"diff":"hard"},{"q":"Which ROM type is erased using ultraviolet light?","options":["PROM","EPROM","EEPROM","DRAM"],"a":1,"topic":"basics","pyq":true,"diff":"medium"},{"q":"Which cache level is closest to the CPU core?","options":["L1","L2","L3","RAM"],"a":0,"topic":"basics","pyq":false,"diff":"medium"},{"q":"SRAM is generally used as:","options":["Main RAM","Cache memory","Secondary storage","Firmware"],"a":1,"topic":"basics","pyq":false,"diff":"medium"},{"q":"Which port is reversible and found on most modern laptops?","options":["USB Type-A","USB Type-B","USB Type-C","PS/2"],"a":2,"topic":"basics","pyq":false,"diff":"easy"},{"q":"Which has the highest typical storage capacity?","options":["CD","DVD","Blu-ray","Floppy disk"],"a":2,"topic":"basics","pyq":false,"diff":"easy"},{"q":"Impact printers work by:","options":["Spraying ink droplets","Physically striking the paper","Using a laser beam","Heating thermal paper"],"a":1,"topic":"basics","pyq":false,"diff":"medium"},{"q":"1 Byte equals how many bits?","options":["4","8","16","1024"],"a":1,"topic":"basics","pyq":true,"diff":"easy"},{"q":"Which device is used for large-format technical drawings?","options":["Printer","Plotter","Scanner","Projector"],"a":1,"topic":"basics","pyq":false,"diff":"medium"},{"q":"Which unit comes right after Terabyte?","options":["Gigabyte","Petabyte","Exabyte","Megabyte"],"a":1,"topic":"basics","pyq":false,"diff":"hard"},{"q":"Which is an example of system software?","options":["MS Word","Operating System","Photoshop","Tally"],"a":1,"topic":"software","pyq":true,"diff":"easy"},{"q":"Which OS type guarantees a response within a strict time limit?","options":["Batch","Time-sharing","Real-time","Multi-programming"],"a":2,"topic":"software","pyq":true,"diff":"medium"},{"q":"GUI stands for:","options":["General User Interface","Graphical User Interface","Global Utility Interface","Graphic Unit Input"],"a":1,"topic":"software","pyq":true,"diff":"easy"},{"q":"Which translates a program line-by-line as it runs?","options":["Compiler","Interpreter","Assembler","Linker"],"a":1,"topic":"software","pyq":true,"diff":"medium"},{"q":"Free-to-use software with a paid version after a trial is:","options":["Freeware","Shareware","Open-source","Firmware"],"a":1,"topic":"software","pyq":false,"diff":"easy"},{"q":"Which OS function decides which program runs and for how long?","options":["Memory Management","Process Management","File Management","Device Management"],"a":1,"topic":"software","pyq":false,"diff":"medium"},{"q":"Windows Control Panel is primarily used to:","options":["Browse the internet","Manage system settings","Edit documents","Send email"],"a":1,"topic":"software","pyq":false,"diff":"easy"},{"q":"Which converts assembly language into machine code?","options":["Compiler","Interpreter","Assembler","Driver"],"a":2,"topic":"software","pyq":false,"diff":"hard"},{"q":"A .exe file is:","options":["An image file","A compressed archive","An executable program","A text document"],"a":2,"topic":"software","pyq":false,"diff":"easy"},{"q":"Multiple programs held in memory at once, with the CPU switching between them, describes:","options":["Batch OS","Multi-programming OS","Real-time OS","Single-tasking OS"],"a":1,"topic":"software","pyq":false,"diff":"hard"},{"q":"Default file extension for a modern Word document?","options":[".doc",".docx",".txt",".rtf"],"a":1,"topic":"word","pyq":true,"diff":"easy"},{"q":"Which Word feature sends the same letter to many recipients with personalised details?","options":["Track Changes","Mail Merge","Find & Replace","AutoCorrect"],"a":1,"topic":"word","pyq":true,"diff":"easy"},{"q":"Repeated content at the top of every page is placed in the:","options":["Footer","Header","Margin","Watermark"],"a":1,"topic":"word","pyq":false,"diff":"easy"},{"q":"Which shortcut opens Find & Replace?","options":["Ctrl+F","Ctrl+H","Ctrl+R","Ctrl+E"],"a":1,"topic":"word","pyq":true,"diff":"medium"},{"q":"Page Orientation options in Word are:","options":["Wide & Narrow","Portrait & Landscape","Tall & Short","Vertical & Diagonal"],"a":1,"topic":"word","pyq":false,"diff":"easy"},{"q":"WordArt is used for:","options":["Inserting tables","Stylised decorative text","Checking spelling","Merging documents"],"a":1,"topic":"word","pyq":false,"diff":"easy"},{"q":"Which tool records edits made by a reviewer without changing the original text?","options":["Mail Merge","Track Changes","Hyperlink","Thesaurus"],"a":1,"topic":"word","pyq":true,"diff":"medium"},{"q":"Which symbol makes a cell reference absolute?","options":["#","$","%","&"],"a":1,"topic":"excel","pyq":true,"diff":"easy"},{"q":"Which function counts cells matching a condition?","options":["SUM","COUNTIF","AVERAGE","VLOOKUP"],"a":1,"topic":"excel","pyq":true,"diff":"medium"},{"q":"Pressing F4 while editing a formula:","options":["Deletes the cell","Toggles reference type","Sorts data","Opens Find"],"a":1,"topic":"excel","pyq":true,"diff":"medium"},{"q":"A cell range from A1 to A10 is written as:","options":["A1-A10","A1:A10","A1,A10","A1;A10"],"a":1,"topic":"excel","pyq":false,"diff":"easy"},{"q":"Which chart type best shows a trend over time?","options":["Pie","Line","Scatter","Bar"],"a":1,"topic":"excel","pyq":false,"diff":"easy"},{"q":"=VLOOKUP looks up a value in a table's:","options":["Last column","First column","Header row only","Any random column"],"a":1,"topic":"excel","pyq":true,"diff":"medium"},{"q":"Which reference type stays completely fixed when copied?","options":["Relative","Absolute","Mixed","Dynamic"],"a":1,"topic":"excel","pyq":true,"diff":"easy"},{"q":"Every Excel formula must begin with:","options":["@","#","=","!"],"a":2,"topic":"excel","pyq":true,"diff":"easy"},{"q":"Conditional Formatting automatically changes a cell's:","options":["Formula","Appearance based on its value","File name","Sheet name"],"a":1,"topic":"excel","pyq":false,"diff":"medium"},{"q":"A workbook can contain multiple:","options":["Files","Worksheets","Windows only","Ribbons"],"a":1,"topic":"excel","pyq":false,"diff":"easy"},{"q":"Effect BETWEEN two slides is called a:","options":["Animation","Transition","Layout","Master"],"a":1,"topic":"ppt","pyq":true,"diff":"easy"},{"q":"Which key starts a slideshow from slide 1?","options":["F2","F5","F7","F11"],"a":1,"topic":"ppt","pyq":true,"diff":"easy"},{"q":"Which view shows thumbnails of all slides for reordering?","options":["Normal","Slide Sorter","Reading View","Notes Page"],"a":1,"topic":"ppt","pyq":true,"diff":"medium"},{"q":"An animation that draws attention to an object already on screen is called:","options":["Entrance","Emphasis","Exit","Transition"],"a":1,"topic":"ppt","pyq":false,"diff":"medium"},{"q":"Default file extension for a modern PowerPoint file?","options":[".ppt",".pptx",".pps",".pot"],"a":1,"topic":"ppt","pyq":false,"diff":"easy"},{"q":"Which controls formatting applied to ALL slides at once?","options":["Slide Layout","Slide Master","Slide Sorter","Notes Master"],"a":1,"topic":"ppt","pyq":false,"diff":"hard"},{"q":"Who is credited with inventing the World Wide Web?","options":["Bill Gates","Tim Berners-Lee","Steve Jobs","Vint Cerf"],"a":1,"topic":"internet","pyq":true,"diff":"easy"},{"q":"Which protocol sends outgoing email?","options":["POP3","IMAP","SMTP","FTP"],"a":2,"topic":"internet","pyq":true,"diff":"medium"},{"q":"BCC stands for:","options":["Blind Carbon Copy","Basic Carbon Copy","Blocked Carbon Copy","Bulk Carbon Copy"],"a":0,"topic":"internet","pyq":true,"diff":"easy"},{"q":"Which fund transfer is instant and typically for high-value payments?","options":["NEFT","RTGS","IMPS","UPI"],"a":1,"topic":"internet","pyq":true,"diff":"medium"},{"q":"A website's small locally-stored data used to remember you is called a:","options":["Cache","Cookie","Bookmark","History"],"a":1,"topic":"internet","pyq":true,"diff":"easy"},{"q":"Which part of a URL is 'https://'?","options":["Domain","Protocol","Path","Port"],"a":1,"topic":"internet","pyq":false,"diff":"easy"},{"q":"Which protocol keeps mail on the server and syncs across devices?","options":["POP3","IMAP","SMTP","FTP"],"a":1,"topic":"internet","pyq":true,"diff":"medium"},{"q":"USSD banking code *99# works:","options":["Only with internet","Without internet","Only on Wi-Fi","Only abroad"],"a":1,"topic":"internet","pyq":false,"diff":"medium"},{"q":"Government services delivered digitally are called:","options":["E-commerce","E-governance","E-banking","E-mail"],"a":1,"topic":"internet","pyq":false,"diff":"easy"},{"q":"Which topology connects every device to a central hub/switch?","options":["Bus","Ring","Star","Mesh"],"a":2,"topic":"network","pyq":true,"diff":"easy"},{"q":"Which device sends data only to the intended device, unlike a hub?","options":["Hub","Switch","Repeater","Modem"],"a":1,"topic":"network","pyq":true,"diff":"medium"},{"q":"Which malware self-replicates across a network without needing a host file?","options":["Virus","Worm","Trojan Horse","Adware"],"a":1,"topic":"network","pyq":true,"diff":"medium"},{"q":"Which monitors & filters network traffic by security rules?","options":["Antivirus","Firewall","Compiler","Debugger"],"a":1,"topic":"network","pyq":true,"diff":"easy"},{"q":"RSA is an example of which encryption type?","options":["Symmetric","Asymmetric","Hashing","None"],"a":1,"topic":"network","pyq":false,"diff":"hard"},{"q":"DNS is responsible for:","options":["Assigning IP addresses","Translating domain names to IP addresses","Encrypting traffic","Blocking malware"],"a":1,"topic":"network","pyq":true,"diff":"medium"},{"q":"DHCP automatically:","options":["Blocks malware","Assigns IP addresses to devices","Compresses files","Encrypts email"],"a":1,"topic":"network","pyq":false,"diff":"medium"},{"q":"Which network spans a whole city?","options":["PAN","LAN","MAN","WAN"],"a":2,"topic":"network","pyq":false,"diff":"easy"},{"q":"A DDoS attack floods a system using:","options":["A single source","Many sources at once","Email spam only","Fake certificates"],"a":1,"topic":"network","pyq":true,"diff":"medium"},{"q":"Which secretly records every keystroke a user types?","options":["Ransomware","Keylogger","Firewall","Router"],"a":1,"topic":"network","pyq":true,"diff":"medium"},{"q":"IPv4 addresses are how many bits long?","options":["16-bit","32-bit","64-bit","128-bit"],"a":1,"topic":"network","pyq":false,"diff":"hard"},{"q":"A MAC address identifies:","options":["A website","A unique physical hardware device","An email account","A file type"],"a":1,"topic":"network","pyq":false,"diff":"medium"},{"q":"Which cable type is fastest and most resistant to interference?","options":["Twisted pair","Coaxial","Fiber optic","Ethernet copper"],"a":2,"topic":"network","pyq":false,"diff":"medium"},{"q":"Two-Factor Authentication adds:","options":["A second verification step","A faster login","A bigger password box","A new username"],"a":0,"topic":"network","pyq":true,"diff":"easy"},{"q":"A Trojan Horse differs from a virus because it:","options":["Self-replicates faster","Does NOT self-replicate","Only affects Macs","Is always harmless"],"a":1,"topic":"network","pyq":true,"diff":"medium"}],"typing":{"passages":["Digital literacy has become one of the most important skills for citizens in the modern age. Government offices across the country are steadily moving their services online, allowing people to apply for certificates, pay bills, and file applications without visiting a physical office. This shift has reduced paperwork considerably and has made governance more transparent. However, it has also created a new challenge: not every citizen is equally comfortable using a computer or a smartphone. Rural areas, in particular, often lack reliable internet connectivity and trained staff who can guide first-time users. To address this gap, many state governments have started community digital literacy programs. These programs teach basic skills such as opening an email account, filling an online form, and recognizing fraudulent messages. Cyber safety is given special attention, since new internet users are often the most vulnerable to scams. Trainers explain simple habits like never sharing a one-time password with a stranger, checking a website's address carefully before entering banking details, and using strong, unique passwords for every account. Employers, too, have realized that basic computer proficiency is now a baseline expectation for almost every entry-level government and private sector job. Recruitment examinations increasingly include a computer knowledge section, testing candidates on operating systems, common software applications, and safe internet practices. Beyond passing an examination, these skills matter every single day at the workplace, whether it is drafting a letter, preparing a spreadsheet of expenses, or sending a properly formatted email to a supervisor. Libraries and community centers in many towns now offer free computer access along with short courses, hoping to bridge the digital divide between urban and rural populations. Volunteers, often college students, spend their weekends helping older residents learn to video call their families or check their bank balance online. Over time, such small acts of teaching create a ripple effect, as newly trained individuals go on to help their own neighbours and relatives. The long-term goal of these efforts is not simply technical competence, but confidence: a person who is not afraid to try, to make a mistake, and to try again on a screen full of unfamiliar icons. As more essential services move online in the coming years, this kind of grassroots digital confidence will matter just as much as electricity or clean water in determining how fully a citizen can participate in public life.","Environmental conservation has moved from being a niche concern to a central part of public policy discussions around the world. Rising temperatures, unpredictable rainfall, and shrinking forest cover have made it clear that unchecked development carries a heavy long-term cost. Many countries have responded by setting ambitious targets for renewable energy, aiming to replace coal and oil-based power plants with solar, wind, and hydroelectric alternatives within a few decades. Achieving these targets requires not only new technology but also significant changes in how citizens think about daily consumption. Simple habits, such as switching off unused lights, choosing public transport over private vehicles, and reducing single-use plastic, collectively make a measurable difference when adopted widely. Educational institutions have begun incorporating environmental studies into their curriculum from an early age, hoping that children will grow up with sustainability as second nature rather than an afterthought. Corporate organisations, too, are under increasing pressure from regulators and consumers alike to disclose their carbon footprint and to adopt greener manufacturing practices. Some industries have found that environmentally responsible choices can also be commercially sound, since energy-efficient processes tend to lower costs over time. Wildlife conservation remains a parallel priority, with several endangered species surviving today only because of dedicated protected areas and strict anti-poaching laws. Local communities living near forests are often enlisted as partners in these conservation efforts, since their traditional knowledge of the land can be invaluable in tracking animal movement and identifying threats early. International cooperation plays an equally important role, as environmental problems rarely respect national borders; a river polluted upstream in one country can affect the livelihoods of millions living downstream in another. Treaties and shared monitoring systems allow neighbouring nations to coordinate their response to floods, droughts, and habitat loss more effectively than any single government could manage alone. While the scale of the challenge can feel overwhelming, history shows that determined collective action, sustained over years rather than months, can reverse damage once thought permanent. The recovery of once-vanishing species and the slow return of clean air to cities that had been notorious for pollution both stand as reminders that environmental policy, when consistently applied, produces results that benefit every citizen, not merely those who advocated for it in the first place.","Effective time management is often described as the single most valuable skill a working professional can develop, yet it remains one of the hardest habits to build consistently. The modern workplace bombards employees with emails, meeting invitations, and instant messages throughout the day, each competing for immediate attention. Without a clear system for prioritising tasks, it becomes easy to spend an entire day reacting to whatever arrived most recently, rather than making progress on work that truly matters. Productivity experts frequently recommend starting each morning by identifying no more than three tasks that, if completed, would make the day genuinely successful. This approach forces a person to distinguish between what feels urgent and what is actually important, a distinction that is surprisingly easy to lose sight of during a busy week. Breaking larger projects into smaller, clearly defined steps also helps maintain momentum, since visible progress tends to be far more motivating than a vague, distant deadline. Many professionals now use digital calendars and task management applications to keep track of their commitments, setting reminders well before a deadline rather than relying on memory alone. These tools are most useful when paired with the discipline to review and update them regularly; a calendar filled with outdated entries quickly becomes as unreliable as no calendar at all. Taking short, deliberate breaks throughout the day has also been shown to improve overall concentration, countering the common misconception that longer, uninterrupted work sessions are always more productive. Office environments that encourage employees to step away from their screens periodically often report higher quality work and fewer errors by the end of the day. Communication skills play a supporting role as well, since a significant amount of time is lost to misunderstandings that could have been avoided with a clearer initial request or a more specific set of instructions. Learning to say no to tasks that do not align with one's actual responsibilities, though difficult in a collaborative workplace, is frequently cited as one of the most liberating professional skills a person can acquire. Ultimately, good time management is less about squeezing more work into each hour and more about protecting enough uninterrupted time for the handful of tasks that genuinely move a career or a project forward.","The history of banking in India reflects the broader story of the nation's economic development over the past century. In the years following independence, access to formal banking remained limited to urban centres, leaving a vast rural population dependent on informal moneylenders who often charged exploitative rates of interest. Recognising this gap, the government pursued a policy of bank nationalisation, bringing major commercial banks under public ownership with an explicit mandate to expand into underserved regions. Branches began appearing in small towns and villages that had never before had access to a savings account, let alone a loan for agricultural equipment or a small business. Decades later, the introduction of core banking systems allowed customers to transact from any branch of their bank rather than being tied to the single branch where their account was originally opened, a change that seems minor today but was transformative at the time. The most significant shift, however, arrived with the spread of mobile phones and affordable internet access. Digital payment platforms enabled ordinary citizens to transfer money instantly using nothing more than a mobile number or a scanned code, bypassing the need to visit a branch entirely for many everyday transactions. Government schemes aimed at financial inclusion further accelerated this transformation, encouraging households that had never held a bank account to open one, often linked directly to subsidy payments and welfare benefits. This direct transfer mechanism reduced leakage and delays that had long plagued paper-based disbursement systems. Security, naturally, became a growing concern as more transactions moved online, prompting banks to invest heavily in fraud detection systems and to educate customers about safe practices such as never sharing personal identification numbers or one-time passwords. Regulatory bodies have continuously updated their guidelines to keep pace with new technology, balancing the goal of convenience against the very real risk of cybercrime. Today, a farmer in a remote village can check crop insurance payouts on a basic smartphone, a feat that would have seemed almost unimaginable only two decades earlier. The ongoing challenge for policymakers is to ensure that this rapid technological progress continues to include those with the least access to digital devices, so that the benefits of a modern banking system reach every citizen rather than only those already well connected.","Public libraries have long served as quiet centres of learning within their communities, but their role has expanded considerably in the digital era. Where a library was once defined almost entirely by its collection of printed books, many now function as technology hubs offering free internet access, computer training, and even three-dimensional printing equipment for local entrepreneurs and students. This transformation has been particularly significant for families who cannot otherwise afford a personal computer or a stable broadband connection at home. Children visiting after school can complete online assignments, research projects for class, and gain comfort with digital tools well before such skills are formally taught in the classroom. Librarians, once primarily responsible for cataloguing and recommending books, increasingly find themselves teaching basic computer skills, helping patrons draft resumes, or troubleshooting a printer that refuses to cooperate. Many libraries now host workshops on topics ranging from safe internet browsing to introductory coding, recognising that literacy today extends well beyond the ability to read a printed page. Job seekers, particularly those from older generations who did not grow up using computers, rely on these free resources to complete online applications that increasingly serve as the only accepted format for public and private sector recruitment. Without such support, an otherwise qualified candidate might be excluded from an opportunity simply due to unfamiliarity with a digital form or an online portal. Community centres attached to libraries frequently organise sessions specifically for senior citizens, teaching them to video call distant relatives, manage their pension accounts online, or recognise common online scams targeting the elderly. This intergenerational exchange, where younger volunteers guide older residents through unfamiliar technology, has strengthened community bonds in ways that go beyond the original mission of a public library. Funding for these expanded services remains a persistent challenge, as budgets allocated decades ago for books and staff salaries must now also stretch to cover computer maintenance, software licensing, and reliable high-speed internet. Advocates argue that this investment pays for itself many times over, since a digitally confident population contributes more effectively to the local economy and requires less assistance navigating essential government services. As more of daily life moves online, the humble neighbourhood library, once associated purely with silence and stacks of books, has quietly become one of the most practical entry points into the digital world for millions of people.","Small businesses across the country have increasingly turned to social media platforms not merely as a marketing tool but as a primary channel for customer service and sales. A local bakery, for instance, might receive most of its custom cake orders through direct messages rather than phone calls, while a tailoring shop could showcase its latest designs to thousands of potential customers without spending a single rupee on traditional advertising. This shift has lowered the barrier to entry for entrepreneurship considerably, allowing individuals with limited capital to reach an audience that would once have required an expensive storefront in a busy market. However, this convenience comes with new responsibilities that many first-time business owners are unprepared for. Maintaining a consistent posting schedule, responding promptly to customer queries, and managing online reviews all demand time that a single shop owner juggling several roles may struggle to find. Training programs aimed at small entrepreneurs have started including modules on digital marketing alongside traditional bookkeeping, recognising that a shopkeeper today is as likely to need a working knowledge of social media algorithms as an understanding of profit margins. Payment technology has evolved in parallel, with quick response codes displayed at even the smallest roadside stalls allowing customers to pay instantly without handling cash. This has simplified accounting considerably, since every transaction is automatically recorded, reducing both the risk of theft and the tedious task of manually tallying the day's earnings each evening. Despite these advantages, a significant number of small business owners remain hesitant to adopt digital tools fully, citing concerns about transaction fees, unfamiliarity with the technology, or simple distrust built over years of cash-based dealings. Community workshops run by local trade associations have proven effective at addressing these concerns, pairing hesitant shopkeepers with younger volunteers who can demonstrate the tools in a low-pressure, familiar setting. As more of the local economy moves online, the businesses that adapt earliest often report a noticeable increase in walk-in customers, many of whom discovered the shop through a friend's shared post rather than by simply passing on the street.","Renewable energy adoption at the household level has grown steadily as the cost of solar panels continues to fall and government incentive schemes make installation more affordable for ordinary families. A homeowner considering rooftop solar today faces a very different calculation than one from a decade ago, when the upfront investment often took well over a decade to recover through reduced electricity bills. Modern panels are not only cheaper to manufacture but also considerably more efficient, meaning fewer panels are needed to generate the same amount of power, which in turn reduces both material costs and the physical space required on a roof. Financing options have expanded alongside this technological progress, with several banks now offering dedicated green loans at preferential interest rates specifically for solar installations. Net metering arrangements, where excess electricity generated during peak sunlight hours is fed back into the grid in exchange for credit, have further improved the economics for households that cannot use all the power they generate immediately. Beyond the financial calculations, many families cite energy independence and reduced vulnerability to power cuts as equally important motivations for making the switch. Rural areas, which have historically suffered from unreliable grid connections, have found solar particularly transformative, since a household system paired with battery storage can provide consistent power even when the wider grid experiences outages. Installers report that customer awareness has improved considerably in recent years, with fewer families needing extensive persuasion about the basic viability of the technology and more asking detailed, informed questions about warranty terms and maintenance schedules. This shift reflects a broader cultural change, where solar panels are no longer viewed as an experimental novelty reserved for environmentally conscious early adopters but as a mainstream home improvement comparable to installing a new water heater or renovating a kitchen. Local governments have taken note of this changing perception and have begun streamlining the approval process for rooftop installations, recognising that lengthy bureaucratic delays were previously one of the biggest deterrents for interested homeowners.","The transition from paper-based medical records to electronic health systems has fundamentally changed how hospitals and clinics manage patient information, though the journey has not been without significant challenges. Under the old system, a patient's complete medical history often existed only as a physical file that could be misplaced, damaged, or simply unavailable when the patient sought treatment at a different facility during an emergency. Electronic records solve this problem in theory by making a patient's history accessible to any authorised healthcare provider instantly, regardless of where the original consultation took place. In practice, achieving this level of interoperability has required hospitals to agree on shared data standards, a process complicated by the fact that many institutions had already invested heavily in their own proprietary software systems before national standardisation efforts began. Doctors who trained during the paper-record era have sometimes found the transition demanding, needing to learn entirely new software interfaces while continuing to see a full patient load, leaving little time for extensive training sessions. Younger medical staff, having grown up with digital technology, generally adapt more quickly, though this can occasionally create friction within hospital departments where senior doctors feel less confident navigating the new systems. Patient privacy has emerged as a central concern throughout this digital transition, since electronic records, if inadequately secured, could expose sensitive health information to unauthorised access on a much larger scale than a single misplaced paper file ever could. Regulatory bodies have responded with strict guidelines governing who can access patient data and under what circumstances, along with mandatory encryption standards for any system storing such records. Despite these hurdles, the benefits have become increasingly apparent over time. Doctors can now cross-reference a patient's prescription history instantly, reducing the risk of dangerous drug interactions that might previously have gone unnoticed. Public health officials, too, have benefited enormously, since aggregated and anonymised electronic records allow them to identify disease outbreaks and treatment patterns far more quickly than was ever possible when such information existed only scattered across countless individual paper files in separate hospital archives.","Remote work arrangements, once considered an unusual perk offered by a handful of progressive technology companies, have become a standard expectation for a significant portion of the professional workforce. This shift has forced organisations to reconsider fundamental assumptions about how teams collaborate, communicate, and measure productivity when employees are no longer sharing the same physical office space. Video conferencing software, which existed for years without achieving widespread adoption, suddenly became an essential daily tool, and companies invested heavily in improving both the reliability and the user experience of these platforms. Beyond the technology itself, managers have had to develop entirely new skills for leading distributed teams, learning to judge performance based on output and deliverables rather than the visible hours an employee spends sitting at a desk. This transition has proven liberating for many workers, particularly those with caregiving responsibilities or long commutes, who report significantly improved work-life balance and job satisfaction since gaining the flexibility to structure their own working hours. Not every role, however, adapts equally well to remote arrangements, and companies have had to think carefully about which positions genuinely benefit from in-person collaboration and which can be performed just as effectively from a home office. Cybersecurity concerns have grown substantially alongside this shift, as employees now regularly access sensitive company systems from home networks that may lack the robust protections standard in a traditional corporate environment. Information technology departments have responded by mandating virtual private networks, multi-factor authentication, and regular security training, recognising that a single compromised home computer could potentially expose an entire organisation's data. Team cohesion presents another persistent challenge, since the casual conversations and spontaneous problem-solving that once happened naturally near a shared coffee machine do not translate easily into a purely digital environment. Forward-thinking companies have experimented with various solutions, from scheduled virtual social events to periodic in-person retreats, attempting to preserve a sense of shared culture and belonging even when team members may be working from entirely different cities or countries throughout most of the year.","Water scarcity has emerged as one of the most pressing infrastructure challenges facing rapidly growing cities, forcing municipal authorities to rethink decades-old approaches to supply and distribution. Many urban water systems were originally designed for populations a fraction of their current size, and ageing pipe networks now lose a substantial percentage of treated water to leaks before it ever reaches a household tap. Detecting these leaks across hundreds of kilometres of underground piping was once an enormously labour-intensive task, requiring crews to physically inspect sections of pipe based on little more than complaint patterns from residents. Modern sensor technology has transformed this process considerably, with smart water meters now capable of detecting unusual flow patterns that indicate a leak long before it becomes visible on the surface, allowing repair crews to be dispatched with far greater precision. Some cities have gone further, installing city-wide monitoring networks that provide real-time data on water pressure and quality across the entire distribution system, enabling engineers to identify problems and even predict likely failure points before they cause a major disruption. Recycling treated wastewater for non-drinking purposes, such as irrigation and industrial cooling, has also gained traction as a practical way to stretch limited freshwater supplies further, though public acceptance of such schemes has sometimes required considerable outreach and education to overcome initial scepticism. Rainwater harvesting, a practice with a long history in many regions, has experienced renewed interest as both a household-level and city-scale strategy, with some municipalities now mandating harvesting systems in new construction to reduce dependence on centralised supply networks. Behavioural change campaigns targeting household consumption have shown mixed but generally positive results, particularly when paired with tiered pricing structures that charge progressively higher rates for water usage beyond a reasonable baseline allowance. Long-term planning remains the most difficult piece of the puzzle, as city planners must balance the immediate needs of a growing population against the reality that climate patterns affecting rainfall and reservoir levels are becoming less predictable than the historical data on which past infrastructure decisions were originally based."],"durationSec":900,"targetKDPH":8000,"targetKeyDepressions":2000},"flashdecks":{"confusable":{"label":"\u2694\ufe0f Confusable Pairs","cards":[{"front":"Virus vs Worm","back":"Virus needs a host file + human action to spread. Worm self-replicates across a network on its own \u2014 no host, no click needed."},{"front":"RAM vs ROM","back":"RAM is volatile (temporary working memory, wiped on power-off). ROM is non-volatile (permanent, holds startup instructions)."},{"front":"LAN vs WAN","back":"LAN = one building/campus. WAN = spans cities/countries \u2014 the Internet is the biggest WAN of all."},{"front":"POP3 vs IMAP","back":"POP3 downloads mail to one device & removes it from the server. IMAP keeps mail on the server & syncs across all your devices."},{"front":"HTTP vs HTTPS","back":"Same protocol, but HTTPS adds SSL/TLS encryption \u2014 that's the padlock icon in your browser."},{"front":"Hub vs Switch","back":"Hub broadcasts data to every port blindly. Switch is smarter \u2014 it sends data only to the intended device."},{"front":"NEFT vs RTGS vs IMPS","back":"NEFT: batch-processed, near real-time. RTGS: instant, one-to-one, for HIGH-VALUE transfers. IMPS: instant, 24\u00d77, smaller amounts."},{"front":"Bit vs Byte","back":"A Bit is a single 0 or 1 \u2014 the smallest unit. A Byte = 8 Bits, roughly one character."},{"front":"Relative vs Absolute cell reference","back":"Relative (A1) shifts when you copy the formula elsewhere. Absolute ($A$1) stays locked in place \u2014 the $ sign anchors it."},{"front":"Transition vs Animation (PowerPoint)","back":"Transition = effect BETWEEN two slides. Animation = effect on an object WITHIN a single slide."},{"front":"System software vs Application software","back":"System software runs the machine itself (the OS). Application software helps YOU do a task (Word, a browser, a game)."},{"front":"CC vs BCC (Email)","back":"CC recipients are visible to everyone. BCC recipients are hidden \u2014 nobody else can see they got a copy."},{"front":"Trojan Horse vs Virus","back":"A Trojan disguises itself as legitimate software and does NOT self-replicate. A virus attaches to files and spreads when the infected file runs."},{"front":"Freeware vs Shareware","back":"Freeware is free indefinitely. Shareware is a free TRIAL \u2014 you're expected to pay after a period."},{"front":"Primary vs Secondary memory","back":"Primary (RAM/ROM/Cache) is directly accessed by the CPU, fast, often volatile. Secondary (HDD/SSD) is for long-term storage, slower, non-volatile."},{"front":"Symmetric vs Asymmetric encryption","back":"Symmetric uses ONE shared key for both encrypting & decrypting. Asymmetric uses a public/private KEY PAIR."},{"front":"Router vs Modem","back":"Modem converts signals between your ISP's line and digital data. Router then directs that data between devices on your network."},{"front":"Firewall vs Antivirus","back":"Firewall filters incoming/outgoing NETWORK traffic by rule. Antivirus scans FILES/programs for known malware."},{"front":"Cache vs RAM","back":"Cache sits even closer to the CPU than RAM, is much smaller, and holds the most recently/frequently used data for near-instant access."},{"front":"URL vs Domain name","back":"A domain name (example.com) is just the address's core. A URL is the FULL path \u2014 protocol + domain + specific page location."}]},"terms":{"label":"\ud83d\udd11 Key Terms","cards":[{"front":"CPU","back":"Central Processing Unit \u2014 the 'brain' of the computer; contains the Control Unit + ALU + Registers."},{"front":"Booting","back":"The process of starting up a computer and loading the Operating System into memory."},{"front":"Firmware","back":"Permanent software programmed into a hardware device's ROM \u2014 e.g. BIOS."},{"front":"Kernel","back":"The core part of an Operating System that manages the system's resources and communication between hardware & software."},{"front":"Cookie","back":"A small piece of data a website stores in your browser to remember information between visits."},{"front":"Cache memory","back":"A very fast, small memory between the CPU and RAM that stores frequently-used data for quick access."},{"front":"Bandwidth","back":"The maximum rate of data transfer across a network connection, usually measured in bits per second."},{"front":"IP Address","back":"A unique numerical label assigned to every device connected to a network, used to identify & locate it."},{"front":"Phishing","back":"A cyber-attack that tricks users into revealing sensitive information via fake emails or websites posing as trustworthy sources."},{"front":"Encryption","back":"Converting readable data into a coded form that can only be read again with the correct decryption key."}]},"protocols":{"label":"\ud83c\udf10 Protocols & Ports","cards":[{"front":"HTTP vs HTTPS","back":"Same protocol for transferring web pages \u2014 HTTPS adds SSL/TLS encryption (the padlock icon)."},{"front":"FTP vs SFTP","back":"FTP transfers files in plain text. SFTP does the same but encrypted & secure."},{"front":"TCP/IP","back":"The foundational protocol suite that makes the entire Internet work \u2014 breaks data into packets and routes them."},{"front":"DNS","back":"Domain Name System \u2014 translates human-readable domain names (example.com) into numeric IP addresses."},{"front":"DHCP","back":"Dynamic Host Configuration Protocol \u2014 automatically assigns an IP address to a device joining a network."},{"front":"USB Type-C","back":"A reversible, modern USB connector found on most new laptops & phones \u2014 replacing Type-A and micro-USB."},{"front":"HDMI","back":"Carries both video AND audio over a single digital cable."},{"front":"VGA","back":"An older analog, video-ONLY port \u2014 no audio."},{"front":"SMTP","back":"Simple Mail Transfer Protocol \u2014 used to SEND outgoing email."},{"front":"IPv4 vs IPv6","back":"IPv4 is 32-bit with a limited address pool. IPv6 is 128-bit, the newer standard with a vastly larger address space."}]},"malware":{"label":"\ud83e\udda0 Malware & Threats","cards":[{"front":"Virus","back":"Attaches itself to a file; needs a host program AND user action (like opening the file) to spread."},{"front":"Worm","back":"Self-replicates across a network completely on its own \u2014 no host file, no user action needed."},{"front":"Trojan Horse","back":"Disguises itself as legitimate software. Unlike a virus, it does NOT self-replicate."},{"front":"Ransomware","back":"Encrypts a victim's files and demands payment (a ransom) to restore access."},{"front":"Spyware","back":"Secretly monitors and reports on a user's activity without their knowledge."},{"front":"Keylogger","back":"A type of spyware that specifically records every keystroke a user types \u2014 including passwords."},{"front":"Phishing","back":"Fraudulent emails/messages designed to trick you into revealing sensitive information."},{"front":"Spoofing","back":"Disguising a communication so it appears to come from a trusted, legitimate source."},{"front":"DoS vs DDoS","back":"DoS floods a system from ONE source. DDoS does the same from MANY sources simultaneously \u2014 much harder to block."},{"front":"Man-in-the-Middle (MitM)","back":"An attacker secretly intercepts (and possibly alters) communication between two parties who believe they're talking directly."}]},"shortcuts":{"label":"\u2328\ufe0f Shortcut Recall","cards":[{"front":"Ctrl + Z","back":"Undo the last action."},{"front":"Ctrl + Shift + Esc","back":"Open Task Manager directly."},{"front":"Windows + E","back":"Open File Explorer."},{"front":"Shift + Delete","back":"Permanently delete a file, skipping the Recycle Bin."},{"front":"F2","back":"Rename the selected file or folder (in Excel: edit the active cell)."},{"front":"Ctrl + H (Word/Excel)","back":"Open Find & Replace."},{"front":"F4 (Excel)","back":"Toggle between relative and absolute cell references while editing a formula."},{"front":"F5 (PowerPoint)","back":"Start the slideshow from the very first slide."},{"front":"Alt + F4","back":"Close the currently active window."},{"front":"Ctrl + Shift + N (Browser)","back":"Open a new Incognito/Private browsing window."}]},"abbr":{"label":"\ud83d\udd24 Abbreviations","cards":[{"front":"CPU","back":"Central Processing Unit"},{"front":"ALU","back":"Arithmetic Logic Unit"},{"front":"CU","back":"Control Unit"},{"front":"RAM","back":"Random Access Memory"},{"front":"ROM","back":"Read Only Memory"},{"front":"BIOS","back":"Basic Input Output System"},{"front":"USB","back":"Universal Serial Bus"},{"front":"HDMI","back":"High-Definition Multimedia Interface"},{"front":"VGA","back":"Video Graphics Array"},{"front":"LAN","back":"Local Area Network"},{"front":"WAN","back":"Wide Area Network"},{"front":"MAN","back":"Metropolitan Area Network"},{"front":"PAN","back":"Personal Area Network"},{"front":"URL","back":"Uniform Resource Locator"},{"front":"HTTP","back":"HyperText Transfer Protocol"},{"front":"HTTPS","back":"HTTP Secure"},{"front":"HTML","back":"HyperText Markup Language"},{"front":"FTP","back":"File Transfer Protocol"},{"front":"TCP/IP","back":"Transmission Control Protocol / Internet Protocol"},{"front":"SMTP","back":"Simple Mail Transfer Protocol"},{"front":"POP3","back":"Post Office Protocol version 3"},{"front":"IMAP","back":"Internet Message Access Protocol"},{"front":"IP","back":"Internet Protocol"},{"front":"ISP","back":"Internet Service Provider"}]}},"formulaLab":{"grid":{"headers":["","A","B","C"],"rows":[["1","Item","Price","Qty"],["2","Pen","10","5"],["3","Book","120","3"],["4","Bag","450","2"],["5","Bottle","80","4"]]},"questions":[{"task":"Add up all the values in the Price column (B2:B5).","accept":["=SUM(B2:B5)"],"hint":"Function name: SUM. Range: B2:B5.","difficulty":"easy"},{"task":"Find the average Price (B2:B5).","accept":["=AVERAGE(B2:B5)"],"hint":"Function name: AVERAGE. Same range as the sum question.","difficulty":"easy"},{"task":"Count how many items have a Quantity greater than 3 (C2:C5).","accept":["=COUNTIF(C2:C5,\">3\")"],"hint":"Function: COUNTIF(range, criteria). Criteria for 'greater than 3' is \">3\" in quotes.","difficulty":"medium"},{"task":"Find the highest Price in B2:B5.","accept":["=MAX(B2:B5)"],"hint":"Function name: MAX.","difficulty":"easy"},{"task":"Find the lowest Price in B2:B5.","accept":["=MIN(B2:B5)"],"hint":"Function name: MIN.","difficulty":"easy"},{"task":"Write a formula that shows \"Expensive\" if B2 is greater than 100, otherwise \"Cheap\".","accept":["=IF(B2>100,\"Expensive\",\"Cheap\")"],"hint":"Structure: =IF(condition, value_if_true, value_if_false).","difficulty":"medium"},{"task":"Multiply Price (B2) by Quantity (C2) to get the total cost of that row.","accept":["=B2*C2"],"hint":"No function needed \u2014 just reference both cells with a multiplication sign.","difficulty":"easy"},{"task":"Write an ABSOLUTE reference to cell B2 (won't shift if the formula is copied elsewhere).","accept":["$B$2"],"hint":"Lock BOTH the column and row with a $ sign before each.","difficulty":"medium"},{"task":"Count how many rows have any data at all in B2:B5.","accept":["=COUNT(B2:B5)"],"hint":"Function name: COUNT (counts numeric cells, no condition needed).","difficulty":"medium"},{"task":"Look up the Price of \"Bag\" from a table A2:C5, returning the 2nd column.","accept":["=VLOOKUP(\"Bag\",A2:C5,2,FALSE)","=VLOOKUP(\"Bag\",A2:C5,2,0)"],"hint":"Structure: =VLOOKUP(lookup_value, table_range, column_index, [exact_match]). Use FALSE or 0 for an exact match.","difficulty":"hard"}]}};
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ---------------- icons (hand-rolled, feather-style) ---------------- */
+const ICONS = {
+  cpu: `<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/>`,
+  layers: `<polygon points="12,2 22,8 12,14 2,8"/><polyline points="2,15 12,21 22,15"/><polyline points="2,11.5 12,17.5 22,11.5"/>`,
+  filetext: `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>`,
+  grid: `<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>`,
+  monitor: `<rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>`,
+  globe: `<circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/>`,
+  share: `<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/>`,
+  shield: `<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/>`,
+  keyboard: `<rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="10.01"/><line x1="10" y1="10" x2="10" y2="10.01"/><line x1="14" y1="10" x2="14" y2="10.01"/><line x1="18" y1="10" x2="18" y2="10.01"/><line x1="6" y1="14" x2="18" y2="14"/>`,
+  book: `<path d="M2 4h7a3 3 0 0 1 3 3v14a2.5 2.5 0 0 0-2.5-2.5H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v14a2.5 2.5 0 0 1 2.5-2.5H22z"/>`,
+  help: `<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 4"/><line x1="12" y1="17" x2="12" y2="17.01"/>`,
+  edit: `<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>`,
+  search: `<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>`,
+  zap: `<polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>`,
+  repeat: `<polyline points="17,1 21,5 17,9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7,23 3,19 7,15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>`
+};
+function svgIcon(name, color){
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||ICONS.help}</svg>`;
+}
+
+/* ---------------- app registry ---------------- */
+const APPS = [
+  ...CONTENT.topics.map(t=>({id:t.id, title:t.title, icon:t.icon, color:t.color, kind:"topic"})),
+  {id:"shortcuts", title:"Shortcut Keys", icon:"keyboard", color:"#facc15", kind:"shortcuts"},
+  {id:"abbr", title:"Abbreviations", icon:"book", color:"#4ade80", kind:"abbr"},
+  {id:"flashcards", title:"Flashcards", icon:"repeat", color:"#f472b6", kind:"flashcards"},
+  {id:"quiz", title:"Practice Quiz", icon:"help", color:"#f472b6", kind:"quiz"},
+  {id:"formulalab", title:"Formula Lab", icon:"grid", color:"#34d399", kind:"formulalab"},
+  {id:"typing", title:"Typing Test (DEST)", icon:"zap", color:"#38bdf8", kind:"typing"},
+  {id:"notepad", title:"Notepad", icon:"edit", color:"#94a3b8", kind:"notepad"},
+];
+const appById = {}; APPS.forEach(a=>appById[a.id]=a);
+
+/* ---------------- boot sequence ---------------- */
+const bootLinesEl = document.getElementById("bootLines");
+const bootLog = [
+  "Loading Computer Proficiency module…",
+  "Indexing 8 topic areas…",
+  "Mounting 65 shortcut keys…",
+  "Mounting 80 abbreviations…",
+  "Preparing practice quiz (25 Qs)…",
+  "Ready."
+];
+let bi = 0;
+const bootInterval = setInterval(()=>{
+  if(bi < bootLog.length){
+    const d = document.createElement("div");
+    d.textContent = "> " + bootLog[bi];
+    d.style.animationDelay = "0s";
+    bootLinesEl.appendChild(d);
+    bi++;
+  } else {
+    clearInterval(bootInterval);
+  }
+}, 220);
+document.getElementById("bootFill").style.width = "100%";
+setTimeout(()=>{
+  document.getElementById("bootScreen").classList.add("hide");
+  setTimeout(()=>document.getElementById("bootScreen").remove(), 550);
+  buildDesktop();
+}, 1500);
+
+/* ---------------- desktop icons ---------------- */
+function buildDesktop(){
+  const desktop = document.getElementById("desktop");
+  desktop.innerHTML = APPS.map(a=>`
+    <div class="icon" data-app="${a.id}">
+      <div class="ibox" style="color:${a.color}">${svgIcon(a.icon, a.color)}</div>
+      <span>${a.title}</span>
+    </div>
+  `).join("");
+  desktop.querySelectorAll(".icon").forEach(el=>{
+    el.addEventListener("click", ()=>openWindow(el.dataset.app));
+    let clickTimer=null;
+    el.addEventListener("dblclick", ()=>openWindow(el.dataset.app));
+  });
+}
+
+/* ---------------- window management ---------------- */
+const windowLayer = document.getElementById("windowLayer");
+const winTitle = document.getElementById("winTitle");
+const winBody = document.getElementById("winBody");
+let openApps = [];
+let activeApp = null;
+
+function openWindow(appId){
+  const app = appById[appId];
+  if(!app) return;
+  if(!openApps.includes(appId)) openApps.push(appId);
+  activeApp = appId;
+  renderTaskApps();
+  windowLayer.classList.add("show");
+  winTitle.innerHTML = `${app.title}`;
+  renderAppContent(app);
+}
+function closeWindow(){
+  windowLayer.classList.remove("show");
+  if(destState && destState.timerId){ clearInterval(destState.timerId); destState.timerId=null; }
+  if(activeApp){ openApps = openApps.filter(a=>a!==activeApp); }
+  activeApp = null;
+  renderTaskApps();
+}
+function minimizeWindow(){
+  windowLayer.classList.remove("show");
+  if(destState && destState.timerId){ clearInterval(destState.timerId); destState.timerId=null; }
+  activeApp = null;
+  renderTaskApps();
+}
+document.getElementById("winClose").addEventListener("click", closeWindow);
+document.getElementById("winMin").addEventListener("click", minimizeWindow);
+document.getElementById("winFullscreen").addEventListener("click", toggleFullscreen);
+function toggleFullscreen(){
+  document.querySelector(".window").classList.toggle("fullscreen");
+}
+
+function renderTaskApps(){
+  const wrap = document.getElementById("taskApps");
+  wrap.innerHTML = openApps.map(id=>{
+    const a = appById[id];
+    return `<div class="task-app-btn ${id===activeApp && windowLayer.classList.contains('show') ? 'active':''}" data-app="${id}" style="border-color:${id===activeApp?a.color:''}">
+      <span style="width:7px;height:7px;border-radius:50%;background:${a.color};display:inline-block;"></span>${a.title}
+    </div>`;
+  }).join("");
+  wrap.querySelectorAll(".task-app-btn").forEach(el=>{
+    el.addEventListener("click", ()=>openWindow(el.dataset.app));
+  });
+}
+
+/* ---------------- app content renderers ---------------- */
+function renderAppContent(app){
+  winBody.classList.toggle("split", app.kind === "topic");
+  if(app.kind === "topic") return renderTopic(app.id);
+  if(app.kind === "shortcuts") return renderShortcuts();
+  if(app.kind === "abbr") return renderAbbr();
+  if(app.kind === "quiz") return renderQuizApp();
+  if(app.kind === "notepad") return renderNotepad();
+  if(app.kind === "flashcards") return renderFlashcards();
+  if(app.kind === "typing") return renderTyping();
+  if(app.kind === "formulalab") return renderFormulaLab();
+}
+function fade(el){ if(!el) return; el.classList.remove("content-fade"); void el.offsetWidth; el.classList.add("content-fade"); }
+
+function renderBlock(b){
+  if(b.type === "list"){
+    return `<ul>${b.items.map(p=>`<li>${p}</li>`).join("")}</ul>`;
+  }
+  if(b.type === "table"){
+    return `<div class="ctable-wrap"><table class="ctable">
+      <thead><tr>${b.headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead>
+      <tbody>${b.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>
+    </table></div>`;
+  }
+  if(b.type === "trick"){
+    return `<div class="trick-box"><span class="tb-emoji">💡</span><div><b>Memory trick —</b> ${b.text}</div></div>`;
+  }
+  return "";
+}
+
+let activeSubtopic = {};
+function renderTopic(id){
+  const t = CONTENT.topics.find(x=>x.id===id);
+  if(!t) return;
+  if(!activeSubtopic[id]) activeSubtopic[id] = t.subtopics[0].id;
+  winBody.innerHTML = `
+    <div class="topic-nav" id="topicNav"></div>
+    <div class="topic-content" id="topicContent"></div>
+  `;
+  const nav = document.getElementById("topicNav");
+  nav.innerHTML = `<div style="font-family:var(--mono); font-size:9.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:1px; padding:6px 10px 12px;">${t.blurb}</div>` +
+    t.subtopics.map(s=>`
+      <div class="topic-nav-item ${s.id===activeSubtopic[id]?'active':''}" data-s="${s.id}">
+        <span class="tn-dot" style="background:${t.color}"></span>${s.title}
+      </div>
+    `).join("");
+  nav.querySelectorAll(".topic-nav-item").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      activeSubtopic[id] = el.dataset.s;
+      nav.querySelectorAll(".topic-nav-item").forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      paintSubtopic(t);
+    });
+  });
+  paintSubtopic(t);
+}
+function paintSubtopic(t){
+  const s = t.subtopics.find(x=>x.id===activeSubtopic[t.id]);
+  const content = document.getElementById("topicContent");
+  content.innerHTML = `
+    <div class="topic-content-inner">
+      <div class="tsec-h" style="color:${t.color}">${s.title} ${s.pyq?'<span class="pyq-badge">★ PYQ FOCUS</span>':''}</div>
+      ${s.blocks.map(renderBlock).join("")}
+    </div>
+  `;
+}
+
+let scActiveGroup = Object.keys(CONTENT.shortcuts)[0];
+function renderShortcuts(){
+  const groups = Object.keys(CONTENT.shortcuts);
+  winBody.innerHTML = `
+    <div class="shortcut-tabs" id="scTabs">
+      ${groups.map(g=>`<div class="sc-tab ${g===scActiveGroup?'active':''}" data-g="${g}">${g}</div>`).join("")}
+    </div>
+    <table class="sc-table" id="scTable"></table>
+  `;
+  winBody.querySelectorAll(".sc-tab").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      scActiveGroup = el.dataset.g;
+      winBody.querySelectorAll(".sc-tab").forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      fillShortcutTable();
+    });
+  });
+  fillShortcutTable();
+}
+function fillShortcutTable(){
+  const rows = CONTENT.shortcuts[scActiveGroup];
+  document.getElementById("scTable").innerHTML = rows.map(([k,d,pyq])=>`
+    <tr>
+      <td style="width:190px;"><span class="sc-key">${k}</span></td>
+      <td class="sc-desc">${d}</td>
+      <td class="sc-pyq">${pyq?'<span class="pyq-badge">★</span>':''}</td>
+    </tr>
+  `).join("");
+}
+
+function renderAbbr(){
+  winBody.innerHTML = `
+    <input class="abbr-search" id="abbrSearch" placeholder="Type to filter — e.g. 'RAM' or 'Random'" autocomplete="off">
+    <div class="abbr-grid" id="abbrGrid"></div>
+  `;
+  fillAbbr("");
+  document.getElementById("abbrSearch").addEventListener("input", (e)=>fillAbbr(e.target.value.trim().toLowerCase()));
+}
+function fillAbbr(q){
+  const list = CONTENT.abbr.filter(([a,f])=>!q || a.toLowerCase().includes(q) || f.toLowerCase().includes(q));
+  document.getElementById("abbrGrid").innerHTML = list.map(([a,f])=>`
+    <div class="abbr-item"><b>${a}</b><div>${f}</div></div>
+  `).join("") || `<div style="color:var(--text-faint); grid-column:1/-1;">No matches.</div>`;
+}
+
+/* quiz state */
+let quizTopicFilter = "all";
+let quizDiffFilter = "all";
+let quizPool = [];
+let quizCurrent = null;
+let quizScore = {right:0, wrong:0};
+function quizFiltered(){
+  return CONTENT.quiz.filter(q=>
+    (quizTopicFilter==="all" || q.topic===quizTopicFilter) &&
+    (quizDiffFilter==="all" || q.diff===quizDiffFilter)
+  );
+}
+function renderQuizApp(){
+  const topics = ["all", ...CONTENT.topics.map(t=>t.id)];
+  const topicLabel = id => id==="all" ? "All Topics" : CONTENT.topics.find(t=>t.id===id).title;
+  const diffs = ["all","easy","medium","hard"];
+  winBody.innerHTML = `
+    <div class="quiz-topic-row" id="quizTopics">
+      ${topics.map(id=>`<div class="quiz-topic-chip ${id===quizTopicFilter?'active':''}" data-t="${id}">${topicLabel(id)}</div>`).join("")}
+    </div>
+    <div class="quiz-topic-row" id="quizDiffs">
+      ${diffs.map(d=>`<div class="quiz-topic-chip ${d===quizDiffFilter?'active':''}" data-d="${d}" style="text-transform:capitalize;">${d==="all"?"All Difficulties":d}</div>`).join("")}
+    </div>
+    <div class="quiz-score-row">
+      <div class="qz-box"><div class="n" style="color:#34d399">${quizScore.right}</div><div class="l">Correct</div></div>
+      <div class="qz-box"><div class="n" style="color:#f87171">${quizScore.wrong}</div><div class="l">Missed</div></div>
+      <div class="qz-box"><div class="n" style="color:#38bdf8">${quizFiltered().length}</div><div class="l">In Pool</div></div>
+    </div>
+    <div id="quizArea"></div>
+  `;
+  winBody.querySelectorAll("#quizTopics .quiz-topic-chip").forEach(el=>{
+    el.addEventListener("click", ()=>{ quizTopicFilter = el.dataset.t; quizPool=[]; renderQuizApp(); });
+  });
+  winBody.querySelectorAll("#quizDiffs .quiz-topic-chip").forEach(el=>{
+    el.addEventListener("click", ()=>{ quizDiffFilter = el.dataset.d; quizPool=[]; renderQuizApp(); });
+  });
+  if(quizPool.length===0) quizPool = quizFiltered().map((_,i)=>i);
+  nextQuiz();
+}
+function nextQuiz(){
+  const filtered = quizFiltered();
+  if(filtered.length === 0){
+    document.getElementById("quizArea").innerHTML = `<div class="panel-empty" style="padding:30px 10px; color:var(--text-faint); text-align:center;">No questions match this filter combination — try widening it.</div>`;
+    return;
+  }
+  if(quizPool.length === 0) quizPool = filtered.map((_,i)=>i);
+  const pickAt = Math.floor(Math.random()*quizPool.length);
+  const qIndex = quizPool.splice(pickAt,1)[0];
+  quizCurrent = filtered[qIndex];
+  const area = document.getElementById("quizArea");
+  if(!area) return;
+  area.innerHTML = `
+    <div class="qz-prompt content-fade">
+      <div class="qn">${quizCurrent.pyq ? '★ PYQ-style' : 'Practice'} · <span class="diff-badge ${quizCurrent.diff}">${quizCurrent.diff}</span></div>
+      <div class="qt">${quizCurrent.q}</div>
+    </div>
+    <div class="qz-options">
+      ${quizCurrent.options.map((o,i)=>`<div class="qz-opt" data-i="${i}">${o}</div>`).join("")}
+    </div>
+    <div id="quizFeedbackArea"></div>
+  `;
+  area.querySelectorAll(".qz-opt").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      const chosen = +el.dataset.i;
+      const correct = chosen === quizCurrent.a;
+      area.querySelectorAll(".qz-opt").forEach(o=>{
+        if(+o.dataset.i === quizCurrent.a) o.classList.add("correct");
+        else if(+o.dataset.i === chosen) o.classList.add("wrong");
+      });
+      if(correct) quizScore.right++; else quizScore.wrong++;
+      const scoreRow = winBody.querySelector(".quiz-score-row");
+      if(scoreRow){
+        scoreRow.children[0].querySelector(".n").textContent = quizScore.right;
+        scoreRow.children[1].querySelector(".n").textContent = quizScore.wrong;
+      }
+      document.getElementById("quizFeedbackArea").innerHTML = `<button class="qz-next" id="qzNextBtn">Next question →</button>`;
+      document.getElementById("qzNextBtn").addEventListener("click", nextQuiz);
+    });
+  });
+}
+
+function renderNotepad(){
+  winBody.innerHTML = `<textarea id="notepadArea" placeholder="Jot down anything you want to remember — this stays only for this session.">${notepadText}</textarea>`;
+  document.getElementById("notepadArea").addEventListener("input", (e)=>{ notepadText = e.target.value; });
+}
+let notepadText = "";
+
+/* ---------------- flashcards ---------------- */
+let flashDeck = "confusable";
+let flashIndex = 0;
+let flashFlipped = false;
+function currentDeck(){ return CONTENT.flashdecks[flashDeck].cards; }
+function renderFlashcards(){
+  flashIndex = 0; flashFlipped = false;
+  const deckIds = Object.keys(CONTENT.flashdecks);
+  winBody.innerHTML = `
+    <div class="flash-deck-row">
+      ${deckIds.map(id=>`<div class="flash-deck-btn ${flashDeck===id?'active':''}" data-d="${id}">${CONTENT.flashdecks[id].label} (${CONTENT.flashdecks[id].cards.length})</div>`).join("")}
+    </div>
+    <div class="flash-hint">Click the card to flip it · use Prev / Next to move through the deck</div>
+    <div id="flashCardWrap"></div>
+    <div class="flash-progress" id="flashProgress"></div>
+    <div class="flash-nav">
+      <button id="flashPrev">← Prev</button>
+      <button class="primary" id="flashFlip">Flip card</button>
+      <button id="flashNext">Next →</button>
+    </div>
+  `;
+  winBody.querySelectorAll(".flash-deck-btn").forEach(el=>{
+    el.addEventListener("click", ()=>{ flashDeck = el.dataset.d; renderFlashcards(); });
+  });
+  document.getElementById("flashPrev").addEventListener("click", ()=>{
+    const deck = currentDeck();
+    flashIndex = (flashIndex - 1 + deck.length) % deck.length;
+    flashFlipped = false; paintFlashCard();
+  });
+  document.getElementById("flashNext").addEventListener("click", ()=>{
+    const deck = currentDeck();
+    flashIndex = (flashIndex + 1) % deck.length;
+    flashFlipped = false; paintFlashCard();
+  });
+  document.getElementById("flashFlip").addEventListener("click", ()=>{
+    flashFlipped = !flashFlipped; paintFlashCard();
+  });
+  paintFlashCard();
+}
+function paintFlashCard(){
+  const deck = currentDeck();
+  const card = deck[flashIndex];
+  const wrap = document.getElementById("flashCardWrap");
+  wrap.innerHTML = `
+    <div class="flash-card ${flashFlipped?'flipped':''}" id="flashCardEl">
+      <div class="flash-card-inner">
+        <div class="flash-face flash-front">
+          <div class="ff-label">Tap to reveal</div>
+          <div class="ff-term">${card.front}</div>
+        </div>
+        <div class="flash-face flash-back">${card.back}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById("flashCardEl").addEventListener("click", ()=>{
+    flashFlipped = !flashFlipped; paintFlashCard();
+  });
+  document.getElementById("flashProgress").textContent = `Card ${flashIndex+1} of ${deck.length}`;
+}
+
+/* ---------------- formula lab ---------------- */
+let flabIndex = 0;
+let flabScore = {right:0, wrong:0};
+let flabPool = [];
+function normalizeFormula(s){
+  return s.trim().toUpperCase().replace(/\s+/g,"").replace(/'/g,'"');
+}
+function renderFormulaLab(){
+  const grid = CONTENT.formulaLab.grid;
+  winBody.innerHTML = `
+    <div class="topic-blurb">Practice writing real Excel formulas against a small sample sheet — with hints if you get stuck. This is exactly the kind of formula-recall question SSC likes to ask.</div>
+    <div class="flab-grid-wrap">
+      <table class="flab-table">
+        <thead><tr>${grid.headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead>
+        <tbody>${grid.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>
+      </table>
+    </div>
+    <div class="flab-score">
+      <div class="qz-box"><div class="n" style="color:#34d399">${flabScore.right}</div><div class="l">Correct</div></div>
+      <div class="qz-box"><div class="n" style="color:#f87171">${flabScore.wrong}</div><div class="l">Missed</div></div>
+    </div>
+    <div id="flabArea"></div>
+  `;
+  if(flabPool.length===0) flabPool = CONTENT.formulaLab.questions.map((_,i)=>i);
+  nextFormula();
+}
+function nextFormula(){
+  const qs = CONTENT.formulaLab.questions;
+  if(flabPool.length===0) flabPool = qs.map((_,i)=>i);
+  const pickAt = Math.floor(Math.random()*flabPool.length);
+  flabIndex = flabPool.splice(pickAt,1)[0];
+  const q = qs[flabIndex];
+  const area = document.getElementById("flabArea");
+  if(!area) return;
+  area.innerHTML = `
+    <div class="flab-task content-fade">
+      <div class="fl-diff"><span class="diff-badge ${q.difficulty}">${q.difficulty}</span></div>
+      ${q.task}
+    </div>
+    <div class="flab-input-row">
+      <input class="flab-input" id="flabInput" placeholder="Type the formula, e.g. =SUM(A1:A5)" autocomplete="off" spellcheck="false">
+      <button class="flab-btn check" id="flabCheckBtn">Check</button>
+      <button class="flab-btn hint" id="flabHintBtn">💡 Hint</button>
+    </div>
+    <div class="flab-hint-box" id="flabHintBox">${q.hint}</div>
+    <div class="flab-feedback" id="flabFeedback"></div>
+  `;
+  const input = document.getElementById("flabInput");
+  input.focus();
+  input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") checkFormula(q); });
+  document.getElementById("flabCheckBtn").addEventListener("click", ()=>checkFormula(q));
+  document.getElementById("flabHintBtn").addEventListener("click", ()=>{
+    document.getElementById("flabHintBox").classList.toggle("show");
+  });
+}
+function checkFormula(q){
+  const input = document.getElementById("flabInput");
+  const typed = normalizeFormula(input.value);
+  const correct = q.accept.some(a=>normalizeFormula(a)===typed);
+  input.classList.remove("correct","wrong");
+  input.classList.add(correct ? "correct" : "wrong");
+  if(correct) flabScore.right++; else flabScore.wrong++;
+  const scoreRow = winBody.querySelector(".flab-score");
+  if(scoreRow){
+    scoreRow.children[0].querySelector(".n").textContent = flabScore.right;
+    scoreRow.children[1].querySelector(".n").textContent = flabScore.wrong;
+  }
+  const fb = document.getElementById("flabFeedback");
+  fb.classList.add("show", correct?"correct":"wrong");
+  fb.innerHTML = correct
+    ? `✓ Correct! Accepted form: ${q.accept[0]}`
+    : `✗ Not quite. Accepted form: ${q.accept[0]} — try the hint if needed.`;
+  document.getElementById("flabInput").insertAdjacentHTML("afterend","");
+  if(!document.getElementById("flabNextBtn")){
+    fb.insertAdjacentHTML("afterend", `<button class="flab-btn next" id="flabNextBtn">Next question →</button>`);
+    document.getElementById("flabNextBtn").addEventListener("click", nextFormula);
+  }
+}
+
+/* ---------------- typing test (DEST simulator) ---------------- */
+let destState = null;
+let destMode = "exam";      // exam | practice
+let destLength = "full";    // full | short
+function truncateWords(text, n){
+  const words = text.split(" ");
+  if(words.length <= n) return text;
+  let cut = words.slice(0, n).join(" ");
+  const lastDot = cut.lastIndexOf(". ");
+  if(lastDot > cut.length * 0.5) cut = cut.slice(0, lastDot+1);
+  return cut;
+}
+function pickPassage(){
+  const arr = CONTENT.typing.passages;
+  const full = arr[Math.floor(Math.random()*arr.length)];
+  return destLength === "short" ? truncateWords(full, 190) : full;
+}
+function renderTyping(){
+  const passage = pickPassage();
+  destState = { passage, running:false, startTime:null, keydowns:0,
+    remaining: destMode==="exam" ? CONTENT.typing.durationSec : 0,
+    timerId:null, finished:false, pasteWarn:false };
+  paintTyping();
+}
+function paintTyping(){
+  const s = destState;
+  const mins = String(Math.floor(s.remaining/60)).padStart(2,"0");
+  const secs = String(s.remaining%60).padStart(2,"0");
+  const timerLabel = destMode === "exam" ? "Time Left" : "Time Elapsed";
+  winBody.innerHTML = `
+    <div class="dest-mode-row">
+      <div class="dest-mode-btn ${destMode==='exam'?'active':''}" data-m="exam" ${s.running?'style="pointer-events:none;opacity:.5;"':''}>⏱ Exam Mode (strict 15 min)</div>
+      <div class="dest-mode-btn ${destMode==='practice'?'active':''}" data-m="practice" ${s.running?'style="pointer-events:none;opacity:.5;"':''}>🧘 Practice Mode (untimed)</div>
+    </div>
+    <div class="dest-length-row">
+      <div class="dest-len-btn ${destLength==='full'?'active':''}" data-l="full" ${s.running?'style="pointer-events:none;opacity:.5;"':''}>Full passage (~400 words)</div>
+      <div class="dest-len-btn ${destLength==='short'?'active':''}" data-l="short" ${s.running?'style="pointer-events:none;opacity:.5;"':''}>Short passage (~190 words)</div>
+    </div>
+    <div class="dest-info-row">
+      <div class="dest-stat"><div class="n" id="destTimer">${mins}:${secs}</div><div class="l">${timerLabel}</div></div>
+      <div class="dest-stat"><div class="n" id="destKeys">${s.keydowns}</div><div class="l">Key Depressions</div></div>
+      <div class="dest-stat"><div class="n" id="destKdph">0</div><div class="l">Live KDPH</div></div>
+      <div class="dest-stat"><div class="n" id="destAcc">100%</div><div class="l">Accuracy</div></div>
+    </div>
+    <div class="dest-passage" id="destPassage"></div>
+    <textarea class="dest-input" id="destInput" placeholder="Click Start, then type the passage above exactly as shown…" ${s.running?'':'disabled'} spellcheck="false" autocomplete="off"></textarea>
+    <div id="destPasteWarn" style="display:none; color:#f87171; font-size:11px; font-family:var(--mono); margin-top:6px;">⚠ Pasting is disabled — just like the real exam, you have to actually type it.</div>
+    <div class="dest-controls">
+      <button class="dest-btn start" id="destStartBtn" ${s.running?'disabled':''}>${s.finished?'↻ New Passage, Try Again':'▶ Start Test'}</button>
+      <button class="dest-btn submit" id="destSubmitBtn" ${s.running?'':'disabled'}>■ Submit Now</button>
+    </div>
+    <div class="dest-note">Real DEST format (Exam Mode): English passage, 15 minutes, target 8,000 key depressions/hour (≈2,000 in 15 min). Every keystroke — letters, spaces, punctuation, backspace — counts as one key depression, same as the real exam. Practice Mode removes the clock pressure so you can focus on accuracy first. Always confirm exact rules on your official SSC admit card.</div>
+    <div id="destResultWrap"></div>
+  `;
+  paintPassageHighlight("");
+  document.getElementById("destStartBtn").addEventListener("click", startTyping);
+  document.getElementById("destSubmitBtn").addEventListener("click", ()=>finishTyping(false));
+  winBody.querySelectorAll(".dest-mode-btn").forEach(el=>{
+    el.addEventListener("click", ()=>{ if(s.running) return; destMode = el.dataset.m; renderTyping(); });
+  });
+  winBody.querySelectorAll(".dest-len-btn").forEach(el=>{
+    el.addEventListener("click", ()=>{ if(s.running) return; destLength = el.dataset.l; renderTyping(); });
+  });
+}
+function paintPassageHighlight(typed){
+  const s = destState;
+  const p = s.passage;
+  let html = "";
+  for(let i=0;i<p.length;i++){
+    const ch = p[i]==="\n" ? "↵\n" : p[i];
+    if(i < typed.length){
+      html += `<span class="${typed[i]===p[i] ? 'correct':'wrong'}">${escapeHtml(ch)}</span>`;
+    } else if(i === typed.length){
+      html += `<span class="current">${escapeHtml(ch)}</span>`;
+    } else {
+      html += `<span class="pending">${escapeHtml(ch)}</span>`;
+    }
+  }
+  const el = document.getElementById("destPassage");
+  if(el) el.innerHTML = html;
+}
+function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function startTyping(){
+  const s = destState;
+  s.running = true;
+  s.finished = false;
+  s.keydowns = 0;
+  s.remaining = destMode==="exam" ? CONTENT.typing.durationSec : 0;
+  s.startTime = null;
+  paintTyping();
+  const input = document.getElementById("destInput");
+  input.disabled = false;
+  input.focus();
+  input.addEventListener("keydown", onDestKeydown);
+  input.addEventListener("input", onDestInput);
+  input.addEventListener("paste", onDestPaste);
+}
+function onDestPaste(e){
+  e.preventDefault();
+  const warn = document.getElementById("destPasteWarn");
+  if(warn){ warn.style.display="block"; setTimeout(()=>{ if(warn) warn.style.display="none"; }, 2500); }
+}
+function onDestKeydown(){
+  const s = destState;
+  if(!s.running) return;
+  if(s.startTime === null){
+    s.startTime = Date.now();
+    s.timerId = setInterval(tickTyping, 1000);
+  }
+  s.keydowns++;
+}
+function onDestInput(e){
+  const s = destState;
+  if(!s.running) return;
+  const typed = e.target.value;
+  paintPassageHighlight(typed);
+  updateLiveStats(typed);
+  if(typed.length >= s.passage.length){
+    finishTyping(true);
+  }
+}
+function updateLiveStats(typed){
+  const s = destState;
+  let correct = 0;
+  for(let i=0;i<typed.length;i++){ if(typed[i]===s.passage[i]) correct++; }
+  const acc = typed.length ? Math.round((correct/typed.length)*100) : 100;
+  const elapsedMin = s.startTime ? Math.max((Date.now()-s.startTime)/60000, 0.01) : 0.01;
+  const kdph = Math.round(s.keydowns / elapsedMin * 60);
+  const keysEl = document.getElementById("destKeys");
+  const kdphEl = document.getElementById("destKdph");
+  const accEl = document.getElementById("destAcc");
+  if(keysEl) keysEl.textContent = s.keydowns;
+  if(kdphEl) kdphEl.textContent = kdph;
+  if(accEl) accEl.textContent = acc + "%";
+}
+function tickTyping(){
+  const s = destState;
+  if(destMode === "exam"){
+    s.remaining--;
+  } else {
+    s.remaining++;
+  }
+  const mins = String(Math.floor(s.remaining/60)).padStart(2,"0");
+  const secs = String(s.remaining%60).padStart(2,"0");
+  const t = document.getElementById("destTimer");
+  if(t) t.textContent = `${mins}:${secs}`;
+  const input = document.getElementById("destInput");
+  if(input) updateLiveStats(input.value);
+  if(destMode === "exam" && s.remaining <= 0) finishTyping(true);
+}
+function finishTyping(natural){
+  const s = destState;
+  if(!s.running) return;
+  s.running = false;
+  s.finished = true;
+  if(s.timerId){ clearInterval(s.timerId); s.timerId = null; }
+  const input = document.getElementById("destInput");
+  const typed = input ? input.value : "";
+  let correct = 0;
+  for(let i=0;i<typed.length;i++){ if(typed[i]===s.passage[i]) correct++; }
+  const accuracy = typed.length ? Math.round((correct/typed.length)*100) : 0;
+  const elapsedSec = s.startTime ? (Date.now()-s.startTime)/1000 : (destMode==="exam" ? CONTENT.typing.durationSec - s.remaining : s.remaining);
+  const elapsedMin = Math.max(elapsedSec/60, 0.1);
+  const kdph = Math.round(s.keydowns / elapsedMin * 60);
+  const wpm = Math.round((correct/5) / elapsedMin);
+  const pass = kdph >= CONTENT.typing.targetKDPH;
+  if(input){
+    input.disabled = true;
+    input.removeEventListener("keydown", onDestKeydown);
+    input.removeEventListener("input", onDestInput);
+    input.removeEventListener("paste", onDestPaste);
+  }
+  document.getElementById("destStartBtn").disabled = false;
+  document.getElementById("destStartBtn").textContent = "↻ New Passage, Try Again";
+  document.getElementById("destSubmitBtn").disabled = true;
+  const modeNote = destMode === "practice" ? `<div class="verdict-sub" style="margin-top:4px;">Practice Mode — pass/fail shown for reference; the real exam is Exam Mode only.</div>` : "";
+  document.getElementById("destResultWrap").innerHTML = `
+    <div class="dest-result ${pass?'pass':'fail'} content-fade">
+      <div class="verdict">${pass ? '✓ Qualifying pace reached' : '✗ Below qualifying pace'}</div>
+      <div class="verdict-sub">${s.keydowns} key depressions in ${elapsedMin.toFixed(1)} min → ~${kdph} KDPH (need ${CONTENT.typing.targetKDPH}) · ~${wpm} WPM · ${accuracy}% accuracy</div>
+      ${modeNote}
+    </div>
+    <div class="dest-info-row">
+      <div class="dest-stat"><div class="n">${s.keydowns}</div><div class="l">Total Keystrokes</div></div>
+      <div class="dest-stat"><div class="n">${kdph}</div><div class="l">Final KDPH</div></div>
+      <div class="dest-stat"><div class="n">${wpm}</div><div class="l">~WPM</div></div>
+      <div class="dest-stat"><div class="n">${accuracy}%</div><div class="l">Accuracy</div></div>
+    </div>
+  `;
+  document.getElementById("destStartBtn").onclick = renderTyping;
+}
+
+/* ---------------- taskbar clock ---------------- */
+function updateClock(){
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,"0");
+  const m = String(now.getMinutes()).padStart(2,"0");
+  document.getElementById("clockTime").textContent = `${h}:${m}`;
+  document.getElementById("clockDate").textContent = now.toLocaleDateString(undefined,{day:"2-digit",month:"short",year:"numeric"});
+}
+updateClock();
+setInterval(updateClock, 15000);
+
+/* ---------------- start menu ---------------- */
+const startMenu = document.getElementById("startMenu");
+function buildStartMenu(){
+  startMenu.innerHTML = APPS.map(a=>`
+    <div class="sm-item" data-app="${a.id}">${svgIcon(a.icon, a.color)}<span>${a.title}</span></div>
+  `).join("") + `<div class="sm-divider"></div><div style="padding:8px 10px; font-size:10.5px; color:var(--text-faint); font-family:var(--mono);">SSC-OS · Tier 2 Computer Proficiency module<br>20 Qs · 60 marks · qualifying section</div>`;
+  startMenu.querySelectorAll(".sm-item").forEach(el=>{
+    el.addEventListener("click", ()=>{ openWindow(el.dataset.app); startMenu.classList.remove("show"); });
+  });
+}
+buildStartMenu();
+document.getElementById("startBtn").addEventListener("click", (e)=>{
+  e.stopPropagation();
+  startMenu.classList.toggle("show");
+});
+document.addEventListener("click", (e)=>{
+  if(!e.target.closest("#startMenu") && !e.target.closest("#startBtn")) startMenu.classList.remove("show");
+});
+
+/* ---------------- global search ---------------- */
+const searchOverlay = document.getElementById("searchOverlay");
+const globalSearchInput = document.getElementById("globalSearchInput");
+const searchHits = document.getElementById("searchHits");
+
+function allTextOfBlocks(blocks){
+  let out = [];
+  blocks.forEach(b=>{
+    if(b.type==="list") out.push(...b.items);
+    if(b.type==="table"){ out.push(b.headers.join(" ")); b.rows.forEach(r=>out.push(r.join(" — "))); }
+    if(b.type==="trick") out.push(b.text);
+  });
+  return out.join(" ");
+}
+function buildSearchIndex(){
+  const idx = [];
+  CONTENT.topics.forEach(t=>{
+    idx.push({type:"App", title:t.title, sub:t.blurb, action:()=>openWindow(t.id)});
+    t.subtopics.forEach(s=>{
+      const full = allTextOfBlocks(s.blocks);
+      idx.push({type:t.title, title:s.title, sub:full.slice(0,90), full, action:()=>{ activeSubtopic[t.id]=s.id; openWindow(t.id); }});
+    });
+  });
+  Object.entries(CONTENT.shortcuts).forEach(([g, rows])=>{
+    rows.forEach(([k,d])=>{
+      idx.push({type:"Shortcut · "+g, title:k, sub:d, action:()=>{ scActiveGroup=g; openWindow("shortcuts"); }});
+    });
+  });
+  CONTENT.abbr.forEach(([a,f])=>{
+    idx.push({type:"Abbreviation", title:a, sub:f, action:()=>openWindow("abbr")});
+  });
+  Object.entries(CONTENT.flashdecks).forEach(([deckId, deck])=>{
+    deck.cards.forEach((c,i)=>{
+      idx.push({type:"Flashcard · "+deck.label.replace(/^\S+\s/,""), title:c.front, sub:c.back, action:()=>{ flashDeck=deckId; flashIndex=i; openWindow("flashcards"); }});
+    });
+  });
+  idx.push({type:"App", title:"Practice Quiz", sub:CONTENT.quiz.length+" MCQs across all topics, with difficulty filters", action:()=>openWindow("quiz")});
+  idx.push({type:"App", title:"Formula Lab", sub:"Practice writing real Excel formulas with hints", action:()=>openWindow("formulalab")});
+  idx.push({type:"App", title:"Typing Test (DEST)", sub:"SSC-format typing speed test — exam or practice mode", action:()=>openWindow("typing")});
+  idx.push({type:"App", title:"Notepad", sub:"Scratchpad for this session", action:()=>openWindow("notepad")});
+  return idx;
+}
+const SEARCH_INDEX = buildSearchIndex();
+
+function openSearch(){
+  searchOverlay.classList.add("show");
+  globalSearchInput.value = "";
+  searchHits.innerHTML = "";
+  setTimeout(()=>globalSearchInput.focus(), 50);
+}
+function closeSearch(){ searchOverlay.classList.remove("show"); }
+document.getElementById("taskbarSearch").addEventListener("click", openSearch);
+searchOverlay.addEventListener("click", (e)=>{ if(e.target === searchOverlay) closeSearch(); });
+document.addEventListener("keydown", (e)=>{
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="k"){ e.preventDefault(); openSearch(); }
+  if(e.key === "Escape") closeSearch();
+});
+globalSearchInput.addEventListener("input", ()=>{
+  const q = globalSearchInput.value.trim().toLowerCase();
+  if(!q){ searchHits.innerHTML=""; return; }
+  const hits = SEARCH_INDEX.filter(h=>
+    h.title.toLowerCase().includes(q) ||
+    (h.sub&&h.sub.toLowerCase().includes(q)) ||
+    (h.full&&h.full.toLowerCase().includes(q))
+  ).slice(0,18);
+  searchHits.innerHTML = hits.map((h,i)=>`
+    <div class="search-hit" data-i="${i}">
+      <span class="sh-tag">${h.type}</span>
+      <span class="sh-title">${h.title}</span>
+      <span class="sh-sub">${(h.sub||"").slice(0,40)}</span>
+    </div>`).join("") || `<div class="search-hit"><span class="sh-sub">No matches</span></div>`;
+  searchHits.querySelectorAll(".search-hit[data-i]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      hits[+el.dataset.i].action();
+      closeSearch();
+    });
+  });
+});
+
+})();
+</script>
+
+<!-- Close button: bottom-right corner, closes the fullscreen overlay -->
+<div id="pageCloseBtn" style="position:fixed; bottom:24px; right:24px; z-index:9999; width:44px; height:44px; border-radius:12px; background:rgba(0,0,0,0.55); border:1px solid rgba(148,175,199,0.3); color:#38bdf8; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .15s, color .15s;" onmouseover="this.style.borderColor='#38bdf8'; this.style.color='#fbbf24';" onmouseout="this.style.borderColor='rgba(148,175,199,0.3)'; this.style.color='#38bdf8';">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+</div>
+<script>
+document.getElementById("pageCloseBtn").addEventListener("click", () => {
+  window.parent.postMessage({type: "closeFullscreen"}, "*");
+});
+</body>
+</html>
