@@ -958,4 +958,29 @@ index.html (all <script> tags deferred)
 
 ---
 
-*Last updated: 2026-07-13 | Generated from GitNexus analysis + manual codebase review*
+## 22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)
+
+### 22.1 XSS Prevention Standards
+- **Global Entity Escaper (`escapeHTML`)**: All user-controlled text strings (`m.name`, `n.title`, `cmd.label`, `cmd.hint`, `cmd.sublabel`) MUST be wrapped with `escapeHTML()` before interpolation into `innerHTML` string templates.
+- **Markdown Security (`parseMarkdown`)**:
+  - Automatically sanitizes HTML tags (`&`, `<`, `>`).
+  - Regex for bold formatting (`/\*\*(.*?)\*\*/g`) is strictly bound to prevent parser corruption.
+  - Links & Image URIs explicitly block dangerous protocols (`javascript:`, `data:`, `vbscript:`) and escape `href` and `src` attribute values against attribute injection payloads.
+- **Backup & Restore Sanitization**: Restoring state via JSON backup import (`inputRestore.onchange` in `js/navigation.js`) explicitly deletes prototype keys (`__proto__`, `constructor`, `prototype`) and maps user-controlled array entries (`mocks`, `notes`) through string sanitizers.
+
+### 22.2 Focus, Shortcut & UX Safety Rules
+- **Active Element Focus Guard**: Keydown listeners in `js/navigation.js` and `js/cmdpalette.js` MUST check `document.activeElement.tagName` (`INPUT`, `TEXTAREA`, `SELECT`, `isContentEditable`) before executing single-key or double-Shift shortcuts, preventing accidental modal triggers while typing.
+- **Plan Advancement Confirmation**: `completeActiveDay()` in `js/plan.js` requires explicit confirmation before incrementing `appState.currentDay`.
+- **Mock Score Input Validation**: `mockForm.onsubmit` in `js/mocks.js` validates score bounds (`0 <= score <= maxTotal`), alerting the user if an out-of-range value is entered.
+
+### 22.3 Accessibility (WCAG 2.1 AA) Integration
+- **Screen Reader Live Announcer**: `#sr-announcer` live region (`aria-live="polite"`) in `index.html` receives real-time text announcements from `showToast()` in `js/app.js`.
+- **Modal ARIA Structure**: `#modal-shortcuts-help` and `#cmd-palette-overlay` feature explicit `role="dialog"`, `aria-modal="true"`, and descriptive `aria-label` attributes.
+
+### 22.4 Service Worker & Offline Cache Integrity
+- Service Worker (`sw.js`) cache updated to `cgl-conquest-cache-v9`.
+- Precache list (`ASSETS`) explicitly covers all application scripts including `js/study_content.js`, `js/typingtest.js`, and `js/cmdpalette.js`.
+
+---
+
+*Last updated: 2026-08-18 | Audit, Security Hardening & Accessibility Polish Complete*

@@ -599,6 +599,293 @@
             border-radius: 10px; 
             border: 1px dashed var(--border); 
         }
+
+        /* Spot the Error Module Custom Styling */
+        .spot-header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(244, 63, 94, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            margin-left: 0.75rem;
+            vertical-align: middle;
+        }
+        .spot-filter-bar {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 0.6rem;
+            margin-bottom: 1.8rem;
+            background: rgba(15, 23, 42, 0.85);
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 15;
+            backdrop-filter: blur(12px);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(59, 130, 246, 0.4) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+        .spot-filter-bar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .spot-filter-bar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .spot-filter-bar::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.4);
+            border-radius: 4px;
+        }
+        .spot-filter-bar::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+        .spot-filter-btn {
+            flex-shrink: 0;
+            white-space: nowrap;
+            background: #1e293b;
+            border: 1px solid var(--border);
+            color: #94a3b8;
+            padding: 0.45rem 1rem;
+            border-radius: 25px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .spot-filter-btn:hover {
+            background: #334155;
+            color: #ffffff;
+            border-color: var(--secondary-hover);
+            transform: translateY(-1px);
+        }
+        .spot-filter-btn.active-spot-filter {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #ffffff;
+            border-color: #60a5fa;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .spot-quick-rev {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid var(--secondary);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        .spot-quick-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--secondary-hover);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .spot-table-wrong {
+            color: #fca5a5;
+            background: rgba(244, 63, 94, 0.12);
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-decoration: line-through;
+            text-decoration-color: #f43f5e;
+            font-weight: 600;
+            border: 1px solid rgba(244, 63, 94, 0.25);
+        }
+        .spot-table-correct {
+            color: #86efac;
+            background: rgba(34, 197, 94, 0.14);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .spot-rule-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.12);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px dashed rgba(245, 158, 11, 0.4);
+            display: inline-block;
+            font-weight: 600;
+        }
+        .spot-num-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            color: var(--secondary-hover);
+            background: rgba(59, 130, 246, 0.15);
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            display: inline-block;
+        }
+        .spot-tag-trap {
+            display: inline-block;
+            background: rgba(244, 63, 94, 0.2);
+            color: #fca5a5;
+            border: 1px solid #f43f5e;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            letter-spacing: 0.5px;
+        }
+
+
+        /* Practice Quiz Launch Button */
+        .spot-practice-launch-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000000;
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+            font-family: inherit;
+        }
+        .spot-practice-launch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 158, 11, 0.5);
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+
+        .practice-pill-btn {
+            background: rgba(245, 158, 11, 0.15) !important;
+            color: #fbbf24 !important;
+            border-color: rgba(245, 158, 11, 0.4) !important;
+        }
+        .practice-pill-btn:hover {
+            background: rgba(245, 158, 11, 0.3) !important;
+        }
+
+        /* Modal Backdrop Overlay */
+        .spot-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            animation: fadeIn 0.2s ease-out;
+        }
+        .spot-modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 680px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            max-height: 90vh;
+        }
+        .spot-modal-header {
+            padding: 1.2rem 1.5rem;
+            background: #1e293b;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .spot-modal-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .spot-quiz-badge {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--secondary-hover);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+        .spot-modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.15s ease;
+        }
+        .spot-modal-close:hover { color: #f43f5e; }
+
+        .spot-modal-body {
+            padding: 1.8rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .spot-modal-footer {
+            padding: 1rem 1.5rem;
+            background: #1e293b;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .spot-quiz-nav-btn {
+            background: #334155;
+            border: 1px solid var(--border);
+            color: #e2e8f0;
+            padding: 0.55rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+        .spot-quiz-nav-btn:hover:not(:disabled) {
+            background: #475569;
+            color: #ffffff;
+        }
+        .spot-quiz-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .spot-quiz-nav-btn.primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-hover));
+            color: #ffffff;
+            border: none;
+        }
+        .spot-quiz-score {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: #fbbf24;
+        }
+
     </style>
 </head>
 <body>
@@ -624,6 +911,12 @@
                     <button data-target="sec-pos" class="active-nav">
                         <span class="nav-item-left"><span class="nav-icon">📌</span> Parts of Speech</span>
                         <span class="nav-badge">9 Parts</span>
+                    </button>
+                </li>
+                <li>
+                    <button data-target="sec-spot-error">
+                        <span class="nav-item-left"><span class="nav-icon">🚨</span> Spot the Error</span>
+                        <span class="nav-badge" style="background: rgba(244, 63, 94, 0.2); color: #fca5a5;">100+ Rules</span>
                     </button>
                 </li>
                 <li>
@@ -740,6 +1033,475 @@
             </div>
 
             <!-- VIEW: PARTS OF SPEECH (ALL 9 PARTS FULLY DETAILED) -->
+            
+            <!-- VIEW: SPOT THE ERROR (EXAM-ORIENTED MASTER REVISION MODULE) -->
+            <!-- VIEW: SPOT THE ERROR (EXAM-ORIENTED MASTER REVISION MODULE) -->
+            <section id="sec-spot-error" class="view-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--border); padding-bottom: 0.8rem;">
+                    <h2 style="margin: 0; border: none; padding: 0;">🚨 Spot the Error <span class="spot-header-badge">🔥 125+ High-Yield Rules & Traps</span></h2>
+                    <button class="spot-practice-launch-btn" onclick="openSpotPracticeModal()">
+                        <span>⚡</span> Launch Interactive Practice Quiz
+                    </button>
+                </div>
+
+                <!-- Topic Category Filter Bar -->
+                <div class="spot-filter-bar">
+                    <button class="spot-filter-btn active-spot-filter" onclick="filterSpotCategory('all', this)">All (1–125+ Rules)</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('sva-p1', this)">SVA & Agreement</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('nouns-sva', this)">Special Nouns</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('articles', this)">Articles</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('pronouns', this)">Pronouns</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('adjectives', this)">Adjectives & Adverbs</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('tenses', this)">Tenses & Timeline</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('modals', this)">Modals</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('prepositions', this)">Prepositions</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('gerunds-conj', this)">Gerunds & Conjunctions</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('voice-narration', this)">Voice & Syntax</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('parallelism', this)">Parallelism</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('conditionals', this)">Conditionals</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('redundancy', this)">Redundancy</button>
+                    <button class="spot-filter-btn" onclick="filterSpotCategory('mixed', this)">Mixed Practice</button>
+                </div>
+
+                <!-- 0. QUICK REVISION CHEAT-SHEET -->
+                <div class="spot-quick-rev spot-topic-card searchable-item" data-spot-cat="all" data-tags="quick revision cheat sheet shortcuts high yield formulas must remember spot the error exam rules">
+                    <div class="spot-quick-title">⚡ Must Remember — High-Yield Formulas & Shortcuts</div>
+                    <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1rem;">Lightning-fast reference formulas for rapid revision before SSC CGL, CHSL, CPO, and Stenographer exams.</p>
+                    
+                    <table class="db-table searchable-item" data-tags="must remember formulas cheat sheet shortcuts">
+                        <thead>
+                            <tr>
+                                <th>Pattern / Trigger</th>
+                                <th>Incorrect Usage ❌</th>
+                                <th>Correct Formula / Rule ✅</th>
+                                <th>Exam Shortcut 💡</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Avoid / Deny / Mind</strong></td><td>avoid to make</td><td><span class="spot-rule-code">verb + V-ing (Gerund)</span></td><td>Avoid / Deny / Mind + Gerund</td></tr>
+                            <tr><td><strong>Look forward to / With a view to</strong></td><td>look forward to meet</td><td><span class="spot-rule-code">look forward to + V-ing</span></td><td>"to" is preposition here</td></tr>
+                            <tr><td><strong>Make / Let (Active Voice)</strong></td><td>made me to cry</td><td><span class="spot-rule-code">make/let + object + V1</span></td><td>Bare Infinitive (no "to")</td></tr>
+                            <tr><td><strong>No sooner ...</strong></td><td>no sooner ... when</td><td><span class="spot-rule-code">No sooner + had/did + S ... THAN</span></td><td>Pair: No sooner ... THAN</td></tr>
+                            <tr><td><strong>Hardly / Scarcely ...</strong></td><td>hardly ... than</td><td><span class="spot-rule-code">Hardly + had/did + S ... WHEN</span></td><td>Pair: Hardly ... WHEN</td></tr>
+                            <tr><td><strong>Although / Though ...</strong></td><td>although ... but</td><td><span class="spot-rule-code">Although + clause, [no 'but']</span></td><td>Do NOT use 'but' with although</td></tr>
+                            <tr><td><strong>Because / Since ...</strong></td><td>because ... so</td><td><span class="spot-rule-code">Because + clause, [no 'so']</span></td><td>Do NOT use 'so/therefore' with because</td></tr>
+                            <tr><td><strong>Unless (Conditional)</strong></td><td>unless you do not work</td><td><span class="spot-rule-code">Unless + affirmative verb</span></td><td>Unless already means "if not"</td></tr>
+                            <tr><td><strong>Senior / Junior / Superior / Prefer</strong></td><td>senior than / prefer than</td><td><span class="spot-rule-code">senior/inferior/prefer + TO</span></td><td>Use TO (never 'than')</td></tr>
+                            <tr><td><strong>Did / Did not</strong></td><td>did went / did not came</td><td><span class="spot-rule-code">did / did not + V1 (base form)</span></td><td>After did -> V1 base form</td></tr>
+                            <tr><td><strong>One of the + Plural Noun</strong></td><td>one of my friend</td><td><span class="spot-rule-code">One of + Plural Noun + Singular Verb</span></td><td>One of my friends IS ...</td></tr>
+                            <tr><td><strong>One of + Plural Noun + Who</strong></td><td>one of the players who plays</td><td><span class="spot-rule-code">One of + Plural Noun + who + PLURAL Verb</span></td><td>'who' refers to plural noun</td></tr>
+                            <tr><td><strong>The only one of + Plural Noun + Who</strong></td><td>the only one of players who play</td><td><span class="spot-rule-code">The only one of + Plural Noun + who + SINGULAR Verb</span></td><td>'the only one' makes verb singular</td></tr>
+                            <tr><td><strong>Discuss / Enter / Return</strong></td><td>discuss about / enter into room</td><td><span class="spot-rule-code">discuss (no about) / enter (no into)</span></td><td>No unnecessary prepositions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 1: QUESTIONS 1 TO 10 (Subject-Verb Agreement Part 1) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="sva-p1" data-tags="questions 1 10 subject verb agreement sva each of one of neither of the number of a number of more than one many a bread and butter poet and philosopher">
+                    <div class="rule-card-header">
+                        <h4>⚖️ Subject–Verb Agreement (Part 1) — Questions 1 to 10</h4>
+                        <span class="rule-num-badge">Q1–Q10</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="sva questions 1 10 each of one of neither the number a number more than one many a bread and butter poet and philosopher">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">1</span></td><td>Each of the boys <span class="spot-table-wrong">have a book</span>.</td><td>Each of the boys <span class="spot-table-correct">has a book</span>.</td><td><strong>Each of</strong> takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">2</span></td><td>One of my <span class="spot-table-wrong">friend</span> is absent.</td><td>One of my <span class="spot-table-correct">friends</span> is absent.</td><td><strong>One of</strong> is followed by a <strong>plural noun</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">3</span></td><td>Neither of the answers <span class="spot-table-wrong">are correct</span>.</td><td>Neither of the answers <span class="spot-table-correct">is correct</span>.</td><td><strong>Neither of</strong> takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">4</span></td><td>The number of students <span class="spot-table-wrong">are increasing</span>.</td><td>The number of students <span class="spot-table-correct">is increasing</span>.</td><td><strong>The number of</strong> takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">5</span></td><td>A number of students <span class="spot-table-wrong">is absent</span>.</td><td>A number of students <span class="spot-table-correct">are absent</span>.</td><td><strong>A number of</strong> takes a <strong>plural verb</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">6</span></td><td>More than one student <span class="spot-table-wrong">have failed</span>.</td><td>More than one student <span class="spot-table-correct">has failed</span>.</td><td><strong>More than one</strong> takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">7</span></td><td>Many a player <span class="spot-table-wrong">have tried</span>.</td><td>Many a player <span class="spot-table-correct">has tried</span>.</td><td><strong>Many a</strong> takes a <strong>singular noun + singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">8</span></td><td>Bread and butter <span class="spot-table-wrong">are my breakfast</span>.</td><td>Bread and butter <span class="spot-table-correct">is my breakfast</span>.</td><td>One combined food item takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">9</span></td><td>The poet and philosopher <span class="spot-table-wrong">are dead</span>.</td><td>The poet and philosopher <span class="spot-table-correct">is dead</span>.</td><td>One article ('The') = <strong>one single person</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">10</span></td><td>The poet and the philosopher <span class="spot-table-wrong">is present</span>.</td><td>The poet and the philosopher <span class="spot-table-correct">are present</span>.</td><td>Two articles ('The ... and the ...') = <strong>two distinct people</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">SVA-01</span></td><td>The captain, along with his crew, <span class="spot-table-wrong">were drowned</span>.</td><td>The captain, along with his crew, <span class="spot-table-correct">was drowned</span>.</td><td>With <strong>along with, as well as, together with, in addition to</strong>, verb agrees with <strong>FIRST subject</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">SVA-02</span></td><td>The jury <span class="spot-table-wrong">were unanimous</span> in its decision.</td><td>The jury <span class="spot-table-correct">was unanimous</span> in its decision.</td><td>Collective nouns take <strong>singular verb</strong> when unanimous (single unit); <strong>plural verb</strong> when divided in opinion.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 2: QUESTIONS 11 TO 20 (Special Nouns & Subject-Verb Agreement) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="nouns-sva" data-tags="questions 11 20 special nouns sva news mathematics police cattle scissors ten kilometres two hours furniture information pair of shoes">
+                    <div class="rule-card-header">
+                        <h4>🏷️ Special Nouns & SVA — Questions 11 to 20</h4>
+                        <span class="rule-num-badge">Q11–Q20</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="special nouns sva questions 11 20 news mathematics police cattle scissors distance hours furniture information pair of shoes">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">11</span></td><td>The news <span class="spot-table-wrong">are shocking</span>.</td><td>The news <span class="spot-table-correct">is shocking</span>.</td><td><strong>"News"</strong> is uncountable singular.</td></tr>
+                            <tr><td><span class="spot-num-pill">12</span></td><td>Mathematics <span class="spot-table-wrong">are difficult</span>.</td><td>Mathematics <span class="spot-table-correct">is difficult</span>.</td><td>Subject names ending in -s (Physics, Math) are singular.</td></tr>
+                            <tr><td><span class="spot-num-pill">13</span></td><td>The police <span class="spot-table-wrong">is investigating</span>.</td><td>The police <span class="spot-table-correct">are investigating</span>.</td><td><strong>"Police"</strong> takes a plural verb. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">14</span></td><td>The cattle <span class="spot-table-wrong">is grazing</span>.</td><td>The cattle <span class="spot-table-correct">are grazing</span>.</td><td><strong>"Cattle"</strong> is a plural collective noun.</td></tr>
+                            <tr><td><span class="spot-num-pill">15</span></td><td>These scissors <span class="spot-table-wrong">is blunt</span>.</td><td>These scissors <span class="spot-table-correct">are blunt</span>.</td><td>Pair nouns (scissors, trousers, spectacles) are plural.</td></tr>
+                            <tr><td><span class="spot-num-pill">16</span></td><td>Ten kilometres <span class="spot-table-wrong">are a long distance</span>.</td><td>Ten kilometres <span class="spot-table-correct">is a long distance</span>.</td><td>Distance as one unit takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">17</span></td><td>Two hours <span class="spot-table-wrong">are enough</span>.</td><td>Two hours <span class="spot-table-correct">is enough</span>.</td><td>Time period as one unit takes a <strong>singular verb</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">18</span></td><td>The furniture <span class="spot-table-wrong">are expensive</span>.</td><td>The furniture <span class="spot-table-correct">is expensive</span>.</td><td><strong>"Furniture"</strong> is an uncountable singular noun.</td></tr>
+                            <tr><td><span class="spot-num-pill">19</span></td><td>The information <span class="spot-table-wrong">are useful</span>.</td><td>The information <span class="spot-table-correct">is useful</span>.</td><td><strong>"Information"</strong> is an uncountable singular noun.</td></tr>
+                            <tr><td><span class="spot-num-pill">20</span></td><td>This pair of shoes <span class="spot-table-wrong">are new</span>.</td><td>This pair of shoes <span class="spot-table-correct">is new</span>.</td><td>Subject is the singular word <strong>"pair"</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">NOUN-01</span></td><td>His mathematics <span class="spot-table-wrong">is weak</span>.</td><td>His mathematics <span class="spot-table-correct">are weak</span>.</td><td>Subject names preceded by possessive pronouns (my, his) take a <strong>plural verb</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">NOUN-02</span></td><td>I saw five <span class="spot-table-wrong">deers</span> in the park.</td><td>I saw five <span class="spot-table-correct">deer</span> in the park.</td><td>Nouns like <strong>sheep, deer, fish, species, series, offspring</strong> retain identical singular and plural forms.</td></tr>
+                            <tr><td><span class="spot-num-pill">NOUN-03</span></td><td>He gave me a <span class="spot-table-wrong">five-rupees note</span>.</td><td>He gave me a <span class="spot-table-correct">five-rupee note</span>.</td><td>Hyphenated compound nouns never take a plural 's'. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">NOUN-04</span></td><td><span class="spot-table-wrong">The table's legs</span> were broken.</td><td><span class="spot-table-correct">The legs of the table</span> were broken.</td><td>Do NOT use apostrophe ('s) with non-living inanimate objects; use <strong>'of'</strong>.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 3: QUESTIONS 21 TO 30 (Articles & Determiners) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="articles" data-tags="questions 21 30 articles determiners European honest best player sun mount everest ganga gold violin headache one eyed">
+                    <div class="rule-card-header">
+                        <h4>🔍 Articles & Determiners — Questions 21 to 30</h4>
+                        <span class="rule-num-badge">Q21–Q30</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="articles questions 21 30 european honest best player sun mount everest ganga gold violin headache one eyed">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">21</span></td><td>He is <span class="spot-table-wrong">an European</span>.</td><td>He is <span class="spot-table-correct">a European</span>.</td><td>Use <strong>"a"</strong> before consonant sound (/yoo/). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">22</span></td><td>She is <span class="spot-table-wrong">a honest</span> woman.</td><td>She is <span class="spot-table-correct">an honest</span> woman.</td><td>Use <strong>"an"</strong> before silent 'h' / vowel sound (/on-ist/).</td></tr>
+                            <tr><td><span class="spot-num-pill">23</span></td><td>He is <span class="spot-table-wrong">best player</span> in the team.</td><td>He is <span class="spot-table-correct">the best player</span> in the team.</td><td>Use <strong>"the"</strong> before superlative degree.</td></tr>
+                            <tr><td><span class="spot-num-pill">24</span></td><td><span class="spot-table-wrong">Sun rises</span> in the east.</td><td><span class="spot-table-correct">The sun</span> rises in the east.</td><td>Unique astronomical objects take <strong>"the"</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">25</span></td><td><span class="spot-table-wrong">The Mount Everest</span> is very high.</td><td><span class="spot-table-correct">Mount Everest</span> is very high.</td><td>Do NOT use "the" before individual mountain peaks. <span class="spot-tag-trap">⚠️ COMMON TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">26</span></td><td><span class="spot-table-wrong">Ganga</span> is a sacred river.</td><td><span class="spot-table-correct">The Ganga</span> is a sacred river.</td><td>River names take <strong>"the"</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">27</span></td><td><span class="spot-table-wrong">The gold</span> is precious metal.</td><td><span class="spot-table-correct">Gold</span> is a precious metal.</td><td>Material nouns take no article in general sense.</td></tr>
+                            <tr><td><span class="spot-num-pill">28</span></td><td>He plays <span class="spot-table-wrong">violin</span> well.</td><td>He plays <span class="spot-table-correct">the violin</span> well.</td><td>Musical instruments take <strong>"the"</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">29</span></td><td>I have <span class="spot-table-wrong">headache</span>.</td><td>I have <span class="spot-table-correct">a headache</span>.</td><td>Use <strong>"a/an"</strong> with singular countable conditions.</td></tr>
+                            <tr><td><span class="spot-num-pill">30</span></td><td>He is <span class="spot-table-wrong">an one-eyed</span> man.</td><td>He is <span class="spot-table-correct">a one-eyed</span> man.</td><td>"One" begins with consonant sound /w/. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 4: QUESTIONS 31 TO 40 (Pronouns & Relative Pronouns) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="pronouns" data-tags="questions 31 40 pronouns relative between you and i gift for i me and ravi man which book who same pen which all which glitters players who plays player who play whom do you think">
+                    <div class="rule-card-header">
+                        <h4>👤 Pronouns & Relative Pronouns — Questions 31 to 40</h4>
+                        <span class="rule-num-badge">Q31–Q40</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="pronouns questions 31 40 between you and i gift for i me and ravi man which book who same pen which all which glitters players who plays player who play whom do you think">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">31</span></td><td>Between you and <span class="spot-table-wrong">I</span>, he is wrong.</td><td>Between you and <span class="spot-table-correct">me</span>, he is wrong.</td><td>Use <strong>objective pronoun (me)</strong> after prepositions. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">32</span></td><td>This gift is for you and <span class="spot-table-wrong">I</span>.</td><td>This gift is for you and <span class="spot-table-correct">me</span>.</td><td>Use objective case after preposition "for".</td></tr>
+                            <tr><td><span class="spot-num-pill">33</span></td><td><span class="spot-table-wrong">Me and Ravi</span> went there.</td><td><span class="spot-table-correct">Ravi and I</span> went there.</td><td>Use subject pronoun "I" as subject (Order 231).</td></tr>
+                            <tr><td><span class="spot-num-pill">34</span></td><td>The man <span class="spot-table-wrong">which</span> came here is my uncle.</td><td>The man <span class="spot-table-correct">who</span> came here is my uncle.</td><td>Use <strong>who</strong> for people.</td></tr>
+                            <tr><td><span class="spot-num-pill">35</span></td><td>The book <span class="spot-table-wrong">who</span> is on the table is mine.</td><td>The book <span class="spot-table-correct">which</span> is on the table is mine.</td><td>Use <strong>which</strong> for non-human things.</td></tr>
+                            <tr><td><span class="spot-num-pill">36</span></td><td>This is the same pen <span class="spot-table-wrong">which</span> I bought.</td><td>This is the same pen <span class="spot-table-correct">that</span> I bought.</td><td>"The same" is followed by <strong>that</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">37</span></td><td>All <span class="spot-table-wrong">which</span> glitters is not gold.</td><td>All <span class="spot-table-correct">that</span> glitters is not gold.</td><td>Use <strong>that</strong> after "all", "same", "only".</td></tr>
+                            <tr><td><span class="spot-num-pill">38</span></td><td>He is one of the players who <span class="spot-table-wrong">plays</span> well.</td><td>He is one of the players who <span class="spot-table-correct">play</span> well.</td><td>'Who' refers to plural antecedent <strong>players</strong> -> plural verb. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">39</span></td><td>He is the only one of the players who <span class="spot-table-wrong">play</span> well.</td><td>He is the only one of the players who <span class="spot-table-correct">plays</span> well.</td><td>"The only one" makes verb <strong>singular</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">40</span></td><td><span class="spot-table-wrong">Whom</span> do you think will win?</td><td><span class="spot-table-correct">Who</span> do you think will win?</td><td>Use <strong>who</strong> when it functions as subject of verb "will win".</td></tr>
+                            <tr><td><span class="spot-num-pill">PRON-01</span></td><td><span class="spot-table-wrong">I, you, and he</span> will study together.</td><td><span class="spot-table-correct">You, he, and I</span> will study together.</td><td>Order of personal pronouns: Normal/pleasant = <strong>2-3-1</strong>; Confession/unpleasant = <strong>1-2-3</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">PRON-02</span></td><td>She runs faster than <span class="spot-table-wrong">him</span>.</td><td>She runs faster than <span class="spot-table-correct">he (does)</span>.</td><td>'Than' or 'as' for subject comparison requires <strong>subjective case pronoun (he/I/she)</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">PRON-03</span></td><td>He enjoyed <span class="spot-table-wrong">at the party</span>.</td><td>He enjoyed <span class="spot-table-correct">himself at the party</span>.</td><td>Transitive verbs (avail, absent, enjoy, introduce, adapt, resign) require a <strong>reflexive pronoun</strong> if no direct object is present.</td></tr>
+                            <tr><td><span class="spot-num-pill">PRON-04</span></td><td>He kept <span class="spot-table-wrong">himself away</span> from bad boys.</td><td>He kept <span class="spot-table-correct">away</span> from bad boys.</td><td>Verbs like <strong>keep, break, stop, turn, qualify, bath, move, hide</strong> NEVER take reflexive pronouns. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 5: QUESTIONS 41 TO 50 (Adjectives & Comparison) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="adjectives" data-tags="questions 41 50 adjectives comparison more better senior than prefer tea than as taller as one of tallest boy bigger than any city taller of two superior than as useful than">
+                    <div class="rule-card-header">
+                        <h4>📐 Adjectives & Comparison — Questions 41 to 50</h4>
+                        <span class="rule-num-badge">Q41–Q50</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="adjectives questions 41 50 more better senior than prefer tea than as taller as one of tallest boy bigger than any city taller of two superior than as useful than">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">41</span></td><td>This book is <span class="spot-table-wrong">more better</span>.</td><td>This book is <span class="spot-table-correct">better</span>.</td><td>Do NOT use <strong>double comparatives</strong> (more better).</td></tr>
+                            <tr><td><span class="spot-num-pill">42</span></td><td>He is senior <span class="spot-table-wrong">than me</span>.</td><td>He is senior <span class="spot-table-correct">to me</span>.</td><td>Senior, junior, superior, inferior take <strong>TO</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">43</span></td><td>I prefer tea <span class="spot-table-wrong">than coffee</span>.</td><td>I prefer tea <span class="spot-table-correct">to coffee</span>.</td><td>Use <strong>prefer X to Y</strong> (never prefer...than). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">44</span></td><td>She is as <span class="spot-table-wrong">taller</span> as her sister.</td><td>She is as <span class="spot-table-correct">tall</span> as her sister.</td><td>Use <strong>positive degree</strong> between as ... as.</td></tr>
+                            <tr><td><span class="spot-num-pill">45</span></td><td>He is one of the tallest <span class="spot-table-wrong">boy</span>.</td><td>He is one of the tallest <span class="spot-table-correct">boys</span>.</td><td>"One of the" takes a <strong>plural noun</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">46</span></td><td>Delhi is bigger than <span class="spot-table-wrong">any city</span> in India.</td><td>Delhi is bigger than <span class="spot-table-correct">any other city</span> in India.</td><td>Use <strong>"other"</strong> when comparing within same group. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">47</span></td><td>Of the two sisters, Riya is the <span class="spot-table-wrong">tallest</span>.</td><td>Of the two sisters, Riya is the <span class="spot-table-correct">taller</span>.</td><td>Use <strong>comparative degree (taller)</strong> for two.</td></tr>
+                            <tr><td><span class="spot-num-pill">48</span></td><td>He is more intelligent than <span class="spot-table-wrong">any student</span>.</td><td>He is more intelligent than <span class="spot-table-correct">any other student</span>.</td><td>Exclude subject from its own comparison group.</td></tr>
+                            <tr><td><span class="spot-num-pill">49</span></td><td>This book is superior <span class="spot-table-wrong">than that</span>.</td><td>This book is superior <span class="spot-table-correct">to that</span>.</td><td><strong>Superior</strong> is followed by <strong>to</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">50</span></td><td>No other metal is as useful <span class="spot-table-wrong">than iron</span>.</td><td>No other metal is as useful <span class="spot-table-correct">as iron</span>.</td><td>Use pair <strong>as ... AS</strong> (not as...than).</td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-01</span></td><td>This is the <span class="spot-table-wrong">most unique</span> product.</td><td>This is a <span class="spot-table-correct">unique</span> product.</td><td><strong>Absolute adjectives</strong> (unique, perfect, complete, universal, absolute, extreme, dead) cannot take 'more' or 'most'.</td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-02</span></td><td>There is <span class="spot-table-wrong">a little hope</span> of survival.</td><td>There is <span class="spot-table-correct">little hope</span> of survival.</td><td><strong>Little</strong> = almost none (neg); <strong>A little</strong> = some (pos); <strong>The little</strong> = whatever small amount left.</td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-03</span></td><td>A <span class="spot-table-wrong">black small leather Italian</span> jacket.</td><td>A <span class="spot-table-correct">beautiful small black Italian leather</span> jacket.</td><td>Formula for Adjective Order: <strong>OSASCOMP</strong> (Opinion → Size → Age → Shape → Color → Origin → Material → Purpose).</td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-04</span></td><td>He works <span class="spot-table-wrong">hardly</span> to earn a living.</td><td>He works <span class="spot-table-correct">hard</span> to earn a living.</td><td><strong>Hard</strong> = diligently (adv); <strong>Hardly</strong> = barely/scarcely (negative adverb). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-05</span></td><td>He is <span class="spot-table-wrong">so weak to walk</span>.</td><td>He is <span class="spot-table-correct">too weak to walk</span>.</td><td>Formula: <strong>Too + Adjective + to + V1</strong> conveys negative meaning (= so weak that he cannot walk).</td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-06</span></td><td>He is <span class="spot-table-wrong">enough smart</span> to clear the exam.</td><td>He is <span class="spot-table-correct">smart enough</span> to clear the exam.</td><td><strong>Enough</strong> comes AFTER adjective/adverb, but BEFORE a noun. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">ADJ-07</span></td><td>Gold is the most precious of <span class="spot-table-wrong">all other metals</span>.</td><td>Gold is the most precious of <span class="spot-table-correct">all metals</span>.</td><td>Do NOT use 'other' in Superlative degree comparisons.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 6: QUESTIONS 51 TO 60 (Tenses & Timeline) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="tenses" data-tags="questions 51 60 tenses am knowing have seen yesterday gone last week train left completed by next year living since working for did you went did not came ill since three days">
+                    <div class="rule-card-header">
+                        <h4>⏳ Tenses & Timeline — Questions 51 to 60</h4>
+                        <span class="rule-num-badge">Q51–Q60</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="tenses questions 51 60 am knowing have seen yesterday gone last week train left completed by next year living since working for did you went did not came ill since three days">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">51</span></td><td>I <span class="spot-table-wrong">am knowing</span> him.</td><td>I <span class="spot-table-correct">know</span> him.</td><td>Stative verbs (know, love, believe) are not used in continuous.</td></tr>
+                            <tr><td><span class="spot-num-pill">52</span></td><td>I <span class="spot-table-wrong">have seen</span> him yesterday.</td><td>I <span class="spot-table-correct">saw</span> him yesterday.</td><td>Use <strong>Simple Past (V2)</strong> with definite past time (yesterday). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">53</span></td><td>He <span class="spot-table-wrong">has gone</span> to Delhi last week.</td><td>He <span class="spot-table-correct">went</span> to Delhi last week.</td><td>Use <strong>Simple Past (V2)</strong> with "last week/month/year".</td></tr>
+                            <tr><td><span class="spot-num-pill">54</span></td><td>When I reached the station, the train <span class="spot-table-wrong">left</span>.</td><td>When I reached the station, the train <span class="spot-table-correct">had left</span>.</td><td>The earlier past action takes <strong>Past Perfect (had + V3)</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">55</span></td><td>By next year, she <span class="spot-table-wrong">completes</span> the course.</td><td>By next year, she <span class="spot-table-correct">will have completed</span> the course.</td><td>Future deadline ("By next year") takes <strong>Future Perfect</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">56</span></td><td>I <span class="spot-table-wrong">am living</span> here since 2020.</td><td>I <span class="spot-table-correct">have been living</span> here since 2020.</td><td>Use <strong>Present Perfect Continuous</strong> with starting time "since".</td></tr>
+                            <tr><td><span class="spot-num-pill">57</span></td><td>He <span class="spot-table-wrong">is working</span> here for five years.</td><td>He <span class="spot-table-correct">has been working</span> here for five years.</td><td>Use <strong>Present Perfect Continuous</strong> with duration "for".</td></tr>
+                            <tr><td><span class="spot-num-pill">58</span></td><td>Did you <span class="spot-table-wrong">went</span> there?</td><td>Did you <span class="spot-table-correct">go</span> there?</td><td>Use <strong>V1 base form</strong> after "did". <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">59</span></td><td>He did not <span class="spot-table-wrong">came</span> yesterday.</td><td>He did not <span class="spot-table-correct">come</span> yesterday.</td><td>Use <strong>V1 base form</strong> after "did not".</td></tr>
+                            <tr><td><span class="spot-num-pill">60</span></td><td>She has been ill <span class="spot-table-wrong">since three days</span>.</td><td>She has been ill <span class="spot-table-correct">for three days</span>.</td><td>Use <strong>for</strong> with period of time; <strong>since</strong> with point of time.</td></tr>
+                            <tr><td><span class="spot-num-pill">TENSE-01</span></td><td>Five years passed <span class="spot-table-wrong">since I have met him</span>.</td><td>Five years have passed <span class="spot-table-correct">since I met him</span>.</td><td>Formula: <strong>Present Perfect + SINCE + Simple Past (V2)</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">TENSE-02</span></td><td>It is high time we <span class="spot-table-wrong">start studying</span>.</td><td>It is high time we <span class="spot-table-correct">started studying</span>.</td><td>Formula: <strong>It is time / It is high time + subject + Simple Past (V2)</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 7: QUESTIONS 61 TO 70 (Modals & Auxiliary Verbs) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="modals" data-tags="questions 61 70 modals can sings must to obey need not to worry ought help used to went had better to leave would rather to stay should have went could not able to dare not to speak">
+                    <div class="rule-card-header">
+                        <h4>⚡ Modals & Auxiliary Verbs — Questions 61 to 70</h4>
+                        <span class="rule-num-badge">Q61–Q70</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="modals questions 61 70 can sings must to obey need not to worry ought help used to went had better to leave would rather to stay should have went could not able to dare not to speak">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">61</span></td><td>He can <span class="spot-table-wrong">sings</span> well.</td><td>He can <span class="spot-table-correct">sing</span> well.</td><td>Use <strong>V1 base form</strong> after modal verbs (can, could, may).</td></tr>
+                            <tr><td><span class="spot-num-pill">62</span></td><td>You must <span class="spot-table-wrong">to obey</span> the rules.</td><td>You must <span class="spot-table-correct">obey</span> the rules.</td><td>Do NOT use 'to' after <strong>must</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">63</span></td><td>You need not <span class="spot-table-wrong">to worry</span>.</td><td>You need not <span class="spot-table-correct">worry</span>.</td><td>Use <strong>V1</strong> after modal <strong>need not</strong> (no 'to').</td></tr>
+                            <tr><td><span class="spot-num-pill">64</span></td><td>We ought <span class="spot-table-wrong">help</span> the poor.</td><td>We ought <span class="spot-table-correct">to help</span> the poor.</td><td><strong>Ought</strong> is followed by <strong>to + V1</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">65</span></td><td>He used to <span class="spot-table-wrong">went</span> there.</td><td>He used to <span class="spot-table-correct">go</span> there.</td><td>Use <strong>V1 base form</strong> after <strong>used to</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">66</span></td><td>You had better <span class="spot-table-wrong">to leave</span> now.</td><td>You had better <span class="spot-table-correct">leave</span> now.</td><td>Use <strong>bare infinitive V1</strong> after <strong>had better</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">67</span></td><td>I would rather <span class="spot-table-wrong">to stay</span> home.</td><td>I would rather <span class="spot-table-correct">stay</span> home.</td><td>Use <strong>bare infinitive V1</strong> after <strong>would rather</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">68</span></td><td>She should have <span class="spot-table-wrong">went</span> there.</td><td>She should have <span class="spot-table-correct">gone</span> there.</td><td>Use <strong>V3 past participle</strong> after <strong>should have</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">69</span></td><td>He could not <span class="spot-table-wrong">able to solve</span> it.</td><td>He could not <span class="spot-table-correct">solve</span> it.</td><td>Do NOT use <strong>could</strong> and <strong>able to</strong> together. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">70</span></td><td>You dare not <span class="spot-table-wrong">to speak</span>.</td><td>You dare not <span class="spot-table-correct">speak</span>.</td><td>Use <strong>V1 bare infinitive</strong> after modal <strong>dare not</strong>.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 8: QUESTIONS 71 TO 80 (Prepositions Master DB) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="prepositions" data-tags="questions 71 80 prepositions discussed about entered into returned back married with good in angry on capable to accustomed with insisted to prevented to">
+                    <div class="rule-card-header">
+                        <h4>📍 Prepositions Master — Questions 71 to 80</h4>
+                        <span class="rule-num-badge">Q71–Q80</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="prepositions questions 71 80 discussed about entered into returned back married with good in angry on capable to accustomed with insisted to prevented to">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">71</span></td><td>We discussed <span class="spot-table-wrong">about the problem</span>.</td><td>We discussed <span class="spot-table-correct">the problem</span>.</td><td><strong>Discuss</strong> is transitive; does not take 'about'. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">72</span></td><td>He entered <span class="spot-table-wrong">into the room</span>.</td><td>He entered <span class="spot-table-correct">the room</span>.</td><td><strong>Enter</strong> takes no preposition for physical entry.</td></tr>
+                            <tr><td><span class="spot-num-pill">73</span></td><td>She returned <span class="spot-table-wrong">back home</span>.</td><td>She returned <span class="spot-table-correct">home</span>.</td><td><strong>Return</strong> already means 'come back'; 'back' is redundant.</td></tr>
+                            <tr><td><span class="spot-num-pill">74</span></td><td>She is married <span class="spot-table-wrong">with a doctor</span>.</td><td>She is married <span class="spot-table-correct">to a doctor</span>.</td><td><strong>Married</strong> is followed by <strong>to</strong> (not with). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">75</span></td><td>He is good <span class="spot-table-wrong">in English</span>.</td><td>He is good <span class="spot-table-correct">at English</span>.</td><td>Use <strong>good at</strong> for ability/subject.</td></tr>
+                            <tr><td><span class="spot-num-pill">76</span></td><td>She is angry <span class="spot-table-wrong">on me</span>.</td><td>She is angry <span class="spot-table-correct">with me</span>.</td><td>Use <strong>angry with</strong> a person; <strong>angry at</strong> a situation.</td></tr>
+                            <tr><td><span class="spot-num-pill">77</span></td><td>He is capable <span class="spot-table-wrong">to do it</span>.</td><td>He is capable <span class="spot-table-correct">of doing it</span>.</td><td><strong>Capable</strong> is followed by <strong>of + V-ing</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">78</span></td><td>I am accustomed <span class="spot-table-wrong">with this weather</span>.</td><td>I am accustomed <span class="spot-table-correct">to this weather</span>.</td><td><strong>Accustomed</strong> is followed by <strong>to</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">79</span></td><td>He insisted <span class="spot-table-wrong">to go there</span>.</td><td>He insisted <span class="spot-table-correct">on going there</span>.</td><td><strong>Insist</strong> is followed by <strong>on + V-ing</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">80</span></td><td>They prevented me <span class="spot-table-wrong">to enter</span>.</td><td>They prevented me <span class="spot-table-correct">from entering</span>.</td><td><strong>Prevent + object + from + V-ing</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">PREP-01</span></td><td>Distribute sweets <span class="spot-table-wrong">among Ram and Shyam</span>.</td><td>Distribute sweets <span class="spot-table-correct">between Ram and Shyam</span>.</td><td>Use <strong>Between</strong> for two entities; <strong>Among</strong> for three or more unspecific entities.</td></tr>
+                            <tr><td><span class="spot-num-pill">PREP-02</span></td><td>He died <span class="spot-table-wrong">from cancer</span>.</td><td>He died <span class="spot-table-correct">of cancer</span>.</td><td>Die <strong>OF</strong> a disease/hunger/thirst; Die <strong>FROM</strong> a cause like wound/overwork/blood loss. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 9: QUESTIONS 81 TO 90 (Gerunds & Conjunctions) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="gerunds-conj" data-tags="questions 81 90 gerunds conjunctions avoid to make look forward to meet denied to take made me to cry let him to go although but because so no sooner when hardly than unless do not">
+                    <div class="rule-card-header">
+                        <h4>🎯 Gerunds & Conjunctions — Questions 81 to 90</h4>
+                        <span class="rule-num-badge">Q81–Q90</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="gerunds conjunctions questions 81 90 avoid to make look forward to meet denied to take made me to cry let him to go although but because so no sooner when hardly than unless do not">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">81</span></td><td>Avoid <span class="spot-table-wrong">to make</span> mistakes.</td><td>Avoid <span class="spot-table-correct">making</span> mistakes.</td><td><strong>Avoid</strong> is followed by a gerund (V-ing). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">82</span></td><td>I look forward to <span class="spot-table-wrong">meet</span> you.</td><td>I look forward to <span class="spot-table-correct">meeting</span> you.</td><td>"to" is preposition here -> use gerund (V-ing). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">83</span></td><td>He denied <span class="spot-table-wrong">to take</span> the money.</td><td>He denied <span class="spot-table-correct">taking</span> the money.</td><td><strong>Deny</strong> is followed by a gerund (V-ing).</td></tr>
+                            <tr><td><span class="spot-num-pill">84</span></td><td>She made me <span class="spot-table-wrong">to cry</span>.</td><td>She made me <span class="spot-table-correct">cry</span>.</td><td>Use <strong>bare infinitive (V1)</strong> after "make" in active voice.</td></tr>
+                            <tr><td><span class="spot-num-pill">85</span></td><td>Let him <span class="spot-table-wrong">to go</span>.</td><td>Let him <span class="spot-table-correct">go</span>.</td><td>Use <strong>bare infinitive (V1)</strong> after "let".</td></tr>
+                            <tr><td><span class="spot-num-pill">86</span></td><td>Although he was tired, <span class="spot-table-wrong">but he worked</span>.</td><td>Although he was tired, <span class="spot-table-correct">he worked</span>.</td><td>Do NOT use 'but' with <strong>although/though</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">87</span></td><td>Because he was ill, <span class="spot-table-wrong">so he stayed home</span>.</td><td>Because he was ill, <span class="spot-table-correct">he stayed home</span>.</td><td>Do NOT use 'so/therefore' with <strong>because</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">88</span></td><td>No sooner had he arrived <span class="spot-table-wrong">when it rained</span>.</td><td>No sooner had he arrived <span class="spot-table-correct">than it rained</span>.</td><td>Use pair <strong>No sooner ... THAN</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">89</span></td><td>Hardly had I reached <span class="spot-table-wrong">than the bell rang</span>.</td><td>Hardly had I reached <span class="spot-table-correct">when the bell rang</span>.</td><td>Use pair <strong>Hardly ... WHEN</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">90</span></td><td>Unless you <span class="spot-table-wrong">do not work hard</span>, you will fail.</td><td>Unless you <span class="spot-table-correct">work hard</span>, you will fail.</td><td>Do NOT use negative verb after <strong>unless</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">CONJ-01</span></td><td>Run fast <span class="spot-table-wrong">lest you will not miss the train</span>.</td><td>Run fast <span class="spot-table-correct">lest you should miss the train</span>.</td><td><strong>Lest</strong> means "for fear that", takes <strong>should</strong> and NEVER takes 'not'. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- PART 10: QUESTIONS 91 TO 100 (Voice, Narration & Verb Usage) -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="voice-narration" data-tags="questions 91 100 voice narration work completed was died in 2020 caught by police said me that he told that asked me that where ordered that i should leave will come next day explained me rule requested me help">
+                    <div class="rule-card-header">
+                        <h4>🗣️ Voice, Narration & Verbs — Questions 91 to 100</h4>
+                        <span class="rule-num-badge">Q91–Q100</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="voice narration questions 91 100 work completed was died in 2020 caught by police said me that he told that asked me that where ordered that i should leave will come next day explained me rule requested me help">
+                        <thead>
+                            <tr><th>NO.</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">91</span></td><td>The work <span class="spot-table-wrong">has completed</span>.</td><td>The work <span class="spot-table-correct">has been completed</span>.</td><td>Present perfect passive formula: <strong>has/have + been + V3</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">92</span></td><td>He <span class="spot-table-wrong">was died</span> in 2020.</td><td>He <span class="spot-table-correct">died</span> in 2020.</td><td><strong>Die</strong> is intransitive; has NO passive form. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">93</span></td><td>The thief was caught by <span class="spot-table-wrong">police</span>.</td><td>The thief was caught by <span class="spot-table-correct">the police</span>.</td><td>Use <strong>"the"</strong> before police.</td></tr>
+                            <tr><td><span class="spot-num-pill">94</span></td><td>He <span class="spot-table-wrong">said me that</span> he was busy.</td><td>He <span class="spot-table-correct">told me that</span> he was busy.</td><td>Use <strong>tell + object</strong>; 'say' takes 'to' before object.</td></tr>
+                            <tr><td><span class="spot-num-pill">95</span></td><td>He <span class="spot-table-wrong">told that</span> he was busy.</td><td>He <span class="spot-table-correct">said that</span> he was busy.</td><td><strong>Tell</strong> requires an object; 'said' does not.</td></tr>
+                            <tr><td><span class="spot-num-pill">96</span></td><td>She asked me <span class="spot-table-wrong">that where</span> I lived.</td><td>She asked me <span class="spot-table-correct">where</span> I lived.</td><td>Do NOT use 'that' before indirect wh-question word. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">97</span></td><td>The teacher ordered <span class="spot-table-wrong">that I should leave</span>.</td><td>The teacher ordered me <span class="spot-table-correct">to leave</span>.</td><td>Imperative reporting formula: <strong>order + object + to-infinitive</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">98</span></td><td>He said that he <span class="spot-table-wrong">will come next day</span>.</td><td>He said that he <span class="spot-table-correct">would come the next day</span>.</td><td>Backshift tense (will->would) and time (next day -> the next day).</td></tr>
+                            <tr><td><span class="spot-num-pill">99</span></td><td>The teacher explained <span class="spot-table-wrong">me the rule</span>.</td><td>The teacher explained the rule <span class="spot-table-correct">to me</span>.</td><td>Use formula <strong>explain something TO someone</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">100</span></td><td>He requested me <span class="spot-table-wrong">help him</span>.</td><td>He requested me <span class="spot-table-correct">to help him</span>.</td><td>Use <strong>request + object + to-infinitive</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">SYN-01</span></td><td><span class="spot-table-wrong">Walking in the park</span>, a snake bit him.</td><td><span class="spot-table-correct">While he was walking in the park</span>, a snake bit him.</td><td>Dangling Participle: A participle phrase must clearly modify the intended subject of the main clause. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">SYN-02</span></td><td>He came to <span class="spot-table-wrong">meeting me</span>.</td><td>He came to <span class="spot-table-correct">meet me</span>.</td><td>Standard infinitive formula: <strong>to + V1 base form</strong>.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ADVANCED EXPANSION: PARALLELISM -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="parallelism" data-tags="parallelism structure verb forms series coordinated joined and or but than">
+                    <div class="rule-card-header">
+                        <h4>⏸️ Parallelism Rules — Spot the Error Master DB</h4>
+                        <span class="rule-num-badge">PAR-DB</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="parallelism reading to swim cooking not only but also to write and speaking">
+                        <thead>
+                            <tr><th>CODE</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">PAR-01</span></td><td>She likes reading, <span class="spot-table-wrong">to swim</span> and cooking.</td><td>She likes reading, <span class="spot-table-correct">swimming</span> and cooking.</td><td>Items in a series must match grammatical form (all gerunds).</td></tr>
+                            <tr><td><span class="spot-num-pill">PAR-02</span></td><td>He is not only clever <span class="spot-table-wrong">but also works hard</span>.</td><td>He is not only clever <span class="spot-table-correct">but also hardworking</span>.</td><td>Paired conjunctions must connect parallel structures.</td></tr>
+                            <tr><td><span class="spot-num-pill">PAR-03</span></td><td>He taught us to write clearly and <span class="spot-table-wrong">speaking fluently</span>.</td><td>He taught us to write clearly and <span class="spot-table-correct">to speak fluently</span>.</td><td>Infinitive 'to write' requires parallel infinitive 'to speak'.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ADVANCED EXPANSION: CONDITIONALS & INVERSION -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="conditionals" data-tags="conditionals inversion if will had would have were inverted zero first second third mixed">
+                    <div class="rule-card-header">
+                        <h4>🔀 Conditionals & Inversion — Spot the Error Master DB</h4>
+                        <span class="rule-num-badge">COND-DB</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="conditionals if will comes if had money would buy if had worked would have passed had i known">
+                        <thead>
+                            <tr><th>CODE</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">COND-00</span></td><td>If you heat ice, it <span class="spot-table-wrong">will melt</span>.</td><td>If you heat ice, it <span class="spot-table-correct">melts</span>.</td><td>Zero Conditional (universal truths): <strong>If + Simple Present, Simple Present</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">COND-01</span></td><td>If he <span class="spot-table-wrong">will come</span>, I will help him.</td><td>If he <span class="spot-table-correct">comes</span>, I will help him.</td><td>In Type 1 conditional, conditional clause takes <strong>Present Simple</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">COND-02</span></td><td>If I had money, I <span class="spot-table-wrong">will buy</span> a car.</td><td>If I had money, I <span class="spot-table-correct">would buy</span> a car.</td><td>Type 2 conditional formula: <strong>If + V2, Would + V1</strong>.</td></tr>
+                            <tr><td><span class="spot-num-pill">COND-03</span></td><td>If he had worked hard, he <span class="spot-table-wrong">would pass</span>.</td><td>If he had worked hard, he <span class="spot-table-correct">would have passed</span>.</td><td>Type 3 conditional formula: <strong>If + Had + V3, Would HAVE + V3</strong>. <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">COND-04</span></td><td>Had I known his address, I <span class="spot-table-wrong">would visit</span> him.</td><td>Had I known his address, I <span class="spot-table-correct">would have visited</span> him.</td><td>Inverted Type 3: <strong>Had + S + V3 ... would have + V3</strong>.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- ADVANCED EXPANSION: REDUNDANCY & CONFUSING WORDS -->
+                <div class="rule-card spot-topic-card searchable-item" data-spot-cat="redundancy" data-tags="redundancy confusing words collocations return back repeat again discuss about revert back advice advise affect effect lie lay beside besides">
+                    <div class="rule-card-header">
+                        <h4>⚠️ Redundancy & Confusing Words — Spot the Error Master DB</h4>
+                        <span class="rule-num-badge">REDUND-DB</span>
+                    </div>
+                    <table class="db-table searchable-item" data-tags="redundancy return back repeat again discuss about revert back reason is because affect effect advice advise lie lay beside besides">
+                        <thead>
+                            <tr><th>CODE</th><th>WRONG SENTENCE ❌</th><th>CORRECT SENTENCE ✅</th><th>RULE / SHORTCUT 💡</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="spot-num-pill">REDUND-01</span></td><td>Please <span class="spot-table-wrong">return back</span> my book.</td><td>Please <span class="spot-table-correct">return</span> my book.</td><td>Return already means 'bring back'; 'back' is redundant.</td></tr>
+                            <tr><td><span class="spot-num-pill">REDUND-02</span></td><td>He <span class="spot-table-wrong">repeated the answer again</span>.</td><td>He <span class="spot-table-correct">repeated the answer</span>.</td><td>Repeat means 'say again'; 'again' is redundant.</td></tr>
+                            <tr><td><span class="spot-num-pill">REDUND-03</span></td><td>The reason is <span class="spot-table-wrong">because he was ill</span>.</td><td>The reason is <span class="spot-table-correct">that he was ill</span>.</td><td>Formula: <strong>The reason is THAT...</strong> (never 'because'). <span class="spot-tag-trap">🔥 SSC TRAP</span></td></tr>
+                            <tr><td><span class="spot-num-pill">COLL-01</span></td><td>The noise did not <span class="spot-table-wrong">effect</span> me.</td><td>The noise did not <span class="spot-table-correct">affect</span> me.</td><td><strong>Affect</strong> is the verb (influence); <strong>effect</strong> is the noun.</td></tr>
+                            <tr><td><span class="spot-num-pill">COLL-02</span></td><td>He gave me a good <span class="spot-table-wrong">advise</span>.</td><td>He gave me good <span class="spot-table-correct">advice</span> (or piece of advice).</td><td><strong>Advice</strong> is uncountable noun; <strong>advise</strong> is verb.</td></tr>
+                            <tr><td><span class="spot-num-pill">COLL-03</span></td><td>He was sitting <span class="spot-table-wrong">besides me</span>.</td><td>He was sitting <span class="spot-table-correct">beside me</span>.</td><td><strong>Beside</strong> = by the side of; <strong>besides</strong> = in addition to.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- INTERACTIVE MIXED PRACTICE -->
+                <div class="spot-topic-card searchable-item" data-spot-cat="mixed" data-tags="mixed practice test yourself pyq interactive questions error spotting quiz">
+                    <h3 class="sub-heading">✍️ Mixed Spot-the-Error Practice — Test Yourself</h3>
+                    <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.2rem;">Click the correct segment containing the grammatical error to verify your understanding!</p>
+
+                    <!-- PYQ 1 -->
+                    <div class="pyq-box">
+                        <div class="pyq-title">QUESTION 1 • SSC CGL TIER-1</div>
+                        <div class="pyq-question">Neither the teacher (A) / nor the students (B) / was present in the auditorium (C) / No Error (D)</div>
+                        <div class="pyq-options">
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Neither...nor agrees with the nearest subject. Nearest subject is plural (students), so verb must be PLURAL (were present).')">(A) Neither the teacher</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) nor the students</button>
+                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! Was present is WRONG. In Neither...nor constructions, the verb agrees with the NEAREST subject (students -> were present).')">(C) was present in the auditorium</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment C.')">(D) No Error</button>
+                        </div>
+                        <div class="pyq-expl hidden"></div>
+                    </div>
+
+                    <!-- PYQ 2 -->
+                    <div class="pyq-box">
+                        <div class="pyq-title">QUESTION 2 • SSC CHSL</div>
+                        <div class="pyq-question">I am looking forward (A) / to meet you (B) / at the upcoming seminar (C) / No Error (D)</div>
+                        <div class="pyq-options">
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment A is correct.')">(A) I am looking forward</button>
+                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'to meet you' is WRONG. In 'look forward to', 'to' is a preposition, so it MUST be followed by a gerund V-ing ('to meeting you').')">(B) to meet you</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment C is correct.')">(C) at the upcoming seminar</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment B.')">(D) No Error</button>
+                        </div>
+                        <div class="pyq-expl hidden"></div>
+                    </div>
+
+                    <!-- PYQ 3 -->
+                    <div class="pyq-box">
+                        <div class="pyq-title">QUESTION 3 • SSC CPO</div>
+                        <div class="pyq-question">No sooner had the thief (A) / entered the bank (B) / when the security alarm rang (C) / No Error (D)</div>
+                        <div class="pyq-options">
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment A is correct.')">(A) No sooner had the thief</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) entered the bank</button>
+                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'when' is WRONG. No sooner MUST be paired with THAN ('than the security alarm rang'). Hardly/Scarcely takes when.')">(C) when the security alarm rang</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment C.')">(D) No Error</button>
+                        </div>
+                        <div class="pyq-expl hidden"></div>
+                    </div>
+
+                    <!-- PYQ 4 -->
+                    <div class="pyq-box">
+                        <div class="pyq-title">QUESTION 4 • SSC CGL TIER-2</div>
+                        <div class="pyq-question">He is senior than (A) / all his colleagues (B) / in the government office (C) / No Error (D)</div>
+                        <div class="pyq-options">
+                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'senior than' is WRONG. Latin adjectives like senior, junior, superior, inferior take TO, not than ('senior to').')">(A) He is senior than</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) all his colleagues</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment C is correct.')">(C) in the government office</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment A.')">(D) No Error</button>
+                        </div>
+                        <div class="pyq-expl hidden"></div>
+                    </div>
+
+                    <!-- PYQ 5 -->
+                    <div class="pyq-box">
+                        <div class="pyq-title">QUESTION 5 • SSC CGL TIER-1</div>
+                        <div class="pyq-question">The cattle is grazing (A) / in the green fields (B) / near the village (C) / No Error (D)</div>
+                        <div class="pyq-options">
+                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'The cattle is grazing' is WRONG. 'Cattle' is a plural noun and takes a PLURAL verb ('The cattle are grazing').')">(A) The cattle is grazing</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) in the green fields</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment C is correct.')">(C) near the village</button>
+                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment A.')">(D) No Error</button>
+                        </div>
+                        <div class="pyq-expl hidden"></div>
+                    </div>
+                </div>
+
+            </section>
+
             <section id="sec-pos" class="view-section active-view">
                 <h2>Parts of Speech — Complete Identification System</h2>
 
@@ -2744,6 +3506,21 @@
 
 
 
+            window.filterSpotCategory = function(cat, btn) {
+                const filterBtns = document.querySelectorAll('.spot-filter-btn');
+                filterBtns.forEach(b => b.classList.remove('active-spot-filter'));
+                if (btn) btn.classList.add('active-spot-filter');
+                
+                const cards = document.querySelectorAll('.spot-topic-card');
+                cards.forEach(card => {
+                    if (cat === 'all' || card.getAttribute('data-spot-cat') === cat) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            };
+
             window.checkPyq = function(btn, isCorrect, explanationText) {
                 const pyqBox = btn.closest('.pyq-box');
                 const optBtns = pyqBox.querySelectorAll('.opt-btn');
@@ -2803,6 +3580,170 @@
                 }
             }
         });
+    
+        // Spot the Error Interactive Popup Quiz Engine
+        const spotQuizData = [
+            {
+                q: "Neither the teacher (A) / nor the students (B) / was present in the auditorium (C) / No Error (D)",
+                opts: ["(A) Neither the teacher", "(B) nor the students", "(C) was present in the auditorium", "(D) No Error"],
+                ans: 2,
+                expl: "In Neither...nor constructions, the verb agrees with the NEAREST subject ('students' -> 'were present')."
+            },
+            {
+                q: "I am looking forward (A) / to meet you (B) / at the upcoming seminar (C) / No Error (D)",
+                opts: ["(A) I am looking forward", "(B) to meet you", "(C) at the upcoming seminar", "(D) No Error"],
+                ans: 1,
+                expl: "In 'look forward to', 'to' is a preposition, so it MUST be followed by a gerund V-ing ('to meeting you')."
+            },
+            {
+                q: "No sooner had the thief (A) / entered the bank (B) / when the security alarm rang (C) / No Error (D)",
+                opts: ["(A) No sooner had the thief", "(B) entered the bank", "(C) when the security alarm rang", "(D) No Error"],
+                ans: 2,
+                expl: "'No sooner' MUST be paired with THAN ('than the security alarm rang')."
+            },
+            {
+                q: "He is senior than (A) / all his colleagues (B) / in the government office (C) / No Error (D)",
+                opts: ["(A) He is senior than", "(B) all his colleagues", "(C) in the government office", "(D) No Error"],
+                ans: 0,
+                expl: "Latin adjectives like senior, junior, superior take TO, not than ('senior to')."
+            },
+            {
+                q: "The cattle is grazing (A) / in the green fields (B) / near the village (C) / No Error (D)",
+                opts: ["(A) The cattle is grazing", "(B) in the green fields", "(C) near the village", "(D) No Error"],
+                ans: 0,
+                expl: "'Cattle' is a plural collective noun and takes a PLURAL verb ('The cattle are grazing')."
+            },
+            {
+                q: "We discussed about (A) / the new marketing plan (B) / in the meeting yesterday (C) / No Error (D)",
+                opts: ["(A) We discussed about", "(B) the new marketing plan", "(C) in the meeting yesterday", "(D) No Error"],
+                ans: 0,
+                expl: "'Discuss' is a transitive verb and takes NO preposition 'about' ('We discussed the plan')."
+            },
+            {
+                q: "He did not came (A) / to the office (B) / on time yesterday (C) / No Error (D)",
+                opts: ["(A) He did not came", "(B) to the office", "(C) on time yesterday", "(D) No Error"],
+                ans: 0,
+                expl: "After auxiliary verb 'did / did not', always use base form V1 ('did not come')."
+            },
+            {
+                q: "Although he worked hard, (A) / but he could not (B) / score top marks (C) / No Error (D)",
+                opts: ["(A) Although he worked hard", "(B) but he could not", "(C) score top marks", "(D) No Error"],
+                ans: 1,
+                expl: "Do NOT use 'but' with 'although/though' ('Although he worked hard, he could not...')."
+            },
+            {
+                q: "Avoid to make (A) / careless mistakes (B) / during the final exam (C) / No Error (D)",
+                opts: ["(A) Avoid to make", "(B) careless mistakes", "(C) during the final exam", "(D) No Error"],
+                ans: 0,
+                expl: "Verb 'avoid' is followed by a gerund V-ing ('Avoid making careless mistakes')."
+            },
+            {
+                q: "She is one of the players (A) / who plays (B) / exceptionally well in matches (C) / No Error (D)",
+                opts: ["(A) She is one of the players", "(B) who plays", "(C) exceptionally well in matches", "(D) No Error"],
+                ans: 1,
+                expl: "In 'one of + plural noun + relative pronoun', the relative pronoun refers to plural noun ('players' -> 'who play')."
+            }
+        ];
+
+        let spotCurrentIdx = 0;
+        let spotUserScore = 0;
+        let spotUserAnswers = {};
+
+        window.openSpotPracticeModal = function() {
+            const modal = document.getElementById('spotPracticeModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                renderSpotQuizQuestion(spotCurrentIdx);
+            }
+        };
+
+        window.closeSpotPracticeModal = function() {
+            const modal = document.getElementById('spotPracticeModal');
+            if (modal) modal.classList.add('hidden');
+        };
+
+        function renderSpotQuizQuestion(idx) {
+            const qData = spotQuizData[idx];
+            const badgeEl = document.getElementById('spotQuizProgressBadge');
+            if (badgeEl) badgeEl.innerText = `Question ${idx + 1} of ${spotQuizData.length}`;
+            
+            let optsHtml = qData.opts.map((opt, i) => {
+                let stateClass = '';
+                if (spotUserAnswers[idx] !== undefined) {
+                    if (i === qData.ans) stateClass = 'correct';
+                    else if (spotUserAnswers[idx] === i) stateClass = 'wrong';
+                }
+                const disabled = spotUserAnswers[idx] !== undefined ? 'disabled' : '';
+                return `<button class="opt-btn ${stateClass}" ${disabled} onclick="selectSpotQuizOpt(${idx}, ${i})">${opt}</button>`;
+            }).join('');
+
+            let explHtml = '';
+            if (spotUserAnswers[idx] !== undefined) {
+                explHtml = `<div class="pyq-expl" style="margin-top:1.2rem; background:rgba(15, 23, 42, 0.8); border:1px solid var(--border); padding:1rem; border-radius:8px; font-size:0.9rem; line-height:1.5;">💡 <strong>EXPLANATION:</strong> ${qData.expl}</div>`;
+            }
+
+            const bodyEl = document.getElementById('spotModalBody');
+            if (bodyEl) {
+                bodyEl.innerHTML = `
+                    <div class="pyq-title" style="color:var(--secondary-hover); font-weight:800; font-size:0.82rem; letter-spacing:0.5px;">EXAM PRACTICE • QUESTION ${idx + 1}</div>
+                    <div class="pyq-question" style="font-size:1.08rem; font-weight:700; margin:1rem 0 1.2rem 0; line-height:1.5; color:#ffffff;">${qData.q}</div>
+                    <div class="pyq-options" style="display:grid; grid-template-columns:1fr; gap:0.6rem;">${optsHtml}</div>
+                    ${explHtml}
+                `;
+            }
+
+            const prevBtn = document.getElementById('prevQuizBtn');
+            const nextBtn = document.getElementById('nextQuizBtn');
+            const scoreEl = document.getElementById('spotQuizScore');
+
+            if (prevBtn) prevBtn.disabled = idx === 0;
+            if (nextBtn) nextBtn.innerText = idx === spotQuizData.length - 1 ? 'Finish' : 'Next →';
+            if (scoreEl) scoreEl.innerText = `Score: ${spotUserScore} / ${Object.keys(spotUserAnswers).length}`;
+        }
+
+        window.selectSpotQuizOpt = function(qIdx, optIdx) {
+            if (spotUserAnswers[qIdx] !== undefined) return;
+            spotUserAnswers[qIdx] = optIdx;
+            if (optIdx === spotQuizData[qIdx].ans) {
+                spotUserScore++;
+            }
+            renderSpotQuizQuestion(qIdx);
+        };
+
+        window.navigateSpotQuiz = function(dir) {
+            if (dir === 1 && spotCurrentIdx === spotQuizData.length - 1) {
+                alert(`🎉 Practice Quiz Complete!\nYour Score: ${spotUserScore} out of ${spotQuizData.length}`);
+                closeSpotPracticeModal();
+                return;
+            }
+            spotCurrentIdx = Math.max(0, Math.min(spotQuizData.length - 1, spotCurrentIdx + dir));
+            renderSpotQuizQuestion(spotCurrentIdx);
+        };
+
     </script>
+
+    <!-- SPOT THE ERROR PRACTICE POPUP MODAL -->
+    <div id="spotPracticeModal" class="spot-modal-overlay hidden" onclick="if(event.target===this) closeSpotPracticeModal()">
+        <div class="spot-modal-content">
+            <div class="spot-modal-header">
+                <div class="spot-modal-title">
+                    <span>🎯 Spot the Error Practice Quiz</span>
+                    <span id="spotQuizProgressBadge" class="spot-quiz-badge">Question 1 of 10</span>
+                </div>
+                <button class="spot-modal-close" onclick="closeSpotPracticeModal()">&times;</button>
+            </div>
+
+            <div class="spot-modal-body" id="spotModalBody">
+                <!-- Question content dynamically rendered -->
+            </div>
+
+            <div class="spot-modal-footer">
+                <button class="spot-quiz-nav-btn" id="prevQuizBtn" onclick="navigateSpotQuiz(-1)" disabled>← Previous</button>
+                <div class="spot-quiz-score" id="spotQuizScore">Score: 0 / 0</div>
+                <button class="spot-quiz-nav-btn primary" id="nextQuizBtn" onclick="navigateSpotQuiz(1)">Next →</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

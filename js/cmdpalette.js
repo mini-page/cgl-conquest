@@ -162,15 +162,16 @@
             }
 
             const isActive = idx === selectedIdx;
-            const hintBadge = cmd.hint ? `<span class="cmd-hint">${cmd.hint}</span>` : '';
-            const sublabel  = cmd.sublabel ? `<span class="cmd-sublabel">${cmd.sublabel}</span>` : '';
+            const safeLabel = window.escapeHTML ? window.escapeHTML(cmd.label) : cmd.label;
+            const hintBadge = cmd.hint ? `<span class="cmd-hint">${window.escapeHTML ? window.escapeHTML(cmd.hint) : cmd.hint}</span>` : '';
+            const sublabel  = cmd.sublabel ? `<span class="cmd-sublabel">${window.escapeHTML ? window.escapeHTML(cmd.sublabel) : cmd.sublabel}</span>` : '';
             const catColor  = (CAT_META[cmd.cat] || {}).color || 'text-gray-400';
 
             html += `
             <button class="cmd-item ${isActive ? 'cmd-item-active' : ''}" data-idx="${idx}">
                 <span class="cmd-item-icon ${catColor}"><i class="fa-solid ${cmd.icon || 'fa-circle'}"></i></span>
                 <span class="cmd-item-body">
-                    <span class="cmd-item-label">${cmd.label}</span>
+                    <span class="cmd-item-label">${safeLabel}</span>
                     ${sublabel}
                 </span>
                 ${hintBadge}
@@ -253,8 +254,12 @@
             return;
         }
 
-        // Double-Shift detection
+        // Double-Shift detection (only when not typing in editable fields)
         if (e.key === 'Shift') {
+            const tag = document.activeElement ? document.activeElement.tagName : '';
+            if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (document.activeElement && document.activeElement.isContentEditable)) {
+                return;
+            }
             const now = Date.now();
             if (now - lastShiftTime < 350) {
                 e.preventDefault();

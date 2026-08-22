@@ -272,6 +272,8 @@
     </style>
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col transition-colors duration-300">
+    <!-- Screen Reader Live Region Announcer -->
+    <div id="sr-announcer" class="sr-only opacity-0 w-0 h-0 overflow-hidden" aria-live="polite" aria-atomic="true"></div>
 
     <!-- Sticky Pomodoro & Shared Island Capsule -->
     <div class="fixed top-4 right-4 sm:right-12 z-50 flex items-center bg-bgCard/90 backdrop-blur-md border border-white/10 hover:border-white/20 rounded-full p-1 shadow-2xl transition select-none">
@@ -1314,7 +1316,7 @@
 
 
     <!-- MODAL: ACTION CENTER (Double-Shift) -->
-    <div id="modal-shortcuts-help" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+    <div id="modal-shortcuts-help" role="dialog" aria-modal="true" aria-label="Action Center Shortcuts Modal" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
         <div class="bg-bgCard border border-white/10 w-full max-w-lg rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300">
 
             <!-- Row 1: Title + Close -->

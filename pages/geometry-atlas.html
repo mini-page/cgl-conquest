@@ -317,8 +317,137 @@ body{
   .app{grid-template-columns:1fr; grid-template-areas:"top""main"; grid-template-rows:auto 1fr;}
   .sidebar{display:none;}
   .main{padding:18px;}
-  .compare-grid{grid-template-columns:1fr;}
-  .quiz-options{grid-template-columns:1fr;}
+}
+
+/* SIDEBAR GROUP CONTAINERS (ROOT GLOBAL STYLES) */
+.side-group-box {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 8px 6px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.side-group-box .side-section-header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 6px 10px 8px 10px;
+  margin: 0 0 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* SECTION CONTAINER BOX FOR MAIN CARD SECTIONS */
+.section-group-box {
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 20px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* PROPS & SPECIAL ITEMS WITHOUT DUPLICATE CHECKMARK */
+.prop-item.special-item {
+  background: rgba(167, 139, 250, 0.06);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  color: var(--text);
+}
+.prop-item.special-item:before {
+  display: none !important;
+}
+.prop-item .star-icon {
+  color: var(--purple);
+  font-weight: 700;
+  margin-right: 6px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* STRUCTURED CARDS: PYQ, TRAP & NOTE */
+.card-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.pyq-badge {
+  background: rgba(34, 211, 238, 0.14);
+  color: var(--cyan);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+}
+
+.trap-badge {
+  background: rgba(240, 85, 77, 0.14);
+  color: var(--red);
+  border: 1px solid rgba(240, 85, 77, 0.35);
+}
+
+.note-badge {
+  background: rgba(240, 168, 57, 0.14);
+  color: var(--amber);
+  border: 1px solid rgba(240, 168, 57, 0.35);
+}
+
+.pyq-card {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.05), rgba(15, 23, 42, 0.7));
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-left: 4px solid var(--cyan);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.trap-card {
+  background: linear-gradient(135deg, rgba(240, 85, 77, 0.06), rgba(24, 12, 16, 0.7));
+  border: 1px solid rgba(240, 85, 77, 0.25);
+  border-left: 4px solid var(--red);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.note-card {
+  background: linear-gradient(135deg, rgba(240, 168, 57, 0.05), rgba(24, 18, 12, 0.7));
+  border: 1px solid rgba(240, 168, 57, 0.25);
+  border-left: 4px solid var(--amber);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  position: relative;
+}
+.note-card:before { display: none !important; }
+
+.card-body-text {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text);
 }
 </style>
 </head>
@@ -333,9 +462,7 @@ body{
       <button class="nav-tab active" data-tab="fundamentals"><i class="fa-solid fa-circle-dot"></i> Fundamentals</button>
       <button class="nav-tab" data-tab="2d"><i class="fa-solid fa-shapes"></i> 2D Shapes</button>
       <button class="nav-tab" data-tab="3d"><i class="fa-solid fa-cube"></i> 3D Solids</button>
-      <button class="nav-tab" data-tab="coordinate"><i class="fa-solid fa-chart-line"></i> Coordinate Geometry</button>
-      <button class="nav-tab" data-tab="trigonometry"><i class="fa-solid fa-calculator"></i> Trigonometry</button>
-      <button class="nav-tab" data-tab="theorems"><i class="fa-solid fa-graduation-cap"></i> Theorems Index</button>
+      <button id="drillBtn" class="topbar-btn" style="background:rgba(34,211,238,0.15); color:var(--cyan); border:1px solid rgba(34,211,238,0.3); font-size:12px; font-weight:700; padding:6px 14px; border-radius:7px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; margin-left:8px;"><i class="fa-solid fa-bolt"></i> Speed Drill</button>
     </nav>
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -352,7 +479,6 @@ body{
       <span class="side-count" id="sidebarCount">26 items</span>
     </div>
     <div class="shape-list" id="shapeList"></div>
-    <button class="reset-btn" id="resetBtn">↺ Reset View</button>
   </div>
   <div class="main" id="mainContent">
     <!-- Main content rendered dynamically -->
@@ -377,48 +503,67 @@ const FUNDAMENTALS = [
 ];
 
 const SHAPES_2D = [
-  {id:"circle", name:"Circle Basics", icon:"○", color:"#22d3ee", group:"2d", star:true},
-  {id:"equilateral-triangle", name:"Equilateral Triangle", icon:"△", color:"#f0a839", group:"2d", star:true},
-  {id:"right-triangle", name:"Right Triangle & Triples", icon:"△", color:"#f0a839", group:"2d", star:true},
-  {id:"rhombus", name:"Rhombus & Diagonals", icon:"◊", color:"#a78bfa", group:"2d", star:true},
-  {id:"trapezium", name:"Trapezium & Midline", icon:"⌕", color:"#a78bfa", group:"2d", star:true},
-  {id:"hexagon", name:"Regular Hexagon", icon:"⬡", color:"#19c37d", group:"2d", star:true},
-  {id:"cyclic-quadrilateral", name:"Cyclic Quadrilateral", icon:"⌫", color:"#a78bfa", group:"2d", star:true},
-  {id:"square", name:"Square & Diagonals", icon:"□", color:"#a78bfa", group:"2d", star:true},
-  {id:"rectangle", name:"Rectangle & Paths", icon:"▭", color:"#a78bfa", group:"2d", star:true},
-  {id:"sector", name:"Sector of Circle", icon:"⌒", color:"#fbbf24", group:"2d", star:true},
-  {id:"annulus", name:"Annulus (Circular Ring)", icon:"⭕", color:"#fbbf24", group:"2d", star:true},
-  {id:"regular-polygon", name:"Regular Polygon (n-gon)", icon:"⬡", color:"#19c37d", group:"2d", star:true},
-  {id:"triangle", name:"General Triangle", icon:"△", color:"#f0a839", group:"2d"},
-  {id:"isosceles-triangle", name:"Isosceles Triangle", icon:"△", color:"#f0a839", group:"2d"},
-  {id:"scalene-triangle", name:"Scalene Triangle", icon:"△", color:"#f0a839", group:"2d"},
-  {id:"parallelogram", name:"Parallelogram", icon:"▱", color:"#a78bfa", group:"2d"},
-  {id:"segment", name:"Segment of Circle", icon:"⌒", color:"#fbbf24", group:"2d"},
-  {id:"semicircle", name:"Semi-Circle", icon:"⋎", color:"#22d3ee", group:"2d"},
-  {id:"quarter-circle", name:"Quarter Circle", icon:"⊗", color:"#22d3ee", group:"2d"},
-  {id:"kite", name:"Kite", icon:"<>", color:"#a78bfa", group:"2d"},
-  {id:"pentagon", name:"Pentagon", icon:"⬟", color:"#19c37d", group:"2d"},
-  {id:"octagon", name:"Octagon", icon:"⬢", color:"#19c37d", group:"2d"},
-  {id:"ellipse", name:"Ellipse", icon:"⚬", color:"#fbbf24", group:"2d"},
-  {id:"composite-2d", name:"Composite Figures", icon:"≡", color:"#94a3b8", group:"2d"}
+  // --- TRIANGLES (3 SIDES) ---
+  {id:"triangle", name:"General Triangle", icon:"△", color:"#f0a839", group:"2d", category:"triangle", star:true},
+  {id:"equilateral-triangle", name:"Equilateral Triangle", icon:"△", color:"#f0a839", group:"2d", category:"triangle", star:true},
+  {id:"right-triangle", name:"Right Triangle & Triples", icon:"△", color:"#f0a839", group:"2d", category:"triangle", star:true},
+  {id:"isosceles-triangle", name:"Isosceles Triangle", icon:"△", color:"#f0a839", group:"2d", category:"triangle"},
+  {id:"scalene-triangle", name:"Scalene Triangle", icon:"△", color:"#f0a839", group:"2d", category:"triangle"},
+  {id:"herons-formula", name:"Heron's Formula", icon:"√", color:"#f0a839", group:"2d", category:"triangle", star:true},
+
+  // --- QUADRILATERALS (4 SIDES) ---
+  {id:"square", name:"Square & Diagonals", icon:"□", color:"#a78bfa", group:"2d", category:"quadrilateral", star:true},
+  {id:"rectangle", name:"Rectangle & Paths", icon:"▭", color:"#a78bfa", group:"2d", category:"quadrilateral", star:true},
+  {id:"parallelogram", name:"Parallelogram", icon:"▱", color:"#a78bfa", group:"2d", category:"quadrilateral"},
+  {id:"rhombus", name:"Rhombus & Diagonals", icon:"◊", color:"#a78bfa", group:"2d", category:"quadrilateral", star:true},
+  {id:"trapezium", name:"Trapezium & Midline", icon:"⌕", color:"#a78bfa", group:"2d", category:"quadrilateral", star:true},
+  {id:"cyclic-quadrilateral", name:"Cyclic Quadrilateral", icon:"⌫", color:"#a78bfa", group:"2d", category:"quadrilateral", star:true},
+  {id:"kite", name:"Kite", icon:"<>", color:"#a78bfa", group:"2d", category:"quadrilateral"},
+
+  // --- CIRCLES & CURVED SHAPES ---
+  {id:"circle", name:"Circle Basics", icon:"○", color:"#22d3ee", group:"2d", category:"circle", star:true},
+  {id:"semicircle", name:"Semi-Circle", icon:"⋎", color:"#22d3ee", group:"2d", category:"circle", star:true},
+  {id:"quarter-circle", name:"Quarter Circle (Quadrant)", icon:"⊗", color:"#22d3ee", group:"2d", category:"circle", star:true},
+  {id:"sector", name:"Sector of Circle", icon:"⌒", color:"#fbbf24", group:"2d", category:"circle", star:true},
+  {id:"segment", name:"Segment of Circle", icon:"⌒", color:"#fbbf24", group:"2d", category:"circle"},
+  {id:"annulus", name:"Annulus (Circular Ring)", icon:"⭕", color:"#fbbf24", group:"2d", category:"circle", star:true},
+  {id:"ellipse", name:"Ellipse", icon:"⚬", color:"#fbbf24", group:"2d", category:"circle"},
+
+  // --- POLYGONS (n SIDES) ---
+  {id:"regular-polygon", name:"Regular Polygon (n-gon)", icon:"⬡", color:"#19c37d", group:"2d", category:"polygon", star:true},
+  {id:"pentagon", name:"Pentagon", icon:"⬟", color:"#19c37d", group:"2d", category:"polygon"},
+  {id:"hexagon", name:"Regular Hexagon", icon:"⬡", color:"#19c37d", group:"2d", category:"polygon", star:true},
+  {id:"octagon", name:"Octagon", icon:"⬢", color:"#19c37d", group:"2d", category:"polygon"},
+
+  // --- COMPOSITE FIGURES ---
+  {id:"composite-2d", name:"Composite Figures & Paths", icon:"≡", color:"#94a3b8", group:"2d", category:"composite"}
 ];
 
 const SHAPES_3D = [
-  {id:"cube", name:"Cube", icon:"⬛", color:"#fbbf24", group:"3d", star:true},
-  {id:"cuboid", name:"Cuboid & Room Walls", icon:"📦", color:"#fbbf24", group:"3d", star:true},
-  {id:"sphere", name:"Sphere & Recasting", icon:"⚽", color:"#22d3ee", group:"3d", star:true},
-  {id:"hemisphere", name:"Hemisphere (CSA/TSA)", icon:"☽", color:"#22d3ee", group:"3d", star:true},
-  {id:"cylinder", name:"Cylinder & Pipe Flow", icon:"🛢", color:"#19c37d", group:"3d", star:true},
-  {id:"cone", name:"Cone & Canvas Tents", icon:"🔺", color:"#19c37d", group:"3d", star:true},
-  {id:"frustum", name:"Frustum of Cone (Bucket)", icon:"⌵", color:"#19c37d", group:"3d", star:true},
-  {id:"square-pyramid", name:"Square Pyramid", icon:"🔺", color:"#a78bfa", group:"3d", star:true},
-  {id:"tetrahedron", name:"Regular Tetrahedron", icon:"🔺", color:"#a78bfa", group:"3d", star:true},
-  {id:"triangular-prism", name:"Triangular Prism", icon:"◸", color:"#f0a839", group:"3d"},
-  {id:"hexagonal-prism", name:"Hexagonal Prism", icon:"◸", color:"#f0a839", group:"3d"},
-  {id:"octahedron", name:"Octahedron", icon:"🔷", color:"#a78bfa", group:"3d"},
-  {id:"torus", name:"Torus (Doughnut)", icon:"🍩", color:"#ea5757", group:"3d"},
-  {id:"capsule", name:"Capsule (Spherocylinder)", icon:"🛢", color:"#ea5757", group:"3d"},
-  {id:"polyhedra", name:"Polyhedra & Euler's Rule", icon:"◆", color:"#94a3b8", group:"3d"}
+  // --- CUBE & CUBOID SOLIDS ---
+  {id:"cube", name:"Cube", icon:"⬛", color:"#fbbf24", group:"3d", category:"box", star:true},
+  {id:"cuboid", name:"Cuboid & Room Walls", icon:"📦", color:"#fbbf24", group:"3d", category:"box", star:true},
+
+  // --- CYLINDERS & CONICAL SOLIDS ---
+  {id:"cylinder", name:"Cylinder & Pipe Flow", icon:"🛢", color:"#19c37d", group:"3d", category:"circular", star:true},
+  {id:"cone", name:"Cone & Canvas Tents", icon:"🔺", color:"#19c37d", group:"3d", category:"circular", star:true},
+  {id:"frustum", name:"Frustum of Cone (Bucket)", icon:"⌵", color:"#19c37d", group:"3d", category:"circular", star:true},
+
+  // --- SPHERICAL SOLIDS ---
+  {id:"sphere", name:"Sphere & Recasting", icon:"⚽", color:"#22d3ee", group:"3d", category:"spherical", star:true},
+  {id:"hemisphere", name:"Hemisphere (CSA/TSA)", icon:"☽", color:"#22d3ee", group:"3d", category:"spherical", star:true},
+
+  // --- PRISMS & PYRAMIDS ---
+  {id:"square-pyramid", name:"Square Pyramid", icon:"🔺", color:"#a78bfa", group:"3d", category:"pyramid_prism", star:true},
+  {id:"tetrahedron", name:"Regular Tetrahedron", icon:"🔺", color:"#a78bfa", group:"3d", category:"pyramid_prism", star:true},
+  {id:"triangular-prism", name:"Triangular Prism", icon:"◸", color:"#f0a839", group:"3d", category:"pyramid_prism"},
+  {id:"hexagonal-prism", name:"Hexagonal Prism", icon:"◸", color:"#f0a839", group:"3d", category:"pyramid_prism"},
+  {id:"octahedron", name:"Octahedron", icon:"🔷", color:"#a78bfa", group:"3d", category:"pyramid_prism"},
+
+  // --- SPECIAL & POLYHEDRAL SOLIDS ---
+  {id:"torus", name:"Torus (Doughnut)", icon:"🍩", color:"#ea5757", group:"3d", category:"special"},
+  {id:"capsule", name:"Capsule (Spherocylinder)", icon:"🛢", color:"#ea5757", group:"3d", category:"special"},
+  {id:"polyhedra", name:"Polyhedra & Euler's Rule", icon:"◆", color:"#94a3b8", group:"3d", category:"special"}
 ];
 
 const CIRCLE_TANGENTS = [
@@ -470,17 +615,478 @@ const TRIGONOMETRY_DATA = [
 const TABS = [
   {id:"fundamentals", name:"Fundamentals", data:FUNDAMENTALS, type:"shape"},
   {id:"2d", name:"2D Shapes", data:SHAPES_2D, type:"shape"},
-  {id:"3d", name:"3D Solids", data:SHAPES_3D, type:"shape"},
-  {id:"coordinate", name:"Coordinate Geometry", data:COORDINATE_DATA, type:"shape"},
-  {id:"trigonometry", name:"Trigonometry", data:TRIGONOMETRY_DATA, type:"shape"},
-  {id:"theorems", name:"Theorems Index", data:THEOREMS, type:"theorem"}
+  {id:"3d", name:"3D Solids", data:SHAPES_3D, type:"shape"}
 ];
 
-// ====================
-// COMPLETE SHAPE DETAILS FOR ALL SHAPES
-// ====================
-
 const SHAPE_DETAILS = {
+
+// ==========================================
+// CIRCLE THEOREMS & TANGENT CONCEPTS
+// ==========================================
+"tangent-properties": {
+  name: "Tangent & Radius Orthogonality (90°)",
+  subtitle: "A tangent to a circle is always perpendicular to the radius at the point of contact",
+  icon: "⟂", color: "#19c37d", difficulty: "easy",
+  overview: "A tangent line touches a circle at exactly ONE point (point of contact T). The radius drawn from center O to point T is ALWAYS perpendicular (90°) to the tangent line.",
+  properties: [
+    "OT ⊥ Tangent Line at Point of Contact T",
+    "Only ONE tangent can be drawn at any given point on the circle",
+    "Perpendicular from center to tangent gives the shortest distance d = r"
+  ],
+  variables: [{symbol:"r", name:"Radius OT"}, {symbol:"T", name:"Point of Contact"}],
+  formulas: [
+    {quantity:"Angle at Contact", formula:"∠OTL = 90°", example:"Radius meets tangent at right angle"}
+  ],
+  specialCases: [
+    "Pythagorean Relation: If point P is on tangent line at distance d from center O, then PT = √(d² − r²)"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: If distance from center O to external point P on tangent is 13 cm and radius is 5 cm, tangent length PT = √(13² − 5²) = 12 cm in 3 seconds!",
+    "Trap Warning: Radius MUST meet tangent at the exact point of contact T to form a 90° angle. A secant line cutting through two points does NOT form 90° with radius."
+  ],
+  calc: {r:{label:"Radius r",unit:"cm"},d:{label:"Distance OP (d)",unit:"cm"},pt:{formula:"Math.sqrt(d*d-r*r)",label:"Tangent PT"}}
+},
+
+"external-tangents": {
+  name: "Tangents from External Point",
+  subtitle: "Lengths of two tangents drawn from an external point P are equal (PA = PB)",
+  icon: "⋏", color: "#19c37d", difficulty: "medium",
+  overview: "From any point P outside a circle, exactly TWO tangents can be drawn (PA and PB). The two tangent segments are equal in length: PA = PB = √(OP² − r²).",
+  properties: [
+    "PA = PB (Lengths of tangents from external point P are equal)",
+    "Line OP bisects the angle between tangents: ∠APO = ∠BPO",
+    "Line OP bisects the central angle: ∠AOO = ∠BOP",
+    "Quadrilateral OAPB is a cyclic kite with right angles at A and B (∠OAP = ∠OBP = 90°)"
+  ],
+  variables: [{symbol:"PA, PB", name:"Tangent Lengths"}, {symbol:"d", name:"Distance OP"}, {symbol:"r", name:"Radius OA"}],
+  formulas: [
+    {quantity:"Tangent Length", formula:"PA = PB = √(d² − r²)", example:"d=10, r=6 → PA = 8 cm"},
+    {quantity:"Kite Area (OAPB)", formula:"Area = r × √(d² − r²)", example:"r=6, PA=8 → Area = 48 cm²"}
+  ],
+  derivedFormulas: [
+    {quantity:"Chord of Contact Length (AB)", formula:"AB = (2 × r × √(d² − r²)) / d", note:"Distance between the two contact points A and B"}
+  ],
+  specialCases: [
+    "∠APB + ∠AOB = 180° (Angle between tangents and central angle subtended by chord of contact are supplementary!)"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Angle between two tangents from external point P is 60°. Find central angle ∠AOB. Solution: ∠AOB = 180° − 60° = 120° in 2 seconds!",
+    "PYQ Pattern: If PA = 12 cm, then PB is automatically 12 cm. Quadrilateral OAPB area is simply r × PA."
+  ],
+  calc: {r:{label:"Radius r",unit:"cm"},d:{label:"Distance OP (d)",unit:"cm"},pa:{formula:"Math.sqrt(d*d-r*r)",label:"Tangent PA=PB"},chordAB:{formula:"(2*r*Math.sqrt(d*d-r*r))/d",label:"Chord of Contact AB"}}
+},
+
+"direct-common-tangents": {
+  name: "Direct Common Tangents (DCT)",
+  subtitle: "Tangents that touch two non-intersecting circles on the same side",
+  icon: "⇶", color: "#f0a839", difficulty: "hard",
+  overview:"A direct common tangent touches two circles without crossing the line segment joining their centers. Length of DCT = √(d² − (r₁ − r₂)²), where d is distance between centers.",
+  properties: [
+    "Touches both circles on the same side (does not cross center line)",
+    "Length of DCT = √(d² − (r₁ − r₂)²)",
+    "Number of DCTs = 2 (for non-intersecting or touching circles)"
+  ],
+  variables: [{symbol:"d", name:"Distance between Centers"}, {symbol:"r₁", name:"Radius of Circle 1"}, {symbol:"r₂", name:"Radius of Circle 2"}],
+  formulas: [
+    {quantity:"DCT Length", formula:"DCT = √(d² − (r₁ − r₂)²)", example:"d=13, r₁=8, r₂=3 → DCT = √(169 - 25) = 12 cm"}
+  ],
+  specialCases: [
+    "When circles touch externally (d = r₁ + r₂): DCT = √( (r₁+r₂)² − (r₁−r₂)² ) = 2√(r₁ r₂)",
+    "Length of DCT when 2 circles touch externally is ALWAYS 2√(r₁ r₂)!"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Two circles of radii 9 cm and 4 cm touch externally. Find length of direct common tangent. Solution: DCT = 2√(9 × 4) = 2 × 6 = 12 cm in 3 seconds!",
+    "Trap Warning: In DCT formula, subtract radii: (r₁ − r₂)^2. In TCT formula, add radii: (r₁ + r₂)^2!"
+  ],
+  calc: {d:{label:"Center distance (d)",unit:"cm"},r1:{label:"Radius r₁",unit:"cm"},r2:{label:"Radius r₂",unit:"cm"},dct:{formula:"Math.sqrt(d*d - (r1-r2)*(r1-r2))",label:"DCT Length"}}
+},
+
+"transverse-common-tangents": {
+  name: "Transverse Common Tangents (TCT)",
+  subtitle: "Tangents that cross between two non-intersecting circles",
+  icon: "⤲", color: "#f0a839", difficulty: "hard",
+  overview:"A transverse common tangent crosses the line joining the centers of two circles. Length of TCT = √(d² − (r₁ + r₂)²), where d is distance between centers.",
+  properties: [
+    "Crosses the center line joining centers O₁ and O₂",
+    "Length of TCT = √(d² − (r₁ + r₂)²)",
+    "TCT length is ALWAYS shorter than DCT length for the same two circles",
+    "TCT exists only when circles do not overlap (d > r₁ + r₂)"
+  ],
+  variables: [{symbol:"d", name:"Distance between Centers"}, {symbol:"r₁, r₂", name:"Radii of Circles"}],
+  formulas: [
+    {quantity:"TCT Length", formula:"TCT = √(d² − (r₁ + r₂)²)", example:"d=13, r₁=7, r₂=5 → TCT = √(169 - 144) = 5 cm"}
+  ],
+  specialCases: [
+    "Difference of Squares: DCT² − TCT² = 4 r₁ r₂",
+    "When circles touch externally (d = r₁ + r₂): TCT length = 0 (only 1 point of contact)"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Given DCT = 12 cm and TCT = 5 cm, find 4 r₁ r₂. Solution: DCT² − TCT² = 144 − 25 = 119!",
+    "Trap Warning: TCT requires circles to be separate (d > r₁ + r₂). If circles intersect or touch, TCT cannot be drawn."
+  ],
+  calc: {d:{label:"Center distance (d)",unit:"cm"},r1:{label:"Radius r₁",unit:"cm"},r2:{label:"Radius r₂",unit:"cm"},tct:{formula:"Math.sqrt(Math.max(d*d - (r1+r2)*(r1+r2), 0))",label:"TCT Length"}}
+},
+
+"secant-tangent": {
+  name: "Secant & Tangent Theorem (PT² = PA × PB)",
+  subtitle: "Power of a Point theorem relating tangent PT and secant P-A-B",
+  icon: "⟀", color: "#22d3ee", difficulty: "medium",
+  overview:"If a tangent PT and a secant line P-A-B are drawn to a circle from an external point P, then the square of the tangent length equals the product of the secant segments: PT² = PA × PB.",
+  properties: [
+    "PT² = PA × PB (Power of Point P)",
+    "PA is the outer secant segment, PB is the entire secant length from P to B",
+    "Works for any secant line P-C-D drawn from the same external point: PT² = PA × PB = PC × PD"
+  ],
+  variables: [{symbol:"PT", name:"Tangent Length"}, {symbol:"PA", name:"Outer Secant Segment"}, {symbol:"PB", name:"Total Secant Length"}],
+  formulas: [
+    {quantity:"Secant-Tangent Power", formula:"PT² = PA × PB", example:"PA=4, AB=5 → PB=9 → PT²=36 → PT=6 cm"},
+    {quantity:"Two Secants Relation", formula:"PA × PB = PC × PD", example:"Two secants P-A-B and P-C-D"}
+  ],
+  specialCases: [
+    "If secant passes through center O: PA = d − r, PB = d + r → PT² = (d−r)(d+r) = d² − r²"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Secant P-A-B has PA = 4 cm and AB = 12 cm (so total PB = 16 cm). Find tangent PT. Solution: PT = √(4 × 16) = √64 = 8 cm in 3 seconds!",
+    "Trap Warning: In PA × PB, PB is the TOTAL length from P to the far side B (PA + AB), NOT just segment AB!"
+  ],
+  calc: {pa:{label:"Outer Segment PA",unit:"cm"},ab:{label:"Inner Segment AB",unit:"cm"},pt:{formula:"Math.sqrt(pa*(pa+ab))",label:"Tangent PT"}}
+},
+
+"alternate-segment": {
+  name: "Alternate Segment Theorem",
+  subtitle: "Angle between a tangent and a chord equals the angle in the alternate segment",
+  icon: "⊿", color: "#a78bfa", difficulty: "medium",
+  overview:"The angle between a tangent line and a chord drawn through the point of contact equals the angle subtended by that chord in the opposite (alternate) segment of the circle.",
+  properties: [
+    "∠ (Tangent, Chord) = ∠ (Inscribed in Alternate Segment)",
+    "Extremely useful in circle triangle geometry to prove similar triangles",
+    "Applies to both acute and obtuse angles between tangent and chord"
+  ],
+  variables: [{symbol:"θ", name:"Angle between Tangent & Chord"}],
+  formulas: [
+    {quantity:"Alternate Segment Angle", formula:"∠BAT = ∠BCA", example:"If ∠BAT = 50°, then inscribed angle ∠BCA = 50°"}
+  ],
+  examInsights: [
+    "PYQ Pattern: Tangent AT touches circle at A. Chord AB makes ∠BAT = 65° with tangent. Find angle ∠ACB subtended on alternate arc. Solution: ∠ACB = 65° instantly!",
+    "CGL Speed Shortcut: Used extensively in CGL Tier-2 to prove △PAT ∼ △PTB when secant P-A-B and tangent PT are drawn."
+  ],
+  calc: {}
+},
+
+"intersecting-chords": {
+  name: "Intersecting Chords Theorem (PA × PB = PC × PD)",
+  subtitle: "Product of chord segments for intersecting chords inside or outside a circle",
+  icon: "✕", color: "#22d3ee", difficulty: "medium",
+  overview:"When two chords AB and CD intersect inside a circle at point P, the products of their segments are equal: PA × PB = PC × PD. △PAC is similar to △PDB.",
+  properties: [
+    "PA × PB = PC × PD (Internal intersection at P)",
+    "△PAC is similar to △PDB (AA similarity rule)",
+    "If chords intersect externally outside circle, the same product rule PA × PB = PC × PD holds!"
+  ],
+  variables: [{symbol:"PA, PB", name:"Segments of Chord 1"}, {symbol:"PC, PD", name:"Segments of Chord 2"}],
+  formulas: [
+    {quantity:"Intersecting Chords Product", formula:"PA × PB = PC × PD", example:"PA=3, PB=8, PC=4 → PD = (3×8)/4 = 6 cm"}
+  ],
+  derivedFormulas: [
+    {quantity:"Perpendicular Intersecting Chords Radius", formula:"r = ½ √(PA² + PB² + PC² + PD²)", note:"When two chords intersect at 90°"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Chords AB and CD intersect at P inside circle. PA = 4, PB = 6, PC = 3. Find PD. Solution: PD = (4 × 6) / 3 = 8 cm in 3 seconds!",
+    "PYQ Pattern (Perpendicular Chords): If two chords intersect at 90° with segments 2, 6, 3, 4, then radius r = ½√(4 + 36 + 9 + 16) = ½√65 cm!"
+  ],
+  calc: {pa:{label:"PA",unit:"cm"},pb:{label:"PB",unit:"cm"},pc:{label:"PC",unit:"cm"},pd:{formula:"(pa*pb)/pc",label:"PD"}}
+},
+
+"incircle-circumcircle": {
+  name: "Incircle & Circumcircle Properties",
+  subtitle: "Inradius (r), Circumradius (R), and Euler's Distance d² = R² − 2Rr",
+  icon: "⨀", color: "#fbbf24", difficulty: "hard",
+  overview:"The incircle is the largest circle inscribed inside a triangle (radius r = Area/s). The circumcircle is the circle passing through all 3 vertices (radius R = abc/4Area). Euler's theorem gives distance d between their centers.",
+  properties: [
+    "Inradius r = Area / s (for any triangle of area A and semi-perimeter s)",
+    "Circumradius R = (a × b × c) / (4 × Area)",
+    "Euler's Distance Formula: d² = R² − 2 R r (d = distance between Incenter and Circumcenter)",
+    "For Equilateral Triangle: r = a / (2√3), R = a / √3, R = 2r",
+    "For Right Triangle: r = (a + b − c) / 2, R = c / 2"
+  ],
+  variables: [{symbol:"r", name:"Inradius"}, {symbol:"R", name:"Circumradius"}, {symbol:"d", name:"Distance between centers"}],
+  formulas: [
+    {quantity:"Inradius (Any △)", formula:"r = Area / s", example:"A=84, s=21 → r = 4 cm"},
+    {quantity:"Circumradius (Any △)", formula:"R = (a b c) / (4 Area)", example:"13,14,15 → R = 65/8 = 8.125 cm"},
+    {quantity:"Euler's Distance", formula:"d² = R² − 2 R r", example:"R=8, r=3 → d = √(64 - 48) = 4 cm"}
+  ],
+  derivedFormulas: [
+    {quantity:"Equilateral r : R Ratio", formula:"r : R = 1 : 2", note:"Circumradius is double the inradius"},
+    {quantity:"Equilateral Incircle to Circumcircle Area Ratio", formula:"Area_in : Area_circum = 1 : 4", note:"Circumcircle area is 4 times incircle area"}
+  ],
+  specialCases: [
+    "Euler's Inequality: R ≥ 2r (Circumradius is always at least twice the inradius; equality holds only for equilateral triangles!)"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Find distance between incenter and circumcenter of a triangle with R = 9 cm and r = 4 cm. Solution: d = √(81 − 2×9×4) = √(81 − 72) = √9 = 3 cm in 5 seconds!",
+    "Trap Warning: Inradius is r = A/s (area over semi-perimeter). Circumradius is R = abc/(4A) (product of 3 sides over 4 times area)."
+  ],
+  calc: {R:{label:"Circumradius R",unit:"cm"},r:{label:"Inradius r",unit:"cm"},d:{formula:"Math.sqrt(Math.max(R*R - 2*R*r, 0))",label:"Euler Distance d"}}
+},
+
+// ==========================================
+// COORDINATE GEOMETRY FULL DETAILS
+// ==========================================
+"co-distance": {
+  name: "Distance Formula", subtitle:"Shortest straight-line distance between two points (x₁,y₁) and (x₂,y₂)",
+  icon: "↔", color: "#22d3ee", difficulty: "easy",
+  overview: "Calculates the exact Euclidean distance between two points A(x₁,y₁) and B(x₂,y₂) using the Pythagorean theorem.",
+  properties: [
+    "d = √[ (x₂ − x₁)² + (y₂ − y₁)² ]",
+    "Distance from Origin (0,0) to point (x,y) is d = √(x² + y²)",
+    "Distance is ALWAYS non-negative (d ≥ 0)"
+  ],
+  variables: [{symbol:"x₁,y₁", name:"Point A"}, {symbol:"x₂,y₂", name:"Point B"}],
+  formulas: [{quantity:"Distance Formula", formula:"d = √[ (x₂−x₁)² + (y₂−y₁)² ]", example:"(1,2) and (4,6) → d = √(9+16) = 5"}],
+  examInsights: ["PYQ Shortcut: Recognize Pythagorean triples in coordinate differences! (4−1=3, 6−2=4 → distance is 5)."],
+  calc: {x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},d:{formula:"Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1))",label:"Distance d"}}
+},
+
+"co-midpoint": {
+  name: "Midpoint Formula", subtitle:"Point exactly halfway between (x₁,y₁) and (x₂,y₂)",
+  icon: "◦", color: "#22d3ee", difficulty: "easy",
+  overview: "Finds the coordinates of midpoint M between points A(x₁,y₁) and B(x₂,y₂) by averaging their coordinates.",
+  properties: [
+    "M = ( (x₁ + x₂)/2, (y₁ + y₂)/2 )",
+    "Diagonals of a parallelogram bisect each other at the same midpoint M!"
+  ],
+  variables: [{symbol:"x₁,y₁", name:"Point A"}, {symbol:"x₂,y₂", name:"Point B"}],
+  formulas: [{quantity:"Midpoint Formula", formula:"M = ( (x₁+x₂)/2, (y₁+y₂)/2 )", example:"(2,4) and (6,10) → M = (4,7)"}],
+  examInsights: ["PYQ Shortcut: In parallelogram ABCD, A + C = B + D for both x and y coordinates! Saves 30 seconds in Tier-2."],
+  calc: {x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},mx:{formula:"(x1+x2)/2",label:"Midpoint X"},my:{formula:"(y1+y2)/2",label:"Midpoint Y"}}
+},
+
+"co-section": {
+  name: "Section Formula (Internal & External)", subtitle:"Point dividing line segment AB in ratio m : n",
+  icon: "÷", color: "#22d3ee", difficulty: "medium",
+  overview: "Finds the coordinates of point P dividing the line segment joining A(x₁,y₁) and B(x₂,y₂) in ratio m : n internally or externally.",
+  properties: [
+    "Internal Division P = ( (m x₂ + n x₁)/(m + n), (m y₂ + n y₁)/(m + n) )",
+    "External Division P = ( (m x₂ − n x₁)/(m − n), (m y₂ − n y₁)/(m − n) )",
+    "If point P is on Y-axis (x=0), ratio m:n = −x₁ : x₂",
+    "If point P is on X-axis (y=0), ratio m:n = −y₁ : y₂"
+  ],
+  variables: [{symbol:"m:n", name:"Division Ratio"}, {symbol:"x₁,y₁", name:"Point A"}, {symbol:"x₂,y₂", name:"Point B"}],
+  formulas: [
+    {quantity:"Internal Section Formula", formula:"P = ( (mx₂+nx₁)/(m+n), (my₂+ny₁)/(m+n) )", example:"m=2, n=1, (0,0) & (3,6) → (2,4)"},
+    {quantity:"External Section Formula", formula:"P = ( (mx₂−nx₁)/(m−n), (my₂−ny₁)/(m−n) )", example:""}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Ratio in which line segment joining (2,−3) and (5,6) is divided by X-axis is m:n = −y₁ : y₂ = −(−3) : 6 = 3:6 = 1:2 in 3 seconds!"
+  ],
+  calc: {}
+},
+
+"co-centroid": {
+  name: "Triangle Centroid & Center Coordinates", subtitle:"Centroid (G), Incenter (I), Circumcenter & Orthocenter coordinates",
+  icon: "△", color: "#f0a839", difficulty: "medium",
+  overview: "Computes the exact coordinates of key triangle centers given vertices A(x₁,y₁), B(x₂,y₂), C(x₃,y₃).",
+  properties: [
+    "Centroid G = ( (x₁ + x₂ + x₃)/3, (y₁ + y₂ + y₃)/3 )",
+    "Incenter I = ( (a x₁ + b x₂ + c x₃)/(a+b+c), (a y₁ + b y₂ + c y₃)/(a+b+c) )",
+    "Centroid G divides medians in ratio 2 : 1",
+    "Euler's Line: Orthocenter (H), Centroid (G), and Circumcenter (O) are collinear, with HG : GO = 2 : 1"
+  ],
+  variables: [{symbol:"xᵢ,yᵢ", name:"Vertices A, B, C"}, {symbol:"a,b,c", name:"Opposite Side Lengths"}],
+  formulas: [
+    {quantity:"Centroid G", formula:"G = ( (x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3 )", example:"(1,2), (3,4), (5,0) → G = (3,2)"},
+    {quantity:"Incenter I", formula:"I = ( (ax₁+bx₂+cx₃)/(a+b+c), (ay₁+by₂+cy₃)/(a+b+c) )", example:""}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Centroid G(x,y) is average of the 3 vertices. If G=(3,4) and two vertices are (1,2) and (4,5), third vertex is x₃ = 3(3)−1−4 = 4, y₃ = 3(4)−2−5 = 5 → (4,5) in 5 seconds!"
+  ],
+  calc: {x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},x3:{label:"x₃",unit:""},y3:{label:"y₃",unit:""},gx:{formula:"(x1+x2+x3)/3",label:"Centroid X"},gy:{formula:"(y1+y2+y3)/3",label:"Centroid Y"}}
+},
+
+"co-slope": {
+  name: "Slope of a Line (m)", subtitle:"Gradient m = tan θ = (y₂ − y₁)/(x₂ − x₁)",
+  icon: "╱", color: "#a78bfa", difficulty: "easy",
+  overview: "Slope m measures the steepness and direction of a straight line. m = tan θ, where θ is the angle made with the positive X-axis.",
+  properties: [
+    "Slope m = (y₂ − y₁)/(x₂ − x₁)",
+    "Slope of line Ax + By + C = 0 is m = −A / B",
+    "Parallel Lines have EQUAL slopes: m₁ = m₂",
+    "Perpendicular Lines have product of slopes = −1: m₁ × m₂ = −1",
+    "Horizontal line (parallel to X-axis) has m = 0; Vertical line (parallel to Y-axis) has m = ∞"
+  ],
+  variables: [{symbol:"m", name:"Slope / Gradient"}, {symbol:"θ", name:"Inclination Angle with X-axis"}],
+  formulas: [
+    {quantity:"Slope from 2 Points", formula:"m = (y₂ − y₁)/(x₂ − x₁)", example:"(1,2) and (3,6) → m = 4/2 = 2"},
+    {quantity:"Slope from Equation", formula:"m = −A / B", example:"3x + 4y − 5 = 0 → m = −3/4"}
+  ],
+  specialCases: [
+    "Perpendicular Line Slope: If line 1 has slope 2/3, perpendicular line 2 has slope −3/2!"
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Slope of line 3x − 4y + 7 = 0 is m₁ = 3/4. Slope of perpendicular line is m₂ = −4/3 instantly!"
+  ],
+  calc: {x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},m:{formula:"(y2-y1)/(x2-x1)",label:"Slope m"}}
+},
+
+"co-line-eq": {
+  name: "Equation of a Straight Line", subtitle:"Slope-Intercept (y=mx+c), Intercept (x/a+y/b=1), General (Ax+By+C=0)",
+  icon: "ℓ", color: "#a78bfa", difficulty: "medium",
+  overview: "A straight line in 2D coordinate space can be represented in multiple standard forms depending on given information.",
+  properties: [
+    "Slope-Intercept Form: y = m x + c (m = slope, c = y-intercept)",
+    "Point-Slope Form: y − y₁ = m(x − x₁)",
+    "Two-Point Form: y − y₁ = [ (y₂−y₁)/(x₂−x₁) ] (x − x₁)",
+    "Intercept Form: x/a + y/b = 1 (a = x-intercept, b = y-intercept)",
+    "General Form: Ax + By + C = 0"
+  ],
+  variables: [{symbol:"m", name:"Slope"}, {symbol:"c", name:"Y-intercept"}, {symbol:"a,b", name:"X & Y Intercepts"}],
+  formulas: [
+    {quantity:"Slope-Intercept", formula:"y = m x + c", example:"m=2, c=3 → y = 2x + 3"},
+    {quantity:"Intercept Form", formula:"x/a + y/b = 1", example:"a=3, b=4 → 4x + 3y = 12"},
+    {quantity:"Area of Triangle formed by line with axes", formula:"Area = ½ |a × b| = C² / (2 |A B|)", example:"3x + 4y = 12 → Area = 12²/(2×12) = 6"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Area of triangle formed by line 3x + 4y = 12 with coordinate axes is Area = ½ × 4 × 3 = 6 sq units in 3 seconds!"
+  ],
+  calc: {}
+},
+
+"co-circle-eq": {
+  name: "Equation of a Circle", subtitle:"Standard (x−h)² + (y−k)² = r² and General x² + y² + 2gx + 2fy + c = 0",
+  icon: "○", color: "#19c37d", difficulty: "medium",
+  overview: "A circle with center (h,k) and radius r is defined by (x−h)² + (y−k)² = r². In general form x² + y² + 2gx + 2fy + c = 0, Center = (−g, −f) and Radius r = √(g² + f² − c).",
+  properties: [
+    "Standard Form: (x − h)² + (y − k)² = r² (Center = (h,k), Radius = r)",
+    "General Form: x² + y² + 2gx + 2fy + c = 0 (Center = (−g, −f), Radius r = √(g² + f² − c))",
+    "Circle with diameter endpoints (x₁,y₁) and (x₂,y₂): (x−x₁)(x−x₂) + (y−y₁)(y−y₂) = 0"
+  ],
+  variables: [{symbol:"h,k", name:"Center Coordinates"}, {symbol:"r", name:"Radius"}],
+  formulas: [
+    {quantity:"Standard Form", formula:"(x − h)² + (y − k)² = r²", example:"Center (2,3), r=5 → (x-2)²+(y-3)²=25"},
+    {quantity:"General Radius", formula:"r = √(g² + f² − c)", example:"x²+y²−4x−6y−12=0 → Center(2,3), r=√(4+9+12)=5"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: For circle x² + y² − 6x + 8y = 0, Center is (−g,−f) = (3, −4) and radius r = √(3² + (−4)² − 0) = 5 cm!"
+  ],
+  calc: {}
+},
+
+// ==========================================
+// TRIGONOMETRY FULL DETAILS
+// ==========================================
+"trig-ratios": {
+  name: "Trigonometric Ratios (SOH-CAH-TOA)", subtitle:"sin, cos, tan, csc, sec, cot and Quadrant Signs (ASTC Rule)",
+  icon: "∠", color: "#f0a839", difficulty: "easy",
+  overview: "Trigonometric ratios relate the angles of a right triangle to the ratios of its side lengths (Perpendicular p, Base b, Hypotenuse h).",
+  properties: [
+    "sin θ = Perpendicular / Hypotenuse (p/h)",
+    "cos θ = Base / Hypotenuse (b/h)",
+    "tan θ = Perpendicular / Base (p/b) = sin θ / cos θ",
+    "Reciprocals: csc θ = 1/sin θ = h/p, sec θ = 1/cos θ = h/b, cot θ = 1/tan θ = b/p",
+    "ASTC Rule (All-Sugar-Tea-Cups): Q1 (All +ve), Q2 (sin/csc +ve), Q3 (tan/cot +ve), Q4 (cos/sec +ve)"
+  ],
+  variables: [{symbol:"p", name:"Perpendicular"}, {symbol:"b", name:"Base"}, {symbol:"h", name:"Hypotenuse"}],
+  formulas: [
+    {quantity:"sin θ", formula:"p / h", example:"p=3, h=5 → sin θ = 3/5"},
+    {quantity:"cos θ", formula:"b / h", example:"b=4, h=5 → cos θ = 4/5"},
+    {quantity:"tan θ", formula:"p / b", example:"p=3, b=4 → tan θ = 3/4"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: If sin θ = 3/5, then right triangle triple is 3-4-5 ⟹ cos θ = 4/5, tan θ = 3/4 instantly without drawing!"
+  ],
+  calc: {}
+},
+
+"trig-identities": {
+  name: "Fundamental Trigonometric Identities", subtitle:"Pythagorean identities, Double Angle & Complementary shortcuts",
+  icon: "≡", color: "#22d3ee", difficulty: "medium",
+  overview: "Fundamental identities hold true for any angle θ. Master these to simplify complex expressions in CGL Tier-1 and Tier-2.",
+  properties: [
+    "sin² θ + cos² θ = 1  ⟹  sin² θ = 1 − cos² θ,  cos² θ = 1 − sin² θ",
+    "1 + tan² θ = sec² θ  ⟹  sec² θ − tan² θ = 1  ⟹  (sec θ − tan θ) = 1 / (sec θ + tan θ)",
+    "1 + cot² θ = csc² θ  ⟹  csc² θ − cot² θ = 1  ⟹  (csc θ − cot θ) = 1 / (csc θ + cot θ)",
+    "Complementary: sin(90°−θ) = cos θ, tan(90°−θ) = cot θ, sec(90°−θ) = csc θ",
+    "Double Angle: sin 2θ = 2 sin θ cos θ, cos 2θ = cos² θ − sin² θ = 2cos² θ − 1 = 1 − 2sin² θ"
+  ],
+  variables: [{symbol:"θ", name:"Angle in degrees or radians"}],
+  formulas: [
+    {quantity:"Pythagorean 1", formula:"sin² θ + cos² θ = 1", example:""},
+    {quantity:"Pythagorean 2", formula:"sec² θ − tan² θ = 1", example:"If sec θ + tan θ = 5, then sec θ − tan θ = 1/5 = 0.2"},
+    {quantity:"Pythagorean 3", formula:"csc² θ − cot² θ = 1", example:""}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: If sec θ + tan θ = P, then sec θ = (P² + 1)/(2P) and tan θ = (P² − 1)/(2P) and sin θ = (P² − 1)/(P² + 1)! Classic 5-second CGL problem.",
+    "PYQ Pattern: If A + B = 90°, then tan A × tan B = 1, sin² A + sin² B = 1, and cos² A + cos² B = 1!"
+  ],
+  calc: {}
+},
+
+"trig-values": {
+  name: "Standard Angle Values Table", subtitle:"Exact values for 0°, 30°, 45°, 60°, 90°, 15°, 75°",
+  icon: "▦", color: "#a78bfa", difficulty: "easy",
+  overview:"Memorizing exact trigonometric values for standard angles is mandatory for solving speed questions in SSC CGL.",
+  properties: [
+    "sin values: 0° → 0, 30° → ½, 45° → 1/√2, 60° → √3/2, 90° → 1",
+    "cos values: 0° → 1, 60° → √3/2, 45° → 1/√2, 30° → ½, 90° → 0 (Reverse of sin!)",
+    "tan values: 0° → 0, 30° → 1/√3, 45° → 1, 60° → √3, 90° → ∞",
+    "Special 15° & 75°: sin 15° = (√6 − √2)/4, cos 15° = (√6 + √2)/4, tan 15° = 2 − √3, tan 75° = 2 + √3"
+  ],
+  variables: [{symbol:"θ", name:"Standard Angle"}],
+  formulas: [
+    {quantity:"tan 15°", formula:"2 − √3 ≈ 0.268", example:"Used in advanced height problems"},
+    {quantity:"tan 75°", formula:"2 + √3 ≈ 3.732", example:"Used in advanced height problems"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Memory trick for sin θ: √(0)/2, √(1)/2, √(2)/2, √(3)/2, √(4)/2 for 0°, 30°, 45°, 60°, 90°!"
+  ],
+  calc: {}
+},
+
+"trig-heights": {
+  name: "Heights & Distances Speed Hacks", subtitle:"Angle of elevation/depression, h = √ab complementary shortcut & ladder sliding",
+  icon: "⛰", color: "#19c37d", difficulty: "medium",
+  overview:"Solves real-world tower height, shadow length, and balloon distance problems using right triangles and 30°-60°-90° ratios.",
+  properties: [
+    "Angle of Elevation: Looking UP from observer to object",
+    "Angle of Depression: Looking DOWN from observer to object (equals Angle of Elevation by alternate interior angles!)",
+    "Complementary Heights Shortcut: If angles of elevation from distances a and b are complementary (θ and 90°−θ), Tower Height h = √(a × b)",
+    "30°-60°-90° Triangle Ratio: Opposite to 30° is 1, Opposite to 60° is √3, Hypotenuse is 2",
+    "45°-45°-90° Triangle Ratio: Opposite to 45° is 1, Hypotenuse is √2"
+  ],
+  variables: [{symbol:"h", name:"Height of Tower"}, {symbol:"a,b", name:"Distances from base"}],
+  formulas: [
+    {quantity:"Complementary Angle Height", formula:"h = √(a × b)", example:"a=9 m, b=16 m → h = √(9×16) = 12 m"},
+    {quantity:"Tower Shadow Change", formula:"h = d / (cot θ₁ − cot θ₂)", example:"Distance d moved between two observations"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: Angles of elevation of top of tower from two points on ground at distances 4 m and 9 m are complementary. Height of tower h = √(4 × 9) = 6 m in 2 seconds!",
+    "PYQ Pattern (30° to 60°): When angle of elevation changes from 30° to 60° as observer walks distance d towards tower, Tower Height h = (d × √3) / 2."
+  ],
+  calc: {a:{label:"Distance a",unit:"m"},b:{label:"Distance b",unit:"m"},h:{formula:"Math.sqrt(a*b)",label:"Height h = √(a*b)"}}
+},
+
+"trig-sine-cosine-rule": {
+  name: "Sine & Cosine Rules for Any Triangle", subtitle:"Sine Rule (a/sin A = 2R), Cosine Rule (cos A = (b²+c²−a²)/2bc), Projection Rule",
+  icon: "△", color: "#f0a839", difficulty: "hard",
+  overview:"Extends trigonometry beyond right triangles to compute side lengths and angles of ANY non-right triangle.",
+  properties: [
+    "Sine Rule: a / sin A = b / sin B = c / sin C = 2 R (where R is Circumradius!)",
+    "Cosine Rule: cos A = (b² + c² − a²) / (2 b c)",
+    "Cosine Rule: cos B = (a² + c² − b²) / (2 a c)",
+    "Cosine Rule: cos C = (a² + b² − c²) / (2 a b)",
+    "Projection Rule: a = b cos C + c cos B"
+  ],
+  variables: [{symbol:"A,B,C", name:"Angles"}, {symbol:"a,b,c", name:"Opposite Sides"}, {symbol:"R", name:"Circumradius"}],
+  formulas: [
+    {quantity:"Sine Rule", formula:"a / sin A = b / sin B = c / sin C = 2R", example:"a=6, A=30° → 2R = 6/(1/2) = 12 → R = 6 cm"},
+    {quantity:"Cosine Rule", formula:"cos A = (b² + c² − a²) / (2 b c)", example:"b=5, c=7, a=8 → cos A = (25+49-64)/70 = 10/70 = 1/7"}
+  ],
+  examInsights: [
+    "PYQ Speed Shortcut: In △ABC, side a = 10 cm and opposite angle A = 30°. Find circumradius R. Solution: 2R = a / sin A = 10 / (1/2) = 20  ⟹  R = 10 cm in 3 seconds!",
+    "Trap Warning: In Cosine Rule cos A, the side OPPOSITE to angle A (which is a) is SUBTRACTED: (b² + c² − a²)."
+  ],
+  calc: {}
+},
 
 "point": {
   name:"Point (Dot)", subtitle:"The most basic building block of geometry — an exact location with no size",
@@ -581,249 +1187,1029 @@ const SHAPE_DETAILS = {
   calc:{}
 },
 
-circle: {
-  name:"Circle", subtitle:"Set of all points in a plane equidistant from a fixed center",
-  icon:"○", color:"#22d3ee", difficulty:"easy",
-  overview:"A circle is a 2D curve bounded by points equidistant from center O. Crucial concepts include radius, diameter, circumference, chord, sector, segment, and tangent lines.",
-  properties:["All radii equal in length","Diameter = 2 × radius","Total angle subtended at center = 360°","Tangent line is perpendicular to radius at point of contact","Perpendicular from center to chord bisects the chord"],
-  variables:[{symbol:"r",name:"Radius",desc:"Distance from center to edge"},{symbol:"d",name:"Diameter",desc:"d = 2r"},{symbol:"C",name:"Circumference",desc:"C = 2πr"},{symbol:"A",name:"Area",desc:"A = πr²"}],
-  formulas:[{quantity:"Circumference",formula:"C = 2πr = πd",example:"r=7cm → C = 44cm"},{quantity:"Area",formula:"A = πr²",example:"r=7cm → A = 154cm²"}],
-  calc:{r:{label:"Radius (r)",unit:"cm"},circum:{formula:"2*Math.PI*r",label:"Circumference"},area:{formula:"Math.PI*r*r",label:"Area"}},
-  relatedIds:["tangent-properties","external-tangents","direct-common-tangents","transverse-common-tangents","secant-tangent","alternate-segment","intersecting-chords","incircle-circumcircle"]
-},
-"secant-tangent": {
-  name:"Secant-Tangent Theorem", subtitle:"Power of a Point — relates a tangent's length to a secant's two intersection distances",
-  icon:"⟀", color:"#22d3ee", difficulty:"hard",
-  overview:"From an external point P, draw a tangent PT touching the circle at T, and a secant that cuts the circle at two points A (nearer) and B (farther). Then PT² = PA × PB. This is a special case of the more general 'Power of a Point' rule.",
+"square": {
+  name:"Square & Diagonals",
+  subtitle:"Regular 4-sided polygon with equal sides, 90° angles, and perpendicular bisecting diagonals",
+  icon:"□", color:"#a78bfa", difficulty:"easy",
+  overview:"A square (वर्ग) is a regular quadrilateral with four equal sides and four right angles. Its diagonals are equal in length, bisect each other at right angles (90°), and divide the square into four congruent isosceles right triangles.",
   properties:[
-    "PT² = PA × PB (tangent-squared equals product of the whole secant and its external part)",
-    "If two different secants are drawn from the same external point P, then PA × PB = PC × PD",
-    "This is called the 'Power of the Point' with respect to the circle",
-    "Works only when P is OUTSIDE the circle"
+    "All 4 sides are equal: AB = BC = CD = DA = a",
+    "All 4 interior angles are right angles: ∠A = ∠B = ∠C = ∠D = 90°",
+    "Opposite sides are parallel: AB ∥ CD and AD ∥ BC",
+    "Diagonals are equal in length: d₁ = d₂ = d = a√2",
+    "Diagonals bisect each other at right angles (90°)",
+    "Diagonals bisect vertex angles (each divided into 45° and 45°)",
+    "Four lines of symmetry (2 diagonals + 2 mid-segment bisectors)"
   ],
-  variables:[{symbol:"PT",name:"Tangent length",desc:"From P to point of contact T"},{symbol:"PA",name:"Near intersection",desc:"P to nearer point A"},{symbol:"PB",name:"Far intersection",desc:"P to farther point B"}],
-  formulas:[{quantity:"Secant-Tangent",formula:"PT² = PA × PB",example:"PA=4, PB=9 → PT=6"}],
-  calc:{pa:{label:"PA (near)",unit:"cm"},pb:{label:"PB (far)",unit:"cm"},pt:{formula:"Math.sqrt(pa*pb)",label:"Tangent PT"}}
-},
-"alternate-segment": {
-  name:"Alternate Segment Theorem", subtitle:"The angle between a tangent and a chord equals the inscribed angle on the other side",
-  icon:"⊿", color:"#a78bfa", difficulty:"hard",
-  overview:"When a tangent and a chord meet at the point of contact, the angle they form equals the angle subtended by that same chord in the alternate (opposite) segment of the circle. This lets you find unknown angles without ever measuring anything.",
-  properties:[
-    "∠ between tangent and chord = ∠ in the alternate segment",
-    "Applies at the exact point where the tangent touches the circle",
-    "Extremely common in 'find the angle' SSC questions combined with triangle angle sum"
+  variables:[
+    {symbol:"a", name:"Side length", desc:"Length of each equal side"},
+    {symbol:"d", name:"Diagonal", desc:"d = a√2 (distance between opposite vertices)"},
+    {symbol:"P", name:"Perimeter", desc:"P = 4a (total length of boundary)"},
+    {symbol:"A", name:"Area", desc:"A = a² or d²/2 (surface area enclosed)"}
   ],
-  variables:[], 
-  formulas:[{quantity:"Alternate Segment",formula:"∠(tangent, chord) = ∠(inscribed, alternate segment)",example:"If tangent-chord angle = 50°, the inscribed angle on the far side is also 50°"}],
-  calc:{}
-},
-"intersecting-chords": {
-  name:"Intersecting Chords Theorem", subtitle:"When two chords cross inside a circle, the products of their segments are equal",
-  icon:"✕", color:"#22d3ee", difficulty:"medium",
-  overview:"If two chords AB and CD intersect inside a circle at a point P, then the products of the two segments of each chord are equal: PA × PB = PC × PD. If the chords (as secants) meet OUTSIDE the circle instead, the same product relationship still holds.",
-  properties:[
-    "PA × PB = PC × PD when chords intersect INSIDE the circle",
-    "Also called the 'Intersecting Secants' theorem when extended outside the circle",
-    "A special case of the general Power of a Point rule"
-  ],
-  variables:[{symbol:"PA, PB",name:"Segments of chord AB"},{symbol:"PC, PD",name:"Segments of chord CD"}],
-  formulas:[{quantity:"Intersecting Chords",formula:"PA × PB = PC × PD",example:"PA=3, PB=8, PC=4 → PD=6"}],
-  calc:{pa:{label:"PA",unit:"cm"},pb:{label:"PB",unit:"cm"},pc:{label:"PC",unit:"cm"},pd:{formula:"(pa*pb)/pc",label:"PD"}}
-},
-"incircle-circumcircle": {
-  name:"Incircle & Circumcircle", subtitle:"The circle inside a triangle vs. the circle around it",
-  icon:"⨀", color:"#fbbf24", difficulty:"hard",
-  overview:"The Incircle touches all three sides of a triangle from inside; its center (the incenter) is where the three angle bisectors meet. The Circumcircle passes through all three vertices; its center (the circumcenter) is where the three perpendicular bisectors of the sides meet.",
-  properties:[
-    "Incenter = intersection of the three angle bisectors",
-    "Circumcenter = intersection of the three perpendicular bisectors of the sides",
-    "Inradius r = Area / s, where s is the semi-perimeter",
-    "Circumradius R = (a × b × c) / (4 × Area)",
-    "For a right triangle, the circumcenter is the MIDPOINT of the hypotenuse, and R = hypotenuse / 2",
-    "For an equilateral triangle of side a: r = a/(2√3) and R = a/√3 (so R = 2r)"
-  ],
-  variables:[{symbol:"r",name:"Inradius"},{symbol:"R",name:"Circumradius"},{symbol:"s",name:"Semi-perimeter",desc:"s=(a+b+c)/2"}],
   formulas:[
-    {quantity:"Inradius",formula:"r = Area / s",example:"Area=24, s=12 → r=2"},
-    {quantity:"Circumradius",formula:"R = (a·b·c) / (4·Area)",example:"a=3,b=4,c=5,Area=6 → R=2.5"},
-    {quantity:"Right triangle circumradius",formula:"R = hypotenuse / 2",example:"3-4-5 triangle → R = 2.5"}
+    {quantity:"Perimeter", formula:"P = 4a", example:"a = 5cm → P = 20cm"},
+    {quantity:"Area (using Side)", formula:"A = a²", example:"a = 5cm → A = 25cm²"},
+    {quantity:"Diagonal", formula:"d = a√2", example:"a = 5cm → d = 5√2 ≈ 7.07cm"}
   ],
-  calc:{a:{label:"Side a",unit:"cm"},b:{label:"Side b",unit:"cm"},c:{label:"Side c",unit:"cm"},area:{label:"Area",unit:"cm²"},r:{formula:"area/((a+b+c)/2)",label:"Inradius r"},R:{formula:"(a*b*c)/(4*area)",label:"Circumradius R"}}
+  derivedFormulas:[
+    {quantity:"Area (using Diagonal)", formula:"A = d² / 2", note:"Useful when diagonal d is given directly without side a"},
+    {quantity:"Side (from Diagonal)", formula:"a = d / √2", note:"Derived from d = a√2"},
+    {quantity:"Perimeter (from Diagonal)", formula:"P = 2√2 d", note:"Direct shortcut for perimeter from diagonal"},
+    {quantity:"Inradius (r)", formula:"r = a / 2", note:"Radius of circle inscribed inside square"},
+    {quantity:"Circumradius (R)", formula:"R = d / 2 = a / √2", note:"Radius of circle passing through square vertices"}
+  ],
+  specialCases:[
+    "A Square is a special Rhombus with equal diagonals (d₁ = d₂).",
+    "A Square is a special Rectangle with all 4 sides equal (l = b).",
+    "Cutting a square along one diagonal creates 2 congruent 45°-45°-90° right triangles.",
+    "Cutting a square along both diagonals creates 4 congruent isosceles right triangles."
+  ],
+  examInsights:[
+    "★ <b>Area via Diagonal Shortcut:</b> If diagonal d = 10 cm, Area = d²/2 = 100/2 = 50 cm² (no need to compute side a!).",
+    "★ <b>Incircle vs Circumcircle Ratio:</b> Inradius r = a/2, Circumradius R = a/√2. Ratio r : R = 1 : √2. Ratio of Areas = 1 : 2.",
+    "★ <b>Percentage Change Trick:</b> If side increases by x%, area increases by (2x + x²/100)%."
+  ],
+  calc:{
+    a:{label:"Side (a)", unit:"cm"},
+    diag:{formula:"a*Math.sqrt(2)", label:"Diagonal d"},
+    area:{formula:"a*a", label:"Area A"},
+    perimeter:{formula:"4*a", label:"Perimeter P"}
+  },
+  relatedIds:["rectangle","rhombus","equilateral-triangle"]
 },
 
-"co-distance": {
-  name:"Distance Formula", subtitle:"The straight-line distance between two points on a coordinate plane",
-  icon:"↔", color:"#22d3ee", difficulty:"easy",
-  overview:"The distance formula finds the straight-line length between two points (x₁,y₁) and (x₂,y₂) using the Pythagorean theorem — the horizontal and vertical gaps form the two legs of a right triangle.",
-  properties:["Derived directly from the Pythagorean theorem","Distance is always non-negative","Distance from a point to itself is 0"],
-  variables:[{symbol:"(x₁,y₁)",name:"First point"},{symbol:"(x₂,y₂)",name:"Second point"}],
-  formulas:[{quantity:"Distance",formula:"d = √[(x₂−x₁)² + (y₂−y₁)²]",example:"(0,0) & (3,4) → d = 5"}],
-  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},d:{formula:"Math.sqrt((x2-x1)**2+(y2-y1)**2)",label:"Distance"}}
+"rectangle": {
+  name:"Rectangle & Paths",
+  subtitle:"4-sided polygon with four 90° angles, equal opposite sides, and path formulas",
+  icon:"▭", color:"#a78bfa", difficulty:"easy",
+  overview:"A rectangle (आयत) is a 4-sided polygon where all interior angles are right angles (90°). Opposite sides are equal in length and parallel. The diagonals are equal and bisect each other.",
+  properties:[
+    "Opposite sides are equal: AB = CD = l, AD = BC = b",
+    "Opposite sides are parallel: AB ∥ CD and AD ∥ BC",
+    "All 4 interior angles are 90°: ∠A = ∠B = ∠C = ∠D = 90°",
+    "Diagonals are equal: d₁ = d₂ = d = √(l² + b²)",
+    "Diagonals bisect each other (do NOT intersect at 90° unless it's a square)",
+    "Two lines of symmetry (connecting midpoints of opposite sides)"
+  ],
+  variables:[
+    {symbol:"l", name:"Length", desc:"Longer side of rectangle"},
+    {symbol:"b", name:"Breadth / Width", desc:"Shorter side of rectangle"},
+    {symbol:"d", name:"Diagonal", desc:"d = √(l² + b²)"},
+    {symbol:"P", name:"Perimeter", desc:"P = 2(l + b)"},
+    {symbol:"A", name:"Area", desc:"A = l × b"}
+  ],
+  formulas:[
+    {quantity:"Perimeter", formula:"P = 2(l + b)", example:"l=8, b=5 → P = 26cm"},
+    {quantity:"Area", formula:"A = l × b", example:"l=8, b=5 → A = 40cm²"},
+    {quantity:"Diagonal", formula:"d = √(l² + b²)", example:"l=8, b=6 → d = 10cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Length (from d & b)", formula:"l = √(d² - b²)", note:"Derived from Pythagorean theorem on half-rectangle"},
+    {quantity:"Breadth (from d & l)", formula:"b = √(d² - l²)", note:"Derived from Pythagorean theorem on half-rectangle"},
+    {quantity:"Area (from P & d)", formula:"A = ½ [(P/2)² - d²] = (P² - 4d²) / 8", note:"Expresses area without individual l and b"},
+    {quantity:"Outer Path Area (width w)", formula:"Area = 2w(l + b + 2w)", note:"Path of uniform width w built OUTSIDE a rectangle"},
+    {quantity:"Inner Path Area (width w)", formula:"Area = 2w(l + b - 2w)", note:"Path of uniform width w built INSIDE a rectangle"},
+    {quantity:"Crossroads Area (width w)", formula:"Area = w(l + b - w)", note:"Two perpendicular paths of width w crossing at center"}
+  ],
+  specialCases:[
+    "When length equals breadth (l = b), the rectangle becomes a Square.",
+    "The longest rod/stick that can fit inside a rectangular field/room equals its diagonal d = √(l² + b²)."
+  ],
+  examInsights:[
+    "★ <b>Longest Distance in Room:</b> The maximum straight distance on a rectangular floor is diagonal d = √(l² + b²).",
+    "★ <b>Path Formulas Trick:</b> Outer Path Area = 2w(l + b + 2w); Inner Path Area = 2w(l + b - 2w); Crossroads Area = w(l + b - w). Memorise these 3 for instant SSC solutions!",
+    "★ <b>Successive Area Change:</b> If length increases by x% and breadth by y%, Area changes by (x + y + xy/100)%."
+  ],
+  calc:{
+    l:{label:"Length (l)", unit:"cm"},
+    w:{label:"Breadth (b)", unit:"cm"},
+    area:{formula:"l*w", label:"Area A"},
+    perimeter:{formula:"2*(l+w)", label:"Perimeter P"},
+    diag:{formula:"Math.sqrt(l*l+w*w)", label:"Diagonal d"}
+  },
+  relatedIds:["square","parallelogram","composite-2d"]
 },
-"co-midpoint": {
-  name:"Midpoint Formula", subtitle:"The exact center point between two coordinates",
-  icon:"◦", color:"#22d3ee", difficulty:"easy",
-  overview:"The midpoint of a segment joining two points is simply the average of their x-coordinates and the average of their y-coordinates.",
-  properties:["Midpoint lies exactly halfway between the two points","Used to find the center of a diameter given its two endpoints"],
-  variables:[], 
-  formulas:[{quantity:"Midpoint",formula:"M = ((x₁+x₂)/2, (y₁+y₂)/2)",example:"(2,4) & (8,10) → M=(5,7)"}],
-  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},mx:{formula:"(x1+x2)/2",label:"Midpoint x"},my:{formula:"(y1+y2)/2",label:"Midpoint y"}}
+
+"triangle": {
+  name:"General Triangle",
+  subtitle:"3-sided polygon — foundation of geometry, angle sum 180°",
+  icon:"△", color:"#f0a839", difficulty:"easy",
+  overview:"A triangle (त्रिभुज) is a 3-sided closed polygon. It is the fundamental building block of plane geometry. Key properties include the 180° interior angle sum, side inequality rules, and base-height area formula.",
+  properties:[
+    "Sum of 3 interior angles = 180°: ∠A + ∠B + ∠C = 180°",
+    "Triangle Inequality: Sum of any 2 sides > 3rd side (a + b > c, b + c > a, c + a > b)",
+    "Difference of any 2 sides < 3rd side (|a - b| < c)",
+    "Exterior Angle Theorem: Exterior angle = sum of 2 opposite interior angles",
+    "Longest side is opposite the largest angle; shortest side is opposite the smallest angle",
+    "Perpendicular height h is measured perpendicular to the chosen base"
+  ],
+  variables:[
+    {symbol:"a, b, c", name:"Side lengths", desc:"Lengths of the three edges"},
+    {symbol:"b", name:"Base", desc:"Chosen side used as base"},
+    {symbol:"h", name:"Height / Altitude", desc:"Perpendicular distance from opposite vertex to base"},
+    {symbol:"s", name:"Semi-perimeter", desc:"s = (a + b + c) / 2"},
+    {symbol:"P", name:"Perimeter", desc:"P = a + b + c"}
+  ],
+  formulas:[
+    {quantity:"Area (Base-Height)", formula:"A = ½ × b × h", example:"b = 10cm, h = 6cm → A = 30cm²"},
+    {quantity:"Perimeter", formula:"P = a + b + c", example:"a=5, b=6, c=7 → P = 18cm"},
+    {quantity:"Semi-perimeter", formula:"s = (a + b + c) / 2", example:"a=5, b=6, c=7 → s = 9cm"},
+    {quantity:"Heron's Area", formula:"A = √[s(s - a)(s - b)(s - c)]", example:"a=13, b=14, c=15 → s=21 → A = 84cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Height (from Area & Base)", formula:"h = 2A / b", example:"A = 30, b = 10 → h = 6cm"},
+    {quantity:"Area (2 sides & angle θ)", formula:"A = ½ a b sin θ", note:"Useful when two adjacent sides and included angle are known"},
+    {quantity:"Inradius (r)", formula:"r = A / s", note:"Radius of circle inside touching all 3 sides"},
+    {quantity:"Circumradius (R)", formula:"R = (a b c) / (4A)", note:"Radius of circle passing through all 3 vertices"}
+  ],
+  specialCases:[
+    "Equilateral Triangle: all 3 sides equal, all angles 60°.",
+    "Isosceles Triangle: 2 sides equal, 2 base angles equal.",
+    "Right-angled Triangle: 1 angle = 90°, c² = a² + b²."
+  ],
+  examInsights:[
+    "★ <b>Median Property:</b> A median divides a triangle into two smaller triangles of EQUAL area.",
+    "★ <b>Centroid Property:</b> The 3 medians intersect at the centroid G, dividing the triangle into 6 small triangles of equal area.",
+    "★ <b>Inradius & Circumradius:</b> Inradius r = Area / s, Circumradius R = abc / 4A."
+  ],
+  calc:{
+    base:{label:"Base (b)", unit:"cm"},
+    height:{label:"Height (h)", unit:"cm"},
+    area:{formula:"0.5*base*height", label:"Area A"}
+  },
+  relatedIds:["herons-formula","equilateral-triangle","right-triangle","isosceles-triangle","scalene-triangle"]
 },
-"co-section": {
-  name:"Section Formula", subtitle:"Finds a point that divides a segment in a given ratio",
-  icon:"÷", color:"#22d3ee", difficulty:"medium",
-  overview:"The section formula finds the coordinates of a point that divides the segment joining two points in a given ratio m:n. When m=n, it reduces to the midpoint formula.",
-  properties:["Internal division: point lies BETWEEN the two given points","External division uses the same idea but with a minus sign","Midpoint formula is the special case m:n = 1:1"],
-  variables:[], 
-  formulas:[{quantity:"Internal Section (m:n)",formula:"P = ((mx₂+nx₁)/(m+n), (my₂+ny₁)/(m+n))",example:"Divides AB in ratio m:n from A"}],
-  calc:{}
+
+"herons-formula": {
+  name:"Heron's Formula",
+  subtitle:"Find any triangle's area using its three side lengths alone — no height needed",
+  icon:"√", color:"#f0a839", difficulty:"medium",
+  overview:"Heron's Formula (हेरॉन का सूत्र) computes the area of any triangle given only the lengths of its three sides (a, b, c). It eliminates the need to measure or calculate the perpendicular height.",
+  properties:[
+    "Works for ANY triangle (scalene, isosceles, equilateral, right-angled)",
+    "Requires only 3 side lengths: a, b, c",
+    "Requires semi-perimeter s = (a + b + c) / 2 to be calculated first",
+    "Extremely useful in land surveying and composite 2D figures"
+  ],
+  variables:[
+    {symbol:"a, b, c", name:"Side lengths", desc:"Lengths of the three sides"},
+    {symbol:"s", name:"Semi-perimeter", desc:"s = (a + b + c) / 2 (half of total perimeter)"},
+    {symbol:"A", name:"Area", desc:"Enclosed area of triangle"}
+  ],
+  formulas:[
+    {quantity:"Semi-perimeter", formula:"s = (a + b + c) / 2", example:"a=13, b=14, c=15 → s = 21cm"},
+    {quantity:"Heron's Area", formula:"A = √[s(s - a)(s - b)(s - c)]", example:"s=21, s-a=8, s-b=7, s-c=6 → A = √(21×8×7×6) = 84cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Expanded Form", formula:"A = ¼ √[(a+b+c)(a+b-c)(a-b+c)(-a+b+c)]", note:"Algebraic expansion without using explicit s"},
+    {quantity:"Isosceles Triangle Form", formula:"A = (b / 4) √(4a² - b²)", note:"Derived for sides a, a, b"},
+    {quantity:"Equilateral Triangle Form", formula:"A = (√3 / 4) a²", note:"Derived for sides a, a, a"}
+  ],
+  specialCases:[
+    "Pythagorean Triples (e.g. 3-4-5, 5-12-13, 7-24-25, 8-15-17): Heron's formula gives perfect whole-number areas without square root fractions!",
+    "If side lengths do not satisfy triangle inequality (a + b ≤ c), the term inside square root becomes ≤ 0 (invalid triangle)."
+  ],
+  examInsights:[
+    "★ <b>Classic CGL Problem:</b> Triangle with sides 13 cm, 14 cm, 15 cm ➔ Semi-perimeter s = 21 ➔ Area = √(21 × 8 × 7 × 6) = 84 cm² (memorise this standard triangle!).",
+    "★ <b>Ratio of Sides Problem:</b> If sides are in ratio 3 : 4 : 5 and perimeter = 36 cm ➔ sides are 9, 12, 15 ➔ right triangle area = ½ × 9 × 12 = 54 cm²."
+  ],
+  calc:{
+    a:{label:"Side a", unit:"cm"},
+    b:{label:"Side b", unit:"cm"},
+    c:{label:"Side c", unit:"cm"},
+    area:{formula:"(function(){var s=(a+b+c)/2; return Math.sqrt(Math.max(s*(s-a)*(s-b)*(s-c),0));})()", label:"Area A"}
+  },
+  relatedIds:["triangle","scalene-triangle","isosceles-triangle"]
 },
-"co-centroid": {
-  name:"Centroid of Triangle", subtitle:"The 'balance point' where all three medians of a triangle meet",
+
+"isosceles-triangle": {
+  name:"Isosceles Triangle",
+  subtitle:"Triangle with two equal sides and two equal base angles",
+  icon:"△", color:"#f0a839", difficulty:"easy",
+  overview:"An isosceles triangle (समद्विबाहु त्रिभुज) has two equal sides (legs a) and two equal base angles. The altitude from the apex to the base bisects both the base and apex angle.",
+  properties:[
+    "Two sides are equal: AB = AC = a (legs)",
+    "Base angles opposite equal sides are equal: ∠B = ∠C",
+    "Altitude from apex to base bisects the base into two equal halves of b/2",
+    "Altitude from apex is also the Median, Angle Bisector, and Perpendicular Bisector",
+    "One line of reflective symmetry from apex to base"
+  ],
+  variables:[
+    {symbol:"a", name:"Equal side (leg)", desc:"Length of two equal sides"},
+    {symbol:"b", name:"Base", desc:"Length of third unequal side"},
+    {symbol:"h", name:"Height / Altitude", desc:"h = √(a² - (b/2)²)"},
+    {symbol:"P", name:"Perimeter", desc:"P = 2a + b"},
+    {symbol:"A", name:"Area", desc:"A = (b/4)√(4a² - b²)"}
+  ],
+  formulas:[
+    {quantity:"Height (from apex)", formula:"h = √(a² − (b/2)²)", example:"a = 5cm, b = 6cm → h = 4cm"},
+    {quantity:"Area", formula:"A = (b / 4) √(4a² − b²)", example:"a = 5cm, b = 6cm → A = 12cm²"},
+    {quantity:"Perimeter", formula:"P = 2a + b", example:"a = 5cm, b = 6cm → P = 16cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Equal side (from h & b)", formula:"a = √(h² + (b/2)²)", note:"Derived from right triangle formed by altitude"},
+    {quantity:"Base (from h & a)", formula:"b = 2 √(a² - h²)", note:"Base calculated from altitude and leg length"}
+  ],
+  specialCases:[
+    "Isosceles Right Triangle (45°-45°-90°): legs a = b, hypotenuse c = a√2, Area = a²/2."
+  ],
+  examInsights:[
+    "★ <b>Altitude Trick:</b> The altitude from the apex splits an isosceles triangle into 2 congruent right triangles of legs (b/2, h) and hypotenuse a (Pythagorean theorem: (b/2)² + h² = a²).",
+    "★ <b>Direct Area Shortcut:</b> Area = (b / 4) √(4a² - b²)."
+  ],
+  calc:{
+    a:{label:"Equal side (a)", unit:"cm"},
+    b:{label:"Base (b)", unit:"cm"},
+    h:{formula:"Math.sqrt(a*a-(b/2)*(b/2))", label:"Height h"},
+    area:{formula:"0.5*b*Math.sqrt(a*a-(b/2)*(b/2))", label:"Area A"}
+  },
+  relatedIds:["triangle","right-triangle","scalene-triangle"]
+},
+
+"scalene-triangle": {
+  name:"Scalene Triangle",
+  subtitle:"Triangle with all three sides different and all three angles different",
   icon:"△", color:"#f0a839", difficulty:"medium",
-  overview:"The centroid is the average position of a triangle's three vertices — it's also the point where the three medians intersect, and it divides each median in a 2:1 ratio from the vertex.",
-  properties:["Centroid divides each median 2:1 (vertex side is longer)","Always lies INSIDE the triangle","Also the triangle's center of mass"],
-  variables:[],
-  formulas:[{quantity:"Centroid",formula:"G = ((x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3)",example:"(0,0),(6,0),(3,9) → G=(3,3)"}],
-  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},x3:{label:"x₃",unit:""},y3:{label:"y₃",unit:""},gx:{formula:"(x1+x2+x3)/3",label:"Centroid x"},gy:{formula:"(y1+y2+y3)/3",label:"Centroid y"}}
-},
-"co-slope": {
-  name:"Slope of a Line", subtitle:"How steep a line is — the ratio of vertical change to horizontal change",
-  icon:"╱", color:"#a78bfa", difficulty:"easy",
-  overview:"Slope measures a line's steepness and direction: rise (change in y) over run (change in x) between any two points on the line.",
-  properties:["Positive slope → line rises left to right","Negative slope → line falls left to right","Slope = 0 → horizontal line","Slope is undefined → vertical line","Parallel lines have EQUAL slopes","Perpendicular lines have slopes that multiply to −1"],
-  variables:[],
-  formulas:[{quantity:"Slope",formula:"m = (y₂−y₁)/(x₂−x₁)",example:"(1,2) & (4,11) → m=3"}],
-  calc:{x1:{label:"x₁",unit:""},y1:{label:"y₁",unit:""},x2:{label:"x₂",unit:""},y2:{label:"y₂",unit:""},m:{formula:"(y2-y1)/(x2-x1)",label:"Slope m"}}
-},
-"co-line-eq": {
-  name:"Equation of a Line", subtitle:"Different standard ways to write a straight line algebraically",
-  icon:"ℓ", color:"#a78bfa", difficulty:"medium",
-  overview:"A straight line can be written in several equivalent forms depending on what information you're given — slope & intercept, slope & one point, or two points.",
-  properties:["All forms describe the same line — just rearranged","Slope-intercept form is easiest to read the slope & y-intercept directly from"],
-  variables:[],
-  formulas:[
-    {quantity:"Slope-Intercept Form",formula:"y = mx + c",example:"m=slope, c=y-intercept"},
-    {quantity:"Point-Slope Form",formula:"y − y₁ = m(x − x₁)",example:"Line through (x₁,y₁) with slope m"},
-    {quantity:"Two-Point Form",formula:"(y−y₁)/(x−x₁) = (y₂−y₁)/(x₂−x₁)",example:"Line through two known points"}
-  ],
-  calc:{}
-},
-"co-circle-eq": {
-  name:"Equation of a Circle", subtitle:"The algebraic form describing every point on a circle",
-  icon:"○", color:"#19c37d", difficulty:"medium",
-  overview:"A circle with center (h,k) and radius r consists of every point (x,y) at exactly distance r from the center — which is exactly the distance formula set equal to r.",
-  properties:["Center (h,k), radius r","When centered at the origin, simplifies to x² + y² = r²"],
-  variables:[],
-  formulas:[{quantity:"Circle Equation",formula:"(x−h)² + (y−k)² = r²",example:"Center (2,3), r=5 → (x−2)²+(y−3)²=25"}],
-  calc:{h:{label:"Center h",unit:""},k:{label:"Center k",unit:""},r:{label:"Radius r",unit:""}}
-},
-
-"trig-ratios": {
-  name:"Trig Ratios (SOH-CAH-TOA)", subtitle:"The six ratios relating a right triangle's angle to its side lengths",
-  icon:"∠", color:"#f0a839", difficulty:"easy",
-  overview:"In a right triangle, each trig ratio compares two of the three sides relative to a chosen angle θ. SOH-CAH-TOA is the classic memory aid for the first three.",
-  properties:["sin θ = Opposite / Hypotenuse","cos θ = Adjacent / Hypotenuse","tan θ = Opposite / Adjacent","cosec θ = 1/sin θ, sec θ = 1/cos θ, cot θ = 1/tan θ","tan θ = sin θ / cos θ"],
-  variables:[],
-  formulas:[
-    {quantity:"Sine",formula:"sin θ = Opp/Hyp",example:""},
-    {quantity:"Cosine",formula:"cos θ = Adj/Hyp",example:""},
-    {quantity:"Tangent",formula:"tan θ = Opp/Adj",example:""}
-  ],
-  calc:{}
-},
-"trig-identities": {
-  name:"Fundamental Trig Identities", subtitle:"Equations true for every value of θ — the algebra engine behind trigonometry",
-  icon:"≡", color:"#22d3ee", difficulty:"medium",
-  overview:"These three Pythagorean identities are derived directly from the Pythagorean theorem applied to a right triangle, and they're used constantly to simplify trig expressions.",
-  properties:["sin²θ + cos²θ = 1","1 + tan²θ = sec²θ","1 + cot²θ = cosec²θ","All three are algebraically equivalent — divide the first by sin²θ or cos²θ to get the others"],
-  variables:[],
-  formulas:[
-    {quantity:"Identity 1",formula:"sin²θ + cos²θ = 1",example:""},
-    {quantity:"Identity 2",formula:"1 + tan²θ = sec²θ",example:""},
-    {quantity:"Identity 3",formula:"1 + cot²θ = cosec²θ",example:""}
-  ],
-  calc:{}
-},
-"trig-values": {
-  name:"Standard Angle Values Table", subtitle:"Exact trig ratio values for 0°, 30°, 45°, 60°, 90° — memorise these cold",
-  icon:"▦", color:"#a78bfa", difficulty:"easy",
-  overview:"SSC questions constantly assume instant recall of these five standard angles. Knowing this table cold — not calculating it — is what saves time in the exam.",
+  overview:"A scalene triangle (विषमबाहु त्रिभुज) has no equal sides and no equal angles. Area is computed using Heron's formula or trigonometric sine rule.",
   properties:[
-    "sin: 0, 1/2, 1/√2, √3/2, 1 (for 0°,30°,45°,60°,90°)",
-    "cos: 1, √3/2, 1/√2, 1/2, 0 (mirror image of sin)",
-    "tan: 0, 1/√3, 1, √3, undefined",
-    "Trick: sin values are √0/2, √1/2, √2/2, √3/2, √4/2 in order"
+    "No two sides are equal: a ≠ b ≠ c",
+    "No two angles are equal: ∠A ≠ ∠B ≠ ∠C",
+    "Still satisfies interior angle sum = 180° and triangle inequality",
+    "Largest angle is opposite the longest side; smallest angle opposite shortest side"
   ],
-  variables:[], formulas:[], calc:{}
-},
-"trig-heights": {
-  name:"Heights & Distances", subtitle:"Using angles of elevation/depression to find unknown heights or distances",
-  icon:"⛰", color:"#19c37d", difficulty:"medium",
-  overview:"This is the most common real-world application of trigonometry in SSC exams — using a known distance and an angle of elevation (looking up) or depression (looking down) to find a height or distance you can't measure directly.",
-  properties:[
-    "Angle of Elevation = angle from horizontal UP to an object",
-    "Angle of Depression = angle from horizontal DOWN to an object",
-    "Angle of elevation from A to B = angle of depression from B to A (alternate angles, since the horizontals are parallel)",
-    "Always draw the right triangle first — height is Opposite, base distance is Adjacent"
+  variables:[
+    {symbol:"a, b, c", name:"Three unequal sides", desc:"Lengths of the edges"},
+    {symbol:"s", name:"Semi-perimeter", desc:"s = (a + b + c) / 2"}
   ],
-  variables:[],
-  formulas:[{quantity:"Height from distance & angle",formula:"h = d × tan θ",example:"d=50m, θ=30° → h=50×(1/√3)≈28.9m"}],
-  calc:{d:{label:"Base distance (d)",unit:"m"},theta:{label:"Angle θ (°)",unit:"°"},h:{formula:"d*Math.tan(theta*Math.PI/180)",label:"Height h"}}
-},
-"trig-sine-cosine-rule": {
-  name:"Sine & Cosine Rules", subtitle:"Solve ANY triangle — not just right triangles — for missing sides or angles",
-  icon:"△", color:"#f0a839", difficulty:"hard",
-  overview:"The Sine and Cosine Rules extend trigonometry beyond right triangles, letting you solve for unknown sides or angles in any triangle when you know enough other parts.",
-  properties:["Sine Rule connects each side to the sine of its opposite angle, all equal to 2R (R = circumradius)","Cosine Rule is a generalised Pythagorean theorem — use it when you know two sides and the included angle, or all three sides"],
-  variables:[],
   formulas:[
-    {quantity:"Sine Rule",formula:"a/sin A = b/sin B = c/sin C = 2R",example:""},
-    {quantity:"Cosine Rule",formula:"cos A = (b² + c² − a²) / (2bc)",example:""}
+    {quantity:"Perimeter", formula:"P = a + b + c", example:"a=7, b=8, c=9 → P = 24cm"},
+    {quantity:"Semi-perimeter", formula:"s = (a + b + c) / 2", example:"a=7, b=8, c=9 → s = 12cm"},
+    {quantity:"Area (Heron's)", formula:"A = √[s(s − a)(s − b)(s − c)]", example:"a=7, b=8, c=9 → A = √(12×5×4×3) = 12√5 ≈ 26.83cm²"}
   ],
-  calc:{}
+  derivedFormulas:[
+    {quantity:"Area (using Sine Rule)", formula:"A = ½ a b sin C = ½ b c sin A = ½ a c sin B", note:"Trigonometric area using two sides and included angle"},
+    {quantity:"Inradius (r)", formula:"r = Area / s", note:"Incircle radius"},
+    {quantity:"Circumradius (R)", formula:"R = (a b c) / (4 × Area)", note:"Circumcircle radius"}
+  ],
+  specialCases:[
+    "Can be acute, right-angled, or obtuse scalene."
+  ],
+  examInsights:[
+    "★ <b>Heron's Application:</b> Heron's formula is the primary method for scalene triangles when altitude is not given directly."
+  ],
+  calc:{
+    a:{label:"Side a", unit:"cm"},
+    b:{label:"Side b", unit:"cm"},
+    c:{label:"Side c", unit:"cm"},
+    area:{formula:"(function(){var s=(a+b+c)/2; return Math.sqrt(Math.max(s*(s-a)*(s-b)*(s-c),0));})()", label:"Area A"}
+  },
+  relatedIds:["herons-formula","triangle"]
 },
 
-
-"tangent-properties": {
-  name:"Tangent & Radius Theorem", subtitle:"Orthogonality of tangent line to circle radius at point of contact",
-  icon:"⟂", color:"#19c37d", difficulty:"medium",
-  overview:"A tangent is a straight line that touches the circle at exactly ONE point (Point of Contact T). The radius OT is perpendicular to the tangent line at T (Angle = 90°).",
-  properties:["Tangent touches circle at exactly one point T","Radius OT ⊥ Tangent Line at point T","Distance from center O to tangent line equals radius r"],
-  variables:[{symbol:"r",name:"Radius",desc:"Distance OT"},{symbol:"PT",name:"Tangent Segment",desc:"Touch length"}],
-  formulas:[{quantity:"Orthogonality",formula:"OT ⊥ Tangent Line (∠OTP = 90°)",example:"Radius to tangent is always right-angled"}],
-  calc:{r:{label:"Radius (r)",unit:"cm"},pt:{label:"Tangent Segment (PT)",unit:"cm"},op:{formula:"Math.sqrt(r*r+pt*pt)",label:"Distance OP"}}
+"parallelogram": {
+  name:"Parallelogram",
+  subtitle:"Quadrilateral with two pairs of opposite parallel and equal sides",
+  icon:"▱", color:"#a78bfa", difficulty:"easy",
+  overview:"A parallelogram (समांतर चतुर्भुज) is a 4-sided polygon with opposite sides parallel and equal in length. The perpendicular distance between the parallel bases is its height h. Diagonals bisect each other at their midpoint.",
+  properties:[
+    "Opposite sides are equal: AB = CD = b and AD = BC = a",
+    "Opposite sides are parallel: AB ∥ CD and AD ∥ BC",
+    "Opposite angles are equal: ∠A = ∠C and ∠B = ∠D",
+    "Consecutive / Adjacent angles are supplementary: ∠A + ∠B = 180°",
+    "Diagonals bisect each other (AC and BD meet at midpoint O)",
+    "Diagonals divide parallelogram into 4 triangles of equal area"
+  ],
+  variables:[
+    {symbol:"a", name:"Slant / Adjacent Side", desc:"Length of adjacent side"},
+    {symbol:"b", name:"Base", desc:"Length of base side"},
+    {symbol:"h", name:"Height / Altitude", desc:"Perpendicular distance between base b and opposite side"},
+    {symbol:"d₁, d₂", name:"Diagonals", desc:"Lengths of the two diagonals"},
+    {symbol:"P", name:"Perimeter", desc:"P = 2(a + b)"},
+    {symbol:"A", name:"Area", desc:"A = b × h"}
+  ],
+  formulas:[
+    {quantity:"Area (Base × Height)", formula:"A = b × h", example:"b = 10cm, h = 6cm → A = 60cm²"},
+    {quantity:"Perimeter", formula:"P = 2(a + b)", example:"a = 7cm, b = 10cm → P = 34cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (using Sides & Angle θ)", formula:"A = a × b × sin θ", note:"Calculates area when adjacent sides and included angle θ are known"},
+    {quantity:"Area (using Diagonals & Angle φ)", formula:"A = ½ d₁ d₂ sin φ", note:"Calculates area using diagonals and angle φ between them"},
+    {quantity:"Parallelogram Law (Diagonals & Sides)", formula:"d₁² + d₂² = 2(a² + b²)", note:"Fundamental relation between 2 diagonals and 2 sides"},
+    {quantity:"Height to side a (h_a)", formula:"h_a = (b × h) / a", note:"Height relative to adjacent side a"}
+  ],
+  specialCases:[
+    "If all interior angles are 90° → Rectangle.",
+    "If all 4 sides are equal → Rhombus.",
+    "If all sides are equal AND all angles are 90° → Square."
+  ],
+  examInsights:[
+    "★ <b>Height Warning:</b> Height h is the PERPENDICULAR distance, NOT the slant side length a! Area = Base × Perpendicular Height.",
+    "★ <b>Parallelogram Law:</b> d₁² + d₂² = 2(a² + b²). Used constantly in SSC CGL to find an unknown diagonal when 2 sides and 1 diagonal are given.",
+    "★ <b>Angle Bisector Rule:</b> The bisectors of any two adjacent angles of a parallelogram intersect at 90°."
+  ],
+  calc:{
+    base:{label:"Base (b)", unit:"cm"},
+    height:{label:"Height (h)", unit:"cm"},
+    sideA:{label:"Slant side (a)", unit:"cm"},
+    area:{formula:"base*height", label:"Area A"},
+    perimeter:{formula:"2*(base+sideA)", label:"Perimeter P"}
+  },
+  relatedIds:["rectangle","rhombus","square","trapezium"]
 },
 
-"external-tangents": {
-  name:"Tangents from External Point", subtitle:"Equal length tangent segments drawn from a point outside circle",
-  icon:"⋏", color:"#19c37d", difficulty:"medium",
-  overview:"From any external point P outside a circle, exactly TWO tangents PA and PB can be drawn to the circle. The lengths of these tangent segments are equal (PA = PB).",
-  properties:["Lengths of tangents are equal: PA = PB","Line OP bisects the angle between tangents (∠APO = ∠BPO)","Quadrilateral OAPB is cyclic (∠OAP + ∠OBP = 180°)"],
-  variables:[{symbol:"d",name:"Distance OP",desc:"Center O to external point P"},{symbol:"r",name:"Radius",desc:"OA = OB = r"}],
-  formulas:[{quantity:"Tangent Length",formula:"PA = PB = √(d² - r²)",example:"d=13, r=5 → PA = 12cm"}],
-  calc:{r:{label:"Radius (r)",unit:"cm"},d:{label:"Distance OP (d)",unit:"cm"},pa:{formula:"Math.sqrt(d*d-r*r)",label:"Tangent PA = PB"}}
+"rhombus": {
+  name:"Rhombus & Diagonals",
+  subtitle:"Parallelogram with four equal sides and diagonals bisecting at 90°",
+  icon:"◊", color:"#a78bfa", difficulty:"medium",
+  overview:"A rhombus (समचतुर्भुज) is a parallelogram with four equal sides. Its diagonals bisect each other at right angles (90°) and divide the rhombus into four congruent right-angled triangles.",
+  properties:[
+    "All 4 sides are equal: AB = BC = CD = DA = a",
+    "Opposite sides are parallel: AB ∥ CD and AD ∥ BC",
+    "Opposite angles are equal: ∠A = ∠C and ∠B = ∠D",
+    "Adjacent angles are supplementary: ∠A + ∠B = 180°",
+    "Diagonals bisect each other at right angles: d₁ ⊥ d₂ at 90°",
+    "Diagonals bisect vertex angles into equal halves",
+    "Diagonals divide rhombus into 4 congruent right-angled triangles with legs (d₁/2, d₂/2) and hypotenuse a"
+  ],
+  variables:[
+    {symbol:"a", name:"Side length", desc:"Length of each equal edge"},
+    {symbol:"d₁", name:"Diagonal 1", desc:"Length of first diagonal"},
+    {symbol:"d₂", name:"Diagonal 2", desc:"Length of second diagonal"},
+    {symbol:"h", name:"Height / Altitude", desc:"Perpendicular distance between opposite sides"},
+    {symbol:"P", name:"Perimeter", desc:"P = 4a"},
+    {symbol:"A", name:"Area", desc:"A = ½ × d₁ × d₂"}
+  ],
+  formulas:[
+    {quantity:"Area (using Diagonals)", formula:"A = ½ × d₁ × d₂", example:"d₁ = 12cm, d₂ = 16cm → A = 96cm²"},
+    {quantity:"Perimeter", formula:"P = 4a", example:"a = 10cm → P = 40cm"},
+    {quantity:"Side (from Diagonals)", formula:"a = ½ √(d₁² + d₂²)", example:"d₁ = 12, d₂ = 16 → a = ½√(144+256) = 10cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Fundamental Diagonal Law", formula:"4a² = d₁² + d₂²", note:"Derived from Pythagorean theorem (d₁/2)² + (d₂/2)² = a²"},
+    {quantity:"Area (using Side & Height)", formula:"A = a × h", note:"Base × perpendicular height"},
+    {quantity:"Height (from Diagonals)", formula:"h = (d₁ × d₂) / (2a) = (d₁ × d₂) / √(d₁² + d₂²)", note:"Expresses perpendicular height using diagonals"},
+    {quantity:"Area (using Side & Angle θ)", formula:"A = a² sin θ", note:"Calculates area using side and vertex angle θ"},
+    {quantity:"Inradius (r)", formula:"r = h / 2 = (d₁ × d₂) / (4a)", note:"Radius of incircle touching all 4 sides"}
+  ],
+  specialCases:[
+    "If d₁ = d₂, then Rhombus becomes a Square.",
+    "If diagonals are not equal (d₁ ≠ d₂), it remains a Rhombus."
+  ],
+  examInsights:[
+    "★ <b>Pythagorean Triple Trick:</b> Each of the 4 interior triangles is a right triangle with legs (d₁/2, d₂/2) and hypotenuse a. If d₁=12, d₂=16 ➔ legs are 6 & 8 ➔ side a = 10 (6-8-10 triple!).",
+    "★ <b>Side-Diagonal Shortcut:</b> 4a² = d₁² + d₂².",
+    "★ <b>Height Shortcut:</b> Height h = (d₁ × d₂) / (2a)."
+  ],
+  calc:{
+    d1:{label:"Diagonal d₁", unit:"cm"},
+    d2:{label:"Diagonal d₂", unit:"cm"},
+    area:{formula:"0.5*d1*d2", label:"Area A"},
+    side:{formula:"0.5*Math.sqrt(d1*d1+d2*d2)", label:"Side a"},
+    perimeter:{formula:"2*Math.sqrt(d1*d1+d2*d2)", label:"Perimeter P"}
+  },
+  relatedIds:["square","parallelogram","kite"]
 },
 
-"direct-common-tangents": {
-  name:"Direct Common Tangents (DCT)", subtitle:"Tangents touching two circles without crossing center line",
-  icon:"⇶", color:"#f0a839", difficulty:"hard",
-  overview:"A Direct Common Tangent (DCT) touches two non-intersecting or touching circles such that both circles lie on the same side of the tangent line.",
-  properties:["Both circles lie on the same side of the DCT line","DCT length is shorter than center distance d","If circles touch externally, DCT = 2√(r₁r₂)"],
-  variables:[{symbol:"d",name:"Center Distance",desc:"Distance O₁O₂"},{symbol:"r₁",name:"Radius 1",desc:"Larger circle radius"},{symbol:"r₂",name:"Radius 2",desc:"Smaller circle radius"}],
-  formulas:[{quantity:"DCT Length",formula:"DCT = √(d² - (r₁ - r₂)²)",example:"d=13, r₁=8, r₂=3 → DCT = 12cm"}],
-  calc:{r1:{label:"Radius r₁",unit:"cm"},r2:{label:"Radius r₂",unit:"cm"},d:{label:"Distance d",unit:"cm"},dct:{formula:"Math.sqrt(d*d-(r1-r2)*(r1-r2))",label:"DCT Length"}}
+"trapezium": {
+  name:"Trapezium & Midline",
+  subtitle:"Quadrilateral with one pair of parallel bases and a midline",
+  icon:"⌕", color:"#a78bfa", difficulty:"medium",
+  overview:"A trapezium (समलंब चतुर्भुज) is a quadrilateral with exactly one pair of parallel sides (bases a and b). The perpendicular distance between parallel bases is height h. The median m connects midpoints of non-parallel sides.",
+  properties:[
+    "One pair of parallel sides: upper base a ∥ lower base b",
+    "Non-parallel sides: c and d (legs)",
+    "Adjacent interior angles on same leg are supplementary: ∠A + ∠D = 180°, ∠B + ∠C = 180°",
+    "Height h = perpendicular distance between parallel bases",
+    "Median m = line joining midpoints of non-parallel sides",
+    "Median m is parallel to bases a and b, and length m = ½ (a + b)",
+    "Segment joining midpoints of diagonals = ½ |a - b|"
+  ],
+  variables:[
+    {symbol:"a", name:"Upper Base", desc:"Length of top parallel side"},
+    {symbol:"b", name:"Lower Base", desc:"Length of bottom parallel side"},
+    {symbol:"h", name:"Height / Altitude", desc:"Perpendicular distance between bases"},
+    {symbol:"c, d", name:"Non-parallel Sides", desc:"Lengths of left and right legs"},
+    {symbol:"m", name:"Median / Midline", desc:"m = ½ (a + b) (average of parallel bases)"},
+    {symbol:"P", name:"Perimeter", desc:"P = a + b + c + d"},
+    {symbol:"A", name:"Area", desc:"A = ½ (a + b) h"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = ½ (a + b) h", example:"a = 6cm, b = 10cm, h = 5cm → A = 40cm²"},
+    {quantity:"Perimeter", formula:"P = a + b + c + d", example:"a=6, b=10, c=5, d=5 → P = 26cm"},
+    {quantity:"Median / Midline", formula:"m = ½ (a + b)", example:"a = 6cm, b = 10cm → m = 8cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (using Median)", formula:"A = m × h", note:"Area = Median × Height (quick exam shortcut!)"},
+    {quantity:"Height (from Area & Bases)", formula:"h = 2A / (a + b)", note:"Calculates height when area and both bases are known"},
+    {quantity:"Diagonal Midpoints Segment", formula:"Length = ½ |b - a|", note:"Distance between midpoints of the two diagonals"},
+    {quantity:"Isosceles Trapezium Area", formula:"A = ½ (a + b) √[c² - ((b - a)/2)²]", note:"When non-parallel sides are equal (c = d)"}
+  ],
+  specialCases:[
+    "Isosceles Trapezium: Non-parallel sides are equal (c = d), diagonals are equal (AC = BD), and it is a cyclic quadrilateral.",
+    "Right Trapezium: One non-parallel side is perpendicular to the parallel bases (height h equals that side)."
+  ],
+  examInsights:[
+    "★ <b>TRICK & SHORTCUT:</b> Area of Trapezium = Median × Height = ½ (Sum of parallel sides) × Height.",
+    "★ <b>Midpoint of Diagonals Shortcut:</b> The line segment joining the midpoints of the two diagonals = ½ (b - a).",
+    "★ <b>Ratio of Triangular Areas:</b> Diagonals divide a trapezium into 4 triangles. The two triangles on the parallel bases are SIMILAR, and their areas are in ratio a² : b²."
+  ],
+  calc:{
+    a:{label:"Upper base (a)", unit:"cm"},
+    b:{label:"Lower base (b)", unit:"cm"},
+    h:{label:"Height (h)", unit:"cm"},
+    area:{formula:"0.5*(a+b)*h", label:"Area A"},
+    median:{formula:"0.5*(a+b)", label:"Median m"}
+  },
+  relatedIds:["parallelogram","cyclic-quadrilateral"]
 },
 
-"transverse-common-tangents": {
-  name:"Transverse Common Tangents (TCT)", subtitle:"Tangents crossing between two circles across center line",
-  icon:"⤲", color:"#f0a839", difficulty:"hard",
-  overview:"A Transverse Common Tangent crosses the line segment joining the centers of two circles. The circles lie on opposite sides of the TCT line.",
-  properties:["Circles lie on opposite sides of the TCT line","TCT uses PLUS radii: √(d² - (r₁ + r₂)²)"],
-  variables:[{symbol:"d",name:"Center Distance",desc:"Distance O₁O₂"},{symbol:"r₁",name:"Radius 1",desc:"First circle radius"},{symbol:"r₂",name:"Radius 2",desc:"Second circle radius"}],
-  formulas:[{quantity:"TCT Length",formula:"TCT = √(d² - (r₁ + r₂)²)",example:"d=13, r₁=7, r₂=5 → TCT = 5cm"}],
-  calc:{r1:{label:"Radius r₁",unit:"cm"},r2:{label:"Radius r₂",unit:"cm"},d:{label:"Distance d",unit:"cm"},tct:{formula:"Math.sqrt(d*d-(r1+r2)*(r1+r2))",label:"TCT Length"}}
+"circle": {
+  name:"Circle Basics",
+  subtitle:"Set of all points in a plane equidistant from a fixed center O",
+  icon:"○", color:"#22d3ee", difficulty:"easy",
+  overview:"A circle (वृत्त) is a 2D closed curve formed by all points in a plane equidistant from a fixed center O. Key parameters include radius r, diameter d = 2r, circumference C = 2πr, and area A = πr².",
+  properties:[
+    "All radii are equal: distance from center O to any edge point = r",
+    "Diameter d = 2r is the longest chord passing through center O",
+    "Total angle subtended at center = 360°",
+    "Perpendicular drawn from center O to any chord bisects the chord",
+    "Tangent line is perpendicular to the radius at point of contact (90°)",
+    "Equal chords subtend equal angles at the center and are equidistant from center"
+  ],
+  variables:[
+    {symbol:"r", name:"Radius", desc:"Distance from center O to edge"},
+    {symbol:"d", name:"Diameter", desc:"d = 2r (longest chord passing through center)"},
+    {symbol:"C", name:"Circumference", desc:"C = 2πr = πd (boundary perimeter)"},
+    {symbol:"A", name:"Area", desc:"A = πr² (surface area enclosed)"},
+    {symbol:"π", name:"Pi Constant", desc:"π = 22/7 ≈ 3.14159"}
+  ],
+  formulas:[
+    {quantity:"Diameter", formula:"d = 2r", example:"r = 7cm → d = 14cm"},
+    {quantity:"Radius", formula:"r = d / 2", example:"d = 14cm → r = 7cm"},
+    {quantity:"Circumference", formula:"C = 2πr = πd", example:"r = 7cm → C = 2×(22/7)×7 = 44cm"},
+    {quantity:"Area", formula:"A = πr²", example:"r = 7cm → A = (22/7)×49 = 154cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (in terms of d)", formula:"A = (π d²) / 4", note:"Direct area from diameter"},
+    {quantity:"Area (in terms of C)", formula:"A = C² / (4π)", note:"Direct area from circumference C"},
+    {quantity:"Radius (from C)", formula:"r = C / (2π)", note:"Radius from circumference"},
+    {quantity:"Radius (from A)", formula:"r = √(A / π)", note:"Radius from area"}
+  ],
+  specialCases:[
+    "Semicircle: θ = 180°, Area = ½πr², Arc = πr, Total Perimeter = πr + 2r.",
+    "Quadrant: θ = 90°, Area = ¼πr², Arc = ½πr, Total Perimeter = ½πr + 2r.",
+    "Concentric Circles (Annulus): Outer R, Inner r ➔ Ring Area = π(R² - r²)."
+  ],
+  examInsights:[
+    "★ <b>STANDARD CGL VALUES TABLE (Memorise for Instant Speed!):</b><br>• r = 7 cm ➔ C = 44 cm, Area = 154 cm²<br>• r = 14 cm ➔ C = 88 cm, Area = 616 cm²<br>• r = 21 cm ➔ C = 132 cm, Area = 1386 cm²<br>• r = 28 cm ➔ C = 176 cm, Area = 2464 cm²<br>• r = 3.5 cm ➔ C = 22 cm, Area = 38.5 cm²",
+    "★ <b>Percentage Change Trick:</b> If radius increases by k%, Circumference increases by k%, and Area increases by (2k + k²/100)%."
+  ],
+  calc:{
+    r:{label:"Radius (r)", unit:"cm"},
+    d:{formula:"2*r", label:"Diameter d"},
+    circum:{formula:"2*Math.PI*r", label:"Circumference C"},
+    area:{formula:"Math.PI*r*r", label:"Area A"}
+  },
+  relatedIds:["tangent-properties","external-tangents","direct-common-tangents","transverse-common-tangents","secant-tangent","alternate-segment","intersecting-chords","incircle-circumcircle","semicircle","quarter-circle","sector","segment","annulus"]
+},
+
+"semicircle": {
+  name:"Semi-Circle",
+  subtitle:"Half of a circle (θ = 180°) cut along a diameter",
+  icon:"⋎", color:"#22d3ee", difficulty:"easy",
+  overview:"A semicircle (अर्धवृत्त) is formed by cutting a circle in half along its diameter (central angle θ = 180°). It is bounded by a curved arc of length πr and a straight diameter of length 2r.",
+  properties:[
+    "Central angle θ = 180° (exactly half of 360°)",
+    "Bounded by 1 curved semicircular arc + 1 straight diameter",
+    "<b>Thales' Theorem:</b> Any angle inscribed in a semicircle is ALWAYS a right angle (90°)",
+    "Largest triangle that can be inscribed in a semicircle has base = 2r and height = r (Area = r²)",
+    "Line of symmetry is perpendicular to the diameter at center O"
+  ],
+  variables:[
+    {symbol:"r", name:"Radius", desc:"Radius of original circle"},
+    {symbol:"d", name:"Diameter", desc:"d = 2r (straight boundary edge)"},
+    {symbol:"l", name:"Curved Arc Length", desc:"l = πr = ½ (2πr)"},
+    {symbol:"P", name:"Total Perimeter", desc:"P = πr + 2r = r(π + 2)"},
+    {symbol:"A", name:"Area", desc:"A = ½ πr²"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = ½ πr²", example:"r = 7cm → A = ½ × (22/7) × 49 = 77cm²"},
+    {quantity:"Curved Arc Length", formula:"l = πr", example:"r = 7cm → l = (22/7) × 7 = 22cm"},
+    {quantity:"Total Perimeter", formula:"P = πr + 2r", example:"r = 7cm → P = 22 + 14 = 36cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (in terms of d)", formula:"A = (π d²) / 8", note:"Direct area using diameter d"},
+    {quantity:"Curved Arc (in terms of d)", formula:"l = (π d) / 2", note:"Arc length using diameter d"},
+    {quantity:"Total Perimeter (in terms of d)", formula:"P = d(π/2 + 1) = ½ d(π + 2)", note:"Perimeter using diameter d"},
+    {quantity:"Perimeter (when π = 22/7)", formula:"P = (36 / 7) r", note:"Extremely fast exam shortcut for perimeter when r is known!"},
+    {quantity:"Area of Largest Inscribed Triangle", formula:"Area = r²", note:"Base = 2r, Height = r ➔ ½(2r)(r) = r²"},
+    {quantity:"Area of Largest Inscribed Square", formula:"Area = (4 / 5) r²", note:"Side of square s = 2r / √5"}
+  ],
+  specialCases:[
+    "A semicircle is a sector of a circle with central angle θ = 180°.",
+    "Perimeter MUST include the straight diameter (2r). Curved arc alone is NOT the perimeter!"
+  ],
+  examInsights:[
+    "★ <b>PERIMETER WARNING (Most Common SSC Trap!):</b> Semicircle perimeter P = πr + 2r = (36/7)r when π = 22/7. For r = 7 cm, P = 36 cm (NOT 22 cm!).",
+    "★ <b>Largest Triangle in Semicircle:</b> Maximum area triangle inscribed in semicircle of radius r = r².",
+    "★ <b>Largest Square in Semicircle:</b> Side of largest square = 2r / √5 ➔ Area = (4/5) r²."
+  ],
+  calc:{
+    r:{label:"Radius (r)", unit:"cm"},
+    d:{formula:"2*r", label:"Diameter d"},
+    arc:{formula:"Math.PI*r", label:"Curved Arc l"},
+    area:{formula:"0.5*Math.PI*r*r", label:"Area A"},
+    perimeter:{formula:"Math.PI*r+2*r", label:"Total Perimeter P"}
+  },
+  relatedIds:["circle","quarter-circle","sector"]
+},
+
+"quarter-circle": {
+  name:"Quarter Circle (Quadrant)",
+  subtitle:"One-fourth of a circle (θ = 90°) bounded by two perpendicular radii",
+  icon:"⊗", color:"#22d3ee", difficulty:"easy",
+  overview:"A quarter circle or quadrant (चतुर्थांश वृत्त) is formed by taking one-fourth of a circle (central angle θ = 90°). It is bounded by two perpendicular radii (OA ⊥ OB) and a quarter-circumference arc.",
+  properties:[
+    "Central angle θ = 90° (exactly ¼ of 360°)",
+    "Bounded by 2 perpendicular straight radii (r, r) + 1 quarter-arc (½πr)",
+    "The two straight edge radii meet at a right angle (90°)",
+    "Area is exactly ¼ of the full circle area",
+    "Arc length is exactly ¼ of full circle circumference (½πr)"
+  ],
+  variables:[
+    {symbol:"r", name:"Radius", desc:"Radius of circle (OA = OB = r)"},
+    {symbol:"d", name:"Diameter", desc:"d = 2r"},
+    {symbol:"l", name:"Arc Length", desc:"l = ½ πr (quarter of circumference)"},
+    {symbol:"P", name:"Total Perimeter", desc:"P = ½ πr + 2r = r(½ π + 2)"},
+    {symbol:"A", name:"Area", desc:"A = ¼ πr²"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = ¼ πr²", example:"r = 7cm → A = ¼ × (22/7) × 49 = 38.5cm²"},
+    {quantity:"Arc Length", formula:"l = ½ πr", example:"r = 7cm → l = ½ × (22/7) × 7 = 11cm"},
+    {quantity:"Total Perimeter", formula:"P = ½ πr + 2r", example:"r = 7cm → P = 11 + 14 = 25cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (in terms of d)", formula:"A = (π d²) / 16", note:"Area using diameter d"},
+    {quantity:"Arc Length (in terms of d)", formula:"l = (π d) / 4", note:"Arc length using diameter d"},
+    {quantity:"Perimeter (when π = 22/7)", formula:"P = (25 / 7) r", note:"Fast shortcut for total perimeter when π = 22/7!"},
+    {quantity:"Inscribed Circle Radius", formula:"r_in = r (√2 - 1)", note:"Radius of circle inscribed inside a quadrant of radius r"}
+  ],
+  specialCases:[
+    "A Quadrant is a sector of a circle with central angle θ = 90°.",
+    "Four quadrants put together around a single point form one complete circle of radius r."
+  ],
+  examInsights:[
+    "★ <b>PERIMETER SHORTCUT:</b> When π = 22/7, Total Quadrant Perimeter P = (25/7) r. For r = 7 cm, P = 25 cm! For r = 14 cm, P = 50 cm!",
+    "★ <b>Inscribed Circle in Quadrant:</b> Small circle radius r_in = r (√2 - 1) ≈ 0.414 r.",
+    "★ <b>Leaf/Petal Area in Square:</b> A leaf created by 2 quadrants inside square of side a has Area = (4/7) a²!"
+  ],
+  calc:{
+    r:{label:"Radius (r)", unit:"cm"},
+    arc:{formula:"0.5*Math.PI*r", label:"Arc Length l"},
+    area:{formula:"0.25*Math.PI*r*r", label:"Area A"},
+    perimeter:{formula:"0.5*Math.PI*r+2*r", label:"Total Perimeter P"}
+  },
+  relatedIds:["circle","semicircle","sector"]
+},
+
+"sector": {
+  name:"Sector of Circle",
+  subtitle:"'Pie slice' region bounded by two radii and an arc with central angle θ",
+  icon:"⌒", color:"#fbbf24", difficulty:"medium",
+  overview:"A sector (त्रिज्यखंड) is the pie-slice-shaped region of a circle bounded by two radii and the arc connecting their endpoints. Its arc length and area are directly proportional to the central angle θ.",
+  properties:[
+    "Bounded by 2 straight radii (r) and 1 circular arc (l)",
+    "Minor sector: central angle θ < 180°",
+    "Major sector: central angle θ > 180°",
+    "Area and arc length scale linearly with central angle θ out of 360°",
+    "Semicircle is a sector with θ = 180°; Quadrant is a sector with θ = 90°"
+  ],
+  variables:[
+    {symbol:"r", name:"Radius", desc:"Radius of circle"},
+    {symbol:"θ", name:"Central Angle", desc:"Angle in degrees subtended at center O"},
+    {symbol:"l", name:"Arc Length", desc:"l = (θ / 360°) × 2πr"},
+    {symbol:"P", name:"Total Perimeter", desc:"P = l + 2r"},
+    {symbol:"A", name:"Sector Area", desc:"A = (θ / 360°) × πr²"}
+  ],
+  formulas:[
+    {quantity:"Sector Area", formula:"A = (θ / 360°) × πr²", example:"r = 7cm, θ = 60° → A = (60/360) × (22/7) × 49 = 25.67cm²"},
+    {quantity:"Arc Length (l)", formula:"l = (θ / 360°) × 2πr = (θ / 180°) × πr", example:"r = 7cm, θ = 60° → l = (60/180) × (22/7) × 7 = 7.33cm"},
+    {quantity:"Total Perimeter", formula:"P = l + 2r = (θ / 360°) × 2πr + 2r", example:"r = 7cm, θ = 60° → P = 7.33 + 14 = 21.33cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (in terms of Arc Length l)", formula:"A = ½ × l × r", note:"Extremely powerful shortcut: Area = ½ × arc × radius (like ½ bh!)"},
+    {quantity:"Arc Length (in terms of Area A)", formula:"l = 2A / r", note:"Expresses arc length directly from area"},
+    {quantity:"Central Angle (from Area A)", formula:"θ = (360° × A) / (πr²)", note:"Finds central angle when area and radius are given"},
+    {quantity:"Central Angle (from Arc Length l)", formula:"θ = (180° × l) / (πr)", note:"Finds central angle when arc length and radius are given"},
+    {quantity:"Area of Minor Sector", formula:"A_minor = (θ / 360°) × πr²", note:"For central angle θ < 180°"},
+    {quantity:"Area of Major Sector", formula:"A_major = ((360° - θ) / 360°) × πr² = πr² - A_minor", note:"For major sector where angle > 180°"}
+  ],
+  specialCases:[
+    "θ = 360° ➔ Full Circle (Area = πr², Perimeter = 2πr)",
+    "θ = 180° ➔ Semicircle (Area = ½πr², Perimeter = πr + 2r)",
+    "θ = 90°  ➔ Quadrant (Area = ¼πr², Perimeter = ½πr + 2r)",
+    "θ = 60°  ➔ Sixth of Circle (Area = ⅙πr²)"
+  ],
+  examInsights:[
+    "★ <b>MAGIC SHORTCUT FORMULA:</b> Area = ½ × l × r. If arc length l and radius r are known, multiply them and halve! No need to calculate angle θ!",
+    "★ <b>Major Sector Shortcut:</b> Major Sector Area = Total Circle Area - Minor Sector Area = πr² - A_minor.",
+    "★ <b>Clock Hand Problems:</b> Minute hand sweeps an angle of 6° per minute (360° / 60 min). Area swept in m minutes = (6m / 360) × πr² = (m / 60) × πr²."
+  ],
+  calc:{
+    r:{label:"Radius (r)", unit:"cm"},
+    theta:{label:"Angle θ", unit:"°"},
+    arc:{formula:"(theta/360)*2*Math.PI*r", label:"Arc Length l"},
+    area:{formula:"(theta/360)*Math.PI*r*r", label:"Sector Area A"},
+    perimeter:{formula:"(theta/360)*2*Math.PI*r + 2*r", label:"Total Perimeter P"}
+  },
+  relatedIds:["circle","semicircle","quarter-circle","segment"]
+},
+
+"segment": {
+  name:"Segment of Circle",
+  subtitle:"Region trapped between a chord and its corresponding arc",
+  icon:"⌒", color:"#fbbf24", difficulty:"hard",
+  overview:"A segment (वृत्तखंड) is the region of a circle bounded by a chord and the arc connecting its endpoints. Its area equals the area of the corresponding sector minus the triangle formed by the central radii and chord.",
+  properties:[
+    "Minor Segment: smaller region trapped between chord and minor arc",
+    "Major Segment: larger region trapped between chord and major arc",
+    "Segment Area = (Sector Area) - (Triangle Area formed by radii and chord)",
+    "Perpendicular from center O bisects both the chord and the central angle θ"
+  ],
+  variables:[
+    {symbol:"r", name:"Radius", desc:"Radius of circle"},
+    {symbol:"θ", name:"Central Angle", desc:"Angle subtended by chord at center O (degrees)"},
+    {symbol:"c", name:"Chord Length", desc:"c = 2r sin(θ/2)"},
+    {symbol:"h", name:"Height / Sagitta", desc:"Height of segment = r(1 - cos(θ/2))"},
+    {symbol:"A", name:"Segment Area", desc:"Enclosed area of segment"}
+  ],
+  formulas:[
+    {quantity:"Minor Segment Area", formula:"A = (θ / 360°) × πr² - ½ r² sin θ", example:"r = 7, θ = 90° → A = (90/360)π(49) - ½(49)sin(90°) = 38.5 - 24.5 = 14cm²"},
+    {quantity:"Chord Length", formula:"c = 2r sin(θ / 2)", example:"r = 7, θ = 90° → c = 2(7)sin(45°) = 14 / √2 = 7√2cm"},
+    {quantity:"Major Segment Area", formula:"A_major = πr² - A_minor", example:"r = 7, θ = 90° → A_major = 154 - 14 = 140cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area for θ = 90°", formula:"A = (π/4 - ½) r² = ((π - 2) / 4) r²", note:"For θ = 90°, Area ≈ 0.285 r² (when π = 3.1416)"},
+    {quantity:"Area for θ = 60°", formula:"A = (π/6 - √3/4) r²", note:"For θ = 60° (equilateral triangle subtended)"},
+    {quantity:"Area for θ = 120°", formula:"A = (π/3 - √3/4) r²", note:"For θ = 120° (sin 120° = √3/2)"}
+  ],
+  specialCases:[
+    "When chord is a diameter (θ = 180°), segment becomes a Semicircle (Area = ½πr²)."
+  ],
+  examInsights:[
+    "★ <b>Leaf / Petal Area Shortcut:</b> Area of leaf formed by 2 overlapping quadrants in a square of side a = (4/7) a².",
+    "★ <b>Quadrant Segment (θ = 90°):</b> Area = (π/4 - ½) r² = (22/28 - ½) r² = (8/28) r² = (2/7) r²! For r = 7 cm, Segment Area = (2/7) × 49 = 14 cm²!",
+    "★ <b>Triangle Subtraction Rule:</b> Triangle Area = ½ r² sin θ. Subtract this from Sector Area (θ/360 × πr²)."
+  ],
+  calc:{
+    r:{label:"Radius (r)", unit:"cm"},
+    theta:{label:"Angle θ", unit:"°"},
+    area:{formula:"(theta/360)*Math.PI*r*r - 0.5*r*r*Math.sin(theta*Math.PI/180)", label:"Segment Area A"}
+  },
+  relatedIds:["sector","circle","semicircle"]
+},
+
+"annulus": {
+  name:"Annulus (Circular Ring)",
+  subtitle:"The flat ring-shaped region between two concentric circles",
+  icon:"⭕", color:"#fbbf24", difficulty:"medium",
+  overview:"An annulus (वल्याकार मुद्रिका / रिंग) is the region between two concentric circles of outer radius R and inner radius r. Its area is the outer circle's area minus the inner circle's area.",
+  properties:[
+    "Both circles share the same center O (concentric)",
+    "Width of ring w = R - r",
+    "Area difference factorises neatly using difference of squares: R² - r² = (R + r)(R - r)"
+  ],
+  variables:[
+    {symbol:"R", name:"Outer Radius", desc:"Radius of larger circle"},
+    {symbol:"r", name:"Inner Radius", desc:"Radius of smaller circle"},
+    {symbol:"w", name:"Ring Width", desc:"w = R - r"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = π(R² − r²) = π(R+r)(R−r)", example:"R=10, r=6 → A=64π ≈ 201.06cm²"},
+    {quantity:"Ring Width", formula:"w = R − r", example:"R=10, r=6 → w = 4cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area (using Ring Width w & r)", formula:"A = π w (2r + w)", note:"Expresses ring area using inner radius and width"},
+    {quantity:"Area (using Longest Tangent Chord L)", formula:"A = (π / 4) L²", note:"L is the length of outer circle's chord tangent to inner circle!"}
+  ],
+  specialCases:[
+    "The area of an annulus equals the area of a circle whose diameter is the longest chord of the outer circle tangent to the inner circle!"
+  ],
+  examInsights:[
+    "★ <b>MAGIC CHORD SHORTCUT:</b> If the longest chord of outer circle tangent to inner circle has length L ➔ Annulus Area = (π / 4) L² (No need to find R or r!)."
+  ],
+  calc:{
+    R:{label:"Outer radius (R)", unit:"cm"},
+    r:{label:"Inner radius (r)", unit:"cm"},
+    area:{formula:"Math.PI*(R*R-r*r)", label:"Area A"}
+  },
+  relatedIds:["circle"]
+},
+
+"regular-polygon": {
+  name:"Regular Polygon (n-gon)",
+  subtitle:"A polygon with all n sides equal and all n interior angles equal",
+  icon:"⬡", color:"#19c37d", difficulty:"medium",
+  overview:"A regular polygon (सम बहुभुज) has n equal sides and n equal interior angles. Exterior angles ALWAYS sum to 360°, regardless of side count.",
+  properties:[
+    "Sum of interior angles = (n − 2) × 180°",
+    "Each interior angle = (n − 2) × 180° / n",
+    "Sum of exterior angles = 360° (ALWAYS)",
+    "Each exterior angle = 360° / n",
+    "Number of diagonals = n(n − 3) / 2"
+  ],
+  variables:[
+    {symbol:"n", name:"Number of sides", desc:"Number of edges (n ≥ 3)"},
+    {symbol:"s", name:"Side length", desc:"Length of each equal edge"}
+  ],
+  formulas:[
+    {quantity:"Interior Angle Sum", formula:"(n − 2) × 180°", example:"n=6 → 720°"},
+    {quantity:"Each Interior Angle", formula:"(n − 2) × 180° / n", example:"n=6 → 120°"},
+    {quantity:"Each Exterior Angle", formula:"360° / n", example:"n=6 → 60°"},
+    {quantity:"Number of Diagonals", formula:"n(n − 3) / 2", example:"n=6 → 9 diagonals"},
+    {quantity:"Area", formula:"A = (1/4) n s² cot(180°/n)", example:"n=6, s=4 → A = 24√3cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Number of Sides (from Exterior Angle)", formula:"n = 360° / (Exterior Angle)", note:"Easiest way to find n when interior angle is given (Ext = 180° - Int)"}
+  ],
+  specialCases:[
+    "n=3 (Equilateral Triangle), n=4 (Square), n=5 (Pentagon), n=6 (Hexagon), n=8 (Octagon)."
+  ],
+  examInsights:[
+    "★ <b>Fastest Way to Find n:</b> First calculate Exterior Angle = 180° - Interior Angle, then n = 360° / Exterior Angle!",
+    "★ <b>Diagonals Formula:</b> Number of diagonals = n(n - 3) / 2."
+  ],
+  calc:{
+    n:{label:"Sides (n)", unit:""},
+    s:{label:"Side length (s)", unit:"cm"},
+    perimeter:{formula:"n*s", label:"Perimeter P"},
+    area:{formula:"0.25*n*s*s/Math.tan(Math.PI/n)", label:"Area A"},
+    intAngle:{formula:"(n-2)*180/n", label:"Interior Angle"}
+  },
+  relatedIds:["hexagon","pentagon","octagon"]
+},
+
+"hexagon": {
+  name:"Regular Hexagon",
+  subtitle:"6-sided regular polygon composed of 6 equilateral triangles",
+  icon:"⬡", color:"#19c37d", difficulty:"medium",
+  overview:"A regular hexagon (समषट्भुज) has 6 equal sides of length a and 6 interior angles of 120°. It is composed of 6 identical equilateral triangles meeting at the center.",
+  properties:[
+    "6 equal sides (a)",
+    "6 interior angles of 120° each (Sum = 720°)",
+    "6 exterior angles of 60° each",
+    "Composed of 6 identical equilateral triangles of side a",
+    "Long diagonal D_long = 2a (passes through center)",
+    "Short diagonal D_short = a√3",
+    "Has 9 diagonals total"
+  ],
+  variables:[
+    {symbol:"a", name:"Side length", desc:"Edge length of hexagon"},
+    {symbol:"D_long", name:"Long Diagonal", desc:"D_long = 2a"},
+    {symbol:"D_short", name:"Short Diagonal", desc:"D_short = a√3"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = (3√3 / 2) a²", example:"a = 4cm → A = 24√3cm²"},
+    {quantity:"Long Diagonal", formula:"D_long = 2a", example:"a = 5cm → D = 10cm"},
+    {quantity:"Short Diagonal", formula:"D_short = a√3", example:"a = 5cm → D = 5√3cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Inradius (r)", formula:"r = (√3 / 2) a", note:"Radius of inscribed circle (height of equilateral triangle)"},
+    {quantity:"Circumradius (R)", formula:"R = a", note:"Radius of circumscribed circle equals side length a"}
+  ],
+  specialCases:[
+    "A regular hexagon inscribed in a circle of radius R has side a = R."
+  ],
+  examInsights:[
+    "★ <b>Area Shortcut:</b> Area = 6 × (Area of Equilateral Triangle of side a) = 6 × [(√3/4)a²] = (3√3/2)a².",
+    "★ <b>Diagonals:</b> Long diagonal = 2a, Short diagonal = a√3."
+  ],
+  calc:{
+    a:{label:"Side (a)", unit:"cm"},
+    area:{formula:"(3*Math.sqrt(3)/2)*a*a", label:"Area A"},
+    longDiag:{formula:"2*a", label:"Long Diagonal"},
+    shortDiag:{formula:"a*Math.sqrt(3)", label:"Short Diagonal"}
+  },
+  relatedIds:["regular-polygon","equilateral-triangle"]
+},
+
+"pentagon": {
+  name:"Pentagon",
+  subtitle:"A 5-sided polygon — interior angle 108° when regular",
+  icon:"⬟", color:"#19c37d", difficulty:"medium",
+  overview:"A regular pentagon (पंचभुज) has 5 equal sides and 5 equal interior angles of 108° each. Interior angle sum = 540°. Has 5 diagonals.",
+  properties:[
+    "5 equal sides (s)",
+    "5 interior angles of 108° each (Sum = 540°)",
+    "5 exterior angles of 72° each",
+    "Has 5 diagonals forming a 5-pointed star (pentagram)"
+  ],
+  variables:[{symbol:"s", name:"Side length", desc:"Edge length"}],
+  formulas:[
+    {quantity:"Area (regular)", formula:"A = ¼ √(5(5 + 2√5)) s²", example:"s = 6 → A ≈ 61.94cm²"},
+    {quantity:"Interior Angle Sum", formula:"Sum = 540°", example:"(5 - 2) × 180° = 540°"}
+  ],
+  derivedFormulas:[
+    {quantity:"Diagonal Length", formula:"d = s × (1 + √5)/2", note:"Diagonal is in golden ratio φ ≈ 1.618 with side s"}
+  ],
+  specialCases:[
+    "Diagonals form a central smaller pentagon in golden ratio proportion."
+  ],
+  examInsights:[
+    "★ <b>Angle & Diagonals:</b> Each interior angle = 108°; Number of diagonals = 5."
+  ],
+  calc:{
+    s:{label:"Side length (s)", unit:"cm"},
+    area:{formula:"0.25*Math.sqrt(5*(5+2*Math.sqrt(5)))*s*s", label:"Area A"}
+  },
+  relatedIds:["regular-polygon"]
+},
+
+"octagon": {
+  name:"Octagon",
+  subtitle:"An 8-sided polygon — interior angle 135° when regular",
+  icon:"⬢", color:"#19c37d", difficulty:"medium",
+  overview:"A regular octagon (अष्टभुज) has 8 equal sides and 8 interior angles of 135° each. Interior angle sum = 1080°. Has 20 diagonals.",
+  properties:[
+    "8 equal sides (s)",
+    "8 interior angles of 135° each (Sum = 1080°)",
+    "8 exterior angles of 45° each",
+    "Has 20 diagonals"
+  ],
+  variables:[{symbol:"s", name:"Side length", desc:"Edge length"}],
+  formulas:[
+    {quantity:"Area (regular)", formula:"A = 2(1 + √2) s²", example:"s = 5 → A ≈ 120.71cm²"},
+    {quantity:"Interior Angle Sum", formula:"Sum = 1080°", example:"(8 - 2) × 180° = 1080°"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area from Outer Square", formula:"A = S² - 2 s²", note:"Octagon formed by cutting 4 corners of square S = s(1 + √2)"}
+  ],
+  specialCases:[
+    "Formed by cutting 4 equal isosceles right triangles off the corners of a square."
+  ],
+  examInsights:[
+    "★ <b>Area Shortcut:</b> Area = 2(1 + √2) s² ≈ 4.8284 s²."
+  ],
+  calc:{
+    s:{label:"Side length (s)", unit:"cm"},
+    area:{formula:"2*(1+Math.sqrt(2))*s*s", label:"Area A"}
+  },
+  relatedIds:["regular-polygon","square"]
+},
+
+"cyclic-quadrilateral": {
+  name:"Cyclic Quadrilateral",
+  subtitle:"Quadrilateral with all 4 vertices lying on one circle",
+  icon:"⌫", color:"#a78bfa", difficulty:"hard",
+  overview:"A cyclic quadrilateral (चक्रीय चतुर्भुज) is a quadrilateral whose four vertices all lie on a single circle. Opposite angles are supplementary, and Ptolemy's Theorem links its diagonals and sides.",
+  properties:[
+    "Opposite angles are SUPPLEMENTARY: ∠A + ∠C = 180°, ∠B + ∠D = 180°",
+    "Exterior angle at any vertex equals interior angle at opposite vertex",
+    "Every rectangle and square is automatically cyclic",
+    "A trapezium is cyclic ONLY if it is an isosceles trapezium"
+  ],
+  variables:[
+    {symbol:"a,b,c,d", name:"Four sides in order", desc:"Lengths of sides"},
+    {symbol:"p, q", name:"Diagonals", desc:"p = AC, q = BD"},
+    {symbol:"s", name:"Semi-perimeter", desc:"s = (a + b + c + d) / 2"}
+  ],
+  formulas:[
+    {quantity:"Area (Brahmagupta's)", formula:"A = √[(s−a)(s−b)(s−c)(s−d)]", example:"s = semi-perimeter"},
+    {quantity:"Ptolemy's Theorem", formula:"p × q = a×c + b×d", example:"diagonals product = sum of opposite side products"}
+  ],
+  derivedFormulas:[
+    {quantity:"Circumradius (R)", formula:"R = ¼ √[((ab+cd)(ac+bd)(ad+bc)) / ((s-a)(s-b)(s-c)(s-d))]", note:"Radius of circumscribed circle"}
+  ],
+  specialCases:[
+    "If d = 0, Brahmagupta's formula reduces to Heron's formula for a triangle!"
+  ],
+  examInsights:[
+    "★ <b>Ptolemy's Theorem:</b> p × q = a×c + b×d.",
+    "★ <b>Opposite Angles:</b> ∠A + ∠C = 180°."
+  ],
+  calc:{
+    a:{label:"Side a", unit:"cm"},
+    b:{label:"Side b", unit:"cm"},
+    c:{label:"Side c", unit:"cm"},
+    d:{label:"Side d", unit:"cm"},
+    area:{formula:"(function(){var s=(a+b+c+d)/2; return Math.sqrt(Math.max((s-a)*(s-b)*(s-c)*(s-d),0));})()", label:"Area A"}
+  },
+  relatedIds:["ptolemys-theorem","incircle-circumcircle"]
+},
+
+"kite": {
+  name:"Kite",
+  subtitle:"Two pairs of adjacent equal sides — diagonals always cross at 90°",
+  icon:"◈", color:"#a78bfa", difficulty:"medium",
+  overview:"A kite (पतंग) has two distinct pairs of adjacent equal sides. Its diagonals intersect at right angles (90°), and the main diagonal acts as an axis of symmetry.",
+  properties:[
+    "Two pairs of adjacent equal sides: AB = AD = a, BC = CD = b",
+    "Diagonals intersect at right angles: d₁ ⊥ d₂ at 90°",
+    "Main diagonal bisects the cross diagonal and the vertex angles",
+    "One pair of opposite angles are equal (between unequal sides)"
+  ],
+  variables:[
+    {symbol:"a, b", name:"Adjacent equal sides", desc:"Lengths of the two pairs"},
+    {symbol:"d₁, d₂", name:"Diagonals", desc:"d₁ ⊥ d₂"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = ½ × d₁ × d₂", example:"d₁ = 8, d₂ = 6 → A = 24cm²"},
+    {quantity:"Perimeter", formula:"P = 2(a + b)", example:"a = 5, b = 7 → P = 24cm"}
+  ],
+  derivedFormulas:[],
+  specialCases:[
+    "If a = b, the kite becomes a Rhombus."
+  ],
+  examInsights:[
+    "★ <b>Area via Diagonals:</b> Area = ½ × d₁ × d₂ (since diagonals cross at 90°)."
+  ],
+  calc:{
+    d1:{label:"Diagonal d₁", unit:"cm"},
+    d2:{label:"Diagonal d₂", unit:"cm"},
+    area:{formula:"0.5*d1*d2", label:"Area A"}
+  },
+  relatedIds:["rhombus","square"]
+},
+
+"ellipse": {
+  name:"Ellipse",
+  subtitle:"An 'oval' — circle stretched along semi-major axis a and semi-minor axis b",
+  icon:"⚬", color:"#fbbf24", difficulty:"hard",
+  overview:"An ellipse (दीर्घवृत्त) is a stretched circle with semi-major axis a and semi-minor axis b. Sum of distances from any point to two fixed foci is constant.",
+  properties:[
+    "Semi-major axis a, Semi-minor axis b",
+    "When a = b, ellipse becomes a circle of radius r = a",
+    "Sum of distances from any point on ellipse to two foci = 2a"
+  ],
+  variables:[
+    {symbol:"a", name:"Semi-major axis", desc:"Longer radius"},
+    {symbol:"b", name:"Semi-minor axis", desc:"Shorter radius"}
+  ],
+  formulas:[
+    {quantity:"Area", formula:"A = π × a × b", example:"a = 5, b = 3 → A = 15π ≈ 47.12cm²"},
+    {quantity:"Perimeter (approx.)", formula:"P ≈ π[3(a+b) − √((3a+b)(a+3b))]", example:"Ramanujan's formula"}
+  ],
+  derivedFormulas:[],
+  specialCases:[
+    "When a = b, Area = πa² (Circle)."
+  ],
+  examInsights:[
+    "★ <b>Area Shortcut:</b> Area = π × a × b."
+  ],
+  calc:{
+    a:{label:"Semi-major a", unit:"cm"},
+    b:{label:"Semi-minor b", unit:"cm"},
+    area:{formula:"Math.PI*a*b", label:"Area A"}
+  },
+  relatedIds:["circle"]
+},
+
+"composite-2d": {
+  name:"Composite Figures & Paths",
+  subtitle:"Irregular 2D shapes built by combining basic figures or cutting out paths",
+  icon:"≡", color:"#94a3b8", difficulty:"hard",
+  overview:"Composite figures (मिश्रित आकृतियाँ) are formed by combining two or more basic shapes (rectangles, triangles, semicircles, sectors) or by cutting pathways into shapes. Solving them requires breaking the figure into recognizable components.",
+  properties:[
+    "Additive Principle: Total Area = Sum of individual component areas (A_total = A₁ + A₂ + ...)",
+    "Subtractive Principle: Shaded Area = Total Outer Area - Unshaded Inner Area",
+    "Perimeter Principle: Perimeter = Sum of EXTERNAL boundary edges ONLY (never add internal dividing lines!)",
+    "Always redraw and label newly created dividing lines"
+  ],
+  variables:[
+    {symbol:"l, b", name:"Length & Breadth", desc:"Dimensions of base rectangle"},
+    {symbol:"w", name:"Path Width", desc:"Uniform width of path/road"},
+    {symbol:"r", name:"Corner Radius", desc:"Radius of circular arcs/corners"},
+    {symbol:"A_shaded", name:"Shaded Area", desc:"A_outer - A_inner"}
+  ],
+  formulas:[
+    {quantity:"Outer Path Area (width w)", formula:"Area = 2w(l + b + 2w)", example:"l=20m, b=15m, w=2m → Area = 2(2)(20+15+4) = 156m²"},
+    {quantity:"Inner Path Area (width w)", formula:"Area = 2w(l + b - 2w)", example:"l=20m, b=15m, w=2m → Area = 2(2)(20+15-4) = 124m²"},
+    {quantity:"Crossroads Area (width w)", formula:"Area = w(l + b - w)", example:"l=20m, b=15m, w=2m → Area = 2(20+15-2) = 66m²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Area between 4 Touching Circles (radius r)", formula:"Area = (4 - π) r² ≈ 0.858 r²", note:"Shaded space enclosed between 4 mutually touching equal circles inside square 2r"},
+    {quantity:"Area between 3 Touching Circles (radius r)", formula:"Area = (√3 - π/2) r² ≈ 0.161 r²", note:"Shaded space between 3 mutually touching equal circles"},
+    {quantity:"2-Leaf Area inside Square (side a)", formula:"Area = (4 / 7) a²", note:"Area of leaf/petal formed by 2 quarter-circle arcs inside square"},
+    {quantity:"Track with Semicircular Ends", formula:"Area = l × w + π(w/2)²", note:"Running track with rectangular straight stretch l and semicircular ends of diameter w"}
+  ],
+  specialCases:[
+    "If path is built outside: length becomes (l + 2w) and breadth (b + 2w).",
+    "If path is built inside: length becomes (l - 2w) and breadth (b - 2w)."
+  ],
+  examInsights:[
+    "★ <b>PATH SHORTCUTS (Memorise for CGL!):</b><br>• Outer Path Area = 2w(l + b + 2w)<br>• Inner Path Area = 2w(l + b - 2w)<br>• Crossroads Area = w(l + b - w)",
+    "★ <b>4 Circles Corner Gap:</b> Area = (4 - π) r² = (3/14) a² (where square side a = 2r).",
+    "★ <b>Leaf/Petal Area in Square:</b> Shaded leaf area inside square of side a = (4/7) a²."
+  ],
+  calc:{
+    l:{label:"Rectangle Length (l)", unit:"m"},
+    w:{label:"Rectangle Breadth (b)", unit:"m"},
+    pathW:{label:"Path Width (w)", unit:"m"},
+    outerPath:{formula:"2*pathW*(l+w+2*pathW)", label:"Outer Path Area"},
+    innerPath:{formula:"2*pathW*(l+w-2*pathW)", label:"Inner Path Area"}
+  },
+  relatedIds:["rectangle","square","circle","quarter-circle"]
 },
 
 "equilateral-triangle": {
@@ -837,13 +2223,40 @@ circle: {
 },
 
 "right-triangle": {
-  name:"Right Triangle & Triples", subtitle:"Triangle with one 90° right angle",
+  name:"Right Triangle & Triples", subtitle:"Triangle with one 90° right angle — Pythagorean triples & inscribed shapes",
   icon:"△", color:"#f0a839", difficulty:"easy",
-  overview:"A right triangle has one angle equal to 90°. Governed by Pythagoras theorem: a² + b² = c².",
-  properties:["One angle = 90°","Pythagorean theorem: a² + b² = c²","Circumcenter is midpoint of hypotenuse (R = c/2)"],
-  variables:[{symbol:"a,b",name:"Legs",desc:"Perpendicular sides"},{symbol:"c",name:"Hypotenuse",desc:"c = √(a² + b²)"}],
-  formulas:[{quantity:"Pythagoras",formula:"c² = a² + b²",example:"3,4 → c = 5cm"},{quantity:"Area",formula:"A = ½ a b",example:"a=6, b=8 → A = 24cm²"}],
-  calc:{a:{label:"Leg a",unit:"cm"},b:{label:"Leg b",unit:"cm"},c:{formula:"Math.sqrt(a*a+b*b)",label:"Hypotenuse c"},area:{formula:"0.5*a*b",label:"Area"}}
+  overview:"A right triangle has one angle equal to 90°. Governed by Pythagoras theorem: a² + b² = c². Highly tested in CGL/CHSL for Pythagorean triples, inradius/circumradius, and inscribed squares.",
+  properties:[
+    "One angle = 90°, sum of other two acute angles = 90°",
+    "Pythagorean theorem: a² + b² = c²",
+    "Circumcenter lies on hypotenuse midpoint: R = c/2",
+    "Incenter radius r = (a + b - c) / 2",
+    "Altitude to hypotenuse: h = (a × b) / c"
+  ],
+  variables:[{symbol:"a,b",name:"Legs",desc:"Perpendicular sides"},{symbol:"c",name:"Hypotenuse",desc:"c = √(a² + b²)"},{symbol:"r",name:"Inradius",desc:"r = (a+b-c)/2"},{symbol:"R",name:"Circumradius",desc:"R = c/2"}],
+  formulas:[
+    {quantity:"Pythagoras",formula:"c² = a² + b²",example:"3,4 → c = 5cm"},
+    {quantity:"Area",formula:"A = ½ a b",example:"a=6, b=8 → A = 24cm²"},
+    {quantity:"Inradius r",formula:"r = (a + b - c) / 2",example:"3,4,5 → r = (3+4-5)/2 = 1cm"},
+    {quantity:"Circumradius R",formula:"R = c / 2",example:"3,4,5 → R = 2.5cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"Altitude to Hypotenuse (h)",formula:"h = (a × b) / c",note:"Perpendicular from 90° vertex to hypotenuse"},
+    {quantity:"Max Inscribed Square (Case 1: Shares 90° Angle)",formula:"x = (a × b) / (a + b)",note:"Two sides of square lie along legs a and b"},
+    {quantity:"Max Inscribed Square (Case 2: On Hypotenuse)",formula:"x = (a × b × c) / (a² + b² + a × b) = (b × h) / (b + h)",note:"One side of square rests on hypotenuse c"},
+    {quantity:"Inradius + Circumradius Sum",formula:"r + R = (a + b) / 2",note:"Sum of inradius and circumradius equals average of legs"}
+  ],
+  specialCases:[
+    "High-Yield CGL Triples: (3,4,5), (5,12,13), (7,24,25), (8,15,17), (9,40-41), (11,60,61), (12,35,37), (20,21,29)",
+    "Special 30°-60°-90° Triangle: Sides are in ratio 1 : √3 : 2 (hypotenuse is 2)",
+    "Special 45°-45°-90° Triangle: Sides are in ratio 1 : 1 : √2 (Isosceles right triangle)"
+  ],
+  examInsights:[
+    "PYQ Speed Shortcut: To find inradius of a right triangle with legs 12 and 5 (hypotenuse 13), use r = (12 + 5 - 13) / 2 = 2 cm in 3 seconds!",
+    "PYQ Pattern (Max Inscribed Square): Right triangle legs 6 and 8 (hypotenuse 10). Case 1 square side x = (6×8)/(6+8) = 48/14 = 3.43 cm. Case 2 square side x = (6×8×10)/(36+64+48) = 480/148 = 3.24 cm.",
+    "Trap Warning: Circumcenter is ALWAYS the midpoint of hypotenuse! So circumradius R = c/2. Orthocenter is ALWAYS the vertex containing the 90° angle."
+  ],
+  calc:{a:{label:"Leg a",unit:"cm"},b:{label:"Leg b",unit:"cm"},c:{formula:"Math.sqrt(a*a+b*b)",label:"Hypotenuse c"},area:{formula:"0.5*a*b",label:"Area"},inradius:{formula:"(a+b-Math.sqrt(a*a+b*b))/2",label:"Inradius r"},circumradius:{formula:"Math.sqrt(a*a+b*b)/2",label:"Circumradius R"}}
 },
 
 square: {
@@ -897,13 +2310,38 @@ hexagon: {
 },
 
 cube: {
-  name:"Cube", subtitle:"Regular 3D solid bounded by 6 equal square faces",
+  name:"Cube", subtitle:"Regular 3D solid bounded by 6 equal square faces — painting & cutting shortcuts",
   icon:"⬛", color:"#fbbf24", difficulty:"easy",
-  overview:"A cube is a regular 3D solid with 6 square faces, 12 equal edges, and 8 vertices.",
-  properties:["6 square faces","Volume = a³","TSA = 6a²","Body Diagonal = a√3"],
-  variables:[{symbol:"a",name:"Edge Length",desc:"Length of edge"}],
-  formulas:[{quantity:"Volume",formula:"V = a³",example:"a=5cm → V = 125cm³"},{quantity:"TSA",formula:"TSA = 6a²",example:"a=5cm → TSA = 150cm²"}],
-  calc:{a:{label:"Edge (a)",unit:"cm"},vol:{formula:"a*a*a",label:"Volume"},tsa:{formula:"6*a*a",label:"TSA"}}
+  overview:"A cube is a regular 3D solid with 6 identical square faces, 12 equal edges, and 8 vertices. Frequently tested in CGL/CHSL for diagonal cuts, melting/recasting, and 3D painted cube cutting combinatorics.",
+  properties:[
+    "6 identical square faces, 12 equal edges (a), 8 vertices",
+    "Volume V = a³, Total Surface Area TSA = 6a², Lateral Area LSA = 4a²",
+    "Body Diagonal D = a√3, Face Diagonal d = a√2",
+    "Inradius (sphere inside cube): r = a/2",
+    "Circumradius (sphere enclosing cube): R = (a√3)/2"
+  ],
+  variables:[{symbol:"a",name:"Edge Length"},{symbol:"D",name:"Body Diagonal",desc:"D = a√3"},{symbol:"n",name:"Cuts per edge",desc:"n = big side / small side"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = a³",example:"a=5cm → V = 125cm³"},
+    {quantity:"Total Surface Area",formula:"TSA = 6a²",example:"a=5cm → TSA = 150cm²"},
+    {quantity:"Body Diagonal",formula:"D = a√3",example:"a=5cm → D = 5√3cm"}
+  ],
+  derivedFormulas:[
+    {quantity:"3 Faces Painted Cubes",formula:"Always 8",note:"Located at the 8 corner vertices"},
+    {quantity:"2 Faces Painted Cubes",formula:"12 × (n − 2)",note:"Located along the 12 edges"},
+    {quantity:"1 Face Painted Cubes",formula:"6 × (n − 2)²",note:"Located on the centers of 6 faces"},
+    {quantity:"0 Faces Painted Cubes (Unpainted)",formula:"(n − 2)³",note:"Inner solid core"}
+  ],
+  specialCases:[
+    "Longest Rod inside a Cubical Room: Length = Body Diagonal = a√3",
+    "Volume Ratio of Inscribed Sphere to Cube: π : 6 ≈ 1 : 1.91",
+    "Volume Ratio of Enclosing Sphere to Cube: (√3 π) : 2 ≈ 2.72 : 1"
+  ],
+  examInsights:[
+    "PYQ Speed Shortcut (Cube Painting): A 5cm painted cube is cut into 1cm small cubes (n = 5/1 = 5). 3-face painted = 8. 2-face painted = 12(5-2) = 36. 1-face painted = 6(3)² = 54. 0-face painted = (5-2)³ = 27.",
+    "PYQ Speed Shortcut: Find the longest rod that can fit in a cubical box of side 10cm. Solution: D = 10√3 cm ≈ 17.32 cm in 2 seconds!"
+  ],
+  calc:{a:{label:"Edge (a)",unit:"cm"},vol:{formula:"a*a*a",label:"Volume"},tsa:{formula:"6*a*a",label:"TSA"},diag:{formula:"a*Math.sqrt(3)",label:"Body Diagonal"}}
 },
 
 cuboid: {
@@ -917,53 +2355,151 @@ cuboid: {
 },
 
 sphere: {
-  name:"Sphere & Recasting", subtitle:"Perfectly symmetrical 3D round solid",
+  name:"Sphere & Recasting", subtitle:"Perfectly symmetrical 3D round solid — melting & recasting shortcuts",
   icon:"⚽", color:"#22d3ee", difficulty:"medium",
-  overview:"A sphere is a round 3D solid of radius r. Volume = (4/3)πr³, Surface Area = 4πr².",
-  properties:["Surface Area = 4πr²","Volume = (4/3)πr³","Recasting N small spheres into 1 big sphere: N r³ = R³"],
-  variables:[{symbol:"r",name:"Radius",desc:"Center to surface"}],
-  formulas:[{quantity:"Volume",formula:"V = (4/3)πr³",example:"r=3cm → V = 36πcm³"},{quantity:"Surface Area",formula:"SA = 4πr²",example:"r=7cm → SA = 616cm²"}],
+  overview:"A sphere is a perfectly symmetrical round 3D solid of radius r. Highly tested in CGL/CHSL for melting & recasting into smaller lead shots or wires (Equating Volumes).",
+  properties:[
+    "Surface Area SA = 4πr²",
+    "Volume V = (4/3)πr³",
+    "Melting a big sphere (R) to make N small spheres (r): N × r³ = R³",
+    "Melting sphere into wire (cylinder of length L, radius r_wire): (4/3)πR³ = π r_wire² L"
+  ],
+  variables:[{symbol:"r",name:"Radius"},{symbol:"R",name:"Big Sphere Radius"},{symbol:"N",name:"Number of small spheres"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = (4/3)πr³",example:"r=3cm → V = 36π cm³"},
+    {quantity:"Surface Area",formula:"SA = 4πr²",example:"r=7cm → SA = 616 cm²"},
+    {quantity:"Recasting Count N",formula:"N = R³ / r³ = (R / r)³",example:"R=6, r=2 → N = 27 small spheres"}
+  ],
+  derivedFormulas:[
+    {quantity:"Recasting into Wire Length (L)",formula:"L = (4 R³) / (3 r_wire²)",note:"Equating sphere volume to cylinder volume"},
+    {quantity:"Hollow Sphere Shell Volume",formula:"V = (4/3) π (R³ − r³)",note:"R = outer radius, r = inner radius"}
+  ],
+  specialCases:[
+    "Ratio of Volume to Surface Area: V / SA = r / 3",
+    "Sphere Inscribed in Cube of Side a: Radius r = a/2"
+  ],
+  examInsights:[
+    "PYQ Speed Shortcut (Recasting): A solid metallic sphere of radius 6 cm is melted and recast into small spheres of radius 2 cm. Find number of small spheres N. Solution: N = (6/2)³ = 3³ = 27 in 3 seconds!",
+    "Trap Warning: Surface area of sphere is 4πr² (no base). Hemisphere total surface area is 3πr² (includes flat circular base)."
+  ],
   calc:{r:{label:"Radius (r)",unit:"cm"},sa:{formula:"4*Math.PI*r*r",label:"Surface Area"},vol:{formula:"(4/3)*Math.PI*r*r*r",label:"Volume"}}
 },
 
 hemisphere: {
   name:"Hemisphere (CSA/TSA)", subtitle:"Half of a sphere cut by a plane through center",
   icon:"☽", color:"#22d3ee", difficulty:"medium",
-  overview:"A hemisphere has 1 curved dome + 1 flat circular base. CSA = 2πr², TSA = 3πr², Volume = (2/3)πr³.",
-  properties:["Curved SA = 2πr²","Total SA = 3πr² (includes flat base)","Volume = (2/3)πr³"],
+  overview:"A hemisphere is formed by slicing a sphere in half. It has 1 curved dome + 1 flat circular base.",
+  properties:[
+    "Curved Surface Area CSA = 2πr²",
+    "Total Surface Area TSA = 3πr² (includes flat circular base πr²)",
+    "Volume V = (2/3)πr³",
+    "Ratio of CSA : TSA = 2 : 3"
+  ],
   variables:[{symbol:"r",name:"Radius",desc:"Dome radius"}],
-  formulas:[{quantity:"Volume",formula:"V = (2/3)πr³",example:"r=7cm → V = 718.67cm³"},{quantity:"Total SA",formula:"TSA = 3πr²",example:"r=7cm → TSA = 462cm²"}],
-  calc:{r:{label:"Radius (r)",unit:"cm"},tsa:{formula:"3*Math.PI*r*r",label:"Total SA"},vol:{formula:"(2/3)*Math.PI*r*r*r",label:"Volume"}}
+  formulas:[
+    {quantity:"Volume",formula:"V = (2/3)πr³",example:"r=7cm → V = 718.67 cm³"},
+    {quantity:"Total SA",formula:"TSA = 3πr²",example:"r=7cm → TSA = 462 cm²"},
+    {quantity:"Curved SA",formula:"CSA = 2πr²",example:"r=7cm → CSA = 308 cm²"}
+  ],
+  specialCases:[
+    "Standard Value Table for r=7: CSA = 308, TSA = 462, Volume = 718.67",
+    "Max Cone Inscribed in Hemisphere: Height h = r, Base = r → V = (1/3)πr³ = ½ V_hemisphere"
+  ],
+  examInsights:[
+    "Trap Warning: Never confuse CSA (2πr²) with TSA (3πr²)! If a question asks for painting total surface of a hemisphere bowl, always use 3πr².",
+    "PYQ Speed Shortcut: Find total surface area of a solid hemisphere of radius 7 cm. Solution: TSA = 3 × (22/7) × 49 = 462 cm² in 3 seconds!"
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},tsa:{formula:"3*Math.PI*r*r",label:"Total SA"},csa:{formula:"2*Math.PI*r*r",label:"Curved SA"},vol:{formula:"(2/3)*Math.PI*r*r*r",label:"Volume"}}
 },
 
 cylinder: {
-  name:"Cylinder & Pipe Flow", subtitle:"3D solid with two parallel congruent circular bases",
+  name:"Cylinder & Pipe Flow", subtitle:"3D solid with two parallel congruent circular bases — embankment & flow dynamics",
   icon:"🛢", color:"#19c37d", difficulty:"easy",
-  overview:"A cylinder has base radius r and height h. Volume = πr²h, CSA = 2πrh, TSA = 2πr(r+h).",
-  properties:["Volume = πr²h","CSA = 2πrh","Road roller area covered = CSA × revolutions"],
-  variables:[{symbol:"r",name:"Radius",desc:"Base radius"},{symbol:"h",name:"Height",desc:"Perpendicular height"}],
-  formulas:[{quantity:"Volume",formula:"V = πr²h",example:"r=7, h=10 → V = 1540cm³"},{quantity:"Curved SA",formula:"CSA = 2πrh",example:"r=7, h=10 → CSA = 440cm²"}],
-  calc:{r:{label:"Radius (r)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},vol:{formula:"Math.PI*r*r*h",label:"Volume"},csa:{formula:"2*Math.PI*r*h",label:"Curved SA"}}
+  overview:"A cylinder has base radius r and height h. Volume = πr²h, CSA = 2πrh, TSA = 2πr(r+h). Tested heavily for well-digging embankments and water pipe flow.",
+  properties:[
+    "Volume V = πr²h, Curved Surface Area CSA = 2πrh, Total Surface Area TSA = 2πr(r+h)",
+    "Embankment Height: H = (r² × h) / [(r + w)² − r²] (where w = embankment width)",
+    "Water Flow Volume: V = A_pipe × Velocity × Time = π r_pipe² × v × t",
+    "Road Roller area covered in N revolutions: Area = N × CSA = N × 2πrh"
+  ],
+  variables:[{symbol:"r",name:"Radius"},{symbol:"h",name:"Height"},{symbol:"w",name:"Embankment width"},{symbol:"v",name:"Flow velocity"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = πr²h",example:"r=7, h=10 → V = 1540 cm³"},
+    {quantity:"Curved SA",formula:"CSA = 2πrh",example:"r=7, h=10 → CSA = 440 cm²"},
+    {quantity:"Total SA",formula:"TSA = 2πr(r+h)",example:"r=7, h=10 → TSA = 748 cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Embankment Height (H)",formula:"H = (r² × h) / [(r + w)² − r²]",note:"Earth dug from well of radius r, depth h spread around width w"},
+    {quantity:"Hollow Pipe Cylinder Volume",formula:"V = π h (R² − r²)",note:"R = outer radius, r = inner radius"},
+    {quantity:"Water Flow Volume per Hour",formula:"V = π × (d/2)² × v_m/hr",note:"d = pipe diameter, v = speed of water"}
+  ],
+  specialCases:[
+    "Ratio of Volume of Cylinder to Cone (same r and h): 3 : 1",
+    "Ratio of Volume of Cylinder to Sphere (h = 2r): 3 : 2"
+  ],
+  examInsights:[
+    "PYQ Pattern (Embankment Problem): A well of diameter 14m (r=7m) and depth 10m is dug. Earth is spread around width 7m (w=7). Find embankment height. H = (7²×10)/[(7+7)² - 7²] = 490/(196-49) = 490/147 = 3.33m in 15 seconds!",
+    "PYQ Pattern (Road Roller): A roller of diameter 1.4m (r=0.7m) and length 2m makes 500 revolutions to level a playground. Area = 500 × 2 × (22/7) × 0.7 × 2 = 4400 m²."
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},vol:{formula:"Math.PI*r*r*h",label:"Volume"},csa:{formula:"2*Math.PI*r*h",label:"Curved SA"},tsa:{formula:"2*Math.PI*r*(r+h)",label:"Total SA"}}
 },
 
 cone: {
-  name:"Cone & Canvas Tents", subtitle:"3D solid with circular base tapering to an apex",
+  name:"Cone & Canvas Tents", subtitle:"3D solid with circular base tapering to an apex — cone cuts & inscribed spheres",
   icon:"🔺", color:"#19c37d", difficulty:"medium",
-  overview:"A cone has base radius r, height h, slant height l = √(r² + h²). Volume = (1/3)πr²h, CSA = πrl.",
-  properties:["Slant height l = √(r² + h²)","Volume = (1/3)πr²h","Canvas for tent = CSA = πrl"],
-  variables:[{symbol:"r",name:"Radius",desc:"Base radius"},{symbol:"h",name:"Height",desc:"Perpendicular height"}],
-  formulas:[{quantity:"Slant Height",formula:"l = √(r² + h²)",example:"r=3, h=4 → l = 5cm"},{quantity:"Volume",formula:"V = (1/3)πr²h",example:"r=3, h=4 → V = 12πcm³"}],
-  calc:{r:{label:"Radius (r)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},slant:{formula:"Math.sqrt(r*r+h*h)",label:"Slant Height"},vol:{formula:"(1/3)*Math.PI*r*r*h",label:"Volume"}}
+  overview:"A cone has base radius r, vertical height h, and slant height l = √(r² + h²). Volume V = (1/3)πr²h, CSA = πrl, TSA = πr(r+l). Tested heavily for conical canvas tents and cone-cutting volume ratios.",
+  properties:[
+    "Slant height l = √(r² + h²)",
+    "Volume V = (1/3)πr²h, Curved Surface Area CSA = πrl, Total Surface Area TSA = πr(r+l)",
+    "Inscribed Sphere Radius: r_sphere = (r × h) / (l + r)",
+    "Cone Cutting Volume Ratio: Cutting a cone parallel to base at height h₁ gives V₁ / V₂ = (h₁ / h₂)"
+  ],
+  variables:[{symbol:"r",name:"Base Radius"},{symbol:"h",name:"Vertical Height"},{symbol:"l",name:"Slant Height",desc:"l = √(r² + h²)"}],
+  formulas:[
+    {quantity:"Slant Height",formula:"l = √(r² + h²)",example:"r=3, h=4 → l = 5 cm"},
+    {quantity:"Volume",formula:"V = (1/3)πr²h",example:"r=3, h=4 → V = 12π cm³"},
+    {quantity:"Curved SA (Canvas)",formula:"CSA = πr l",example:"r=7, l=10 → CSA = 220 cm²"},
+    {quantity:"Total SA",formula:"TSA = πr(r + l)",example:"r=7, l=10 → TSA = 374 cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Inscribed Sphere Radius",formula:"r_sphere = (r × h) / (l + r)",note:"Radius of maximum sphere that can fit inside the cone"},
+    {quantity:"Cone Cutting Volume Ratio",formula:"V₁ / V_total = (h₁ / h_total)³",note:"Volume of top cut cone is proportional to cube of cut height"}
+  ],
+  specialCases:[
+    "Semi-Vertical Angle (θ): r = l sin θ, h = l cos θ",
+    "Maximum Volume Cone for a given Slant Height l: occurs when tan θ = √2 (θ ≈ 54.74°)"
+  ],
+  examInsights:[
+    "PYQ Speed Shortcut (Canvas Tent): Base diameter 14 m (r=7 m), height 24 m. Find slant height l = √(7² + 24²) = 25 m. Canvas area needed = CSA = (22/7) × 7 × 25 = 550 m² in 5 seconds!",
+    "PYQ Pattern (Cone Cut): A cone of height 30 cm is cut parallel to base such that top cone volume is 1/27 of total volume. Height from apex = 30 × (1/27)^(1/3) = 30 × (1/3) = 10 cm!"
+  ],
+  calc:{r:{label:"Base Radius (r)",unit:"cm"},h:{label:"Height (h)",unit:"cm"},slant:{formula:"Math.sqrt(r*r+h*h)",label:"Slant Height l"},vol:{formula:"(1/3)*Math.PI*r*r*h",label:"Volume"},csa:{formula:"Math.PI*r*Math.sqrt(r*r+h*h)",label:"Curved SA (Canvas)"}}
 },
 
 frustum: {
-  name:"Frustum of Cone (Bucket)", subtitle:"Truncated cone cut by a plane parallel to base",
+  name:"Frustum of Cone (Bucket)", subtitle:"Truncated cone cut by a plane parallel to base — capacity & slant height",
   icon:"⌵", color:"#19c37d", difficulty:"hard",
-  overview:"A frustum is a truncated cone with top radius r, bottom radius R, height h. Volume = (1/3)πh(R² + r² + Rr).",
-  properties:["Slant height l = √(h² + (R - r)²)","Volume = (1/3)πh (R² + r² + R r)","Bucket capacity in liters = Volume in cm³ / 1000"],
-  variables:[{symbol:"R",name:"Bottom Radius",desc:"Larger base"},{symbol:"r",name:"Top Radius",desc:"Smaller base"},{symbol:"h",name:"Height",desc:"Perpendicular height"}],
-  formulas:[{quantity:"Volume",formula:"V = (1/3)πh(R²+r²+Rr)",example:"R=7, r=3, h=6 → V = 158πcm³"}],
-  calc:{R:{label:"Bottom R",unit:"cm"},r:{label:"Top r",unit:"cm"},h:{label:"Height h",unit:"cm"},vol:{formula:"(1/3)*Math.PI*h*(R*R+r*r+R*r)",label:"Volume"}}
+  overview:"A frustum is a truncated cone with top radius r, bottom radius R, vertical height h, and slant height l = √(h² + (R − r)²). Volume V = (1/3)πh(R² + r² + Rr).",
+  properties:[
+    "Slant height l = √(h² + (R − r)²)",
+    "Volume V = (1/3)πh (R² + r² + R r)",
+    "Curved Surface Area CSA = π l (R + r)",
+    "Total Surface Area TSA = π l (R + r) + π R² + π r²",
+    "Bucket Capacity in Liters = Volume in cm³ / 1000"
+  ],
+  variables:[{symbol:"R",name:"Bottom Radius"},{symbol:"r",name:"Top Radius"},{symbol:"h",name:"Height"}],
+  formulas:[
+    {quantity:"Volume",formula:"V = (1/3)πh(R² + r² + Rr)",example:"R=7, r=3, h=6 → V = 158π cm³"},
+    {quantity:"Slant Height",formula:"l = √(h² + (R − r)²)",example:"R=7, r=3, h=3 → l = 5 cm"},
+    {quantity:"Curved SA",formula:"CSA = π l (R + r)",example:"R=7, r=3, l=5 → CSA = 50π cm²"}
+  ],
+  derivedFormulas:[
+    {quantity:"Bucket Capacity in Liters",formula:"Liters = V_cm³ / 1000",note:"Convert cubic cm volume to liters (1 L = 1000 cm³)"}
+  ],
+  examInsights:[
+    "PYQ Speed Shortcut (Bucket Capacity): A frustum bucket has R = 20 cm, r = 8 cm, h = 16 cm. Slant height l = √(16² + 12²) = 20 cm. Volume V = (1/3) × (22/7) × 16 × (400 + 64 + 160) = 10,459 cm³ = 10.46 Liters!"
+  ],
+  calc:{R:{label:"Bottom R",unit:"cm"},r:{label:"Top r",unit:"cm"},h:{label:"Height h",unit:"cm"},vol:{formula:"(1/3)*Math.PI*h*(R*R+r*r+R*r)",label:"Volume"},csa:{formula:"Math.PI*Math.sqrt(h*h+(R-r)*(R-r))*(R+r)",label:"Curved SA"}}
 },
 "triangle": {
   name:"General Triangle", subtitle:"Three sides, three angles — the base unit of most geometry problems",
@@ -1122,31 +2658,62 @@ frustum: {
 "semicircle": {
   name:"Semi-Circle", subtitle:"Exactly half a circle, cut along a diameter",
   icon:"⋎", color:"#22d3ee", difficulty:"easy",
-  overview:"A semicircle is formed by cutting a circle in half along a diameter. It comes with one of the most useful facts in circle geometry: Thales' Theorem.",
+  overview:"A semicircle is formed by cutting a circle in half along a diameter. Governed by Thales' Theorem and perimeter shortcuts heavily tested in SSC CGL.",
   properties:[
-    "Thales' Theorem: an angle inscribed in a semicircle is ALWAYS a right angle (90°)",
-    "The straight edge is the diameter; the curved edge is half the circumference",
-    "A special case of a sector with θ = 180°"
+    "Thales' Theorem: An angle inscribed in a semicircle is ALWAYS a right angle (90°)",
+    "Perimeter P = πr + 2r = r(π + 2) = (36/7)r (when π ≈ 22/7)",
+    "Area A = ½ π r² = (11/14) d²",
+    "Max inscribed triangle area inside semicircle = r² (height = r, base = 2r)",
+    "Max inscribed square area inside semicircle = (4/5) r²"
   ],
-  variables:[{symbol:"r",name:"Radius"}],
+  variables:[{symbol:"r",name:"Radius"},{symbol:"d",name:"Diameter",desc:"d = 2r"}],
   formulas:[
-    {quantity:"Area",formula:"A = πr²/2",example:"r=7 → A≈77"},
-    {quantity:"Perimeter",formula:"P = πr + 2r",example:"straight edge + curved edge"}
+    {quantity:"Area",formula:"A = ½ π r²",example:"r=7 → A = 77 cm²"},
+    {quantity:"Perimeter",formula:"P = (36/7) × r",example:"r=7 → P = 36 cm (Fast shortcut!)"}
   ],
-  calc:{r:{label:"Radius (r)",unit:"cm"},area:{formula:"Math.PI*r*r/2",label:"Area"},perimeter:{formula:"Math.PI*r+2*r",label:"Perimeter"}},
+  derivedFormulas:[
+    {quantity:"Max Inscribed Triangle Area",formula:"A = r²",note:"Apex at top curved point, base along diameter"},
+    {quantity:"Max Inscribed Square Area",formula:"A = (4/5) r²",note:"Base of square rests along diameter"},
+    {quantity:"Max Inscribed Circle Radius",formula:"r_in = r / 2",note:"Circle touching diameter and arc"}
+  ],
+  specialCases:[
+    "Thales' Theorem: Angle subtended by diameter at any point on the semicircle is 90°",
+    "Fast Perimeter Factor (36/7): For r = 7, P = 36 cm; for r = 14, P = 72 cm; for r = 21, P = 108 cm"
+  ],
+  examInsights:[
+    "Trap Warning: Perimeter of a semicircle is NOT just half the circle circumference (22)! It includes the straight diameter (2r)! So P = πr + 2r = (36/7)r.",
+    "PYQ Speed Shortcut: Find area of largest triangle that can be inscribed in a semicircle of radius 9 cm. Solution: A = r² = 9² = 81 cm² in 2 seconds!"
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},area:{formula:"Math.PI*r*r/2",label:"Area"},perimeter:{formula:"Math.PI*r+2*r",label:"Perimeter"},maxTriangle:{formula:"r*r",label:"Max Inscribed Triangle Area"}},
   relatedIds:["circle","quarter-circle"]
 },
 "quarter-circle": {
-  name:"Quarter Circle", subtitle:"A 90° sector — one quarter of a full circle",
+  name:"Quarter Circle (Quadrant)", subtitle:"A 90° sector — one quarter of a full circle",
   icon:"⊗", color:"#22d3ee", difficulty:"easy",
-  overview:"A quarter circle is exactly what it sounds like: a 90° sector, bounded by two perpendicular radii and a quarter of the circumference.",
-  properties:["A special case of a sector with θ = 90°","The two straight edges meet at a right angle"],
-  variables:[{symbol:"r",name:"Radius"}],
-  formulas:[
-    {quantity:"Area",formula:"A = πr²/4",example:"r=14 → A≈154"},
-    {quantity:"Perimeter",formula:"P = (πr/2) + 2r",example:"quarter arc + two radii"}
+  overview:"A quarter circle is a 90° sector bounded by two perpendicular radii and a quarter of the circumference. Crucial for inscribed circle problems.",
+  properties:[
+    "A special case of a sector with θ = 90°",
+    "The two straight edges meet at a right angle (90°)",
+    "Perimeter P = ½ π r + 2r = (25/7) r (when π ≈ 22/7)",
+    "Radius of circle inscribed inside quadrant r_in = r(√2 − 1) ≈ 0.414 r"
   ],
-  calc:{r:{label:"Radius (r)",unit:"cm"},area:{formula:"Math.PI*r*r/4",label:"Area"},perimeter:{formula:"(Math.PI*r/2)+2*r",label:"Perimeter"}},
+  variables:[{symbol:"r",name:"Quadrant Radius"},{symbol:"r_in",name:"Inscribed Circle Radius"}],
+  formulas:[
+    {quantity:"Area",formula:"A = ¼ π r²",example:"r=14 → A = 154 cm²"},
+    {quantity:"Perimeter",formula:"P = (25/7) × r",example:"r=7 → P = 25 cm (Fast shortcut!)"}
+  ],
+  derivedFormulas:[
+    {quantity:"Inscribed Circle Radius (r_in)",formula:"r_in = r(√2 − 1) ≈ 0.414 r",note:"Circle touching both radii and the curved arc"},
+    {quantity:"Inscribed Square Area",formula:"A = ½ r²",note:"Square sharing the 90° corner of quadrant"}
+  ],
+  specialCases:[
+    "Fast Quadrant Perimeter Factor (25/7): For r = 7, P = 25 cm; for r = 14, P = 50 cm"
+  ],
+  examInsights:[
+    "PYQ Pattern: Find radius of circle inscribed in a quadrant of radius 10 cm. Solution: r_in = 10(√2 − 1) ≈ 4.14 cm in 5 seconds!",
+    "Trap Warning: Total perimeter of a quadrant is P = ½πr + 2r = (25/7)r. Don't forget to add both straight radii (2r)!"
+  ],
+  calc:{r:{label:"Radius (r)",unit:"cm"},area:{formula:"Math.PI*r*r/4",label:"Area"},perimeter:{formula:"(Math.PI*r/2)+2*r",label:"Perimeter"},inscribedRadius:{formula:"r*(Math.SQRT2-1)",label:"Inscribed Circle Radius"}},
   relatedIds:["semicircle","sector"]
 },
 "kite": {
@@ -1497,10 +3064,9 @@ const SEARCH_INDEX = (function(){
   FUNDAMENTALS.forEach(s => idx.push({type:"shape", label:s.name, sub:"Fundamentals", category:"fundamentals", id:s.id}));
   SHAPES_2D.forEach(s => idx.push({type:"shape", label:s.name, sub:"2D Shape", category:"2d", id:s.id}));
   SHAPES_3D.forEach(s => idx.push({type:"shape", label:s.name, sub:"3D Solid", category:"3d", id:s.id}));
-  CIRCLE_TANGENTS.forEach(s => { if(s.id !== "circle") idx.push({type:"shape", label:s.name, sub:"Circle Concept", category:"2d", id:"circle"}); });
+  CIRCLE_TANGENTS.forEach(s => { idx.push({type:"shape", label:s.name, sub:"Circle Theorem", category:"2d", id:s.id}); });
   COORDINATE_DATA.forEach(s => idx.push({type:"shape", label:s.name, sub:"Coordinate Geometry", category:"coordinate", id:s.id}));
   TRIGONOMETRY_DATA.forEach(s => idx.push({type:"shape", label:s.name, sub:"Trigonometry", category:"trigonometry", id:s.id}));
-  THEOREMS.forEach(t => idx.push({type:"theorem", label:t.name, sub:t.category, category:"theorems", id:t.id}));
   return idx;
 })();
 
@@ -1958,6 +3524,17 @@ function renderShapeSVG(shapeId, customInputs, viewMode) {
         <circle cx="200" cy="120" r="2.5" fill="#19c37d"/>
         <rect x="290" y="30" width="95" height="28" rx="6" fill="rgba(25,195,125,0.1)" stroke="rgba(25,195,125,0.3)"/>
         <text x="298" y="48" fill="#19c37d" font-size="11" font-weight="bold" font-family="monospace">n sides</text>
+      `;
+      break;
+
+    case "herons-formula":
+      content = `
+        <polygon points="115,192 355,168 225,48" fill="rgba(240,168,57,0.08)" stroke="#f0a839" stroke-width="2.5"/>
+        <text x="150" y="120" fill="#f0a839" font-size="13" font-weight="bold" font-family="monospace">side a</text>
+        <text x="290" y="110" fill="#f0a839" font-size="13" font-weight="bold" font-family="monospace">side b</text>
+        <text x="225" y="195" fill="#f0a839" font-size="13" font-weight="bold" font-family="monospace">side c</text>
+        <rect x="250" y="20" width="135" height="30" rx="6" fill="rgba(240,168,57,0.12)" stroke="rgba(240,168,57,0.3)"/>
+        <text x="258" y="40" fill="#f0a839" font-size="11" font-weight="bold" font-family="monospace">A = √[s(s-a)(s-b)(s-c)]</text>
       `;
       break;
 
@@ -2487,27 +4064,93 @@ function renderSidebar() {
   if (!tab) { list.innerHTML = ""; return; }
 
   title.textContent = tab.name;
-  if (count) count.textContent = (tab.data ? tab.data.length : 0) + " items";
+
+  var totalItems = tab.data ? tab.data.length : 0;
+  if (activeTab === "fundamentals") {
+    totalItems = FUNDAMENTALS.length + COORDINATE_DATA.length + TRIGONOMETRY_DATA.length;
+  }
+  if (count) count.textContent = totalItems + " items";
   list.innerHTML = "";
 
-  if (tab.type === "shape") {
-    tab.data.forEach(item => {
-      var div = document.createElement("div");
-      div.className = "shape-item" + (activeShape === item.id ? " active" : "");
-      div.dataset.id = item.id;
+  function createGroupBox(headerText, color) {
+    var box = document.createElement("div");
+    box.className = "side-group-box";
+    var h = document.createElement("div");
+    h.className = "side-section-header";
+    if (color) h.style.color = color;
+    h.textContent = headerText;
+    box.appendChild(h);
+    return box;
+  }
+
+  function appendItem(box, item, isTheorem) {
+    var div = document.createElement("div");
+    div.className = "shape-item" + (activeShape === item.id ? " active" : "");
+    div.dataset.id = item.id;
+    if (isTheorem) {
+      div.innerHTML = `<span class="icon" style="color:var(--amber);">★</span><span class="name">${item.name}</span><span class="badge-mini" style="background:rgba(240,168,57,0.15); color:var(--amber); border-color:rgba(240,168,57,0.3);">THM</span>`;
+      div.onclick = function() { selectTheorem(item.id); };
+    } else {
       div.innerHTML = `<span class="icon" style="color:${item.color}">${item.icon}</span><span class="name">${item.name}</span>`
         + (item.star ? '<span class="badge-mini">CGL</span>' : '');
       div.onclick = function() { selectShape(item.id); };
-      list.appendChild(div);
+    }
+    box.appendChild(div);
+  }
+
+  if (activeTab === "fundamentals") {
+    var box1 = createGroupBox("Geometric Building Blocks", "var(--cyan)");
+    FUNDAMENTALS.forEach(item => appendItem(box1, item, false));
+    list.appendChild(box1);
+
+    var box2 = createGroupBox("Coordinate Geometry", "#22d3ee");
+    COORDINATE_DATA.forEach(item => appendItem(box2, item, false));
+    list.appendChild(box2);
+
+    var box3 = createGroupBox("Trigonometry & Identities", "#f0a839");
+    TRIGONOMETRY_DATA.forEach(item => appendItem(box3, item, false));
+    list.appendChild(box3);
+
+  } else if (activeTab === "2d") {
+    var groups2d = [
+      { key: "triangle", title: "Triangles (3 Sides)", color: "#f0a839" },
+      { key: "quadrilateral", title: "Quadrilaterals (4 Sides)", color: "#a78bfa" },
+      { key: "circle", title: "Circles & Curved Shapes", color: "#22d3ee" },
+      { key: "polygon", title: "Regular Polygons (n Sides)", color: "#19c37d" },
+      { key: "composite", title: "Composite Figures & Paths", color: "#94a3b8" }
+    ];
+
+    groups2d.forEach(g => {
+      var items = SHAPES_2D.filter(s => s.category === g.key);
+      if (items.length) {
+        var box = createGroupBox(g.title, g.color);
+        items.forEach(item => appendItem(box, item, false));
+        list.appendChild(box);
+      }
     });
-  } else if (tab.type === "theorem") {
-    tab.data.forEach(item => {
-      var div = document.createElement("div");
-      div.className = "shape-item" + (activeShape === item.id ? " active" : "");
-      div.innerHTML = `<span class="icon" style="color:var(--amber);">★</span><span class="name">${item.name}</span>`;
-      div.onclick = function() { selectTheorem(item.id); };
-      list.appendChild(div);
+
+  } else if (activeTab === "3d") {
+    var groups3d = [
+      { key: "box", title: "Cube & Cuboid Solids", color: "#fbbf24" },
+      { key: "circular", title: "Cylinders & Cones", color: "#19c37d" },
+      { key: "spherical", title: "Spheres & Hemispheres", color: "#22d3ee" },
+      { key: "pyramid_prism", title: "Prisms & Pyramids", color: "#a78bfa" },
+      { key: "special", title: "Special Polyhedral Solids", color: "#ea5757" }
+    ];
+
+    groups3d.forEach(g => {
+      var items = SHAPES_3D.filter(s => s.category === g.key);
+      if (items.length) {
+        var box = createGroupBox(g.title, g.color);
+        items.forEach(item => appendItem(box, item, false));
+        list.appendChild(box);
+      }
     });
+
+  } else {
+    var box = createGroupBox(tab.name, "var(--cyan)");
+    tab.data.forEach(item => appendItem(box, item, false));
+    list.appendChild(box);
   }
 }
 
@@ -2592,7 +4235,7 @@ function renderShapePage(shapeId, detail) {
 
     <!-- FORMULA REFERENCE -->
     ${detail.formulas && detail.formulas.length ? `
-      <div class="section-h"><i class="fa-solid fa-calculator"></i> Formulas</div>
+      <div class="section-h"><i class="fa-solid fa-calculator"></i> Main Formulas</div>
       <table class="formula-table">
         <thead><tr><th>Quantity</th><th>Formula</th><th>Example</th></tr></thead>
         <tbody>
@@ -2605,6 +4248,73 @@ function renderShapePage(shapeId, detail) {
           `).join('')}
         </tbody>
       </table>
+    ` : ''}
+
+    <!-- DERIVED / ALTERNATE FORMULAS -->
+    ${detail.derivedFormulas && detail.derivedFormulas.length ? `
+      <div class="section-h"><i class="fa-solid fa-square-root-variable"></i> Derived &amp; Alternate Formulas</div>
+      <table class="formula-table">
+        <thead><tr><th>Quantity / Variant</th><th>Formula</th><th>Context / Note</th></tr></thead>
+        <tbody>
+          ${detail.derivedFormulas.map(f => `
+            <tr>
+              <td style="font-weight:700;">${f.quantity}</td>
+              <td class="formula">${f.formula}</td>
+              <td class="var">${f.note || "—"}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    ` : ''}
+
+    <!-- SPECIAL CASES & GEOMETRIC RELATIONSHIPS -->
+    ${detail.specialCases && detail.specialCases.length ? `
+      <div class="section-group-box">
+        <div class="section-h" style="border-top:none; padding-top:0; margin-top:0; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+          <span><i class="fa-solid fa-star" style="color:var(--purple);"></i> Special Cases &amp; Geometric Relationships</span>
+          ${(shapeId === "triangle" || shapeId === "circle") ? `
+            <button onclick="document.getElementById('matrixModal').style.display='flex'" style="background:rgba(167,139,250,0.18); color:var(--purple); border:1px solid rgba(167,139,250,0.4); padding:4px 10px; border-radius:6px; font-weight:700; font-size:11px; cursor:pointer; display:inline-flex; align-items:center; gap:5px;"><i class="fa-solid fa-table-cells"></i> r vs R</button>
+          ` : ''}
+        </div>
+        <div class="props-grid">
+          ${detail.specialCases.map(s => {
+            var cleanS = s.replace(/^[✓★\s]+/, '');
+            return `<div class="prop-item special-item"><span class="star-icon">★</span>${cleanS}</div>`;
+          }).join('')}
+        </div>
+      </div>
+    ` : ''}
+
+    <!-- IMPORTANT EXAM INSIGHTS & CGL SHORTCUTS -->
+    ${detail.examInsights && detail.examInsights.length ? `
+      <div class="section-group-box">
+        <div class="section-h" style="border-top:none; padding-top:0; margin-top:0; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:8px; margin-bottom:14px;">
+          <i class="fa-solid fa-bolt" style="color:var(--amber);"></i> SSC CGL / CHSL High-Yield Speed Tricks &amp; PYQ Patterns
+        </div>
+        ${detail.examInsights.map(e => {
+          var isTrap = e.includes("Trap Warning") || e.includes("Mistake Warning") || e.includes("Trap:");
+          var isPyq = e.includes("PYQ") || e.includes("Shortcut") || e.includes("Speed Shortcut");
+          
+          var cleanBody = e.replace(/^(Trap Warning|Mistake Warning|Trap|PYQ Speed Shortcut|PYQ Pattern|PYQ|Speed Shortcut)[\s:]*/i, '');
+          
+          if (isTrap) {
+            return `<div class="trap-card">
+              <div class="card-badge trap-badge"><i class="fa-solid fa-triangle-exclamation"></i> CGL EXAM TRAP WARNING</div>
+              <div class="card-body-text">${cleanBody}</div>
+            </div>`;
+          } else if (isPyq) {
+            return `<div class="pyq-card">
+              <div class="card-badge pyq-badge"><i class="fa-solid fa-stopwatch"></i> 15-SEC CGL SOLVED PATTERN</div>
+              <div class="card-body-text">${cleanBody}</div>
+            </div>`;
+          } else {
+            return `<div class="note-card">
+              <div class="card-badge note-badge"><i class="fa-solid fa-lightbulb"></i> EXAM INSIGHT</div>
+              <div class="card-body-text">${cleanBody}</div>
+            </div>`;
+          }
+        }).join('')}
+      </div>
     ` : ''}
 
     <!-- LIVE CALCULATOR -->
@@ -2656,6 +4366,13 @@ function renderShapePage(shapeId, detail) {
                   <thead><tr><th>Quantity</th><th>Formula</th><th>Example</th></tr></thead>
                   <tbody>${rd.formulas.map(f => `<tr><td style="font-weight:700;">${f.quantity}</td><td class="formula">${f.formula}</td><td class="var">${f.example||"—"}</td></tr>`).join('')}</tbody>
                 </table>` : ''}
+              ${rd.derivedFormulas && rd.derivedFormulas.length ? `
+                <table class="formula-table">
+                  <thead><tr><th>Quantity / Variant</th><th>Derived Formula</th><th>Note</th></tr></thead>
+                  <tbody>${rd.derivedFormulas.map(f => `<tr><td style="font-weight:700;">${f.quantity}</td><td class="formula">${f.formula}</td><td class="var">${f.note||"—"}</td></tr>`).join('')}</tbody>
+                </table>` : ''}
+              ${rd.examInsights && rd.examInsights.length ? `
+                ${rd.examInsights.map(e => `<div class="note-card" style="font-size:12px; padding:8px 10px; margin:6px 0;">${e}</div>`).join('')}` : ''}
             </div>
           </div>`;
         }).join('')}
@@ -2768,7 +4485,6 @@ if (searchInput) {
   });
 }
 
-document.getElementById("resetBtn").onclick = function() { switchTab(activeTab); };
 document.querySelectorAll(".nav-tab").forEach(tab => {
   tab.addEventListener("click", function() { switchTab(tab.dataset.tab); });
 });
@@ -2790,7 +4506,247 @@ window.selectShape = selectShape;
 window.switchTab = switchTab;
 switchTab("2d");
 
+// ====================
+// MATRIX MODAL & SPEED DRILL LOGIC
+// ====================
+var drillTimerInterval = null;
+var drillScore = 0;
+var drillTime = 60;
+var drillLock = false;
+
+var DRILL_QUESTIONS = [
+  { q: "What is the Inradius (r) formula for a Right-Angled Triangle with legs a, b and hypotenuse c?", options: ["r = (a + b − c) / 2", "r = (a + b + c) / 2", "r = (a × b) / c", "r = c / 2"], correct: 0 },
+  { q: "What is the Circumradius (R) of a Right-Angled Triangle with hypotenuse c?", options: ["R = c / 2", "R = (a + b) / 2", "R = c / √2", "R = (a × b) / (2c)"], correct: 0 },
+  { q: "What is the ratio of Inradius to Circumradius (r : R) for an Equilateral Triangle?", options: ["1 : 2", "1 : √3", "1 : 4", "1 : √2"], correct: 0 },
+  { q: "What is the ratio of Incircle Area to Circumcircle Area for an Equilateral Triangle?", options: ["1 : 4", "1 : 2", "1 : 3", "1 : 8"], correct: 0 },
+  { q: "What is the height formula for an Equilateral Triangle of side a?", options: ["h = (a √3) / 2", "h = a √3", "h = (a √2) / 2", "h = a / (2 √3)"], correct: 0 },
+  { q: "What is the Direct Common Tangent (DCT) length for two circles of radii r₁, r₂ separated by distance d?", options: ["DCT = √(d² − (r₁ − r₂)²)", "DCT = √(d² − (r₁ + r₂)²)", "DCT = 2 √(r₁ r₂)", "DCT = d − r₁ − r₂"], correct: 0 },
+  { q: "What is the Transverse Common Tangent (TCT) length for two circles of radii r₁, r₂?", options: ["TCT = √(d² − (r₁ + r₂)²)", "TCT = √(d² − (r₁ − r₂)²)", "TCT = √(d² + r₁ r₂)", "TCT = 2 √(r₁ r₂)"], correct: 0 },
+  { q: "What is the length of Direct Common Tangent (DCT) when two circles of radii r₁, r₂ touch EXTERNALLY?", options: ["DCT = 2 √(r₁ r₂)", "DCT = r₁ + r₂", "DCT = √(r₁² + r₂²)", "DCT = r₁ r₂"], correct: 0 },
+  { q: "If a tangent PT and secant P-A-B are drawn from point P to a circle, what is the relation?", options: ["PT² = PA × PB", "PT = PA + PB", "PT² = PA² + PB²", "PT = (PA × PB) / 2"], correct: 0 },
+  { q: "If two chords AB and CD intersect inside a circle at P, what is the product relation?", options: ["PA × PB = PC × PD", "PA + PB = PC + PD", "PA × PC = PB × PD", "PA² = PB × PC"], correct: 0 },
+  { q: "If a painted cube is cut into n³ small cubes, how many small cubes have ZERO faces painted?", options: ["(n − 2)³", "6 (n − 2)²", "12 (n − 2)", "8"], correct: 0 },
+  { q: "If a painted cube is cut into n³ small cubes, how many small cubes have 2 faces painted?", options: ["12 (n − 2)", "(n − 2)³", "6 (n − 2)²", "8"], correct: 0 },
+  { q: "What is the perimeter shortcut for a Semicircle of radius r?", options: ["P = (36 / 7) r", "P = (22 / 7) r", "P = (44 / 7) r", "P = 2πr"], correct: 0 },
+  { q: "What is the perimeter shortcut for a Quarter Circle (Quadrant) of radius r?", options: ["P = (25 / 7) r", "P = (36 / 7) r", "P = (18 / 7) r", "P = (22 / 7) r"], correct: 0 },
+  { q: "What is the Embankment height H when earth from a well of radius r and depth h is spread around width w?", options: ["H = (r² × h) / [(r + w)² − r²]", "H = (r × h) / w", "H = (r² × h) / (r + w)²", "H = r² / (h × w)"], correct: 0 },
+  { q: "What is Euler's distance d between Incenter and Circumcenter in a triangle?", options: ["d² = R² − 2 R r", "d² = R² + 2 R r", "d = R − 2r", "d = R + r"], correct: 0 },
+  { q: "If A + B = 90°, what is tan A × tan B equal to?", options: ["1", "0", "2", "1/2"], correct: 0 },
+  { q: "If sec θ + tan θ = P, what is sec θ equal to?", options: ["(P² + 1) / (2P)", "(P² − 1) / (2P)", "(P² − 1) / (P² + 1)", "2P / (P² + 1)"], correct: 0 },
+  { q: "What is the slope m of a line passing through (x₁, y₁) and (x₂, y₂)?", options: ["m = (y₂ − y₁) / (x₂ − x₁)", "m = (x₂ − x₁) / (y₂ − y₁)", "m = (y₂ + y₁) / (x₂ + x₁)", "m = (y₂ − x₂) / (y₁ − x₁)"], correct: 0 },
+  { q: "What is the product of slopes of two PERPENDICULAR lines (m₁ × m₂)?", options: ["−1", "1", "0", "infinity"], correct: 0 },
+  { q: "What is the Centroid G of a triangle with vertices (x₁,y₁), (x₂,y₂), (x₃,y₃)?", options: ["G = ( (x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3 )", "G = ( (x₁+x₂+x₃)/2, (y₁+y₂+y₃)/2 )", "G = ( x₁+x₂+x₃, y₁+y₂+y₃ )", "G = ( (x₁+x₂)/3, (y₁+y₂)/3 )"], correct: 0 },
+  { q: "What is the area of a triangle formed by line x/a + y/b = 1 with the coordinate axes?", options: ["Area = ½ |a × b|", "Area = |a × b|", "Area = ¼ |a × b|", "Area = a + b"], correct: 0 },
+  { q: "What is the radius r of a circle with general equation x² + y² + 2gx + 2fy + c = 0?", options: ["r = √(g² + f² − c)", "r = √(g² + f² + c)", "r = g² + f² − c", "r = √(g + f − c)"], correct: 0 },
+  { q: "If angles of elevation of top of tower from distances a and b are complementary, what is tower height h?", options: ["h = √(a × b)", "h = a × b", "h = (a + b) / 2", "h = √(a² + b²)"], correct: 0 }
+];
+
+function startSpeedDrill() {
+  drillScore = 0;
+  drillTime = 60;
+  drillLock = false;
+  document.getElementById('drillModal').style.display = 'flex';
+  document.getElementById('drillTimer').innerText = drillTime;
+  
+  if (drillTimerInterval) clearInterval(drillTimerInterval);
+  
+  drillTimerInterval = setInterval(function() {
+    drillTime--;
+    document.getElementById('drillTimer').innerText = drillTime;
+    if (drillTime <= 0) {
+      clearInterval(drillTimerInterval);
+      showDrillResults();
+    }
+  }, 1000);
+
+  nextDrillQuestion();
+}
+
+function nextDrillQuestion() {
+  if (drillTime <= 0) return;
+  drillLock = false;
+  
+  var randomQ = DRILL_QUESTIONS[Math.floor(Math.random() * DRILL_QUESTIONS.length)];
+
+  var opts = randomQ.options.map((opt, idx) => ({ text: opt, isCorrect: idx === randomQ.correct }));
+  opts.sort(() => Math.random() - 0.5);
+
+  var content = document.getElementById('drillCardContent');
+  content.innerHTML = `
+    <div style="font-size:16px; font-weight:700; color:#fff; margin-bottom:16px; line-height:1.5;">
+      ${randomQ.q}
+    </div>
+    <div id="drillOptionsGrid" style="display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:16px;">
+      ${opts.map((o, i) => `
+        <button class="drill-opt-btn" data-correct="${o.isCorrect}" onclick="window.checkDrillAnswer(this, ${o.isCorrect})" style="padding:12px 16px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:var(--text); font-family:var(--mono); font-size:14px; text-align:left; cursor:pointer; transition:all .2s;">
+          <strong style="color:var(--cyan); margin-right:8px;">${String.fromCharCode(65 + i)}.</strong> ${o.text}
+        </button>
+      `).join('')}
+    </div>
+    <div style="display:flex; justify-content:space-between; font-family:var(--mono); font-size:12px; color:var(--text-dim);">
+      <span>Current Score: <strong style="color:var(--cyan);">${drillScore}</strong></span>
+      <span>Topic: <strong>Speed Drill</strong></span>
+    </div>
+  `;
+}
+
+window.checkDrillAnswer = function(btnElement, isCorrect) {
+  if (drillLock) return;
+  drillLock = true;
+  
+  var allBtns = document.querySelectorAll('.drill-opt-btn');
+  
+  if (isCorrect) {
+    drillScore += 10;
+    btnElement.style.background = 'rgba(25, 195, 125, 0.25)';
+    btnElement.style.borderColor = 'var(--accent)';
+    btnElement.style.color = 'var(--accent)';
+    btnElement.style.fontWeight = '700';
+  } else {
+    btnElement.style.background = 'rgba(240, 85, 77, 0.25)';
+    btnElement.style.borderColor = 'var(--red)';
+    btnElement.style.color = 'var(--red)';
+    btnElement.style.fontWeight = '700';
+    
+    // Highlight the correct option in green so user learns!
+    allBtns.forEach(b => {
+      if (b.getAttribute('data-correct') === 'true') {
+        b.style.background = 'rgba(25, 195, 125, 0.25)';
+        b.style.borderColor = 'var(--accent)';
+        b.style.color = 'var(--accent)';
+        b.style.fontWeight = '700';
+      }
+    });
+  }
+
+  // Short 750ms pause so student can see feedback before next question
+  setTimeout(function() {
+    nextDrillQuestion();
+  }, 750);
+};
+
+function showDrillResults() {
+  var content = document.getElementById('drillCardContent');
+  var rating = drillScore >= 80 ? "🏆 CGL TOPPER SPEED!" : (drillScore >= 40 ? "⚡ GREAT ATTEMPT!" : "📚 KEEP DRILLING!");
+  content.innerHTML = `
+    <div style="text-align:center; padding:20px 10px;">
+      <div style="font-size:36px; margin-bottom:8px;">${rating.split(' ')[0]}</div>
+      <h3 style="font-size:22px; font-weight:800; color:#fff; margin-bottom:4px;">Time's Up!</h3>
+      <div style="font-family:var(--mono); font-size:14px; color:var(--cyan); font-weight:700; margin-bottom:16px;">${rating}</div>
+      <div style="font-size:36px; font-weight:800; color:var(--amber); font-family:var(--mono); margin-bottom:20px;">
+        ${drillScore} <span style="font-size:14px; color:var(--text-faint);">POINTS</span>
+      </div>
+      <button onclick="window.startSpeedDrill()" style="padding:12px 24px; background:var(--cyan); color:#0f172a; font-weight:800; border:none; border-radius:8px; cursor:pointer; font-size:14px; font-family:var(--sans);">
+        <i class="fa-solid fa-rotate-right"></i> Try Again
+      </button>
+    </div>
+  `;
+}
+
+window.startSpeedDrill = startSpeedDrill;
+
+var drillBtn = document.getElementById('drillBtn');
+if (drillBtn) {
+  drillBtn.onclick = function() {
+    startSpeedDrill();
+  };
+}
+if (drillBtn) {
+  drillBtn.onclick = function() {
+    startSpeedDrill();
+  };
+}
+
 })();
 </script>
+
+<!-- r vs R COMPARISON MATRIX MODAL -->
+<div id="matrixModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center;">
+  <div class="modal-card" style="background:#0f172a; border:1px solid var(--purple); border-radius:14px; max-width:850px; width:92%; max-height:90vh; overflow-y:auto; padding:24px; box-shadow:0 10px 40px rgba(0,0,0,0.6); position:relative;">
+    <button onclick="document.getElementById('matrixModal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--purple); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">
+      <i class="fa-solid fa-graduation-cap"></i> High-Yield SSC CGL Reference Matrix
+    </div>
+    <h2 style="font-size:22px; font-weight:800; color:#fff; margin-bottom:16px; display:flex; align-items:center; gap:10px;">
+      <i class="fa-solid fa-table-cells" style="color:var(--purple);"></i> Inradius (r) vs Circumradius (R) Comparison
+    </h2>
+    
+    <table class="matrix-table" style="width:100%; border-collapse:collapse; font-size:13px; font-family:var(--sans); margin-top:12px;">
+      <thead>
+        <tr style="background:rgba(167,139,250,0.15); color:var(--purple);">
+          <th style="padding:10px; border:1px solid rgba(167,139,250,0.3); text-align:left;">Geometric Shape</th>
+          <th style="padding:10px; border:1px solid rgba(167,139,250,0.3); text-align:left;">Inradius (r)</th>
+          <th style="padding:10px; border:1px solid rgba(167,139,250,0.3); text-align:left;">Circumradius (R)</th>
+          <th style="padding:10px; border:1px solid rgba(167,139,250,0.3); text-align:center;">Ratio r : R</th>
+          <th style="padding:10px; border:1px solid rgba(167,139,250,0.3); text-align:center;">Area Ratio (In:Circum)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-weight:700; color:var(--amber);">Equilateral Triangle</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">a / (2√3)</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">a / √3</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--cyan);">1 : 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--purple);">1 : 4</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-weight:700; color:var(--amber);">Right-Angled Triangle</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">(a + b − c) / 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">c / 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-family:var(--mono); color:var(--cyan);">(a+b-c) : c</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-family:var(--mono); color:var(--purple);">(a+b-c)² : c²</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-weight:700; color:var(--amber);">Square</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">a / 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">a / √2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--cyan);">1 : √2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--purple);">1 : 2</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-weight:700; color:var(--amber);">Regular Hexagon</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">(a√3) / 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">a</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--cyan);">√3 : 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--purple);">3 : 4</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-weight:700; color:var(--amber);">Cube (Sphere inside/outside)</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">a / 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); font-family:var(--mono);">(a√3) / 2</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--cyan);">1 : √3</td>
+          <td style="padding:10px; border:1px solid rgba(255,255,255,0.08); text-align:center; font-weight:700; color:var(--purple);">1 : 3 (Area) / 1 : 3√3 (Vol)</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div style="margin-top:18px; padding:12px 14px; background:rgba(34,211,238,0.06); border-left:4px solid var(--cyan); border-radius:6px; font-size:13px; color:var(--text-dim);">
+      <strong style="color:var(--cyan);">⚡ CGL Tier-2 Golden Takeaway:</strong> In any Equilateral Triangle, Circumradius $R$ is double the Inradius $r$ ($R = 2r$), and Circumcircle Area is 4 times the Incircle Area. In a Square, Circumcircle Area is double the Incircle Area!
+    </div>
+  </div>
+</div>
+
+<!-- FORMULA FLASHCARDS & SPEED DRILL MODAL -->
+<div id="drillModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center;">
+  <div class="modal-card" style="background:#0f172a; border:1px solid var(--cyan); border-radius:14px; max-width:650px; width:92%; padding:24px; box-shadow:0 10px 40px rgba(0,0,0,0.6); position:relative;">
+    <button onclick="document.getElementById('drillModal').style.display='none'" style="position:absolute; top:16px; right:16px; background:none; border:none; color:var(--text-dim); font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div>
+        <div style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--cyan); text-transform:uppercase;">⚡ Formula Speed Engine</div>
+        <h2 style="font-size:20px; font-weight:800; color:#fff; margin:2px 0 0 0;">SSC CGL Formula Challenge</h2>
+      </div>
+      <div id="drillTimerBox" style="font-family:var(--mono); font-size:18px; font-weight:800; color:var(--amber); background:rgba(240,168,57,0.12); padding:6px 14px; border-radius:8px; border:1px solid rgba(240,168,57,0.3);">
+        ⏱ <span id="drillTimer">60</span>s
+      </div>
+    </div>
+
+    <!-- DRILL CONTENT AREA -->
+    <div id="drillCardContent">
+      <!-- Generated dynamically -->
+    </div>
+  </div>
+</div>
 </body>
 </html>

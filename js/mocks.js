@@ -167,6 +167,16 @@ function initForms() {
             const accuracy = parseFloat(document.getElementById("mock-accuracy").value) || null;
             const rank = document.getElementById("mock-rank").value || "N/A";
             
+            const maxTotal = (appState.examTier === 2) ? 390 : 200;
+            if (isNaN(score) || score < 0 || score > maxTotal) {
+                if (window.showToast) {
+                    window.showToast(`Please enter a valid total score between 0 and ${maxTotal}.`, "warning");
+                } else {
+                    alert(`Please enter a valid total score between 0 and ${maxTotal}.`);
+                }
+                return;
+            }
+            
             const qScore = parseFloat(document.getElementById("score-quant").value) || 0;
             const rScore = parseFloat(document.getElementById("score-reasoning").value) || 0;
             const eScore = parseFloat(document.getElementById("score-english").value) || 0;
@@ -389,15 +399,15 @@ function renderMockAnalytics() {
         html += `
             <tr class="hover:bg-white/2px transition">
                 <td class="px-3 py-2 text-gray-400">${formatDateReadable(m.date)}</td>
-                <td class="px-3 py-2"><strong class="text-white">${m.name}</strong><br><span class="text-[9px] text-gray-500 font-bold uppercase">Rank: ${m.rank || 'N/A'}</span></td>
+                <td class="px-3 py-2"><strong class="text-white">${escapeHTML(m.name)}</strong><br><span class="text-[9px] text-gray-500 font-bold uppercase">Rank: ${escapeHTML(m.rank || 'N/A')}</span></td>
                 <td class="px-3 py-2 font-heading font-extrabold text-accentCyan">${m.score}</td>
                 <td class="px-3 py-2 text-center text-gray-400">${breakupText}</td>
                 <td class="px-3 py-2 text-right">
                     <div class="flex items-center justify-end gap-2.5">
-                        <button class="text-gray-500 hover:text-accentCyan transition" title="Edit Mock" onclick="editMock('${m.id}')">
+                        <button class="text-gray-500 hover:text-accentCyan transition p-1" title="Edit Mock" onclick="editMock('${m.id}')">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="text-gray-500 hover:text-accentRose transition" title="Delete Mock" onclick="deleteMock('${m.id}')">
+                        <button class="text-gray-500 hover:text-accentRose transition p-1" title="Delete Mock" onclick="deleteMock('${m.id}')">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </div>
@@ -462,7 +472,7 @@ function editMock(mockId) {
     // Update Form Title and Button text
     const formHeader = document.getElementById("mock-form-header");
     if (formHeader) {
-        formHeader.innerHTML = `<span class="text-accentCyan"><i class="fa-solid fa-pen-to-square mr-1"></i> Edit Mock: ${mock.name}</span>`;
+        formHeader.innerHTML = `<span class="text-accentCyan"><i class="fa-solid fa-pen-to-square mr-1"></i> Edit Mock: ${escapeHTML(mock.name)}</span>`;
     }
     const submitBtn = document.getElementById("mock-submit-btn");
     if (submitBtn) {

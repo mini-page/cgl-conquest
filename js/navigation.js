@@ -392,9 +392,9 @@ function initNavigation() {
             return;
         }
 
-        // Skip shortcuts if user is typing in form inputs/textarea
-        const tag = document.activeElement.tagName;
-        if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement.isContentEditable) {
+        // Skip shortcuts if user is typing in form inputs/textarea/select
+        const tag = document.activeElement ? document.activeElement.tagName : "";
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (document.activeElement && document.activeElement.isContentEditable)) {
             return;
         }
 
@@ -752,10 +752,38 @@ function initTheme() {
             reader.onload = (evt) => {
                 try {
                     const data = JSON.parse(evt.target.result);
-                    if (typeof data !== "object" || data === null || !data.syllabusProgress) {
+                    if (typeof data !== "object" || data === null || Array.isArray(data) || !data.syllabusProgress) {
                         throw new Error("Invalid backup JSON structure.");
                     }
-                    appState = { ...appState, ...data };
+
+                    // Prevent prototype pollution or malicious keys
+                    delete data.__proto__;
+                    delete data.constructor;
+                    delete data.prototype;
+
+                    // Safely merge allowed appState fields
+                    if (data.syllabusProgress && typeof data.syllabusProgress === "object") {
+                        appState.syllabusProgress = data.syllabusProgress;
+                    }
+                    if (Array.isArray(data.mocks)) {
+                        appState.mocks = data.mocks.map(m => ({
+                            ...m,
+                            name: String(m.name || "Mock"),
+                            score: String(m.score || "0")
+                        }));
+                    }
+                    if (Array.isArray(data.notes)) {
+                        appState.notes = data.notes.map(n => ({
+                            ...n,
+                            title: String(n.title || "Note"),
+                            content: String(n.content || "")
+                        }));
+                    }
+                    if (data.examName) appState.examName = String(data.examName);
+                    if (data.examDate) appState.examDate = String(data.examDate);
+                    if (data.examTier) appState.examTier = Number(data.examTier) || 1;
+                    if (data.dayCounter) appState.dayCounter = Number(data.dayCounter) || 1;
+
                     saveStateToStorage();
                     if (window.initTierToggler) window.initTierToggler();
                     if (window.updateMockFormLimits) window.updateMockFormLimits();

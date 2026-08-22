@@ -2,7 +2,7 @@
    SSC CGL Rank-Maker Dashboard - Premium Custom Overrides (XPensa Edition)
    ========================================================================== */
 
-/* Theme Variables */
+/* Theme Variables & Semantic Color Tokens */
 :root {
     --bg-app: #09090f;
     --bg-card: #121221;
@@ -12,6 +12,30 @@
     --bg-panel: #0e1322;
     --bg-panel2: #131a2c;
     --border-line: #1e2740;
+
+    /* Subject / Domain Semantic Colors */
+    --color-quant: #06b6d4;          /* Cyan - Mathematics & Quant */
+    --color-quant-bg: rgba(6, 182, 212, 0.12);
+    --color-english: #f59e0b;        /* Amber - English Grammar & Rules */
+    --color-english-bg: rgba(245, 158, 11, 0.12);
+    --color-reasoning: #10b981;      /* Emerald - Logic & Reasoning */
+    --color-reasoning-bg: rgba(16, 185, 129, 0.12);
+    --color-gk: #f43f5e;             /* Rose - History, Battles & GK */
+    --color-gk-bg: rgba(244, 63, 94, 0.12);
+    --color-polity: #a855f7;         /* Purple - Polity & Constitution */
+    --color-polity-bg: rgba(168, 85, 247, 0.12);
+    --color-computer: #3b82f6;       /* Blue - Computer & OS Simulator */
+    --color-computer-bg: rgba(59, 130, 246, 0.12);
+
+    /* Status & Difficulty Semantics */
+    --color-status-success: #10b981;
+    --color-status-warning: #f59e0b;
+    --color-status-danger: #ef4444;
+    --color-status-info: #06b6d4;
+
+    --color-diff-easy: #10b981;
+    --color-diff-medium: #f59e0b;
+    --color-diff-hard: #ef4444;
 }
 
 body.light-theme {
@@ -23,6 +47,14 @@ body.light-theme {
     --bg-panel: #ffffff;
     --bg-panel2: #f8fafc;
     --border-line: rgba(99, 102, 241, 0.1);
+
+    --color-quant-bg: rgba(6, 182, 212, 0.08);
+    --color-english-bg: rgba(245, 158, 11, 0.08);
+    --color-reasoning-bg: rgba(16, 185, 129, 0.08);
+    --color-gk-bg: rgba(244, 63, 94, 0.08);
+    --color-polity-bg: rgba(168, 85, 247, 0.08);
+    --color-computer-bg: rgba(59, 130, 246, 0.08);
+
     background-image: linear-gradient(rgba(99, 102, 241, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.02) 1px, transparent 1px);
 }
 

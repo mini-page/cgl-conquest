@@ -3394,6 +3394,18 @@ function saveStateToStorage() {
     }
 }
 
+// Global HTML Entity Escaper for XSS Prevention
+function escapeHTML(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+window.escapeHTML = escapeHTML;
+
 // Global Markdown Parsing Utility
 function parseMarkdown(text) {
     if (!text) return "";
@@ -3409,7 +3421,6 @@ function parseMarkdown(text) {
     html = html.replace(/^# (.*?)$/gm, '<h3 class="text-base font-extrabold text-white mt-4 mb-2">$1</h3>');
 
     // Bold (**text**)
-    html = html.replace(/\*\*(.*?)\*\"/g, '<strong class="text-white font-extrabold">$1</strong>');
     html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-extrabold">$1</strong>');
 
     // Italic (*text*)
@@ -3418,13 +3429,15 @@ function parseMarkdown(text) {
     // Links ([text](url))
     html = html.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
         const cleanUrl = url.trim();
-        if (cleanUrl.toLowerCase().startsWith('javascript:')) {
+        if (/^(javascript|data|vbscript):/i.test(cleanUrl)) {
             return `<span class="text-accentRose font-bold font-mono">[Unsafe Link Blocked]</span>`;
         }
-        if (cleanUrl.endsWith('.jpg') || cleanUrl.endsWith('.jpeg') || cleanUrl.endsWith('.png') || cleanUrl.endsWith('.gif') || cleanUrl.endsWith('.svg')) {
-            return `<div class="my-3 overflow-hidden rounded-xl border border-white/5 bg-black/10"><img src="${cleanUrl}" alt="${text}" class="w-full h-auto block" loading="lazy"></div>`;
+        const safeUrl = escapeHTML(cleanUrl);
+        const safeText = escapeHTML(text);
+        if (/\.(jpg|jpeg|png|gif|svg)(\?.*)?$/i.test(cleanUrl)) {
+            return `<div class="my-3 overflow-hidden rounded-xl border border-white/5 bg-black/10"><img src="${safeUrl}" alt="${safeText}" class="w-full h-auto block" loading="lazy"></div>`;
         }
-        return `<a href="${cleanUrl}" target="_blank" class="text-accentCyan hover:underline font-bold">${text}</a>`;
+        return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="text-accentCyan hover:underline font-bold">${safeText}</a>`;
     });
 
     // Blockquotes

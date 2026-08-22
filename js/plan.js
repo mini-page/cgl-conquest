@@ -186,6 +186,7 @@ function togglePlanDay(dayNum) {
 
 function completeActiveDay() {
     if (appState.currentDay < PLAN_DATA.length) {
+        if (!confirm(`Complete Day ${appState.currentDay} and advance roadmap to Day ${appState.currentDay + 1}?`)) return;
         appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
         appState.currentDay++;
         saveStateToStorage();

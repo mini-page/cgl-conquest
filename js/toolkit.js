@@ -1649,7 +1649,7 @@ function renderToolkit() {
         html += `
             <div class="bg-white/2px border-l-2 ${catBorder} border-t border-r border-b border-white/5 rounded-lg p-3 relative hover:bg-white/10 transition">
                 <div class="flex justify-between items-start gap-2">
-                    <h5 class="text-xs font-bold text-white">${n.title}</h5>
+                    <h5 class="text-xs font-bold text-white">${escapeHTML(n.title)}</h5>
                     <button class="text-gray-500 hover:text-accentRose text-xs" onclick="deleteNote('${n.id}')" title="Delete Note">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>

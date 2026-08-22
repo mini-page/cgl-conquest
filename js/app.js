@@ -30,6 +30,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Premium toast notification system
 window.showToast = (message, type = 'info') => {
     if (window.appState && window.appState.toastEnabled === false) return;
+
+    // Broadcast message to Screen Reader Live Region
+    const srAnnouncer = document.getElementById("sr-announcer");
+    if (srAnnouncer) srAnnouncer.innerText = message;
+
     let container = document.getElementById("toast-container");
     if (!container) {
         container = document.createElement("div");

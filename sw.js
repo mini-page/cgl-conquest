@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cgl-conquest-cache-v8';
+const CACHE_NAME = 'cgl-conquest-cache-v9';
 const ASSETS = [
   './',
   './index.html',
@@ -8,6 +8,7 @@ const ASSETS = [
   './js/components/dropdown.js',
   './js/components/tooltip.js',
   './js/state.js',
+  './js/study_content.js',
   './js/navigation.js',
   './js/dashboard.js',
   './js/syllabus.js',
@@ -15,6 +16,8 @@ const ASSETS = [
   './js/mocks.js',
   './js/toolkit.js',
   './js/speed.js',
+  './js/typingtest.js',
+  './js/cmdpalette.js',
   './study/subjects.js',
   './data/plan.json',
   './data/quizzes.json',
