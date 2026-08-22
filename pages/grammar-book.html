@@ -916,7 +916,7 @@
                 <li>
                     <button data-target="sec-spot-error">
                         <span class="nav-item-left"><span class="nav-icon">🚨</span> Spot the Error</span>
-                        <span class="nav-badge" style="background: rgba(244, 63, 94, 0.2); color: #fca5a5;">100+ Rules</span>
+                        <span class="nav-badge" style="background: rgba(244, 63, 94, 0.2); color: #fca5a5;">125+ Rules</span>
                     </button>
                 </li>
                 <li>
@@ -1060,7 +1060,6 @@
                     <button class="spot-filter-btn" onclick="filterSpotCategory('parallelism', this)">Parallelism</button>
                     <button class="spot-filter-btn" onclick="filterSpotCategory('conditionals', this)">Conditionals</button>
                     <button class="spot-filter-btn" onclick="filterSpotCategory('redundancy', this)">Redundancy</button>
-                    <button class="spot-filter-btn" onclick="filterSpotCategory('mixed', this)">Mixed Practice</button>
                 </div>
 
                 <!-- 0. QUICK REVISION CHEAT-SHEET -->
@@ -1427,77 +1426,6 @@
                             <tr><td><span class="spot-num-pill">COLL-03</span></td><td>He was sitting <span class="spot-table-wrong">besides me</span>.</td><td>He was sitting <span class="spot-table-correct">beside me</span>.</td><td><strong>Beside</strong> = by the side of; <strong>besides</strong> = in addition to.</td></tr>
                         </tbody>
                     </table>
-                </div>
-
-                <!-- INTERACTIVE MIXED PRACTICE -->
-                <div class="spot-topic-card searchable-item" data-spot-cat="mixed" data-tags="mixed practice test yourself pyq interactive questions error spotting quiz">
-                    <h3 class="sub-heading">✍️ Mixed Spot-the-Error Practice — Test Yourself</h3>
-                    <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.2rem;">Click the correct segment containing the grammatical error to verify your understanding!</p>
-
-                    <!-- PYQ 1 -->
-                    <div class="pyq-box">
-                        <div class="pyq-title">QUESTION 1 • SSC CGL TIER-1</div>
-                        <div class="pyq-question">Neither the teacher (A) / nor the students (B) / was present in the auditorium (C) / No Error (D)</div>
-                        <div class="pyq-options">
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Neither...nor agrees with the nearest subject. Nearest subject is plural (students), so verb must be PLURAL (were present).')">(A) Neither the teacher</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) nor the students</button>
-                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! Was present is WRONG. In Neither...nor constructions, the verb agrees with the NEAREST subject (students -> were present).')">(C) was present in the auditorium</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment C.')">(D) No Error</button>
-                        </div>
-                        <div class="pyq-expl hidden"></div>
-                    </div>
-
-                    <!-- PYQ 2 -->
-                    <div class="pyq-box">
-                        <div class="pyq-title">QUESTION 2 • SSC CHSL</div>
-                        <div class="pyq-question">I am looking forward (A) / to meet you (B) / at the upcoming seminar (C) / No Error (D)</div>
-                        <div class="pyq-options">
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment A is correct.')">(A) I am looking forward</button>
-                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'to meet you' is WRONG. In 'look forward to', 'to' is a preposition, so it MUST be followed by a gerund V-ing ('to meeting you').')">(B) to meet you</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment C is correct.')">(C) at the upcoming seminar</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment B.')">(D) No Error</button>
-                        </div>
-                        <div class="pyq-expl hidden"></div>
-                    </div>
-
-                    <!-- PYQ 3 -->
-                    <div class="pyq-box">
-                        <div class="pyq-title">QUESTION 3 • SSC CPO</div>
-                        <div class="pyq-question">No sooner had the thief (A) / entered the bank (B) / when the security alarm rang (C) / No Error (D)</div>
-                        <div class="pyq-options">
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment A is correct.')">(A) No sooner had the thief</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) entered the bank</button>
-                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'when' is WRONG. No sooner MUST be paired with THAN ('than the security alarm rang'). Hardly/Scarcely takes when.')">(C) when the security alarm rang</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment C.')">(D) No Error</button>
-                        </div>
-                        <div class="pyq-expl hidden"></div>
-                    </div>
-
-                    <!-- PYQ 4 -->
-                    <div class="pyq-box">
-                        <div class="pyq-title">QUESTION 4 • SSC CGL TIER-2</div>
-                        <div class="pyq-question">He is senior than (A) / all his colleagues (B) / in the government office (C) / No Error (D)</div>
-                        <div class="pyq-options">
-                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'senior than' is WRONG. Latin adjectives like senior, junior, superior, inferior take TO, not than ('senior to').')">(A) He is senior than</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) all his colleagues</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment C is correct.')">(C) in the government office</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment A.')">(D) No Error</button>
-                        </div>
-                        <div class="pyq-expl hidden"></div>
-                    </div>
-
-                    <!-- PYQ 5 -->
-                    <div class="pyq-box">
-                        <div class="pyq-title">QUESTION 5 • SSC CGL TIER-1</div>
-                        <div class="pyq-question">The cattle is grazing (A) / in the green fields (B) / near the village (C) / No Error (D)</div>
-                        <div class="pyq-options">
-                            <button class="opt-btn" onclick="checkPyq(this, true, 'CORRECT! 'The cattle is grazing' is WRONG. 'Cattle' is a plural noun and takes a PLURAL verb ('The cattle are grazing').')">(A) The cattle is grazing</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment B is correct.')">(B) in the green fields</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'Segment C is correct.')">(C) near the village</button>
-                            <button class="opt-btn" onclick="checkPyq(this, false, 'There is an error in segment A.')">(D) No Error</button>
-                        </div>
-                        <div class="pyq-expl hidden"></div>
-                    </div>
                 </div>
 
             </section>
