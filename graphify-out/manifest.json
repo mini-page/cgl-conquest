@@ -1,677 +1,645 @@
 {
   ".claude/settings.json": {
     "mtime": 1785472632.5592873,
-    "ast_hash": "ec408eafad69c8d26d4e56e2914d4d2e",
-    "semantic_hash": "ec408eafad69c8d26d4e56e2914d4d2e"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   ".codex/hooks.json": {
     "mtime": 1785472615.3395555,
-    "ast_hash": "38b7bf7b2a1a8551979c04708a1dcc73",
-    "semantic_hash": "38b7bf7b2a1a8551979c04708a1dcc73"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   ".opencode/opencode.json": {
     "mtime": 1785475026.9590883,
+    "seen": 1788161978.595755,
     "ast_hash": "1efe24ecf938911d4f23e4b1c6ec91f7",
     "semantic_hash": "1efe24ecf938911d4f23e4b1c6ec91f7"
   },
   ".opencode/plugins/graphify.js": {
     "mtime": 1785472603.2492576,
+    "seen": 1788161978.595755,
     "ast_hash": "b33d000860642c6f4907a877e0387a21",
     "semantic_hash": "b33d000860642c6f4907a877e0387a21"
   },
   "build-tailwind.js": {
     "mtime": 1784577343.3440971,
+    "seen": 1788161978.595755,
     "ast_hash": "477afdbcf817d7cd643c84f83877dab7",
     "semantic_hash": "477afdbcf817d7cd643c84f83877dab7"
   },
   "compile_data.js": {
     "mtime": 1784577344.5439773,
+    "seen": 1788161978.595755,
     "ast_hash": "6f5f393c1a2b993f90d85aa4dae67cf6",
     "semantic_hash": "6f5f393c1a2b993f90d85aa4dae67cf6"
   },
   "data/gk/geography.json": {
     "mtime": 1783428097.7124648,
-    "ast_hash": "e854e3d288595e26657352666a0eb5da",
-    "semantic_hash": "e854e3d288595e26657352666a0eb5da"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/gk/history.json": {
     "mtime": 1783489893.3796797,
-    "ast_hash": "7ac72899783f77f7b40472e660ca2714",
-    "semantic_hash": "7ac72899783f77f7b40472e660ca2714"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/gk/polity.json": {
     "mtime": 1783489893.3804882,
-    "ast_hash": "15b0501b422c77a6b4d13230265378bf",
-    "semantic_hash": "15b0501b422c77a6b4d13230265378bf"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/gk/science.json": {
     "mtime": 1783428097.7134664,
-    "ast_hash": "37f2e34e97ea91dd38d5d562359462e2",
-    "semantic_hash": "37f2e34e97ea91dd38d5d562359462e2"
-  },
-  "data/plan.js": {
-    "mtime": 1783424207.3942833,
-    "ast_hash": "4e30bfc0f179e2b6617900f89f11866f",
-    "semantic_hash": "4e30bfc0f179e2b6617900f89f11866f"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/plan.json": {
     "mtime": 1783316440.700732,
-    "ast_hash": "c336345e696ea5c5366ceb742eb05f39",
-    "semantic_hash": "c336345e696ea5c5366ceb742eb05f39"
-  },
-  "data/quizzes.js": {
-    "mtime": 1783424207.4004912,
-    "ast_hash": "cdd9352ba0228c20f622a337f77b2cc8",
-    "semantic_hash": "cdd9352ba0228c20f622a337f77b2cc8"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/quizzes.json": {
     "mtime": 1783516286.5244977,
-    "ast_hash": "46e158ff0bc7b0f17305c6b1f35ae45f",
-    "semantic_hash": "46e158ff0bc7b0f17305c6b1f35ae45f"
-  },
-  "data/syllabus.js": {
-    "mtime": 1783424207.3873668,
-    "ast_hash": "6ca74b2ebf7e937c8b4302cc455b9a0b",
-    "semantic_hash": "6ca74b2ebf7e937c8b4302cc455b9a0b"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/syllabus.json": {
     "mtime": 1784577753.4416404,
-    "ast_hash": "bb80709e8e0a0e7ae18b9531a96c6264",
-    "semantic_hash": "bb80709e8e0a0e7ae18b9531a96c6264"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/computer.json": {
     "mtime": 1783489893.3833897,
-    "ast_hash": "2d2a736d7ddbcdd7dc8d8fd31585e82f",
-    "semantic_hash": "2d2a736d7ddbcdd7dc8d8fd31585e82f"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/grammar.json": {
     "mtime": 1783489893.3993087,
-    "ast_hash": "6ad2a7ee86f857832875bf3224995ebc",
-    "semantic_hash": "6ad2a7ee86f857832875bf3224995ebc"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/laws.json": {
     "mtime": 1783489893.3993087,
-    "ast_hash": "31bcb6db050eeb1c2ca4a65907d3fb8b",
-    "semantic_hash": "31bcb6db050eeb1c2ca4a65907d3fb8b"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/patterns.json": {
     "mtime": 1784577343.346345,
-    "ast_hash": "80d1463221b0ab38ff31cb75d1590f44",
-    "semantic_hash": "80d1463221b0ab38ff31cb75d1590f44"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/quant.json": {
     "mtime": 1783489893.4013073,
-    "ast_hash": "13634ac4ba63bef12919e38e0294f296",
-    "semantic_hash": "13634ac4ba63bef12919e38e0294f296"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/reasoning.json": {
     "mtime": 1783489893.402308,
-    "ast_hash": "e1bf69a313b6840a1a2f798f118c7993",
-    "semantic_hash": "e1bf69a313b6840a1a2f798f118c7993"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/toolkit/tables.json": {
     "mtime": 1784577344.4372675,
-    "ast_hash": "255faef1bb3c9c44d06a7bfafcc744ab",
-    "semantic_hash": "255faef1bb3c9c44d06a7bfafcc744ab"
-  },
-  "data/vocab.js": {
-    "mtime": 1783424207.3975866,
-    "ast_hash": "c0c12c3099af51481501e96db154e2a8",
-    "semantic_hash": "c0c12c3099af51481501e96db154e2a8"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "data/vocab.json": {
     "mtime": 1783316440.7017746,
-    "ast_hash": "9ad9258e6ce9ede5a3304805213796bd",
-    "semantic_hash": "9ad9258e6ce9ede5a3304805213796bd"
-  },
-  "install.ps1": {
-    "mtime": 1785469840.3558848,
-    "ast_hash": "a8a445ca4df5a82bea8edb6e563f236a",
-    "semantic_hash": "a8a445ca4df5a82bea8edb6e563f236a"
+    "ast_hash": "",
+    "semantic_hash": ""
   },
   "js/app.js": {
-    "mtime": 1784577343.3488595,
-    "ast_hash": "0aef71c8f35f0b761d720c7967f54e74",
-    "semantic_hash": "0aef71c8f35f0b761d720c7967f54e74"
+    "mtime": 1786995616.7302885,
+    "seen": 1788161978.595755,
+    "ast_hash": "fa7bc472abbe5f65c09ebbb3661d4389",
+    "semantic_hash": ""
   },
   "js/cmdpalette.js": {
-    "mtime": 1784611655.4164429,
-    "ast_hash": "55f098171a4643d4f32c10a2c2940db4",
-    "semantic_hash": "55f098171a4643d4f32c10a2c2940db4"
+    "mtime": 1786995625.6342223,
+    "seen": 1788161978.595755,
+    "ast_hash": "2e99db36a76b9378ca64496060a2bcd0",
+    "semantic_hash": ""
   },
   "js/components/calendar.js": {
     "mtime": 1784577343.819772,
+    "seen": 1788161978.595755,
     "ast_hash": "d3cb1a980cacb24533218724ea6ddb79",
     "semantic_hash": "d3cb1a980cacb24533218724ea6ddb79"
   },
   "js/components/dropdown.js": {
     "mtime": 1784577344.2729151,
+    "seen": 1788161978.595755,
     "ast_hash": "42877b99812244d13c592be637c5df24",
     "semantic_hash": "42877b99812244d13c592be637c5df24"
   },
   "js/components/tooltip.js": {
     "mtime": 1784577343.3518589,
+    "seen": 1788161978.595755,
     "ast_hash": "f557a5a4c29215c5710f2fba97124dd4",
     "semantic_hash": "f557a5a4c29215c5710f2fba97124dd4"
   },
   "js/dashboard.js": {
     "mtime": 1786034052.9112892,
+    "seen": 1788161978.595755,
     "ast_hash": "2afc5ddf919f3e266c86391b5b80bf60",
     "semantic_hash": ""
   },
   "js/mocks.js": {
-    "mtime": 1786089511.622859,
-    "ast_hash": "8918ed2e67c9acb8dc4176a4cbaa4d3e",
+    "mtime": 1786995638.1915827,
+    "seen": 1788161978.595755,
+    "ast_hash": "48678bdb77d358cc3d952d8cc70b7941",
     "semantic_hash": ""
   },
   "js/navigation.js": {
-    "mtime": 1786089490.8327978,
-    "ast_hash": "92735bda67055d361074f12f9f9813c1",
+    "mtime": 1786978978.6269896,
+    "seen": 1788161978.595755,
+    "ast_hash": "c3b5bb9b07ac3365461a19221eb24b9f",
     "semantic_hash": ""
   },
   "js/plan.js": {
-    "mtime": 1786026779.0827842,
-    "ast_hash": "ff7643944bf2e32927243131f524503f",
+    "mtime": 1786995648.7605138,
+    "seen": 1788161978.595755,
+    "ast_hash": "fe916f44fbfa2e7dc11c91a47e014215",
     "semantic_hash": ""
   },
   "js/speed.js": {
     "mtime": 1786026784.256223,
+    "seen": 1788161978.595755,
     "ast_hash": "ae23ee770478438d19ec850750278537",
     "semantic_hash": ""
   },
   "js/state.js": {
-    "mtime": 1786026759.507931,
-    "ast_hash": "0487710375d92be786aef3134a20b358",
+    "mtime": 1788161838.2296257,
+    "seen": 1788161978.595755,
+    "ast_hash": "06be15a5f748347cbbf6448f728f3e6c",
     "semantic_hash": ""
   },
   "js/syllabus.js": {
     "mtime": 1786035743.855944,
+    "seen": 1788161978.595755,
     "ast_hash": "8b04c26633db8ab9799104a4dff2df8c",
     "semantic_hash": ""
   },
   "js/toolkit.js": {
-    "mtime": 1786092882.7045836,
-    "ast_hash": "b4775bd397735db889f27f8452ca7888",
+    "mtime": 1787733470.3702552,
+    "seen": 1788161978.595755,
+    "ast_hash": "edfaaf1bfcc122eb7cfa5a509727dfe7",
     "semantic_hash": ""
   },
   "js/typingtest.js": {
     "mtime": 1785382376.82762,
+    "seen": 1788161978.595755,
     "ast_hash": "34b5708d60c1fd4b80afb72b0c50e529",
     "semantic_hash": "34b5708d60c1fd4b80afb72b0c50e529"
   },
   "manifest.json": {
     "mtime": 1783415105.6470532,
+    "seen": 1788161978.595755,
     "ast_hash": "de19b375a95c99ae40e7c715bf1afda2",
     "semantic_hash": "de19b375a95c99ae40e7c715bf1afda2"
   },
   "package.json": {
     "mtime": 1784577343.3615868,
+    "seen": 1788161978.595755,
     "ast_hash": "6fec22a6b2bbdef1fac0b481ddcbf888",
     "semantic_hash": "6fec22a6b2bbdef1fac0b481ddcbf888"
   },
   "study/computer/cybersecurity_malwares_safeguards.js": {
     "mtime": 1783880215.5506186,
+    "seen": 1788161978.595755,
     "ast_hash": "28578e8aaf8e93b7767ac6268ce5ba68",
     "semantic_hash": "28578e8aaf8e93b7767ac6268ce5ba68"
   },
   "study/computer/internet_protocols_network_port_mappings.js": {
     "mtime": 1783880215.5512464,
+    "seen": 1788161978.595755,
     "ast_hash": "5a23f70ff2a53d4d4d9141bb0fe6d5e2",
     "semantic_hash": "5a23f70ff2a53d4d4d9141bb0fe6d5e2"
   },
   "study/computer/keyboard_shortcut_commands.js": {
     "mtime": 1783880215.552252,
+    "seen": 1788161978.595755,
     "ast_hash": "509bf7aca5894945a61ed4bd2495d601",
     "semantic_hash": "509bf7aca5894945a61ed4bd2495d601"
   },
   "study/computer/ms_excel_formulas_cell_referencing.js": {
     "mtime": 1783880215.5527568,
+    "seen": 1788161978.595755,
     "ast_hash": "56f92d7e0f66e189dc9dd27169de0267",
     "semantic_hash": "56f92d7e0f66e189dc9dd27169de0267"
   },
   "study/english/active_passive_transformations.js": {
     "mtime": 1783880215.5527568,
+    "seen": 1788161978.595755,
     "ast_hash": "169fcba2abac28cbc0b04a5fee3bb2a5",
     "semantic_hash": "169fcba2abac28cbc0b04a5fee3bb2a5"
   },
   "study/english/conditional_clauses_structure.js": {
     "mtime": 1783880215.5542164,
+    "seen": 1788161978.595755,
     "ast_hash": "eef53a5be3a8f3871634542bb409177f",
     "semantic_hash": "eef53a5be3a8f3871634542bb409177f"
   },
   "study/english/direct_indirect_speech_rules.js": {
     "mtime": 1783880215.5552168,
+    "seen": 1788161978.595755,
     "ast_hash": "331f157e9630a024dde88a3780c9a2c6",
     "semantic_hash": "331f157e9630a024dde88a3780c9a2c6"
   },
   "study/english/fixed_prepositions_combinations.js": {
     "mtime": 1783880215.5552168,
+    "seen": 1788161978.595755,
     "ast_hash": "48ae8d4ae2d4e9b14fd9606a6b1be969",
     "semantic_hash": "48ae8d4ae2d4e9b14fd9606a6b1be969"
   },
   "study/english/plural_vs_singular_noun_traps.js": {
     "mtime": 1783880215.556271,
+    "seen": 1788161978.595755,
     "ast_hash": "b99e7d0c689869cac5028bcd3736a6e5",
     "semantic_hash": "b99e7d0c689869cac5028bcd3736a6e5"
   },
   "study/english/pronoun_order_cases.js": {
     "mtime": 1783880215.556271,
+    "seen": 1788161978.595755,
     "ast_hash": "cd5e7634c53ad152a2292891e438326a",
     "semantic_hash": "cd5e7634c53ad152a2292891e438326a"
   },
   "study/english/subject-verb_agreement_core_cases.js": {
     "mtime": 1783880215.556271,
+    "seen": 1788161978.595755,
     "ast_hash": "689887360538e08fe0d35e2b24360c7c",
     "semantic_hash": "689887360538e08fe0d35e2b24360c7c"
   },
   "study/general/computer_science.js": {
     "mtime": 1783880215.5572689,
+    "seen": 1788161978.595755,
     "ast_hash": "16abd86d73dd7ecaedf2f1d80c0be641",
     "semantic_hash": "16abd86d73dd7ecaedf2f1d80c0be641"
   },
   "study/general/english_grammar.js": {
     "mtime": 1783880215.5572689,
+    "seen": 1788161978.595755,
     "ast_hash": "d82d0914d8227cd3453650d691bd70d9",
     "semantic_hash": "d82d0914d8227cd3453650d691bd70d9"
   },
   "study/general/english_language_amp_comprehension.js": {
     "mtime": 1783880215.5582757,
+    "seen": 1788161978.595755,
     "ast_hash": "12f0b3f8515007bc246af805012ef862",
     "semantic_hash": "12f0b3f8515007bc246af805012ef862"
   },
   "study/general/general_awareness_gkgs.js": {
     "mtime": 1783880215.5592718,
+    "seen": 1788161978.595755,
     "ast_hash": "8039f102feb4b52afedc253587ccf51d",
     "semantic_hash": "8039f102feb4b52afedc253587ccf51d"
   },
   "study/general/general_intelligence_amp_reasoning.js": {
     "mtime": 1783880215.5592718,
+    "seen": 1788161978.595755,
     "ast_hash": "6795f8db12524c559fbc498d3611b135",
     "semantic_hash": "6795f8db12524c559fbc498d3611b135"
   },
   "study/general/quantitative_aptitude.js": {
     "mtime": 1783880215.560272,
+    "seen": 1788161978.595755,
     "ast_hash": "a7d70540ea54905c0e9da1758808e6bd",
     "semantic_hash": "a7d70540ea54905c0e9da1758808e6bd"
   },
   "study/general/quantitative_aptitude_core_strategy.js": {
     "mtime": 1783880215.5613034,
+    "seen": 1788161978.595755,
     "ast_hash": "904ccbb0994cc3b132edff59b97a26c3",
     "semantic_hash": "904ccbb0994cc3b132edff59b97a26c3"
   },
   "study/general/reasoning_logic.js": {
     "mtime": 1783880215.5613034,
+    "seen": 1788161978.595755,
     "ast_hash": "ea84bef178e52ed14ccd7d5713b9825b",
     "semantic_hash": "ea84bef178e52ed14ccd7d5713b9825b"
   },
   "study/gk/geography/dams.js": {
     "mtime": 1783880215.563381,
+    "seen": 1788161978.595755,
     "ast_hash": "dd8651b28b31c2364d4bbeb49a56a7db",
     "semantic_hash": "dd8651b28b31c2364d4bbeb49a56a7db"
   },
   "study/gk/geography/mountains.js": {
     "mtime": 1783880215.564376,
+    "seen": 1788161978.595755,
     "ast_hash": "887de0307170396b6d2bbee2c0685405",
     "semantic_hash": "887de0307170396b6d2bbee2c0685405"
   },
   "study/gk/geography/passes.js": {
     "mtime": 1783880215.564376,
+    "seen": 1788161978.595755,
     "ast_hash": "c7fba7d38439300d4ab052ca2de3c74e",
     "semantic_hash": "c7fba7d38439300d4ab052ca2de3c74e"
   },
   "study/gk/geography/rivers.js": {
     "mtime": 1783880215.565376,
+    "seen": 1788161978.595755,
     "ast_hash": "b7a8c84c181271c03714f3a25af17074",
     "semantic_hash": "b7a8c84c181271c03714f3a25af17074"
   },
-  "study/gk/history/crucial_battles_timelines.js": {
-    "mtime": 1783880215.565376,
-    "ast_hash": "e83667b6ca6857301a3a8cdee2a92d4e",
-    "semantic_hash": "e83667b6ca6857301a3a8cdee2a92d4e"
-  },
   "study/gk/polity/constitution_articles_memory_roadmap.js": {
     "mtime": 1783880215.5663755,
+    "seen": 1788161978.595755,
     "ast_hash": "22064cbf477aa3c8390f6cd32d9b9679",
     "semantic_hash": "22064cbf477aa3c8390f6cd32d9b9679"
   },
   "study/gk/polity/daily_micro_trick_the_5-point_memory_chain.js": {
     "mtime": 1783880215.5674074,
+    "seen": 1788161978.595755,
     "ast_hash": "074816db8e78d7d28aa96adcea586808",
     "semantic_hash": "074816db8e78d7d28aa96adcea586808"
   },
   "study/gk/polity/tier_1_constitutional_articles_must_know.js": {
     "mtime": 1783880215.5684326,
+    "seen": 1788161978.595755,
     "ast_hash": "19d71ed38de3dafca6003c879412ba89",
     "semantic_hash": "19d71ed38de3dafca6003c879412ba89"
   },
   "study/gk/polity/tier_2_articles_very_high_frequency.js": {
     "mtime": 1783880215.568949,
+    "seen": 1788161978.595755,
     "ast_hash": "c0ac3681b0ec0411c42324f7b7911e89",
     "semantic_hash": "c0ac3681b0ec0411c42324f7b7911e89"
   },
   "study/gk/polity/tier_3_articles_frequently_asked.js": {
     "mtime": 1783880215.568949,
+    "seen": 1788161978.595755,
     "ast_hash": "c586ed93ff7072e39c5fa6430a85b798",
     "semantic_hash": "c586ed93ff7072e39c5fa6430a85b798"
   },
   "study/gk/polity/top_15_articles_to_memorize_first.js": {
     "mtime": 1783880215.5699544,
+    "seen": 1788161978.595755,
     "ast_hash": "bc6220149de725ee298d7764f64c08f1",
     "semantic_hash": "bc6220149de725ee298d7764f64c08f1"
   },
   "study/gk/science/facts.js": {
     "mtime": 1783880215.5699544,
+    "seen": 1788161978.595755,
     "ast_hash": "eb5b710f4fd9511c458a22c3126e614a",
     "semantic_hash": "eb5b710f4fd9511c458a22c3126e614a"
   },
   "study/gk/science/units.js": {
     "mtime": 1783880215.5714607,
+    "seen": 1788161978.595755,
     "ast_hash": "aa7d34a3a185f022d143b3cd02edab6c",
     "semantic_hash": "aa7d34a3a185f022d143b3cd02edab6c"
   },
   "study/quant/algebraic_identities_roots.js": {
     "mtime": 1783880215.5726156,
+    "seen": 1788161978.595755,
     "ast_hash": "b03363ff14b92e5b9a7dd8b22a20f489",
     "semantic_hash": "b03363ff14b92e5b9a7dd8b22a20f489"
   },
   "study/quant/coordinate_geometry.js": {
     "mtime": 1783880215.573121,
+    "seen": 1788161978.595755,
     "ast_hash": "4d9c267ff020700f7d06fe5c97c0b62a",
     "semantic_hash": "4d9c267ff020700f7d06fe5c97c0b62a"
   },
   "study/quant/geometry_centers_theorems.js": {
     "mtime": 1783880215.573121,
+    "seen": 1788161978.595755,
     "ast_hash": "b3926fa96d4145022db4dbf27f0460ed",
     "semantic_hash": "b3926fa96d4145022db4dbf27f0460ed"
   },
   "study/quant/mensuration_3d_surfaces_volumes.js": {
     "mtime": 1783880215.574237,
+    "seen": 1788161978.595755,
     "ast_hash": "06fd2e9211ec57d0de56473a9cce5b5d",
     "semantic_hash": "06fd2e9211ec57d0de56473a9cce5b5d"
   },
   "study/quant/percentage_product_constancy.js": {
     "mtime": 1783880215.5756562,
+    "seen": 1788161978.595755,
     "ast_hash": "c0d3f8e93ab31384421487fedaaae148",
     "semantic_hash": "c0d3f8e93ab31384421487fedaaae148"
   },
   "study/quant/profit_loss_successive_discounts.js": {
     "mtime": 1783880215.5770903,
+    "seen": 1788161978.595755,
     "ast_hash": "5221f2b173237916197633da3b67590a",
     "semantic_hash": "5221f2b173237916197633da3b67590a"
   },
   "study/quant/simple_compound_interest.js": {
     "mtime": 1783880215.5770903,
+    "seen": 1788161978.595755,
     "ast_hash": "e3326d4c462ff52cb33d712a10100325",
     "semantic_hash": "e3326d4c462ff52cb33d712a10100325"
   },
   "study/quant/time_speed_distance_boats.js": {
     "mtime": 1783880215.5782044,
+    "seen": 1788161978.595755,
     "ast_hash": "72bea47c6ca53bbe0e15f675aa836149",
     "semantic_hash": "72bea47c6ca53bbe0e15f675aa836149"
   },
   "study/quant/time_work_equivalence.js": {
     "mtime": 1783880215.5782044,
+    "seen": 1788161978.595755,
     "ast_hash": "92c3f2eb243b41b04dadf255d5803a47",
     "semantic_hash": "92c3f2eb243b41b04dadf255d5803a47"
   },
   "study/quant/trigonometric_values_amp_formulas_table.js": {
     "mtime": 1783880215.5793328,
+    "seen": 1788161978.595755,
     "ast_hash": "55e759749423695378f2b18c7849d9b8",
     "semantic_hash": "55e759749423695378f2b18c7849d9b8"
   },
   "study/reasoning/alphabet_code_map_ejoty.js": {
     "mtime": 1783880215.580718,
+    "seen": 1788161978.595755,
     "ast_hash": "eefe8809953e993ccfad1704871a631c",
     "semantic_hash": "eefe8809953e993ccfad1704871a631c"
   },
   "study/reasoning/calendar_odd_days_rules.js": {
     "mtime": 1783880215.580718,
+    "seen": 1788161978.595755,
     "ast_hash": "ff5724a899590c8b3bf9d14dfa82d8d9",
     "semantic_hash": "ff5724a899590c8b3bf9d14dfa82d8d9"
   },
   "study/reasoning/clock_hands_angle_equation.js": {
     "mtime": 1783880215.581717,
+    "seen": 1788161978.595755,
     "ast_hash": "717a81e4b7f552e9c99d5715eee08ec1",
     "semantic_hash": "717a81e4b7f552e9c99d5715eee08ec1"
   },
   "study/reasoning/dice_closed_open_rules.js": {
     "mtime": 1783880215.5823517,
+    "seen": 1788161978.595755,
     "ast_hash": "12e84d849f4dbc7d76e09a8acf186302",
     "semantic_hash": "12e84d849f4dbc7d76e09a8acf186302"
   },
   "study/reasoning/direction_sense_shadows_triplets.js": {
     "mtime": 1783880215.583381,
+    "seen": 1788161978.595755,
     "ast_hash": "610c2de9b26e7a711a3d2a50887c5aab",
     "semantic_hash": "610c2de9b26e7a711a3d2a50887c5aab"
   },
   "study/reasoning/syllogism_truth_matrix.js": {
     "mtime": 1783880215.583381,
+    "seen": 1788161978.595755,
     "ast_hash": "e2e8a77d1907565e9425e895cb8f4396",
     "semantic_hash": "e2e8a77d1907565e9425e895cb8f4396"
   },
   "study/subjects.js": {
-    "mtime": 1783880215.5844123,
-    "ast_hash": "10a504707c69241f73c78004e60f8a15",
-    "semantic_hash": "10a504707c69241f73c78004e60f8a15"
+    "mtime": 1787733487.3963776,
+    "seen": 1788161978.595755,
+    "ast_hash": "9279bd4d3e57f46fb311893b022c80f0",
+    "semantic_hash": ""
   },
   "sw.js": {
-    "mtime": 1784577343.401759,
-    "ast_hash": "302f8fc5b180306152bcdcad13549334",
-    "semantic_hash": "302f8fc5b180306152bcdcad13549334"
+    "mtime": 1786979026.8956923,
+    "seen": 1788161978.595755,
+    "ast_hash": "923db0d9b12ae9303f69f2cd9d64bba3",
+    "semantic_hash": ""
   },
   "tailwind.config.js": {
     "mtime": 1784577343.4023933,
+    "seen": 1788161978.595755,
     "ast_hash": "82660aeef61afeb566bc7b0c23424de3",
     "semantic_hash": "82660aeef61afeb566bc7b0c23424de3"
   },
   ".agents/rules/graphify.md": {
     "mtime": 1785472524.2516513,
+    "seen": 1788161978.595755,
     "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
     "semantic_hash": ""
   },
   ".agents/workflows/graphify.md": {
     "mtime": 1785472524.2546513,
+    "seen": 1788161978.595755,
     "ast_hash": "a831cf3669f1e6ab85d8a80ebe655f99",
     "semantic_hash": ""
   },
   ".claude/skills/gitnexus/gitnexus-cli/SKILL.md": {
     "mtime": 1786093019.5724375,
+    "seen": 1788161978.595755,
     "ast_hash": "77da703128a8f2f84ab1367f9bb60d09",
     "semantic_hash": ""
   },
   ".claude/skills/gitnexus/gitnexus-debugging/SKILL.md": {
     "mtime": 1786093019.5583918,
+    "seen": 1788161978.595755,
     "ast_hash": "c7284b8f06cb8323f572564363df59e2",
     "semantic_hash": ""
   },
   ".claude/skills/gitnexus/gitnexus-exploring/SKILL.md": {
     "mtime": 1786093019.5550785,
+    "seen": 1788161978.595755,
     "ast_hash": "680f3e0bef0d75b4e82b461715213126",
     "semantic_hash": ""
   },
   ".claude/skills/gitnexus/gitnexus-guide/SKILL.md": {
     "mtime": 1786093019.5680332,
+    "seen": 1788161978.595755,
     "ast_hash": "51eee64e023b05990b57ea22eac4957d",
     "semantic_hash": ""
   },
   ".claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md": {
     "mtime": 1786093019.561666,
+    "seen": 1788161978.595755,
     "ast_hash": "f8b8d25ad42baa867a37791ee09f106e",
     "semantic_hash": ""
   },
   ".claude/skills/gitnexus/gitnexus-refactoring/SKILL.md": {
     "mtime": 1786093019.5651305,
+    "seen": 1788161978.595755,
     "ast_hash": "4d0bf7aa2b876bd4318add73d5e4918e",
     "semantic_hash": ""
   },
   "AGENTS.md": {
     "mtime": 1786093019.5485878,
+    "seen": 1788161978.595755,
     "ast_hash": "81bdb50c3f150f6b4b237cb59df262ed",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
     "mtime": 1786093019.5501053,
+    "seen": 1788161978.595755,
     "ast_hash": "b804ec6d0c6db02b786aaf24f5ac654b",
     "semantic_hash": ""
   },
   "PROJECT_MEMORIFY.md": {
-    "mtime": 1784577343.3440971,
-    "ast_hash": "dc993f8be58ba94b0bb84ef1732c30c1",
+    "mtime": 1786995667.2273803,
+    "seen": 1788161978.595755,
+    "ast_hash": "5283e921984b8866844631c926da47c2",
     "semantic_hash": ""
   },
   "README.md": {
     "mtime": 1783272040.8137267,
+    "seen": 1788161978.595755,
     "ast_hash": "0254f260f9cf034199aa88a245248797",
     "semantic_hash": ""
   },
-  "codebase_blast_radius_map.md": {
-    "mtime": 1783931346.8420582,
-    "ast_hash": "b478dce297b49f5973c20658890b752f",
-    "semantic_hash": ""
-  },
   "index.html": {
-    "mtime": 1786092965.0056636,
-    "ast_hash": "eb6df3559146623d2ed7cffbfc48d993",
+    "mtime": 1786995609.475127,
+    "seen": 1788161978.595755,
+    "ast_hash": "d4bf35da255f4078271b87374f3cfd05",
     "semantic_hash": ""
   },
   "icon.svg": {
     "mtime": 1783415105.637808,
+    "seen": 1788161978.595755,
     "ast_hash": "712c9a4d31501ccdd9cc1fe3faa6b3e1",
     "semantic_hash": ""
   },
-  "ssc_patterns/current_affairs_key_categories.jpg": {
-    "mtime": 1784577343.3635867,
-    "ast_hash": "6dc048bddcbe2a6bee002fd04d08a7e4",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/economics_national_output_equation.jpg": {
-    "mtime": 1784577343.3645854,
-    "ast_hash": "a080d43da277d5639c934d9cd9638931",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/economics_rbi_rate_mechanics.jpg": {
-    "mtime": 1784577343.367091,
-    "ast_hash": "5fe278e75893b6ed519c30442501ac71",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/english_biggest_shortcut.jpg": {
-    "mtime": 1784577343.3688943,
-    "ast_hash": "81fe10b2cb03bd983cc075e9b058f19f",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/english_cloze_comprehension.jpg": {
-    "mtime": 1784577343.369896,
-    "ast_hash": "321dc2b0edacb3ac5b52fa81edfb75a4",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/english_error_detection_mechanical.jpg": {
-    "mtime": 1784577343.371895,
-    "ast_hash": "407c53e7bdc6a8c271048f010f7b890a",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/english_score_8_pillars.jpg": {
-    "mtime": 1784577343.373398,
-    "ast_hash": "d48933bc4d73f259af3b3497a06b1e06",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/english_vocab_pyq_strategy.jpg": {
-    "mtime": 1784577343.3756008,
-    "ast_hash": "7ceefad270a58d1a73383d70e6497aca",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/general_pyq_blueprint.jpg": {
-    "mtime": 1784577343.3771071,
-    "ast_hash": "b497f10c427eaed58b6c28336f7701fa",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/geography_core_topics.jpg": {
-    "mtime": 1784577343.3777387,
-    "ast_hash": "367d9cb5a9995c6d8fd054aa409a884b",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/history_ancient_medieval_clusters.jpg": {
-    "mtime": 1784577343.3787458,
-    "ast_hash": "555188d2d374c54bef606a8dc36f2836",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/history_modern_big_6_checklist.jpg": {
-    "mtime": 1784577343.3807476,
-    "ast_hash": "aa0f0c5979d05a38a83889745a78510a",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/history_mughal_empire_peak.jpg": {
-    "mtime": 1784577343.3817458,
-    "ast_hash": "856252db264b6f9fb84207d699af4e95",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/polity_predictable_goldmine.jpg": {
-    "mtime": 1784577343.3827462,
-    "ast_hash": "225838f42aa4e3d6966a63c806762dcb",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/quant_algebra_core_targets.jpg": {
-    "mtime": 1784577343.3837452,
-    "ast_hash": "3977d62c8e1bcd95e712ef42e0544518",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/quant_arithmetic_core_pillars.jpg": {
-    "mtime": 1784577343.3847444,
-    "ast_hash": "ebc762b807784b09f0ca706ae84721b8",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/quant_concept_engine_time_work.jpg": {
-    "mtime": 1784577343.3861039,
-    "ast_hash": "f9d25804c5a7c11fbf41a5e4a6091e09",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/quant_geometry_properties_strategy.jpg": {
-    "mtime": 1784577343.3882132,
-    "ast_hash": "b4b5b8990be57ca4c1dce2232c7bb9c3",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/quant_mensuration_core_shapes.jpg": {
-    "mtime": 1784577343.3896153,
-    "ast_hash": "a657cc68e47b70577c8e2dc4f3c4f6e7",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/quant_topic_pyramid.jpg": {
-    "mtime": 1784577343.3908892,
-    "ast_hash": "303373bb7a89e5e83d3101b462d44685",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/reasoning_coding_decoding.jpg": {
-    "mtime": 1784577343.3924048,
-    "ast_hash": "07b251a2c8d475ae41eeab7e416f9b29",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/reasoning_direction_blood_relations.jpg": {
-    "mtime": 1784577343.394422,
-    "ast_hash": "06d4eb239e787a98c5ffdc4c0bbf2dee",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/reasoning_floor_box_puzzles.jpg": {
-    "mtime": 1784577343.3957903,
-    "ast_hash": "9fa1447bb599001bca426ac9d42dc4d1",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/reasoning_non_verbal.jpg": {
-    "mtime": 1784577343.3962946,
-    "ast_hash": "d788bf687167f92d151b435a6d0ee1e1",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/reasoning_series_patterns.jpg": {
-    "mtime": 1784577343.399142,
-    "ast_hash": "20b9baae6f28511f3caa4801c7b95778",
-    "semantic_hash": ""
-  },
-  "ssc_patterns/science_core_topics.jpg": {
-    "mtime": 1784577343.4002013,
-    "ast_hash": "e955c010b4d2abc46a08f97ee92a6e93",
-    "semantic_hash": ""
-  },
   "js/study_content.js": {
-    "mtime": 1786089271.777508,
-    "ast_hash": "747870c1afc1961064e21e686d69e5e9",
+    "mtime": 1787497147.8832414,
+    "seen": 1788161978.595755,
+    "ast_hash": "5a54cbf04a4f996d2a7fb861a72b51df",
+    "semantic_hash": ""
+  },
+  "pages/constitution-explorer.html": {
+    "mtime": 1786592974.2649724,
+    "seen": 1788161978.595755,
+    "ast_hash": "7a71eb33b96da9ddc49a77ebf78ecb5d",
+    "semantic_hash": ""
+  },
+  "pages/geometry-atlas.html": {
+    "mtime": 1787312676.6425004,
+    "seen": 1788161978.595755,
+    "ast_hash": "a6d856d1ff880ea88c1ec2000a81d922",
+    "semantic_hash": ""
+  },
+  "pages/grammar-book.html": {
+    "mtime": 1787374748.902814,
+    "seen": 1788161978.595755,
+    "ast_hash": "15d004e3f6fee192663dd735d74eb2ee",
+    "semantic_hash": ""
+  },
+  "pages/historical-calendar.html": {
+    "mtime": 1786605535.1045148,
+    "seen": 1788161978.595755,
+    "ast_hash": "4f85020fe9bbc991f22ae509d204e1f8",
+    "semantic_hash": ""
+  },
+  "pages/india-atlas.html": {
+    "mtime": 1786690674.3481536,
+    "seen": 1788161978.595755,
+    "ast_hash": "2c71503906efd3599c4f92d1213342a3",
+    "semantic_hash": ""
+  },
+  "pages/math-pager.html": {
+    "mtime": 1788159205.3234794,
+    "seen": 1788161978.595755,
+    "ast_hash": "c6b1d94f51687307d23bf0dd957a40bf",
+    "semantic_hash": ""
+  },
+  "pages/science-lab.html": {
+    "mtime": 1787502224.5586452,
+    "seen": 1788161978.595755,
+    "ast_hash": "ff09ec45580de277495676ba6b473aaa",
+    "semantic_hash": ""
+  },
+  "pages/ssc-os-computer-tier2.html": {
+    "mtime": 1786341756.0100462,
+    "seen": 1788161978.595755,
+    "ast_hash": "0144ca85f157b69f746432049be1d10b",
     "semantic_hash": ""
   }
 }

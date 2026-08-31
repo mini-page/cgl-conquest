@@ -554,6 +554,22 @@ window.STUDY_DATA = {
       "html": "<div class=\"text-center py-6\"><i class=\"fa-solid fa-calendar-days text-3xl text-violet mb-3\"></i><h3 class=\"text-lg font-extrabold text-white\">Historical Calendar</h3><p class=\"text-gray-400 text-xs mt-2\">Interactive calendar of historical events &amp; important days for SSC CGL/CHSL. Opens in full-screen immersive mode.</p></div>"
     }]
   },
+  "science_lab": {
+      "subject": "gk_science",
+      "subjectName": "🔬 General Science",
+      "subjectIcon": "fa-flask-vial",
+      "subjectColor": "emerald",
+      "title": "General Science Specimen Lab",
+      "difficulty": "medium",
+      "roi": "high",
+      "tags": ["science","lab","physics","chemistry","biology","interactive"],
+      "page": "pages/science-lab.html",
+      "sections": [{
+        "title": "",
+        "type": "content",
+        "html": "<div class=\"text-center py-6\"><i class=\"fa-solid fa-flask-vial text-3xl text-emerald mb-3\"></i><h3 class=\"text-lg font-extrabold text-white\">General Science Specimen Lab</h3><p class=\"text-gray-400 text-xs mt-2\">Interactive General Science specimen lab for Physics, Chemistry &amp; Biology. Opens in full-screen immersive mode.</p></div>"
+      }]
+  },
 "units": {
     "subject": "gk_science",
     "subjectName": "🔬 Science",

@@ -1,16 +1,16 @@
-# Graph Report - ssc_cgl_dashboard  (2026-08-07)
+# Graph Report - ssc_cgl_dashboard  (2026-08-31)
 
 ## Corpus Check
-- 107 files · ~214,652 words
+- 101 files · ~284,572 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 563 nodes · 771 edges · 99 communities (88 shown, 11 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.66)
+- 568 nodes · 780 edges · 96 communities (89 shown, 7 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `dfab5cf6`
+- Built from commit: `17fae2d7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,10 +32,9 @@
 - CustomTooltip
 - opencode.json
 - graphify.js
-- data/plan.js
-- quizzes.js
-- data/syllabus.js
-- vocab.js
+- cmdpalette.js
+- plan.js
+- 22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)
 - sw.js
 - PROJECT MEMORIFY — SSC CGL Conquest Dashboard
 - 20. QUICK REFERENCE CARD
@@ -50,7 +49,6 @@
 - Exploring Codebases with GitNexus
 - GitNexus — Code Intelligence
 - GitNexus — Code Intelligence
-- Codebase Blast Radius Map — GitNexus
 - SSC CGL 40-Day Rank-Maker Dashboard 🏆
 - 6. ALL GLOBAL VARIABLES
 - 9. EXECUTION FLOWS (33 Total from GitNexus)
@@ -65,8 +63,8 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `renderAll()` - 24 edges
-2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 23 edges
-3. `renderStudyTrackerAll()` - 19 edges
+2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 24 edges
+3. `renderStudyTrackerAll()` - 21 edges
 4. `20. QUICK REFERENCE CARD` - 14 edges
 5. `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)` - 12 edges
 6. `flags()` - 11 edges
@@ -84,21 +82,21 @@
   js/navigation.js → js/state.js
 - `renderStudyPlan()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/plan.js → js/state.js
-- `calculateOverallStats()` --references--> `SYLLABUS_DATA`  [EXTRACTED]
-  js/dashboard.js → js/state.js
+- `showQuickRefTables()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
+  js/toolkit.js → js/state.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (99 total, 11 thin omitted)
+## Communities (96 total, 7 thin omitted)
 
 ### Community 0 - "js/syllabus.js"
 Cohesion: 0.10
 Nodes (53): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+45 more)
 
 ### Community 1 - "toolkit.js"
-Cohesion: 0.08
-Nodes (41): renderAll(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), clearStudyFilters(), deleteNote(), findSubtopicById() (+33 more)
+Cohesion: 0.07
+Nodes (47): renderAll(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), clearStudyFilters(), deleteNote(), DIRECT_MASTER_PAGES (+39 more)
 
 ### Community 2 - "typingtest.js"
 Cohesion: 0.17
@@ -109,19 +107,19 @@ Cohesion: 0.09
 Nodes (22): computer, dataDir, fs, geography, gkDir, grammar, history, laws (+14 more)
 
 ### Community 4 - "state.js"
-Cohesion: 0.12
-Nodes (16): buildRegistry(), close(), execute(), filterCommands(), open(), render(), renderActiveOnly(), appState (+8 more)
+Cohesion: 0.14
+Nodes (12): appState, COMPUTER_TARGET_MAP, EMBEDDED_QUIZZES, escapeHTML(), FLASHCARDS, GK_STATIC_DATA, loadStateFromStorage(), parseMarkdown() (+4 more)
 
 ### Community 5 - "dashboard.js"
 Cohesion: 0.14
-Nodes (20): calculateOverallStats(), formatTimeSeconds(), initExamTargetEditor(), initSessionTimer(), initTierToggler(), loadRituals(), renderAll(), renderDashboardOverview() (+12 more)
+Nodes (21): calculateOverallStats(), formatTimeSeconds(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover(), togglePomoPopover(), initSessionTimer() (+13 more)
 
 ### Community 6 - "navigation.js"
 Cohesion: 0.23
 Nodes (18): closeShortcutsHelpModal(), expandNav(), filterShortcuts(), handleShortcutAction(), initHeaderScroll(), initNavigation(), initTheme(), navigateToPage() (+10 more)
 
 ### Community 7 - "speed.js"
-Cohesion: 0.26
+Cohesion: 0.20
 Nodes (17): checkDrillAnswer(), clearIdleTimer(), DRILL_MODE_LABELS, endChallengeRun(), generateChallengeQuestion(), generateDrillQuestion(), generateMathOptions(), generateProceduralMathQuestion() (+9 more)
 
 ### Community 8 - "mocks.js"
@@ -130,7 +128,7 @@ Nodes (13): cancelMockEdit(), deleteMock(), editMock(), getSubtopicDetails(), in
 
 ### Community 9 - "package.json"
 Cohesion: 0.17
-Nodes (11): description, devDependencies, tailwindcss, name, scripts, build, build:css, build:data (+3 more)
+Nodes (11): description, devDependencies, tailwindcss, tailwindcss, name, scripts, build, build:css (+3 more)
 
 ### Community 11 - "manifest.json"
 Cohesion: 0.22
@@ -143,6 +141,18 @@ Nodes (6): { execSync }, fs, inputPath, isWatch, outputPath, path
 ### Community 15 - "opencode.json"
 Cohesion: 0.50
 Nodes (3): plugin, $schema, .opencode/plugins/graphify.js
+
+### Community 17 - "cmdpalette.js"
+Cohesion: 0.39
+Nodes (7): buildRegistry(), close(), execute(), filterCommands(), open(), render(), renderActiveOnly()
+
+### Community 18 - "plan.js"
+Cohesion: 0.47
+Nodes (4): btnCompleteDay, completeActiveDay(), renderStudyPlan(), resetActiveDayTo()
+
+### Community 19 - "22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)"
+Cohesion: 0.40
+Nodes (5): 22.1 XSS Prevention Standards, 22.2 Focus, Shortcut & UX Safety Rules, 22.3 Accessibility (WCAG 2.1 AA) Integration, 22.4 Service Worker & Offline Cache Integrity, 22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)
 
 ### Community 73 - "PROJECT MEMORIFY — SSC CGL Conquest Dashboard"
 Cohesion: 0.14
@@ -196,10 +206,6 @@ Nodes (6): Always Do, CLI, GitNexus — Code Intelligence, graphify, Never Do, R
 Cohesion: 0.29
 Nodes (6): Always Do, CLI, GitNexus — Code Intelligence, graphify, Never Do, Resources
 
-### Community 86 - "Codebase Blast Radius Map — GitNexus"
-Cohesion: 0.29
-Nodes (6): 1. High-Level Dependency Graph, 1. Unified Study Note Display Flow, 2. Blast Radius Matrix by File, 2. Page Navigation & Keybinding Interception, 3. Key Inter-file Execution Flows, Codebase Blast Radius Map — GitNexus
-
 ### Community 87 - "SSC CGL 40-Day Rank-Maker Dashboard 🏆"
 Cohesion: 0.29
 Nodes (6): 🚀 How to Run the Dashboard, Option 1: Direct File Open (Easiest), Option 2: Live Local Server (Recommended for dynamic resizing), 🎯 Premium Features Built for Your Success, SSC CGL 40-Day Rank-Maker Dashboard 🏆, 🧭 Syllabus Navigation Map
@@ -237,24 +243,24 @@ Cohesion: 0.67
 Nodes (3): 4.1 Import/Export Relationships, 4.2 Cross-Module Coupling Summary, 4. MODULE DEPENDENCY MAP
 
 ## Knowledge Gaps
-- **204 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+199 more)
+- **206 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+201 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `state.js`, `dashboard.js`, `navigation.js`?**
-  _High betweenness centrality (0.034) - this node is a cross-community bridge._
-- **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`, `4. MODULE DEPENDENCY MAP`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `SYLLABUS_DATA` connect `state.js` to `mocks.js`, `dashboard.js`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `plan.js`, `state.js`, `dashboard.js`, `navigation.js`?**
+  _High betweenness centrality (0.033) - this node is a cross-community bridge._
+- **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`, `4. MODULE DEPENDENCY MAP`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `renderAll()` connect `dashboard.js` to `toolkit.js`?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
-  _204 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _206 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `js/syllabus.js` be split into smaller, more focused modules?**
   _Cohesion score 0.10168350168350168 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.07712765957446809 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06568832983927324 - nodes in this community are weakly interconnected._
 - **Should `compile_data.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._

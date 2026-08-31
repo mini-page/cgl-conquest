@@ -65,9 +65,17 @@ window.studySubjects = {
     },
     {
       "id": "mathematics",
-      "name": "📐 Mathematics",
+      "name": "📐 Mathematics (Quant)",
       "icon": "fa-calculator",
       "topics": [
+        {
+          "id": "math_pager",
+          "name": "Math Pager (Quant Lab)",
+          "icon": "fa-calculator",
+          "page": "pages/math-pager.html",
+          "description": "Interactive SSC CGL & CHSL Quantitative Aptitude lab: Number System, Algebra, Geometry, Arithmetic & Calculators",
+          "tags": ["math", "quant", "ssc", "cgl", "chsl", "arithmetic", "algebra", "geometry", "calculators", "interactive"]
+        },
         {
           "id": "geometry_atlas",
           "name": "Geometry & Mensuration Atlas",
@@ -164,6 +172,14 @@ window.studySubjects = {
           "page": "pages/historical-calendar.html",
           "description": "Interactive calendar of historical events & important days with filters, revision, quiz & timeline",
           "tags": ["history", "calendar", "dates", "events", "interactive"]
+        },
+        {
+          "id": "science_lab",
+          "name": "General Science Specimen Lab",
+          "icon": "fa-flask-vial",
+          "page": "pages/science-lab.html",
+          "description": "Interactive General Science specimen lab for Physics, Chemistry & Biology topics & experiments",
+          "tags": ["science", "lab", "physics", "chemistry", "biology", "interactive"]
         },
         {
           "id": "science",

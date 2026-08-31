@@ -1,0 +1,2013 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Pager — SSC CGL & CHSL Quant Command Center</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root {
+  --bg: #06080e;
+  --bg-card: #0c111d;
+  --bg-card-alt: #121827;
+  --border: rgba(34, 211, 238, 0.15);
+  --border-strong: rgba(34, 211, 238, 0.35);
+  --text: #e2e8f0;
+  --text-dim: #94a3b8;
+  --text-faint: #475569;
+  --cyan: #22d3ee;
+  --cyan-glow: rgba(34, 211, 238, 0.25);
+  --amber: #f59e0b;
+  --purple: #c084fc;
+  --emerald: #10b981;
+  --rose: #f43f5e;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+  --sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); overflow: hidden; }
+
+/* 2-COLUMN WORKBENCH GRID LAYOUT (MAXIMIZED CENTER CANVAS) */
+.app-grid {
+  display: grid;
+  grid-template-rows: 52px 46px 1fr;
+  grid-template-columns: 310px 1fr;
+  grid-template-areas:
+    "top top"
+    "pipe pipe"
+    "nav main";
+  height: 100vh;
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+}
+.app-grid > * { background: var(--bg); }
+
+/* 1. TOP BAR */
+.topbar {
+  grid-area: top; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; background: #090d16; border-bottom: 1px solid var(--border); z-index: 30;
+}
+.brand-box { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 14px; letter-spacing: 0.5px; }
+.brand-badge {
+  background: rgba(34,211,238,0.15); border: 1px solid var(--border-strong);
+  color: var(--cyan); width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.action-btn {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-dim);
+  padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; transition: 0.15s;
+}
+.action-btn:hover { background: rgba(34,211,238,0.12); color: var(--cyan); border-color: var(--cyan); }
+.toolbox-btn {
+  background: rgba(34,211,238,0.15); border: 1px solid var(--cyan); color: var(--cyan);
+}
+.close-btn {
+  width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(244,63,94,0.3);
+  background: rgba(244,63,94,0.1); color: var(--rose); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: 0.15s;
+}
+.close-btn:hover { background: var(--rose); color: #fff; }
+
+/* 2. HORIZONTAL SECTION PIPELINE BAR */
+.pipeline-bar {
+  grid-area: pipe; display: flex; align-items: center; gap: 6px; padding: 0 12px;
+  background: #0b101c; border-bottom: 1px solid var(--border); overflow-x: auto;
+}
+.pipe-step {
+  padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 800; color: var(--text-dim);
+  background: rgba(255,255,255,0.02); border: 1px solid transparent; cursor: pointer;
+  white-space: nowrap; transition: 0.15s; display: flex; align-items: center; gap: 6px;
+}
+.pipe-step:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+.pipe-step.active {
+  background: rgba(34,211,238,0.15); border-color: var(--cyan); color: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+.pipe-num { font-family: var(--mono); font-size: 10px; opacity: 0.7; }
+
+/* 3. LEFT COLUMN: TOPIC NAVIGATOR */
+.topic-nav {
+  grid-area: nav; display: flex; flex-direction: column; border-right: 1px solid var(--border);
+  background: #090e18; overflow: hidden;
+}
+.nav-header {
+  padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 800;
+  color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.5px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-list { flex: 1; overflow-y: auto; padding: 8px; }
+.nav-card {
+  padding: 10px 12px; border-radius: 8px; background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05); margin-bottom: 6px; cursor: pointer; transition: 0.15s;
+}
+.nav-card:hover { background: rgba(255,255,255,0.05); border-color: var(--border); }
+.nav-card.active { background: rgba(34,211,238,0.12); border-color: var(--cyan); }
+.nav-card-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.nav-card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 10px; color: var(--text-dim); }
+.priority-tag { font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 4px; text-transform: uppercase; }
+.tag-must { background: rgba(244,63,94,0.2); color: var(--rose); }
+.tag-high { background: rgba(245,158,11,0.2); color: var(--amber); }
+
+/* 4. CENTER COLUMN: MASTER WORKBENCH */
+.workbench { grid-area: main; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+.wb-tabs {
+  display: flex; background: #0c1220; border-bottom: 1px solid var(--border); padding: 0 16px; gap: 4px;
+}
+.wb-tab {
+  padding: 10px 16px; font-size: 11px; font-weight: 800; color: var(--text-dim); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: 0.15s; display: flex; align-items: center; gap: 6px;
+}
+.wb-tab:hover { color: var(--text); }
+.wb-tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+.wb-content { flex: 1; overflow-y: auto; padding: 24px; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+/* WORKBENCH PANELS */
+.panel-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px; margin-bottom: 18px;
+}
+.panel-title {
+  font-size: 13px; font-weight: 800; color: var(--cyan); text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.panel-body { font-size: 13px; line-height: 1.8; color: var(--text); }
+
+/* FORMULA DECK GRID */
+.formula-deck { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.f-card {
+  background: var(--bg-card-alt); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; position: relative; overflow: hidden;
+}
+.f-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--cyan); }
+.f-math { font-family: var(--mono); font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.f-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+/* TABLE DISPLAY */
+.wb-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.wb-table th, .wb-table td { padding: 9px 14px; text-align: left; border: 1px solid var(--border); }
+.wb-table th { background: rgba(255,255,255,0.04); color: var(--cyan); font-weight: 800; }
+
+/* 5. SLIDE-OUT ON-DEMAND MATH TOOLBOX DRAWER (8 TOOLS) */
+.toolbox-drawer {
+  position: fixed; top: 0; right: -450px; width: 420px; height: 100vh;
+  background: #090e18; border-left: 1px solid var(--border-strong);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.8); z-index: 100;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; flex-direction: column;
+}
+.toolbox-drawer.open { right: 0; }
+.tb-head {
+  padding: 14px 18px; border-bottom: 1px solid var(--border); background: #0c1220;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tb-title { font-size: 13px; font-weight: 800; color: var(--cyan); display: flex; align-items: center; gap: 8px; }
+.tb-close { background: none; border: none; color: var(--text-dim); font-size: 16px; cursor: pointer; }
+.tb-body { flex: 1; overflow-y: auto; padding: 16px; }
+
+.tool-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px; margin-bottom: 16px;
+}
+.tool-title { font-size: 12px; font-weight: 800; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.tool-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.tool-input {
+  flex: 1; background: #06080e; border: 1px solid var(--border); border-radius: 6px;
+  padding: 6px 10px; color: #fff; font-family: var(--mono); font-size: 11px; outline: none;
+}
+.tool-input:focus { border-color: var(--cyan); }
+.tool-btn {
+  width: 100%; background: var(--cyan); color: #000; border: none; padding: 7px;
+  border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.15s;
+}
+.tool-btn:hover { background: #67e8f9; }
+.tool-output {
+  background: rgba(34,211,238,0.06); border: 1px solid var(--border); border-radius: 6px;
+  padding: 10px; font-family: var(--mono); font-size: 11px; color: var(--text); margin-top: 8px; white-space: pre-wrap;
+}
+
+/* SEARCH MODAL */
+.search-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  z-index: 150; display: none; align-items: flex-start; justify-content: center; padding-top: 80px;
+}
+.search-modal.open { display: flex; }
+
+.revision-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.82); backdrop-filter: blur(8px);
+  z-index: 150; display: none; align-items: flex-start; justify-content: center; padding: 4vh 20px;
+}
+.revision-modal.open { display: flex; }
+.revision-box {
+  width: 100%; max-width: 820px; max-height: 92vh; overflow-y: auto; background: #0d131f;
+  border: 1px solid var(--border-strong); border-radius: 12px; padding: 22px 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+.rev-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.rev-title { font-size: 13px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--cyan); font-weight: 700; }
+.rev-close { cursor: pointer; color: var(--text-dim); font-size: 20px; line-height: 1; }
+.rev-close:hover { color: #fff; }
+.rev-sub { font-size: 11.5px; color: var(--text-dim); margin-bottom: 16px; }
+.rev-chapter-h {
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim);
+  margin: 18px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.rev-chapter-h:first-of-type { margin-top: 0; }
+.rev-topic-group { margin-bottom: 10px; }
+.rev-topic-name { font-size: 12.5px; font-weight: 700; color: #fff; margin-bottom: 4px; cursor: pointer; }
+.rev-topic-name:hover { color: var(--cyan); }
+.rev-formula-row { display: flex; gap: 10px; padding: 3px 0 3px 12px; font-size: 12px; align-items: baseline; }
+.rev-formula-row .rf { color: var(--cyan); font-family: monospace; min-width: 160px; }
+.rev-formula-row .rd { color: var(--text-dim); }
+.search-box {
+  width: 90%; max-width: 550px; background: #0d131f; border: 1px solid var(--border-strong);
+  border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+}
+.search-input-wrap { display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 10px; }
+.search-input-wrap input { flex: 1; background: none; border: none; color: #fff; font-size: 14px; outline: none; }
+.search-results { max-height: 350px; overflow-y: auto; padding: 8px; }
+.sr-item { padding: 8px 12px; border-radius: 6px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.sr-item:hover { background: rgba(34,211,238,0.1); }
+
+@media (max-width: 768px) {
+  .app-grid { grid-template-columns: 1fr; grid-template-areas: "top" "pipe" "main"; }
+  .topic-nav { display: none; }
+  .toolbox-drawer { width: 100%; right: -100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-grid">
+  <!-- 1. TOP BAR -->
+  <header class="topbar">
+    <div class="brand-box">
+      <div class="brand-badge"><i class="fa-solid fa-calculator"></i></div>
+      <span>MATH PAGER <span style="font-size:10px; font-weight:700; color:var(--cyan); font-family:var(--mono);">WORKBENCH</span></span>
+    </div>
+
+    <div class="top-actions">
+      <button class="action-btn toolbox-btn" onclick="toggleToolbox()"><i class="fa-solid fa-toolbox"></i> Math Toolbox (8 Tools)</button>
+      <button class="action-btn" onclick="openRevisionDeck()"><i class="fa-solid fa-layer-group"></i> Revision Deck</button>
+      <button class="action-btn" onclick="spinTopic()"><i class="fa-solid fa-dice"></i> Spin Topic</button>
+      <button class="action-btn" onclick="openSearch()"><i class="fa-solid fa-magnifying-glass"></i> Search <kbd style="font-family:var(--mono); font-size:9px;">/</kbd></button>
+      <button class="close-btn" onclick="closeApp()" title="Close (Press B)">✕</button>
+    </div>
+  </header>
+
+  <!-- 2. HORIZONTAL SECTION PIPELINE -->
+  <div class="pipeline-bar" id="pipelineBar"></div>
+
+  <!-- 3. LEFT COLUMN: TOPIC NAVIGATOR -->
+  <aside class="topic-nav">
+    <div class="nav-header">
+      <span>Topic Deck</span>
+      <span id="topicCount" style="color:var(--cyan); font-family:var(--mono);">0 Topics</span>
+    </div>
+    <div class="nav-list" id="navList"></div>
+  </aside>
+
+  <!-- 4. CENTER WORKBENCH (MAXIMIZED CANVAS) -->
+  <main class="workbench">
+    <div class="wb-tabs" id="wbTabs"></div>
+
+    <div class="wb-content" id="wbContent">
+      <div style="padding:40px; text-align:center; color:var(--text-dim);">Select a section and topic to load the Quant Workbench.</div>
+    </div>
+  </main>
+</div>
+
+<!-- 5. SLIDE-OUT ON-DEMAND MATH TOOLBOX DRAWER (8 TOOLS) -->
+<div class="toolbox-drawer" id="toolboxDrawer">
+  <div class="tb-head">
+    <div class="tb-title"><i class="fa-solid fa-toolbox"></i> Math Pager Solvers & Calculators</div>
+    <button class="tb-close" onclick="toggleToolbox()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="tb-body">
+    <!-- TOOL 1: HCF & LCM -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-diagram-project"></i> 1. HCF & LCM Solver</div>
+      <div class="tool-input-row">
+        <input type="number" id="t1A" class="tool-input" placeholder="Num 1 (e.g. 24)">
+        <input type="number" id="t1B" class="tool-input" placeholder="Num 2 (e.g. 36)">
+      </div>
+      <button class="tool-btn" onclick="t1Solve()">Calculate HCF & LCM</button>
+      <div class="tool-output" id="t1Out">Enter 2 numbers.</div>
+    </div>
+
+    <!-- TOOL 2: QUADRATIC SOLVER -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-wave-square"></i> 2. Quadratic Equation Solver</div>
+      <div class="tool-input-row">
+        <input type="number" id="t2A" class="tool-input" placeholder="A (e.g. 1)">
+        <input type="number" id="t2B" class="tool-input" placeholder="B (e.g. -5)">
+        <input type="number" id="t2C" class="tool-input" placeholder="C (e.g. 6)">
+      </div>
+      <button class="tool-btn" onclick="t2Solve()">Find Roots & Discriminant (Δ)</button>
+      <div class="tool-output" id="t2Out">Enter A, B, C for Ax² + Bx + C = 0</div>
+    </div>
+
+    <!-- TOOL 3: PROFIT LOSS & DISCOUNT -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-percent"></i> 3. Profit, Loss & Discount Solver</div>
+      <div class="tool-input-row">
+        <input type="number" id="t3Cp" class="tool-input" placeholder="Cost Price (CP)">
+        <input type="number" id="t3Sp" class="tool-input" placeholder="Selling Price (SP)">
+      </div>
+      <button class="tool-btn" onclick="t3Solve()">Calculate Profit/Loss %</button>
+      <div class="tool-output" id="t3Out">Enter CP and SP.</div>
+    </div>
+
+    <!-- TOOL 4: SI & CI INTEREST -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-coins"></i> 4. Simple & Compound Interest</div>
+      <div class="tool-input-row">
+        <input type="number" id="t4P" class="tool-input" placeholder="Principal (P)">
+        <input type="number" id="t4R" class="tool-input" placeholder="Rate % (R)">
+        <input type="number" id="t4T" class="tool-input" placeholder="Time yrs (T)">
+      </div>
+      <button class="tool-btn" onclick="t4Solve()">Compute SI, CI & CI-SI Diff</button>
+      <div class="tool-output" id="t4Out">Enter P, R, T.</div>
+    </div>
+
+    <!-- TOOL 5: PYTHAGOREAN TRIPLETS -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-draw-polygon"></i> 5. Pythagorean Triplet Checker</div>
+      <div class="tool-input-row">
+        <input type="number" id="t5A" class="tool-input" placeholder="Side a">
+        <input type="number" id="t5B" class="tool-input" placeholder="Side b">
+        <input type="number" id="t5C" class="tool-input" placeholder="Side c (Hyp)">
+      </div>
+      <button class="tool-btn" onclick="t5Solve()">Verify Triplet & Area</button>
+      <div class="tool-output" id="t5Out">Enter sides a, b, c.</div>
+    </div>
+
+    <!-- TOOL 6: SPEED, TIME & DISTANCE -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-gauge-high"></i> 6. Speed, Time & Distance</div>
+      <div class="tool-input-row">
+        <input type="number" id="t6D" class="tool-input" placeholder="Distance (km)">
+        <input type="number" id="t6T" class="tool-input" placeholder="Time (hours)">
+      </div>
+      <button class="tool-btn" onclick="t6Solve()">Compute Speed & Conversions</button>
+      <div class="tool-output" id="t6Out">Enter Distance and Time.</div>
+    </div>
+
+    <!-- TOOL 7: PERCENTAGE & FRACTION CONVERTER -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-divide"></i> 7. Percentage & Fraction Converter</div>
+      <div class="tool-input-row">
+        <input type="number" id="t7Num" class="tool-input" placeholder="Numerator (x)">
+        <input type="number" id="t7Den" class="tool-input" placeholder="Denominator (y)">
+      </div>
+      <button class="tool-btn" onclick="t7Solve()">Convert x/y to %</button>
+      <div class="tool-output" id="t7Out">Enter numerator and denominator.</div>
+    </div>
+
+    <!-- TOOL 8: TRIGONOMETRIC RATIO SOLVER -->
+    <div class="tool-card">
+      <div class="tool-title"><i class="fa-solid fa-compass-drafting"></i> 8. Trigonometric Values Solver</div>
+      <div class="tool-input-row">
+        <input type="number" id="t8Deg" class="tool-input" placeholder="Angle in degrees (0-90)">
+      </div>
+      <button class="tool-btn" onclick="t8Solve()">Compute sin, cos, tan</button>
+      <div class="tool-output" id="t8Out">Enter angle in degrees.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div class="search-modal" id="searchModal">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <i class="fa-solid fa-magnifying-glass" style="color:var(--text-dim);"></i>
+      <input type="text" id="searchInput" placeholder="Search Quant formulas, tricks, topics..." oninput="onSearch(this.value)">
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- REVISION DECK MODAL -->
+<div class="revision-modal" id="revisionModal">
+  <div class="revision-box" id="revisionBoxMath"></div>
+</div>
+
+<script>
+/* ============================================================
+   EXHAUSTIVE SSC CGL / CHSL QUANT SYLLABUS DATASTORE (ALL 27 TOPICS)
+   ============================================================ */
+const SECTIONS = [
+  {
+    id: 'sec-1', name: '1. Number System & Simplification',
+    topics: [
+      { key: 'num-classification', name: '1.1 Whole Numbers, Integers, Rational & Real Numbers', priority: 'must' },
+      { key: 'decimals-fractions', name: '1.2 Decimals, Fractions & Relationship Between Numbers', priority: 'must' },
+      { key: 'divisibility-rules', name: '1.3 Divisibility Rules (2 to 99), Factors & Multiples', priority: 'must' },
+      { key: 'hcf-lcm-mastery', name: '1.4 HCF & LCM Core Applications & Product Law', priority: 'must' },
+      { key: 'remainder-theorems', name: '1.5 Remainder Theorems & Fermat/Euler Rules', priority: 'high' },
+      { key: 'unit-digit-zeroes', name: '1.6 Unit Digit & Trailing Zeroes', priority: 'high' },
+      { key: 'vbodmas-simplification', name: '1.7 Simplification, Square Roots, Cube Roots & VBODMAS', priority: 'must' }
+    ]
+  },
+  {
+    id: 'sec-2', name: '2. Arithmetic & Commercial Math',
+    topics: [
+      { key: 'percentage-constancy', name: '2.1 Percentage, Increase/Decrease & Product Constancy', priority: 'must' },
+      { key: 'ratio-proportion', name: '2.2 Ratio, Proportion, Direct/Inverse & Partnerships', priority: 'must' },
+      { key: 'average-weighted', name: '2.3 Average, Weighted Average & Inclusion/Exclusion', priority: 'must' },
+      { key: 'profit-loss-discount', name: '2.4 Profit, Loss, Discount & Dishonest Dealer Tricks', priority: 'must' },
+      { key: 'si-ci-interest', name: '2.5 Simple Interest, Compound Interest & Differences', priority: 'must' },
+      { key: 'partnership-invest', name: '2.6 Partnership, Capital × Time & Working/Sleeping Partners', priority: 'high' },
+      { key: 'mixture-alligation', name: '2.7 Mixture, Alligation Rule & Replacement Formula', priority: 'must' },
+      { key: 'time-work-mdh', name: '2.8 Time & Work, MDH Rule, Efficiency & Pipes/Cisterns', priority: 'must' },
+      { key: 'tsd-trains-boats', name: '2.9 Time, Speed & Distance, Relative Speed, Trains & Boats', priority: 'must' }
+    ]
+  },
+  {
+    id: 'sec-3', name: '3. Algebra & Graphs',
+    topics: [
+      { key: 'basic-algebra-linear', name: '3.1 Basic Algebra, Variables & Linear/Simultaneous Equations', priority: 'must' },
+      { key: 'algebraic-identities', name: '3.2 Algebraic Identities, Factorisation & Cubic Expansion', priority: 'must' },
+      { key: 'x-plus-1-over-x', name: '3.3 Special Value Tricks (x + 1/x = k)', priority: 'must' },
+      { key: 'surds-indices', name: '3.4 Surds, Indices, Rationalisation & Comparison', priority: 'high' },
+      { key: 'linear-graphs', name: '3.5 Coordinate Plane & Graphs of Linear Equations', priority: 'med' }
+    ]
+  },
+  {
+    id: 'sec-4', name: '4. Trigonometry & Heights & Distances',
+    topics: [
+      { key: 'trig-ratios-measure', name: '4.1 Trigonometric Ratios & Degree/Radian Measure', priority: 'must' },
+      { key: 'trig-values-table', name: '4.2 Standard Values Table (0°, 30°, 45°, 60°, 90°)', priority: 'must' },
+      { key: 'trig-identities-comp', name: '4.3 Trigonometric Identities & Complementary Angle Relations', priority: 'must' },
+      { key: 'heights-distances', name: '4.4 Heights & Distances (Elevation & Depression Angles)', priority: 'high' }
+    ]
+  },
+  {
+    id: 'sec-5', name: '5. Statistics & Probability',
+    topics: [
+      { key: 'statistics-mean-med-mode', name: '5.1 Statistics: Mean, Median, Mode & Standard Deviation', priority: 'high' },
+      { key: 'probability-events', name: '5.2 Basic Probability, Favourable Outcomes & Events', priority: 'high' },
+      { key: 'statistical-charts', name: '5.3 Statistical Charts (Bar Graph, Pie Chart, Histogram)', priority: 'med' }
+    ]
+  },
+  {
+    id: 'sec-6', name: '6. Data Interpretation (DI)',
+    topics: [
+      { key: 'tabular-di', name: '6.1 Tabular DI & Calculation Shortcuts', priority: 'must' },
+      { key: 'bar-chart-di', name: '6.2 Bar Graph DI (Simple, Multiple & Comparative)', priority: 'high' },
+      { key: 'pie-chart-di', name: '6.3 Pie Chart DI (Degrees vs Percentage Distributions)', priority: 'must' },
+      { key: 'line-trend-di', name: '6.4 Line / Trend-based DI & Histograms Interpretation', priority: 'high' }
+    ]
+  }
+];
+
+const DETAILS = {
+  'num-classification': {
+    concept: `<p>Numbers are classified into Natural ($1, 2, 3...$), Whole ($0, 1, 2...$), Integers ($\dots -2, -1, 0, 1, 2 \dots$), Rational ($p/q, q \neq 0$), and Irrational ($\sqrt{2}, \pi$).</p>`,
+    laws: `<p><b>Prime Numbers:</b> Numbers with exactly 2 factors (1 and itself). 2 is the ONLY even prime number.<br><b>Co-Prime Numbers:</b> Two numbers whose HCF is 1 (e.g. 8 and 15).</p>`,
+    formulae: [
+      { f: 'Primes (1 to 50)', d: '15 Primes (2,3,5,7,11,13,17,19,23,29,31,37,41,43,47)' },
+      { f: 'Primes (1 to 100)', d: '25 Primes Total' },
+      { f: 'Smallest 3-Digit Prime', d: '101' }
+    ],
+    table: [
+      ['Range', 'Count of Primes', 'Prime List Highlights'],
+      ['1 to 25', '9 Primes', '2, 3, 5, 7, 11, 13, 17, 19, 23'],
+      ['26 to 50', '6 Primes', '29, 31, 37, 41, 43, 47'],
+      ['51 to 100', '10 Primes', '53, 59, 61, 67, 71, 73, 79, 83, 89, 97']
+    ],
+    example: `<p><b>Worked Example:</b> Are 14 and 25 co-prime?</p><p>Factors of 14 = {1, 2, 7, 14}. Factors of 25 = {1, 5, 25}. Common factor = 1. Hence HCF = 1 $\implies$ <b>YES, co-prime</b>.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> 0 is NOT positive. 1 is NOT a prime number!</p>`
+  },
+
+  'decimals-fractions': {
+    concept: `<p>Fractions represent equal parts of a whole ($a/b$). Decimals can be terminating ($0.25 = 1/4$) or recurring ($0.333\dots = 1/3$).</p>`,
+    laws: `<p><b>Recurring Decimal Conversion:</b> $0.\overline{ab} = \frac{ab}{99}$ and $0.a\overline{bc} = \frac{abc - a}{990}$.</p>`,
+    formulae: [
+      { f: '0.ā = a/9', d: 'Single digit recurring decimal' },
+      { f: '0.āb̄ = ab/99', d: 'Two digit recurring decimal' },
+      { f: '0.a b̄c̄ = (abc - a)/990', d: 'Mixed recurring decimal' }
+    ],
+    table: [
+      ['Fraction', 'Decimal Equivalent', 'Type'],
+      ['1/3', '0.3333...', 'Recurring'],
+      ['1/4', '0.25', 'Terminating'],
+      ['1/7', '0.142857...', 'Recurring (6-period)'],
+      ['1/8', '0.125', 'Terminating']
+    ],
+    example: `<p><b>Worked Example:</b> Convert $0.2\overline{36}$ to a fraction.</p><p>$0.2\overline{36} = \frac{236 - 2}{990} = \frac{234}{990} = \mathbf{\frac{13}{55}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting to subtract the non-recurring prefix ($a$) in $(abc - a)/990$!</p>`
+  },
+
+  'divisibility-rules': {
+    concept: `<p>Divisibility rules allow testing whether an integer is divisible by a fixed divisor without performing actual division.</p>`,
+    laws: `<p>For combined divisibility rules like 72, 88, 99, split into co-prime pairs: 72 = 8 × 9, 88 = 8 × 11, 99 = 9 × 11.</p>`,
+    formulae: [
+      { f: 'Divisibility by 3 & 9', d: 'Sum of digits ÷ 3 or 9' },
+      { f: 'Divisibility by 4 & 8', d: 'Last 2 / Last 3 digits ÷ 4 or 8' },
+      { f: 'Divisibility by 11', d: '(Odd pos sum) - (Even pos sum) = 0 or 11k' }
+    ],
+    table: [
+      ['Divisor', 'Rule', 'Example Test'],
+      ['3 / 9', 'Sum of digits', '432 → 4+3+2 = 9 (Divisible)'],
+      ['4 / 8', 'Last 2 / 3 digits', '5724 → 24 ÷ 4 = 6 (Divisible)'],
+      ['11', 'Alt digit sum difference', '1331 → (1+3) - (3+1) = 0 (Divisible)'],
+      ['72', '8 × 9 co-prime split', 'Check last 3 digits for 8, sum of digits for 9']
+    ],
+    example: `<p><b>Worked Example:</b> If 5432a1b is divisible by 72, find (2a + b).</p><p>For 8: Last 3 digits '1b' $\implies$ b = 6.<br>For 9: Sum = 5+4+3+2+a+1+6 = 21 + a $\implies$ a = 6.<br>Result = 2(6) + 6 = <b>18</b>.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Splitting 88 as 2 × 44. Co-prime split 8 × 11 is mandatory!</p>`
+  },
+
+  'hcf-lcm-mastery': {
+    concept: `<p>HCF is the greatest number dividing two or more numbers without remainder. LCM is the smallest multiple divisible by all of them.</p>`,
+    laws: `<p><b>Product Law:</b> $\text{HCF} \times \text{LCM} = A \times B$ (Valid ONLY for 2 numbers).</p>`,
+    formulae: [
+      { f: 'HCF × LCM = A × B', d: 'Product law for 2 numbers' },
+      { f: 'HCF of Fractions = HCF(Num) / LCM(Den)', d: 'Fraction HCF' },
+      { f: 'LCM of Fractions = LCM(Num) / HCF(Den)', d: 'Fraction LCM' }
+    ],
+    table: [
+      ['Problem Keyword', 'Operation to Apply'],
+      ['Greatest number dividing A, B leaving remainder r', 'HCF of |A-B|, |B-C|, |C-A|'],
+      ['Smallest number divided by A, B leaving remainder r', 'LCM(A, B) + r'],
+      ['Bells tolling together at intervals t1, t2, t3', 'LCM(t1, t2, t3)']
+    ],
+    example: `<p><b>Worked Example:</b> HCF of 2 numbers is 12 and ratio is 3:4. Find LCM.</p><p>Numbers = 36 & 48. $\text{LCM} = 12 \times 3 \times 4 = \mathbf{144}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Applying HCF × LCM = A × B × C for 3 numbers. It works ONLY for 2 numbers!</p>`
+  },
+
+  'remainder-theorems': {
+    concept: `<p>Remainder Theorems calculate the remainder when a large exponent expression is divided by a divisor without expanding the power.</p>`,
+    laws: `<p><b>Fermat's Little Theorem:</b> If $p$ is prime and $\gcd(a, p) = 1$, then $a^{p-1} \equiv 1 \pmod p$.<br>
+    <b>Euler's Totient Theorem:</b> $a^{\phi(n)} \equiv 1 \pmod n$ where $\phi(p) = p - 1$ for prime $p$.</p>`,
+    formulae: [
+      { f: 'a^(p-1) ≡ 1 (mod p)', d: 'Fermat Little Theorem (p is prime)' },
+      { f: 'a^φ(n) ≡ 1 (mod n)', d: 'Euler Totient Theorem' },
+      { f: '(a + 1)^n ÷ a ⟹ Remainder = 1', d: 'Binomial remainder rule' },
+      { f: '(a - 1)^n ÷ a ⟹ Remainder = 1 (even n) or (a-1) (odd n)', d: 'Binomial negative remainder' }
+    ],
+    table: [
+      ['Expression', 'Divisor', 'Remainder Result'],
+      ['(x + 1)^n', 'x', 'Always 1'],
+      ['(x - 1)^n', 'x', '1 (if n is even) or (x - 1) (if n is odd)'],
+      ['2^100', '101', '1 (by Fermat Theorem as 101 is prime)']
+    ],
+    example: `<p><b>Worked Example:</b> Find remainder when $2^{100}$ is divided by 101.</p><p>101 is prime. By Fermat Theorem: $2^{101-1} = 2^{100} \equiv \mathbf{1} \pmod{101}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Negative remainders: If remainder is $-2$ modulo $7$, the positive remainder is $7 - 2 = 5$!</p>`
+  },
+
+  'unit-digit-zeroes': {
+    concept: `<p>Unit digit of power $a^b$ depends on cyclicity of base $a$. Trailing zeroes in $N!$ equal highest power of 5 in $N!$.</p>`,
+    laws: `<p>Cyclicity of 2, 3, 7, 8 is 4. Cyclicity of 4, 9 is 2. Cyclicity of 0, 1, 5, 6 is 1.</p>`,
+    formulae: [
+      { f: 'Trailing Zeroes in N! = ⌊N/5⌋ + ⌊N/25⌋ + ⌊N/125⌋...', d: 'Legendre formula for 5' },
+      { f: 'Base 2, 3, 7, 8 Cyclicity = 4', d: 'Divide power by 4' }
+    ],
+    table: [
+      ['Base Digit', 'Cyclicity Period', 'Cycle Sequence'],
+      ['2', '4', '2, 4, 8, 6'],
+      ['3', '4', '3, 9, 7, 1'],
+      ['7', '4', '7, 9, 3, 1'],
+      ['8', '4', '8, 4, 2, 6']
+    ],
+    example: `<p><b>Worked Example:</b> Find trailing zeroes in $100!$.</p><p>$\lfloor 100/5 \rfloor + \lfloor 100/25 \rfloor = 20 + 4 = \mathbf{24 \text{ zeroes}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> If power is divisible by 4, take the 4th power in cycle (e.g. $2^4 = 6$), NOT $2^0 = 1$!</p>`
+  },
+
+  'vbodmas-simplification': {
+    concept: `<p>VBODMAS defines calculation order: Vinculum (Bar), Brackets, Of, Division, Multiplication, Addition, Subtraction.</p>`,
+    laws: `<p>Surd Rationalisation: $\frac{1}{\sqrt{a} + \sqrt{b}} = \frac{\sqrt{a} - \sqrt{b}}{a - b}$.</p>`,
+    formulae: [
+      { f: 'VBODMAS Sequence', d: 'Vinculum ⟹ Brackets ⟹ Of ⟹ ÷ ⟹ × ⟹ + ⟹ -' },
+      { f: '√(a + 2√b) = √x + √y', d: 'Where x + y = a and x × y = b' }
+    ],
+    table: [
+      ['Symbol', 'Meaning', 'Precedence'],
+      ['V', 'Vinculum (bar over expression)', 'Highest (1st)'],
+      ['B', 'Brackets (), {}, []', '2nd'],
+      ['O', 'Of (multiplication priority)', '3rd (Before Division)']
+    ],
+    example: `<p><b>Worked Example:</b> Simplify $\sqrt{7 + 2\sqrt{10}}$.</p><p>Find two numbers $x, y$ such that $x+y=7$ and $xy=10 \implies 5, 2$. Result = $\mathbf{\sqrt{5} + \sqrt{2}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Treating 'Of' as regular multiplication. 'Of' must be calculated BEFORE Division!</p>`
+  },
+
+  'percentage-constancy': {
+    concept: `<p>Percentage represents parts per hundred. Product Constancy states that if $A \times B = C$ (Constant), an increase in $A$ by $+1/n$ requires a decrease in $B$ by $-1/(n+1)$.</p>`,
+    laws: `<p>Price × Consumption = Expenditure. If expenditure is fixed and price increases by 25% (+1/4), consumption drops by 20% (-1/5).</p>`,
+    formulae: [
+      { f: 'A ↑ by +1/n ⟹ B ↓ by -1/(n+1)', d: 'Product Constancy Rule' },
+      { f: 'Successive % Change = x + y + (xy/100)', d: 'Net % change formula' }
+    ],
+    table: [
+      ['Fraction', 'Percentage %', 'Reciprocal Decrement (-1/(n+1))'],
+      ['1/2', '50%', '-1/3 (33.33% decrease)'],
+      ['1/3', '33.33%', '-1/4 (25% decrease)'],
+      ['1/4', '25%', '-1/5 (20% decrease)'],
+      ['1/5', '20%', '-1/6 (16.66% decrease)']
+    ],
+    example: `<p><b>Worked Example:</b> Sugar price rises by 20%. By how much % must consumption drop for same expenditure?</p><p>+1/5 increase $\implies$ $-1/(5+1) = -1/6 = \mathbf{16.66\%}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Thinking a 20% price rise requires a 20% drop. It requires 16.66%!</p>`
+  },
+
+  'ratio-proportion': {
+    concept: `<p>Ratio compares two quantities of the same unit ($a:b = \frac{a}{b}$). Proportion expresses equality between two ratios ($a:b = c:d \implies a \cdot d = b \cdot c$).</p>`,
+    laws: `<p><b>Componendo & Dividendo Rule:</b> If $\frac{a}{b} = \frac{c}{d} \implies \frac{a+b}{a-b} = \frac{c+d}{c-d}$.<br>
+    <b>Mean Proportional:</b> $x = \sqrt{ab}$.<br>
+    <b>Third Proportional:</b> $x = \frac{b^2}{a}$.<br>
+    <b>Fourth Proportional:</b> $x = \frac{bc}{a}$.</p>`,
+    formulae: [
+      { f: 'Mean Proportional = √(ab)', d: 'Between two numbers a and b' },
+      { f: 'Third Proportional = b²/a', d: 'For ratio sequence a:b = b:x' },
+      { f: 'Fourth Proportional = bc/a', d: 'For ratio sequence a:b = c:x' },
+      { f: '(a+b)/(a-b) = (c+d)/(c-d)', d: 'Componendo & Dividendo Rule' }
+    ],
+    table: [
+      ['Ratio / Proportion Concept', 'Formula / Relation', 'Numerical Example'],
+      ['Mean Proportional of a, b', 'x = √(ab)', 'a=4, b=9 ⟹ √(36) = 6'],
+      ['Third Proportional of a, b', 'x = b² / a', 'a=9, b=12 ⟹ 144/9 = 16'],
+      ['Fourth Proportional of a, b, c', 'x = bc / a', 'a=3, b=4, c=9 ⟹ (4×9)/3 = 12'],
+      ['Componendo & Dividendo', '(a+b)/(a-b) = (c+d)/(c-d)', 'If x/y = 5/3 ⟹ (x+y)/(x-y) = 8/2 = 4']
+    ],
+    example: `<p><b>Worked Example:</b> Find third proportional to 9 and 12.</p><p>$x = \frac{12^2}{9} = \frac{144}{9} = \mathbf{16}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Confusing Third Proportional ($b^2/a$) with Mean Proportional ($\sqrt{ab}$)!</p>`
+  },
+
+  'average-weighted': {
+    concept: `<p>Average (Arithmetic Mean) = $\frac{\text{Sum of all observations}}{\text{Number of observations}}$. Weighted Average combines multiple groups with different weights.</p>`,
+    laws: `<p>Weighted Average $A_{avg} = \frac{N_1 A_1 + N_2 A_2}{N_1 + N_2}$. Average Speed for equal distances = $\frac{2xy}{x + y}$.</p>`,
+    formulae: [
+      { f: 'Average = Sum / Count', d: 'Basic mean formula' },
+      { f: 'Weighted Avg = (N1 A1 + N2 A2)/(N1 + N2)', d: 'Combined groups mean' },
+      { f: 'Average Speed = 2xy / (x + y)', d: 'For equal distance intervals' }
+    ],
+    table: [
+      ['Scenario', 'Formula to Apply'],
+      ['Average of first n natural numbers', '(n + 1) / 2'],
+      ['Average of first n even numbers', 'n + 1'],
+      ['Average of first n odd numbers', 'n']
+    ],
+    example: `<p><b>Worked Example:</b> Average age of 20 students is 15 yrs. If teacher's age is added, average rises by 1 yr. Find teacher's age.</p><p>New Sum = $21 \times 16 = 336$. Old Sum = $20 \times 15 = 300$. Teacher's Age = $336 - 300 = \mathbf{36 \text{ yrs}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Calculating Average Speed as $\frac{x + y}{2}$ instead of $\frac{2xy}{x+y}$ for equal distances!</p>`
+  },
+
+  'profit-loss-discount': {
+    concept: `<p>Cost Price (CP) is buying price; Selling Price (SP) is selling price; Marked Price (MP) is tag price. Profit/Loss % is calculated on CP; Discount % on MP.</p>`,
+    laws: `<p><b>MP-CP Golden Relation:</b> $\frac{\text{MP}}{\text{CP}} = \frac{100 + \text{Profit \%}}{100 - \text{Discount \%}}$.</p>`,
+    formulae: [
+      { f: 'MP / CP = (100 + Profit %) / (100 - Discount %)', d: 'MP-CP Golden ratio' },
+      { f: 'Dishonest Profit % = [Error / (True - Error)] × 100', d: 'Cheating weight formula' }
+    ],
+    table: [
+      ['Term', 'Calculated On', 'Key Formula'],
+      ['Profit %', 'Cost Price (CP)', '(SP - CP)/CP × 100'],
+      ['Discount %', 'Marked Price (MP)', '(MP - SP)/MP × 100'],
+      ['Same SP (+x% and -x%)', 'Overall Loss', 'Net Loss % = x²/100']
+    ],
+    example: `<p><b>Worked Example:</b> Goods marked 40% above CP with 20% discount. Find profit %.</p><p>$\frac{140}{100} = \frac{100+P}{80} \implies 100+P = 112 \implies P = \mathbf{12\%}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Calculating discount % on Cost Price instead of Marked Price!</p>`
+  },
+
+  'si-ci-interest': {
+    concept: `<p>Simple Interest (SI) is calculated on principal alone. Compound Interest (CI) compounds interest on interest annually, half-yearly, or quarterly.</p>`,
+    laws: `<p>Difference between CI and SI for 2 years: $\Delta_2 = P \left(\frac{R}{100}\right)^2$. For 3 years: $\Delta_3 = P \left(\frac{R}{100}\right)^2 \left(3 + \frac{R}{100}\right)$.</p>`,
+    formulae: [
+      { f: 'SI = (P × R × T) / 100', d: 'Simple Interest formula' },
+      { f: 'CI Amount = P(1 + R/100)^T', d: 'Compound Interest Amount' },
+      { f: 'Δ2 (CI - SI for 2 yrs) = P(R/100)²', d: '2-year difference formula' }
+    ],
+    table: [
+      ['Compounding Period', 'Rate Adjustment', 'Time Adjustment'],
+      ['Annual', 'R %', 'T years'],
+      ['Half-Yearly', 'R / 2 %', '2T half-years'],
+      ['Quarterly', 'R / 4 %', '4T quarters']
+    ],
+    example: `<p><b>Worked Example:</b> Find difference between CI and SI on ₹10,000 at 10% p.a. for 2 years.</p><p>$\Delta_2 = 10000 \times \left(\frac{10}{100}\right)^2 = 10000 \times \frac{1}{100} = \mathbf{₹100}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting to halve the rate $R/2$ and double time $2T$ for half-yearly compounding!</p>`
+  },
+
+  'partnership-invest': {
+    concept: `<p>Partnership profit sharing ratio equals the product of Investment (Capital) and Time duration ($P_1 : P_2 = C_1 T_1 : C_2 T_2$).</p>`,
+    laws: `<p>Working partners receive a salary/management fee first; remaining profit is split in $C \times T$ ratio.</p>`,
+    formulae: [
+      { f: 'Profit Ratio = C1 × T1 : C2 × T2', d: 'Capital × Time rule' }
+    ],
+    table: [
+      ['Partner Type', 'Role', 'Profit Claim'],
+      ['Working Partner', 'Manages business', 'Management fee + Share of remaining profit'],
+      ['Sleeping Partner', 'Provides capital only', 'Share of profit based on C × T']
+    ],
+    example: `<p><b>Worked Example:</b> A invests ₹5000 for 12 months, B invests ₹6000 for 8 months. Find profit ratio.</p><p>Ratio = $(5000 \times 12) : (6000 \times 8) = 60000 : 48000 = \mathbf{5 : 4}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting to adjust time $T$ when a partner joins mid-year!</p>`
+  },
+
+  'mixture-alligation': {
+    concept: `<p>Alligation rule is a shortcut to calculate the ratio in which two ingredients of different prices are mixed to produce a mixture at a given mean price.</p>`,
+    laws: `<p><b>Alligation Rule:</b> $\frac{\text{Cheaper Quantity}}{\text{Dearer Quantity}} = \frac{d - m}{m - c}$ where $c = \text{cheaper price}, d = \text{dearer price}, m = \text{mean price}$.</p>`,
+    formulae: [
+      { f: 'Cheaper / Dearer = (Dearer - Mean) / (Mean - Cheaper)', d: 'Alligation ratio cross rule' },
+      { f: 'Final Conc = V × (1 - x / V)^n', d: 'Repeated liquid replacement formula' }
+    ],
+    table: [
+      ['Price Component', 'Position in Alligation Cross'],
+      ['Cheaper Price (c)', 'Top Left'],
+      ['Dearer Price (d)', 'Top Right'],
+      ['Mean Price (m)', 'Center'],
+      ['Ratio (d - m) : (m - c)', 'Bottom Row']
+    ],
+    example: `<p><b>Worked Example:</b> In what ratio must rice at ₹60/kg be mixed with rice at ₹80/kg so that mixture is worth ₹65/kg?</p><p>Cheaper = 60, Dearer = 80, Mean = 65.<br>Ratio = $(80 - 65) : (65 - 60) = 15 : 5 = \mathbf{3 : 1}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Applying Alligation with CP for one item and SP for another! All prices MUST be in Cost Price (CP)!</p>`
+  },
+
+  'time-work-mdh': {
+    concept: `<p>Total Work = Efficiency × Time. If A takes $x$ days and B takes $y$ days, combined work rate per day = $\frac{1}{x} + \frac{1}{y} = \frac{x+y}{xy}$.</p>`,
+    laws: `<p><b>MDH Formula:</b> $\frac{M_1 \cdot D_1 \cdot H_1 \cdot E_1}{W_1} = \frac{M_2 \cdot D_2 \cdot H_2 \cdot E_2}{W_2}$.</p>`,
+    formulae: [
+      { f: 'Combined Time = (x × y) / (x + y)', d: 'Two workers combined time' },
+      { f: '(M1 × D1 × H1) / W1 = (M2 × D2 × H2) / W2', d: 'Men-Days-Hours equivalence' },
+      { f: 'Net Fill Rate = 1/A + 1/B - 1/C', d: 'Pipes A, B fill and C leaks' }
+    ],
+    table: [
+      ['Entity', 'Role', 'Sign in Net Work Rate'],
+      ['Inlet Pipe', 'Fills tank', 'Positive (+1/A)'],
+      ['Outlet / Leak Pipe', 'Empties tank', 'Negative (-1/B)']
+    ],
+    example: `<p><b>Worked Example:</b> A can do a job in 10 days, B in 15 days. How long together?</p><p>Combined Time = $\frac{10 \times 15}{10 + 15} = \frac{150}{25} = \mathbf{6 \text{ days}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Adding completion days directly ($10 + 15 = 25$). Always add WORK RATES ($\frac{1}{10} + \frac{1}{15}$)!</p>`
+  },
+
+  'tsd-trains-boats': {
+    concept: `<p>Speed = $\frac{\text{Distance}}{\text{Time}}$. Relative speed in opposite directions = $S_1 + S_2$; in same direction = $S_1 - S_2$.</p>`,
+    laws: `<p><b>Train Crossing:</b> Distance to cross a platform/bridge = Length of train + Length of platform ($L_1 + L_2$).<br>
+    <b>Boats & Streams:</b> Downstream speed $u = v + x$, Upstream speed $v = u - x$, Boat speed in still water $v = \frac{\text{Down} + \text{Up}}{2}$, Stream speed $x = \frac{\text{Down} - \text{Up}}{2}$.</p>`,
+    formulae: [
+      { f: 'km/h to m/s = Multiply by 5/18', d: 'Speed unit conversion' },
+      { f: 'm/s to km/h = Multiply by 18/5', d: 'Speed unit conversion' },
+      { f: 'Boat Speed v = (Downstream + Upstream) / 2', d: 'Boat in still water' },
+      { f: 'Stream Speed x = (Downstream - Upstream) / 2', d: 'Current speed' }
+    ],
+    table: [
+      ['Motion Type', 'Direction', 'Effective Relative Speed'],
+      ['Two trains', 'Opposite Direction', 'S1 + S2 (Speeds Add)'],
+      ['Two trains', 'Same Direction', 'S1 - S2 (Speeds Subtract)'],
+      ['Boat Downstream', 'With Current', 'v + x'],
+      ['Boat Upstream', 'Against Current', 'v - x']
+    ],
+    example: `<p><b>Worked Example:</b> A 200m train travelling at 72 km/h crosses a 300m platform. Find time taken.</p><p>Speed in m/s = $72 \times \frac{5}{18} = 20 \text{ m/s}$.<br>Total Distance = $200 + 300 = 500 \text{ m}$.<br>Time = $\frac{500}{20} = \mathbf{25 \text{ seconds}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting to convert speed from km/h to m/s when distance is given in meters!</p>`
+  },
+
+  'basic-algebra-linear': {
+    concept: `<p>Algebra uses letters (variables) for unknown numbers. Linear equations in one variable take form $ax + b = 0$; two variables $ax + by = c$.</p>`,
+    laws: `<p>Simultaneous equations $a_1 x + b_1 y = c_1$ and $a_2 x + b_2 y = c_2$ have:<br>
+    1. Unique Solution if $\frac{a_1}{a_2} \neq \frac{b_1}{b_2}$.<br>
+    2. Infinite Solutions if $\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$.<br>
+    3. No Solution if $\frac{a_1}{a_2} = \frac{b_1}{b_2} \neq \frac{c_1}{c_2}$.</p>`,
+    formulae: [
+      { f: 'a1/a2 ≠ b1/b2 ⟹ Unique Solution', d: 'Intersecting lines' },
+      { f: 'a1/a2 = b1/b2 = c1/c2 ⟹ Infinite Solutions', d: 'Coincident lines' },
+      { f: 'a1/a2 = b1/b2 ≠ c1/c2 ⟹ No Solution', d: 'Parallel lines' }
+    ],
+    table: [
+      ['Condition Ratio', 'Geometric Graph', 'Number of Solutions'],
+      ['a1/a2 ≠ b1/b2', 'Intersecting Lines', '1 Unique Solution'],
+      ['a1/a2 = b1/b2 = c1/c2', 'Coincident Lines', 'Infinitely Many'],
+      ['a1/a2 = b1/b2 ≠ c1/c2', 'Parallel Lines', 'Zero (No Solution)']
+    ],
+    example: `<p><b>Worked Example:</b> For what value of k will $2x + 3y = 7$ and $4x + ky = 14$ have infinite solutions?</p><p>$\frac{2}{4} = \frac{3}{k} = \frac{7}{14} \implies \frac{1}{2} = \frac{3}{k} \implies k = \mathbf{6}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Confusing 'No Solution' ($\frac{a_1}{a_2} = \frac{b_1}{b_2} \neq \frac{c_1}{c_2}$) with 'Infinite Solutions'!</p>`
+  },
+
+  'algebraic-identities': {
+    concept: `<p>Algebraic identities are equations valid for all values. If $a+b+c=0$, then $a^3+b^3+c^3 = 3abc$.</p>`,
+    laws: `<p>Master Cubic Identity: $a^3 + b^3 + c^3 - 3abc = (a+b+c)(a^2+b^2+c^2 - ab - bc - ca)$.</p>`,
+    formulae: [
+      { f: 'If a+b+c = 0 ⟹ a³+b³+c³ = 3abc', d: 'Cubic zero condition' },
+      { f: 'a² + b² + c² - ab - bc - ca = ½[(a-b)² + (b-c)² + (c-a)²]', d: 'Half-squares form' }
+    ],
+    table: [
+      ['Condition', 'Resulting Value'],
+      ['a + b + c = 0', 'a³ + b³ + c³ = 3abc'],
+      ['a² + b² + c² - ab - bc - ca = 0', 'a = b = c']
+    ],
+    example: `<p><b>Worked Example:</b> If $a=99, b=98, c=97$, find $a^2+b^2+c^2-ab-bc-ca$.</p><p>½[(1)² + (1)² + (2)²] = ½[6] = <b>3</b>.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting $a^3+b^3+c^3 = 3abc$ when $a+b+c=0$!</p>`
+  },
+
+  'x-plus-1-over-x': {
+    concept: `<p>Special algebraic shortcut values for $x + 1/x = k$. Useful for instant simplification in SSC CGL Tier-1/2.</p>`,
+    laws: `<p>If $x + 1/x = k \implies x^2 + 1/x^2 = k^2 - 2$ and $x^3 + 1/x^3 = k^3 - 3k$.</p>`,
+    formulae: [
+      { f: 'If x + 1/x = 1 ⟹ x³ = -1', d: 'Special cubic value -1' },
+      { f: 'If x + 1/x = 2 ⟹ x = 1', d: 'Special value 1' },
+      { f: 'If x + 1/x = √3 ⟹ x⁶ = -1', d: 'Special 6th power value' }
+    ],
+    table: [
+      ['Given Equation', 'Derived Shortcut Value'],
+      ['x + 1/x = 2', 'x = 1 (x^n + 1/x^n = 2)'],
+      ['x + 1/x = -2', 'x = -1'],
+      ['x + 1/x = 1', 'x³ = -1 (x³ + 1 = 0)'],
+      ['x + 1/x = √3', 'x⁶ = -1 (x⁶ + 1 = 0)']
+    ],
+    example: `<p><b>Worked Example:</b> If $x + 1/x = 3$, find $x^3 + 1/x^3$.</p><p>$x^3 + 1/x^3 = 3^3 - 3(3) = 27 - 9 = \mathbf{18}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting $x^3 = -1$ when $x + 1/x = 1$. Power differences like $x^{18} + x^{15} = x^{15}(x^3 + 1) = 0$!</p>`
+  },
+
+  'surds-indices': {
+    concept: `<p>Indices are powers ($a^n$). Surds are irrational roots ($\sqrt[n]{a}$). Rationalisation eliminates roots from denominators.</p>`,
+    laws: `<p>Laws of Exponents: $a^m \times a^n = a^{m+n}$, $(a^m)^n = a^{mn}$, $a^{-n} = 1/a^n$, $a^0 = 1$.</p>`,
+    formulae: [
+      { f: 'a^m × a^n = a^(m+n)', d: 'Product law of indices' },
+      { f: '1 / (√a + √b) = (√a - √b) / (a - b)', d: 'Denominator rationalisation' }
+    ],
+    table: [
+      ['Surd Expression', 'Rationalising Factor', 'Rationalized Denominator'],
+      ['1 / (√a + √b)', '√a - √b', 'a - b'],
+      ['1 / (√a - √b)', '√a + √b', 'a - b']
+    ],
+    example: `<p><b>Worked Example:</b> Rationalise $\frac{1}{\sqrt{5} + \sqrt{3}}$.</p><p>$\frac{1(\sqrt{5} - \sqrt{3})}{(\sqrt{5}+\sqrt{3})(\sqrt{5}-\sqrt{3})} = \mathbf{\frac{\sqrt{5} - \sqrt{3}}{2}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Writing $(a^m)^n$ as $a^{m^n}$. Notice $(2^3)^2 = 2^6 = 64$, but $2^{3^2} = 2^9 = 512$!</p>`
+  },
+
+  'linear-graphs': {
+    concept: `<p>Graphs map linear equations $ax + by = c$ on Cartesian plane. Slope $m = \frac{y_2 - y_1}{x_2 - x_1} = \tan\theta$.</p>`,
+    laws: `<p>Slope-Intercept Form: $y = mx + c$. Intercept Form: $\frac{x}{a} + \frac{y}{b} = 1$ (area of triangle with axes = $\frac{1}{2} |ab|$).</p>`,
+    formulae: [
+      { f: 'Slope m = (y2 - y1) / (x2 - x1)', d: 'Line slope formula' },
+      { f: 'Distance d = √[(x2-x1)² + (y2-y1)²]', d: '2D Distance formula' },
+      { f: 'Triangle Area with Axes = ½ |a × b|', d: 'Line intercept triangle area' }
+    ],
+    table: [
+      ['Line Property', 'Formula / Equation'],
+      ['Parallel Lines', 'm1 = m2 (Equal slopes)'],
+      ['Perpendicular Lines', 'm1 × m2 = -1'],
+      ['Midpoint', '((x1+x2)/2, (y1+y2)/2)']
+    ],
+    example: `<p><b>Worked Example:</b> Find area of triangle formed by line $3x + 4y = 12$ with coordinate axes.</p><p>x-intercept ($y=0$) $\implies x = 4$. y-intercept ($x=0$) $\implies y = 3$. Area = $\frac{1}{2} \times 4 \times 3 = \mathbf{6 \text{ sq units}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Product of slopes for PERPENDICULAR lines is $-1$, NOT $+1$!</p>`
+  },
+
+  'trig-ratios-measure': {
+    concept: `<p>Trigonometry measures relationships between side lengths and angles of triangles. In a right triangle with angle $\theta$, side opposite to $\theta$ is Perpendicular ($P$), side adjacent is Base ($B$), and opposite to 90° is Hypotenuse ($H$).</p>`,
+    laws: `<p><b>6 Core Trigonometric Ratios:</b><br>
+    $\sin\theta = \frac{P}{H}$, $\cos\theta = \frac{B}{H}$, $\tan\theta = \frac{P}{B} = \frac{\sin\theta}{\cos\theta}$<br>
+    $\csc\theta = \frac{H}{P} = \frac{1}{\sin\theta}$, $\sec\theta = \frac{H}{B} = \frac{1}{\cos\theta}$, $\cot\theta = \frac{B}{P} = \frac{1}{\tan\theta}$<br>
+    <b>Degree-Radian Measure:</b> $180^\circ = \pi \text{ radians} \implies 1^\circ = \frac{\pi}{180} \text{ rad}$ and $1 \text{ rad} = \frac{180^\circ}{\pi} \approx 57^\circ 16' 22''$.</p>`,
+    formulae: [
+      { f: 'sin θ = P / H | cos θ = B / H | tan θ = P / B', d: 'Basic Right Triangle Ratios' },
+      { f: 'csc θ = 1/sin θ | sec θ = 1/cos θ | cot θ = 1/tan θ', d: 'Reciprocal Ratios' },
+      { f: 'Radian = Degree × (π / 180)', d: 'Degree to Radian Conversion' },
+      { f: 'Degree = Radian × (180 / π)', d: 'Radian to Degree Conversion' },
+      { f: 'Arc Length l = r × θ (in radians)', d: 'Circle Arc Length Formula' },
+      { f: 'Sector Area = ½ × r² × θ (in radians)', d: 'Circle Sector Area Formula' }
+    ],
+    table: [
+      ['Ratio Symbol', 'Full Name', 'Formula (P, B, H)', 'Reciprocal Relation'],
+      ['sin θ', 'Sine', 'Perpendicular / Hypotenuse (P/H)', '1 / csc θ'],
+      ['cos θ', 'Cosine', 'Base / Hypotenuse (B/H)', '1 / sec θ'],
+      ['tan θ', 'Tangent', 'Perpendicular / Base (P/B)', '1 / cot θ'],
+      ['cot θ', 'Cotangent', 'Base / Perpendicular (B/P)', '1 / tan θ'],
+      ['sec θ', 'Secant', 'Hypotenuse / Base (H/B)', '1 / cos θ'],
+      ['csc θ', 'Cosecant', 'Hypotenuse / Perpendicular (H/P)', '1 / sin θ']
+    ],
+    example: `<p><b>Worked Example:</b> In a right triangle, Perpendicular = 3 cm, Base = 4 cm. Find $\sin\theta$, $\cos\theta$, and $\tan\theta$.</p><p>Hypotenuse $H = \sqrt{3^2 + 4^2} = \sqrt{25} = 5 \text{ cm}$.<br>$\sin\theta = \frac{P}{H} = \mathbf{\frac{3}{5}}$, $\cos\theta = \frac{B}{H} = \mathbf{\frac{4}{5}}$, $\tan\theta = \frac{P}{B} = \mathbf{\frac{3}{4}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Using $\theta$ in degrees when applying Arc Length formula $l = r\theta$! $\theta$ MUST be converted to RADIANS first!</p>`
+  },
+
+  'trig-values-table': {
+    concept: `<p>Standard Trigonometric values for $0^\circ, 30^\circ, 45^\circ, 60^\circ, 90^\circ$ are fundamental for solving Geometry & Heights/Distances.</p>`,
+    laws: `<p>Complementary relations: $\sin(90^\circ - \theta) = \cos\theta$, $\tan(90^\circ - \theta) = \cot\theta$, $\sec(90^\circ - \theta) = \csc\theta$.</p>`,
+    formulae: [
+      { f: 'sin²θ + cos²θ = 1', d: '1st Pythagorean identity' },
+      { f: '1 + tan²θ = sec²θ', d: '2nd Pythagorean identity' },
+      { f: '1 + cot²θ = csc²θ', d: '3rd Pythagorean identity' }
+    ],
+    table: [
+      ['Angle θ', 'sin θ', 'cos θ', 'tan θ'],
+      ['0°', '0', '1', '0'],
+      ['30°', '1/2', '√3/2', '1/√3'],
+      ['45°', '1/√2', '1/√2', '1'],
+      ['60°', '√3/2', '1/2', '√3'],
+      ['90°', '1', '0', 'Undefined']
+    ],
+    example: `<p><b>Worked Example:</b> Evaluate $\sin^2 30^\circ + \cos^2 60^\circ$.</p><p>$(1/2)^2 + (1/2)^2 = 1/4 + 1/4 = \mathbf{1/2}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Confusing $\tan 30^\circ = 1/\sqrt{3}$ with $\tan 60^\circ = \sqrt{3}$!</p>`
+  },
+
+  'trig-identities-comp': {
+    concept: `<p>Trigonometric identities hold for all valid angles. Complementary angles sum to $90^\circ$ ($\alpha + \beta = 90^\circ$).</p>`,
+    laws: `<p>If $\alpha + \beta = 90^\circ \implies \sin\alpha = \cos\beta$, $\tan\alpha \cdot \tan\beta = 1$, $\sin^2\alpha + \sin^2\beta = 1$.</p>`,
+    formulae: [
+      { f: 'sin(90° - θ) = cos θ', d: 'Sine-Cosine complementary rule' },
+      { f: 'tan A × tan B = 1 (if A + B = 90°)', d: 'Tangent product identity' },
+      { f: 'sin²A + sin²B = 1 (if A + B = 90°)', d: 'Sine square sum identity' }
+    ],
+    table: [
+      ['Complementary Pair', 'Value Relation (A + B = 90°)'],
+      ['tan A × tan B', '1'],
+      ['cot A × cot B', '1'],
+      ['sin²A + sin²B', '1'],
+      ['cos²A + cos²B', '1']
+    ],
+    example: `<p><b>Worked Example:</b> Evaluate $\tan 10^\circ \cdot \tan 20^\circ \cdot \tan 70^\circ \cdot \tan 80^\circ$.</p><p>Pair $10^\circ+80^\circ=90^\circ \implies \tan 10^\circ \cdot \tan 80^\circ = 1$.<br>Pair $20^\circ+70^\circ=90^\circ \implies \tan 20^\circ \cdot \tan 70^\circ = 1$.<br>Result = $1 \times 1 = \mathbf{1}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Thinking $\tan A \cdot \tan B = 1$ works for any angles. It holds ONLY when $A + B = 90^\circ$!</p>`
+  },
+
+  'heights-distances': {
+    concept: `<p>Heights & Distances applies Trigonometry to real-world objects using Angle of Elevation (looking up) and Angle of Depression (looking down).</p>`,
+    laws: `<p>Standard Right Triangle Ratio Shortcuts:<br>
+    1. 30°-60°-90° Triangle: Sides opposite are in ratio $1 : \sqrt{3} : 2$.<br>
+    2. 45°-45°-90° Triangle: Sides opposite are in ratio $1 : 1 : \sqrt{2}$.</p>`,
+    formulae: [
+      { f: 'Opp 30° : Opp 60° : Opp 90° = 1 : √3 : 2', d: '30-60-90 Ratio shortcut' },
+      { f: 'Opp 45° : Opp 45° : Opp 90° = 1 : 1 : √2', d: '45-45-90 Ratio shortcut' },
+      { f: 'h = d / (cot θ1 - cot θ2)', d: 'Two elevation angle observation distance' }
+    ],
+    table: [
+      ['Triangle Angles', 'Ratio of Sides Opposite to (30°, 60°, 90°)'],
+      ['30° - 60° - 90°', '1 : √3 : 2'],
+      ['45° - 45° - 90°', '1 : 1 : √2']
+    ],
+    example: `<p><b>Worked Example:</b> A ladder leaning against a wall makes a 60° angle with ground. If foot of ladder is 10m from wall, find height of wall.</p><p>Using 30°-60°-90° triangle: Side opp 30° (ground) = 10m. Side opp 60° (wall) = $10 \times \sqrt{3} = \mathbf{10\sqrt{3} \text{ m}}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Confusing Angle of Elevation (from ground looking UP) with Angle of Depression (from top looking DOWN)!</p>`
+  },
+
+  'statistics-mean-med-mode': {
+    concept: `<p>Statistics measures central tendency (Mean, Median, Mode) and dispersion (Range, Variance, Standard Deviation).</p>`,
+    laws: `<p><b>Empirical Relationship:</b> $\text{Mode} = 3 \times \text{Median} - 2 \times \text{Mean}$.<br>
+    <b>Standard Deviation ($\sigma$):</b> $\sigma = \sqrt{\text{Variance}}$.</p>`,
+    formulae: [
+      { f: 'Mode = 3 Median - 2 Mean', d: 'Empirical relationship' },
+      { f: 'Variance = Σ(x - Mean)² / N', d: 'Variance formula' },
+      { f: 'Standard Deviation σ = √Variance', d: 'Standard deviation formula' }
+    ],
+    table: [
+      ['Measure', 'Definition / Calculation'],
+      ['Mean', 'Sum of observations / Total count'],
+      ['Median', 'Middle term of ordered data (Average of 2 middle terms if N is even)'],
+      ['Mode', 'Most frequently occurring observation']
+    ],
+    example: `<p><b>Worked Example:</b> If Mean = 20 and Median = 22, find Mode using empirical relation.</p><p>$\text{Mode} = 3(22) - 2(20) = 66 - 40 = \mathbf{26}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting to SORT data in ascending/descending order BEFORE finding the Median!</p>`
+  },
+
+  'probability-events': {
+    concept: `<p>Probability measures likelihood of an event $E$: $P(E) = \frac{\text{Number of favourable outcomes } n(E)}{\text{Total possible outcomes } n(S)}$. Always $0 \le P(E) \le 1$.</p>`,
+    laws: `<p>Complementary Event: $P(E') = 1 - P(E)$. Probability of getting at least one success = $1 - P(\text{None})$.</p>`,
+    formulae: [
+      { f: 'P(E) = n(E) / n(S)', d: 'Probability formula' },
+      { f: 'P(At least 1) = 1 - P(None)', d: 'At least one shortcut' }
+    ],
+    table: [
+      ['Experiment', 'Sample Space n(S)', 'Key Fact'],
+      ['Single Coin', '2 outcomes {H, T}', 'n(S) = 2^n for n coins'],
+      ['Single Dice', '6 outcomes {1,2,3,4,5,6}', 'n(S) = 6^n for n dice'],
+      ['Pack of Cards', '52 cards', '13 Spades, 13 Hearts, 13 Diamonds, 13 Clubs (4 Aces)']
+    ],
+    example: `<p><b>Worked Example:</b> Two unbiased coins are tossed. Find probability of getting at least 1 Head.</p><p>$n(S) = \{HH, HT, TH, TT\} = 4$. Favourable outcomes = $\{HH, HT, TH\} = 3$. $P(E) = \mathbf{3/4}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Forgetting that $P(E) + P(E') = 1$! Using $1 - P(\text{None})$ is 5x faster for 'at least one' questions.</p>`
+  },
+
+  'statistical-charts': {
+    concept: `<p>Statistical Charts represent frequency distributions visually via Bar Graphs, Pie Charts, Histograms, and Frequency Polygons.</p>`,
+    laws: `<p>Histograms display CONTINUOUS class intervals (no spaces between bars). Bar graphs display DISCRETE categories (with gaps).</p>`,
+    formulae: [
+      { f: 'Class Mark = (Upper Limit + Lower Limit) / 2', d: 'Histogram midpoint' }
+    ],
+    table: [
+      ['Chart Type', 'Data Type', 'Key Visual Feature'],
+      ['Bar Graph', 'Discrete categories', 'Gaps between rectangular bars'],
+      ['Histogram', 'Continuous class intervals', 'No gaps between adjacent bars'],
+      ['Frequency Polygon', 'Continuous distributions', 'Line graph joining class marks']
+    ],
+    example: `<p><b>Worked Example:</b> Find Class Mark for class interval $20 - 30$.</p><p>Class Mark = $\frac{20 + 30}{2} = \mathbf{25}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Confusing Bar Graphs (discrete with gaps) with Histograms (continuous without gaps)!</p>`
+  },
+
+  'tabular-di': {
+    concept: `<p>Tabular Data Interpretation presents numerical data in rows and columns. Requires rapid sum, average, ratio, and percentage change calculations.</p>`,
+    laws: `<p>Percentage Increase/Decrease Formula: $\frac{\text{Difference}}{\text{Initial Value}} \times 100$.</p>`,
+    formulae: [
+      { f: '% Change = (New - Old) / Old × 100', d: 'Percentage Growth/Drop' }
+    ],
+    table: [
+      ['Operation', 'Shortcut Method'],
+      ['Sum of Column', 'Round to nearest tens/hundreds first'],
+      ['Ratio of Row A to Row B', 'Simplify common factors before dividing'],
+      ['Average of Row', 'Use assumed mean method']
+    ],
+    example: `<p><b>Worked Example:</b> Sales rose from 400 units to 500 units. Find % growth.</p><p>$\% \text{ Growth} = \frac{500 - 400}{400} \times 100 = \frac{100}{400} \times 100 = \mathbf{25\%}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Dividing by the NEW value instead of the ORIGINAL OLD value when calculating % change!</p>`
+  },
+
+  'bar-chart-di': {
+    concept: `<p>Bar Chart DI uses rectangular bars of length proportional to values. Comparative bar charts display multiple series side-by-side.</p>`,
+    laws: `<p>Always check axis scale (e.g. values in Thousands vs Lakhs) before summing numbers!</p>`,
+    formulae: [
+      { f: 'Comparative Ratio = Bar Value A / Bar Value B', d: 'Bar height comparison' }
+    ],
+    table: [
+      ['Bar Chart Type', 'Use Case'],
+      ['Simple Bar Chart', 'Single variable across categories'],
+      ['Multiple Bar Chart', '2-3 variables compared across categories']
+    ],
+    example: `<p><b>Worked Example:</b> Company A sales = 60, Company B sales = 80. Find ratio A:B.</p><p>Ratio = $60 : 80 = \mathbf{3 : 4}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Misreading y-axis scale units (e.g. 50 in thousands = 50,000, not 50)!</p>`
+  },
+
+  'pie-chart-di': {
+    concept: `<p>Pie Charts represent data as sectors of a circle where $360^\circ = 100\% \implies 1\% = 3.6^\circ$.</p>`,
+    laws: `<p>Degree to Percentage: $\% = (\text{Angle} / 360^\circ) \times 100$.</p>`,
+    formulae: [
+      { f: 'Angle (θ) = (% / 100) × 360°', d: '% to Degree' },
+      { f: '% = (Angle / 360°) × 100', d: 'Degree to %' }
+    ],
+    table: [
+      ['Percentage %', 'Equivalent Central Angle θ'],
+      ['10%', '36°'],
+      ['25%', '90°'],
+      ['50%', '180°']
+    ],
+    example: `<p><b>Worked Example:</b> Rent sector = 54°. Total income = ₹72,000. Rent expense?</p><p>54/360 = 15%. 15% of 72,000 = <b>₹10,800</b>.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Comparing sector angles directly between TWO DIFFERENT pie charts with different base values!</p>`
+  },
+
+  'line-trend-di': {
+    concept: `<p>Line Graphs plot data points connected by straight line segments to analyze trends and YoY (Year-over-Year) percentage fluctuations.</p>`,
+    laws: `<p>YoY Percentage Change = $\frac{\text{Value in Year } T - \text{Value in Year } (T-1)}{\text{Value in Year } (T-1)} \times 100$.</p>`,
+    formulae: [
+      { f: 'YoY Growth % = (Yr_T - Yr_T-1) / Yr_T-1 × 100', d: 'Year over year growth' }
+    ],
+    table: [
+      ['Trend Line Slope', 'Meaning'],
+      ['Upward Slope', 'Positive Growth / Increasing Trend'],
+      ['Downward Slope', 'Decline / Decreasing Trend'],
+      ['Horizontal Line', 'No Change / Constant Value']
+    ],
+    example: `<p><b>Worked Example:</b> Production in 2021 = 50 tons, 2022 = 65 tons. Find % increase.</p><p>$\% \text{ Increase} = \frac{65 - 50}{50} \times 100 = \frac{15}{50} \times 100 = \mathbf{30\%}$.</p>`,
+    trap: `<p><b>💣 SSC Trap:</b> Comparing slope steepness across line graphs with different y-axis scales!</p>`
+  }
+};
+
+const PATTERN_CONFIDENCE = {
+  standard: { label: 'Standard Method', color: '#22d3ee', desc: 'Conventional, always-correct approach.' },
+  exam: { label: 'Exam-Proven Shortcut', color: '#4ade80', desc: 'A legitimate, provably-correct shortcut widely used in competitive exams.' },
+  heuristic: { label: 'Heuristic', color: '#facc15', desc: 'A useful pattern that works in most, but not all, cases — verify before relying on it fully.' }
+};
+
+const PATTERNS = {
+
+'percentage-constancy': [
+  { name: 'Basic Percentage', recognize: 'Directly asks "X% of Y" or "what percent is A of B".',
+    confidence: 'standard', method: 'X% of Y = (X/100) × Y. "A is what % of B" = (A/B) × 100.',
+    example: '25% of 480 = (25/100) × 480 = 120.' },
+  { name: 'Percentage Increase / Decrease', recognize: 'A value "increases by" or "decreases by" X%.',
+    confidence: 'standard', method: 'New value = Original × (1 ± X/100).',
+    example: '80 increased by 15% = 80 × 1.15 = 92.' },
+  { name: 'Successive Percentage Change', recognize: 'Two or more % changes applied one after another to the same base.',
+    confidence: 'exam', method: 'Net % change = x + y + (xy/100), using negative values for decreases. Never simply add x + y.',
+    example: 'Price rises 20%, then falls 10%: Net = 20 − 10 + (20×−10)/100 = 10 − 2 = 8% net increase.' },
+  { name: 'Reverse Percentage', recognize: 'Given the value AFTER a % change, asks for the ORIGINAL value.',
+    confidence: 'standard', method: 'Original = Final ÷ (1 ± X/100). Do not just subtract X% from the final value — that is the single most common SSC trap in this topic.',
+    example: 'After a 20% increase, price is 240. Original = 240 ÷ 1.20 = 200 (NOT 240 − 20% = 192).' },
+  { name: 'Product Constancy (Price × Consumption)', recognize: 'Expenditure/Area/Product is fixed while one factor changes; asks for the compensating change in the other factor.',
+    confidence: 'exam', method: 'If A increases by +1/n, B must decrease by −1/(n+1) to keep A×B constant (and vice versa).',
+    example: 'Price up by 1/5 (20%) ⟹ consumption must drop by 1/6 (16.66%), not 20%.' },
+  { name: 'Percentage Comparison (A vs B)', recognize: '"A is what % more/less than B" — note the base is B, not A.',
+    confidence: 'standard', method: '% more/less = [(A − B)/B] × 100. The denominator is always the quantity you are comparing AGAINST.',
+    example: 'A=120, B=100: A is (20/100)×100 = 20% more than B. But B is (20/120)×100 = 16.66% less than A — these are NOT the same number.' }
+],
+
+'ratio-proportion': [
+  { name: 'Dividing a Quantity in a Given Ratio', recognize: 'A total amount must be split into parts in ratio a:b:c.',
+    confidence: 'standard', method: 'Each part = Total × (its ratio term) / (sum of ratio terms).',
+    example: 'Divide 600 in ratio 2:3:5 (sum=10): parts = 120, 180, 300.' },
+  { name: 'Fourth Proportional', recognize: 'Given a:b :: c:? — find the missing term of a proportion.',
+    confidence: 'standard', method: 'If a:b = c:d, then a×d = b×c (cross-multiplication / product of extremes = product of means).',
+    example: '4:9 :: 8:? → 4×? = 9×8 → ? = 18.' },
+  { name: 'Combining Two Ratios (a:b and b:c → a:b:c)', recognize: 'Two separate ratios share a common term that needs to be equalised.',
+    confidence: 'exam', method: 'Make the common term equal in both ratios (LCM), then combine.',
+    example: 'a:b = 2:3, b:c = 4:5. LCM of b-terms (3,4)=12. a:b=8:12, b:c=12:15. So a:b:c = 8:12:15.' },
+  { name: 'Direct vs Inverse Proportion', recognize: 'One quantity increases as another increases (direct) or increases as another decreases (inverse) — common in work/speed contexts.',
+    confidence: 'standard', method: 'Direct: a/b = k (constant ratio). Inverse: a×b = k (constant product).',
+    example: 'More workers, less time (fixed work) = inverse proportion: workers × days = constant.' },
+  { name: 'Adding/Subtracting the Same Quantity to a Ratio', recognize: 'Asks how a ratio changes when the same fixed number is added to (or subtracted from) both terms.',
+    confidence: 'exam', method: 'Set up the original terms as ax, bx using the ratio, add/subtract the given quantity, then solve for x using the new (given) ratio.',
+    example: 'Ratio 3:5 becomes 2:3 when 5 is subtracted from both: (3x−5)/(5x−5)=2/3 → x=5. Original numbers: 15, 25.' }
+],
+
+'average-weighted': [
+  { name: 'Basic Average', recognize: 'Direct request for the mean of a set of values.',
+    confidence: 'standard', method: 'Average = Sum of values / Number of values.',
+    example: 'Average of 12, 18, 24, 30 = 84/4 = 21.' },
+  { name: 'Average with Inclusion/Exclusion', recognize: 'A new member joins or an existing one leaves, changing the average — classic "new student/employee" wording.',
+    confidence: 'exam', method: 'New Sum = Old Average × Old Count ± (change). Rebuild the sum, do not try to average the averages.',
+    example: 'Avg age of 20 students = 15. A student aged 35 joins. New avg = (20×15 + 35)/21 = 335/21 ≈ 15.95.' },
+  { name: 'Weighted Average', recognize: 'Two or more groups of DIFFERENT sizes are combined and asked for a combined average.',
+    confidence: 'standard', method: 'Weighted Avg = (n₁a₁ + n₂a₂ + ...) / (n₁ + n₂ + ...) — never just average the group averages unless the groups are equal size.',
+    example: '30 students avg 80, 20 students avg 60: combined avg = (30×80+20×60)/50 = 3600/50 = 72 (not 70).' },
+  { name: 'Average Speed for Equal Distances', recognize: 'Same distance covered at two different speeds — asks for the average speed of the whole journey.',
+    confidence: 'exam', method: 'Average speed = 2xy/(x+y) — the harmonic mean of the two speeds, NOT the simple average (x+y)/2.',
+    example: 'Goes at 40 km/h, returns at 60 km/h: avg speed = (2×40×60)/(40+60) = 4800/100 = 48 km/h (not 50).' },
+  { name: 'Age-Based Average Problems', recognize: 'Average age of a group changes when one person is replaced by another.',
+    confidence: 'exam', method: 'Change in total = (new person\'s value − old person\'s value). Change in average = that change / group size.',
+    example: 'Avg age of 10 people increases by 2 when a 30-yr-old replaces someone: total increased by 10×2=20, so the replaced person\'s age = 30−20 = 10.' }
+],
+
+'profit-loss-discount': [
+  { name: 'Basic Profit / Loss %', recognize: 'Cost Price and Selling Price given directly; asks for % profit or loss.',
+    confidence: 'standard', method: 'Profit/Loss % = [(SP − CP)/CP] × 100. The base is always CP, never SP.',
+    example: 'CP=200, SP=250: Profit% = (50/200)×100 = 25%.' },
+  { name: 'Successive Discounts', recognize: 'Two or more discounts applied one after another on marked price.',
+    confidence: 'exam', method: 'Net discount % = x + y − (xy/100) (note the MINUS sign — opposite of successive % increase). Apply the product-constancy-style formula but subtract the cross term.',
+    example: 'Discounts of 10% then 20%: Net = 10+20−(10×20)/100 = 30−2 = 28%.' },
+  { name: 'Marked Price vs Cost Price (Discount + Profit combined)', recognize: 'A shopkeeper marks up the price above cost, then offers a discount, and the question asks for the final profit or the required markup.',
+    confidence: 'standard', method: 'SP = MP × (1 − discount%/100) = CP × (1 + profit%/100). Solve for the unknown by equating these two expressions for SP.',
+    example: 'CP=100, marked 40% above CP (MP=140), discount 10%: SP=140×0.9=126, so Profit%=26%.' },
+  { name: 'Dishonest Dealer (False Weight)', recognize: 'A seller claims to sell "at cost price" but uses a weight less than the labelled quantity (e.g. "1000g" but actually gives 900g).',
+    confidence: 'exam', method: 'Profit % = [(True Weight − False Weight)/False Weight] × 100 — this is mathematically identical to the standard profit% formula, just with weight substituted for CP/SP.',
+    example: 'Claims 1kg, gives 800g: Profit% = (1000−800)/800 × 100 = 25%.' },
+  { name: 'Two Articles, Equal Selling Price (One Profit, One Loss, Same %)', recognize: 'Two items sold at the SAME selling price, one at x% profit and the other at x% loss.',
+    confidence: 'exam', method: 'There is always an overall LOSS in this situation (never a profit or break-even), equal to (x/10)² percent of the total.',
+    example: 'Both sold at ₹990, one at 10% profit, other at 10% loss: overall loss % = (10/10)² = 1%.' }
+],
+
+'si-ci-interest': [
+  { name: 'Basic Simple Interest', recognize: 'Interest that does not compound — asks for SI, Principal, Rate, or Time given the other three.',
+    confidence: 'standard', method: 'SI = (P × R × T) / 100. Amount = P + SI.',
+    example: 'P=5000, R=8%, T=3yr: SI = (5000×8×3)/100 = 1200.' },
+  { name: 'Basic Compound Interest', recognize: 'Interest that is added to the principal each period, and that new total earns interest in the next period.',
+    confidence: 'standard', method: 'Amount = P(1 + R/100)ᵀ. CI = Amount − P.',
+    example: 'P=1000, R=10%, T=2yr: Amount = 1000×1.1² = 1210. CI = 210.' },
+  { name: 'CI − SI Difference (2 years)', recognize: 'Question gives the DIFFERENCE between CI and SI over exactly 2 years and asks for P, R, or the difference itself.',
+    confidence: 'exam', method: 'For 2 years: CI − SI = P × (R/100)². This is a direct shortcut — no need to compute CI and SI separately.',
+    example: 'P=8000, R=5%: CI−SI = 8000×(0.05)² = 8000×0.0025 = 20.' },
+  { name: 'CI − SI Difference (3 years)', recognize: 'Same as above but specifically over 3 years.',
+    confidence: 'exam', method: 'For 3 years: CI − SI = P × (R/100)² × (3 + R/100).',
+    example: 'P=10000, R=10%: CI−SI = 10000×0.01×(3.1) = 310.' },
+  { name: 'Compounding More Than Once a Year', recognize: 'Interest compounds half-yearly, quarterly, or monthly instead of annually.',
+    confidence: 'standard', method: 'Amount = P(1 + (R/n)/100)^(nT), where n = number of compounding periods per year (2 for half-yearly, 4 for quarterly). Effectively halve/quarter the rate and double/quadruple the time.',
+    example: 'P=1000, R=10% p.a. half-yearly, T=1yr: treat as R=5%, T=2 periods: Amount=1000×1.05²=1102.5.' }
+],
+
+'partnership-invest': [
+  { name: 'Basic Partnership (Equal Time)', recognize: 'Partners invest different amounts for the SAME period of time; profit is to be split.',
+    confidence: 'standard', method: 'Profit share ratio = ratio of capitals invested (since time is equal, it cancels out).',
+    example: 'A invests 4000, B invests 6000, equal time: profit split 4000:6000 = 2:3.' },
+  { name: 'Capital × Time Partnership', recognize: 'Partners invest different amounts for DIFFERENT durations.',
+    confidence: 'standard', method: 'Profit share ratio = (Capital₁ × Time₁) : (Capital₂ × Time₂) : ... — always multiply capital by the time it was actually invested for.',
+    example: 'A invests 5000 for 12 months, B invests 6000 for 8 months: ratio = (5000×12):(6000×8) = 60000:48000 = 5:4.' },
+  { name: 'Working vs Sleeping Partner', recognize: 'One partner also manages the business (gets a fixed management fee/commission) in addition to their profit share.',
+    confidence: 'standard', method: 'First deduct the working partner\'s fixed salary/commission from total profit, THEN divide the remaining profit in the capital×time ratio.',
+    example: 'Total profit 10000; working partner gets 1000 salary first; remaining 9000 split by capital ratio.' }
+],
+
+'mixture-alligation': [
+  { name: 'Basic Alligation (Two Mixtures)', recognize: 'Two quantities of different prices/concentrations (cheaper & dearer) are mixed to get a mean value — classic "in what ratio should X and Y be mixed" question.',
+    confidence: 'exam', method: 'Alligation rule: Ratio of (cheaper : dearer) = (Dearer price − Mean price) : (Mean price − Cheaper price).',
+    example: 'Mix tea at ₹60/kg and ₹80/kg to get a mean of ₹65/kg: ratio = (80−65):(65−60) = 15:5 = 3:1 (cheaper:dearer).' },
+  { name: 'Replacement Formula (Repeated Dilution)', recognize: 'A container has liquid A; some is removed and replaced with liquid B, repeated multiple times.',
+    confidence: 'exam', method: 'Final quantity of A = Initial × (1 − removed/total)ⁿ, where n = number of times the process is repeated.',
+    example: '10L milk, 1L removed & replaced with water, done 3 times: remaining milk = 10×(0.9)³ = 7.29L.' },
+  { name: 'Mean Price Problems', recognize: 'Given the ratio of two mixed quantities and their individual prices, asks for the resulting mean price.',
+    confidence: 'standard', method: 'Mean price = (Quantity₁×Price₁ + Quantity₂×Price₂) / (Quantity₁ + Quantity₂) — this is just a weighted average.',
+    example: '3kg at ₹40 mixed with 2kg at ₹60: mean = (3×40+2×60)/5 = (120+120)/5 = 48.' }
+],
+
+'time-work-mdh': [
+  { name: 'Basic Time & Work (Individual Rate)', recognize: 'A person completes a job alone in N days; asks for work done per day or time for a fraction of work.',
+    confidence: 'standard', method: 'If a person finishes work in N days, their work rate = 1/N of the work per day.',
+    example: 'A finishes a job in 10 days: A does 1/10 of the work each day.' },
+  { name: 'Combined Work (Multiple Workers Together)', recognize: 'Two or more people work together; asks how long the job takes when combined.',
+    confidence: 'standard', method: 'Combined rate = sum of individual rates (1/A + 1/B + ...). Total time = 1 / combined rate.',
+    example: 'A alone: 10 days (rate 1/10). B alone: 15 days (rate 1/15). Together: 1/10+1/15 = 1/6, so 6 days.' },
+  { name: 'MDH Rule (Men-Days-Hours Equivalence)', recognize: 'Compares two work scenarios with different numbers of workers, days, and/or hours per day for the same or different amount of work.',
+    confidence: 'exam', method: '(M₁ × D₁ × H₁) / W₁ = (M₂ × D₂ × H₂) / W₂, where M=men, D=days, H=hours/day, W=work done (use W=1 if it is the same job).',
+    example: '10 men work 8 hrs/day for 6 days to finish a job. How many days for 15 men at 6 hrs/day for the same job? 10×8×6 = 15×6×D → D=8.' },
+  { name: 'Work + Wages Distribution', recognize: 'A total payment must be split among workers based on the work each contributed.',
+    confidence: 'standard', method: 'Wage share ratio = ratio of work done, which (for the same total time) equals the ratio of individual work rates.',
+    example: 'A can do a job in 6 days, B in 8 days; total wage ₹700 for working together: split in ratio 1/6:1/8 = 4:3, so A gets 400, B gets 300.' },
+  { name: 'Pipes & Cisterns (Inlet/Outlet)', recognize: 'Pipes fill (inlet) or empty (outlet) a tank; asks for net time to fill/empty when used together.',
+    confidence: 'standard', method: 'Treat inlet pipes as positive rate, outlet pipes as negative rate. Net rate = sum of all rates (with sign). Time = 1/|net rate|.',
+    example: 'Inlet fills in 6hr (rate +1/6), outlet empties in 8hr (rate −1/8): net = 1/6−1/8 = 1/24, so tank fills in 24 hours.' }
+],
+
+'tsd-trains-boats': [
+  { name: 'Basic Speed-Distance-Time', recognize: 'Direct application of the core relationship, no relative motion involved.',
+    confidence: 'standard', method: 'Speed = Distance / Time. Also: km/h → m/s by multiplying by 5/18, and m/s → km/h by multiplying by 18/5.',
+    example: '90 km/h in m/s = 90 × 5/18 = 25 m/s.' },
+  { name: 'Relative Speed (Same / Opposite Direction)', recognize: 'Two moving bodies approach or move apart from each other.',
+    confidence: 'standard', method: 'Opposite directions: relative speed = sum of speeds. Same direction: relative speed = difference of speeds.',
+    example: 'Two trains at 60 and 40 km/h approaching each other: relative speed = 100 km/h. Same direction: relative speed = 20 km/h.' },
+  { name: 'Train Crossing (Pole / Platform / Another Train)', recognize: 'A train "crosses" a stationary point, a platform, or another train — a very common SSC wording.',
+    confidence: 'exam', method: 'Crossing a pole/person: time = (length of train)/speed. Crossing a platform: time = (length of train + length of platform)/speed. Crossing another moving train: use relative speed and the SUM of both train lengths.',
+    example: 'A 150m train crosses a 100m platform at 50 km/h (≈13.89 m/s): time = 250/13.89 ≈ 18 sec.' },
+  { name: 'Boats & Streams (Upstream / Downstream)', recognize: 'A boat moves in still water at speed b, with a stream/current of speed s.',
+    confidence: 'standard', method: 'Downstream speed = b + s. Upstream speed = b − s. Given downstream (d) and upstream (u) speeds: boat speed = (d+u)/2, stream speed = (d−u)/2.',
+    example: 'Downstream 12 km/h, upstream 8 km/h: boat speed = (12+8)/2=10, stream speed=(12−8)/2=2.' },
+  { name: 'Average Speed for a Round Trip', recognize: 'Same distance covered at two different speeds in each direction of a round trip.',
+    confidence: 'exam', method: 'Average speed = 2xy/(x+y) (harmonic mean) — same formula family as the Average chapter\'s equal-distance case, never the simple mean.',
+    example: 'Goes at 30 km/h, returns at 60 km/h: avg = (2×30×60)/(30+60) = 3600/90 = 40 km/h.' }
+]
+};
+
+
+const RELATED = {
+  'num-classification': ['decimals-fractions', 'vbodmas-simplification'],
+  'decimals-fractions': ['num-classification', 'percentage-constancy'],
+  'divisibility-rules': ['hcf-lcm-mastery', 'remainder-theorems'],
+  'hcf-lcm-mastery': ['divisibility-rules', 'ratio-proportion'],
+  'remainder-theorems': ['divisibility-rules', 'unit-digit-zeroes'],
+  'unit-digit-zeroes': ['remainder-theorems', 'vbodmas-simplification'],
+  'vbodmas-simplification': ['num-classification', 'algebraic-identities'],
+
+  'percentage-constancy': ['profit-loss-discount', 'si-ci-interest', 'ratio-proportion', 'average-weighted'],
+  'ratio-proportion': ['percentage-constancy', 'partnership-invest', 'mixture-alligation', 'average-weighted'],
+  'average-weighted': ['percentage-constancy', 'ratio-proportion', 'tsd-trains-boats', 'mixture-alligation'],
+  'profit-loss-discount': ['percentage-constancy', 'si-ci-interest', 'ratio-proportion'],
+  'si-ci-interest': ['percentage-constancy', 'profit-loss-discount', 'x-plus-1-over-x'],
+  'partnership-invest': ['ratio-proportion', 'time-work-mdh'],
+  'mixture-alligation': ['ratio-proportion', 'average-weighted', 'percentage-constancy'],
+  'time-work-mdh': ['ratio-proportion', 'partnership-invest', 'tsd-trains-boats'],
+  'tsd-trains-boats': ['ratio-proportion', 'average-weighted', 'time-work-mdh'],
+
+  'basic-algebra-linear': ['algebraic-identities', 'linear-graphs'],
+  'algebraic-identities': ['basic-algebra-linear', 'x-plus-1-over-x', 'surds-indices'],
+  'x-plus-1-over-x': ['algebraic-identities', 'surds-indices'],
+  'surds-indices': ['algebraic-identities', 'x-plus-1-over-x', 'num-classification'],
+  'linear-graphs': ['basic-algebra-linear'],
+
+  'trig-ratios-measure': ['trig-values-table', 'trig-identities-comp'],
+  'trig-values-table': ['trig-ratios-measure', 'heights-distances'],
+  'trig-identities-comp': ['trig-ratios-measure', 'algebraic-identities'],
+  'heights-distances': ['trig-values-table', 'trig-ratios-measure'],
+
+  'statistics-mean-med-mode': ['average-weighted', 'probability-events', 'statistical-charts'],
+  'probability-events': ['statistics-mean-med-mode', 'ratio-proportion'],
+  'statistical-charts': ['statistics-mean-med-mode', 'tabular-di', 'bar-chart-di'],
+
+  'tabular-di': ['percentage-constancy', 'ratio-proportion', 'average-weighted'],
+  'bar-chart-di': ['tabular-di', 'percentage-constancy', 'statistical-charts'],
+  'pie-chart-di': ['percentage-constancy', 'tabular-di'],
+  'line-trend-di': ['tabular-di', 'percentage-constancy', 'statistical-charts']
+};
+
+function relatedTopicName(key) {
+  for (const sec of SECTIONS) {
+    const t = sec.topics.find(t => t.key === key);
+    if (t) return t.name;
+  }
+  return key;
+}
+
+
+// Merge patterns and related links into DETAILS
+Object.keys(PATTERNS).forEach(k => { if (DETAILS[k]) DETAILS[k].patterns = PATTERNS[k]; });
+Object.keys(RELATED).forEach(k => { if (DETAILS[k]) DETAILS[k].related = RELATED[k]; });
+
+/* ============================================================
+   STATE & RENDER LOGIC
+   ============================================================ */
+let currentSectionId = 'sec-1';
+let currentTopicKey = 'num-classification';
+let currentWbTab = 'concept';
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderPipelineBar();
+  selectSection('sec-1');
+  setupKeyListeners();
+});
+
+function renderPipelineBar() {
+  const bar = document.getElementById('pipelineBar');
+  bar.innerHTML = SECTIONS.map((sec, idx) => `
+    <div class="pipe-step ${sec.id === currentSectionId ? 'active' : ''}" onclick="selectSection('${sec.id}')">
+      <span class="pipe-num">0${idx+1}</span>
+      <span>${sec.name}</span>
+    </div>
+  `).join('');
+}
+
+function selectSection(secId) {
+  currentSectionId = secId;
+  renderPipelineBar();
+
+  const sec = SECTIONS.find(s => s.id === secId);
+  const navList = document.getElementById('navList');
+  document.getElementById('topicCount').textContent = `${sec.topics.length} Topics`;
+
+  navList.innerHTML = sec.topics.map(t => `
+    <div class="nav-card ${t.key === currentTopicKey ? 'active' : ''}" onclick="selectTopic('${t.key}')">
+      <div class="nav-card-title">${t.name}</div>
+      <div class="nav-card-meta">
+        <span class="priority-tag ${t.priority === 'must' ? 'tag-must' : 'tag-high'}">${t.priority}</span>
+        <span>Select &rarr;</span>
+      </div>
+    </div>
+  `).join('');
+
+  if (sec.topics.length > 0) {
+    selectTopic(sec.topics[0].key);
+  }
+}
+
+function selectTopic(key) {
+  currentTopicKey = key;
+  currentWbTab = 'concept';
+
+  document.querySelectorAll('.nav-card').forEach(c => c.classList.remove('active'));
+  const cards = document.querySelectorAll('.nav-card');
+  const sec = SECTIONS.find(s => s.id === currentSectionId);
+  const idx = sec.topics.findIndex(t => t.key === key);
+  if (cards[idx]) cards[idx].classList.add('active');
+
+  renderWbTabs();
+  renderWorkbench();
+}
+
+const WB_TAB_DEFS = [
+  { id: 'concept',     label: 'Concept & Rules', icon: 'fa-lightbulb' },
+  { id: 'formulas',    label: 'Formula Deck',    icon: 'fa-square-root-variable' },
+  { id: 'patterns',    label: 'Question Patterns', icon: 'fa-diagram-project', requires: 'patterns' },
+  { id: 'example',     label: 'Worked PYQ',      icon: 'fa-pen-to-square' },
+  { id: 'traps',       label: 'SSC Traps',       icon: 'fa-bomb', color: 'var(--rose)' },
+  { id: 'practice',    label: 'Practice',        icon: 'fa-bolt', requires: 'patterns' },
+  { id: 'connections', label: 'Connections',     icon: 'fa-diagram-successor', requires: 'related' }
+];
+
+function renderWbTabs() {
+  const bar = document.getElementById('wbTabs');
+  const d = DETAILS[currentTopicKey];
+  const tabs = WB_TAB_DEFS.filter(t => !t.requires || (d && d[t.requires] && d[t.requires].length));
+  bar.innerHTML = tabs.map(t => `
+    <div class="wb-tab ${t.id === currentWbTab ? 'active' : ''}" onclick="switchWbTab('${t.id}')">
+      <i class="fa-solid ${t.icon}" ${t.color ? `style="color:${t.color}"` : ''}></i> ${t.label}
+    </div>
+  `).join('');
+}
+
+function switchWbTab(tab) {
+  currentWbTab = tab;
+  renderWbTabs();
+  renderWorkbench();
+}
+
+function renderWorkbench() {
+  const content = document.getElementById('wbContent');
+  const d = DETAILS[currentTopicKey];
+
+  if (!d) {
+    content.innerHTML = `
+      <div class="panel-card">
+        <div class="panel-title"><i class="fa-solid fa-calculator"></i> Topic Datasheet</div>
+        <div class="panel-body"><p>Datasheet for topic <b>${currentTopicKey}</b> is loaded into the Quant Command Workbench. Includes formulas, rules, and PYQs.</p></div>
+      </div>
+    `;
+    return;
+  }
+
+  if (currentWbTab === 'concept') {
+    content.innerHTML = `
+      <div class="panel-card">
+        <div class="panel-title"><i class="fa-solid fa-lightbulb"></i> 💡 Intuition & Core Concept</div>
+        <div class="panel-body">${d.concept}</div>
+      </div>
+      <div class="panel-card">
+        <div class="panel-title"><i class="fa-solid fa-scroll"></i> 📜 Key Laws & Rules</div>
+        <div class="panel-body">${d.laws}</div>
+      </div>
+      ${d.table ? `
+        <div class="panel-card">
+          <div class="panel-title"><i class="fa-solid fa-table"></i> 📏 Reference Table</div>
+          <div class="panel-body"><table class="wb-table">${renderTable(d.table)}</table></div>
+        </div>
+      ` : ''}
+    `;
+  } else if (currentWbTab === 'formulas') {
+    content.innerHTML = `
+      <div class="panel-card">
+        <div class="panel-title"><i class="fa-solid fa-square-root-variable"></i> 🧮 Formula Deck</div>
+        <div class="formula-deck">
+          ${d.formulae.map(f => `
+            <div class="f-card">
+              <div class="f-math">${f.f}</div>
+              <div class="f-desc">${f.d}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else if (currentWbTab === 'example') {
+    content.innerHTML = `
+      <div class="panel-card">
+        <div class="panel-title"><i class="fa-solid fa-pen-to-square"></i> ✏️ Worked PYQ & Solution</div>
+        <div class="panel-body">${d.example}</div>
+      </div>
+    `;
+  } else if (currentWbTab === 'traps') {
+    content.innerHTML = `
+      <div class="panel-card" style="border-color:rgba(244,63,94,0.4); background:rgba(244,63,94,0.03);">
+        <div class="panel-title" style="color:var(--rose);"><i class="fa-solid fa-bomb"></i> 💣 SSC Exam Trap</div>
+        <div class="panel-body">${d.trap}</div>
+      </div>
+    `;
+  } else if (currentWbTab === 'patterns') {
+    renderPatternsTab(content, d);
+  } else if (currentWbTab === 'practice') {
+    renderPracticeTab(content, d);
+  } else if (currentWbTab === 'connections') {
+    renderConnectionsTab(content, d);
+  }
+
+  renderMathIn(content);
+}
+
+function renderMathIn(el) {
+  if (window.renderMathInElement) {
+    renderMathInElement(el, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   PATTERNS TAB — question-pattern breakdown per topic
+   ═══════════════════════════════════════════════════════ */
+
+function renderPatternsTab(content, d) {
+  if (!d.patterns || !d.patterns.length) {
+    content.innerHTML = `<div style="padding:30px; color:var(--text-dim);">No pattern breakdown yet for this topic.</div>`;
+    return;
+  }
+  content.innerHTML = `
+    <div class="panel-card" style="margin-bottom:14px;">
+      <div class="panel-title"><i class="fa-solid fa-diagram-project"></i> Question Patterns — "What type of question is this?"</div>
+      <div class="panel-body" style="font-size:12.5px; color:var(--text-dim);">Before picking a method, first recognise which pattern the question belongs to. Each card below shows the recognition cue, the method, and a confidence tag.</div>
+    </div>
+    ${d.patterns.map((p, i) => {
+      const conf = PATTERN_CONFIDENCE[p.confidence] || PATTERN_CONFIDENCE.standard;
+      return `
+      <div class="panel-card" style="margin-bottom:12px;">
+        <div class="panel-title" style="display:flex; justify-content:space-between; align-items:center;">
+          <span><i class="fa-solid fa-magnifying-glass"></i> ${i+1}. ${p.name}</span>
+          <span style="font-size:9.5px; padding:3px 9px; border-radius:999px; background:${conf.color}22; border:1px solid ${conf.color}55; color:${conf.color}; font-family:monospace; text-transform:uppercase; letter-spacing:0.4px;" title="${conf.desc}">${conf.label}</span>
+        </div>
+        <div class="panel-body">
+          <p style="margin:0 0 8px;"><b style="color:var(--cyan-dim, #67e8f9);">Recognise:</b> ${p.recognize}</p>
+          <p style="margin:0 0 8px;"><b style="color:var(--cyan-dim, #67e8f9);">Method:</b> ${p.method}</p>
+          <p style="margin:0; font-size:12px; color:var(--text-dim);"><b>Example:</b> ${p.example}</p>
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CONNECTIONS TAB — cross-topic relationships
+   ═══════════════════════════════════════════════════════ */
+
+function renderConnectionsTab(content, d) {
+  if (!d.related || !d.related.length) {
+    content.innerHTML = `<div style="padding:30px; color:var(--text-dim);">No cross-links recorded for this topic.</div>`;
+    return;
+  }
+  content.innerHTML = `
+    <div class="panel-card" style="margin-bottom:14px;">
+      <div class="panel-title"><i class="fa-solid fa-diagram-successor"></i> Connected Topics</div>
+      <div class="panel-body" style="font-size:12.5px; color:var(--text-dim);">Mathematics is a connected system — these topics share methods, formulas, or commonly appear together in mixed questions.</div>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:10px;">
+      ${d.related.map(key => `
+        <div onclick="jumpToTopic('${key}')" style="cursor:pointer; padding:12px 16px; border-radius:10px; background:var(--bg-card-alt); border:1px solid var(--border); transition:.15s; display:flex; align-items:center; gap:8px;"
+             onmouseover="this.style.borderColor='var(--border-strong)'" onmouseout="this.style.borderColor='var(--border)'">
+          <i class="fa-solid fa-arrow-right" style="color:var(--cyan, #22d3ee); font-size:11px;"></i>
+          <span style="font-size:13px;">${relatedTopicName(key)}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function jumpToTopic(key) {
+  for (const sec of SECTIONS) {
+    if (sec.topics.some(t => t.key === key)) {
+      selectSection(sec.id);
+      break;
+    }
+  }
+  selectTopic(key);
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRACTICE ENGINE — procedural question generation
+   (replaces a static question bank: every question is freshly
+   generated with a verified formula and instantly checkable)
+   ═══════════════════════════════════════════════════════ */
+
+const practiceStats = {}; // { topicKey: { attempts, correct, byPattern: {name:{attempts,correct}} } }
+
+function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function round2(n) { return Math.round(n * 100) / 100; }
+function shuffle(arr) { return arr.map(v => [Math.random(), v]).sort((a,b)=>a[0]-b[0]).map(v=>v[1]); }
+
+function makeDistractors(correct, variants) {
+  // variants: array of alternative (wrong) numeric answers from common errors
+  const opts = [correct, ...variants].filter((v,i,a) => a.indexOf(v) === i).slice(0, 4);
+  while (opts.length < 4) opts.push(round2(correct * (1 + (Math.random()*0.4 - 0.2))));
+  return shuffle(opts);
+}
+
+const PRACTICE_GENERATORS = {
+
+'percentage-constancy': () => {
+  const mode = ['basic','change','successive','reverse'][rnd(0,3)];
+  if (mode === 'basic') {
+    const x = rnd(2,19)*5, y = rnd(20,80)*10;
+    const ans = round2(x/100*y);
+    return { pattern: 'Basic Percentage', q: `What is ${x}% of ${y}?`,
+      correct: ans, distractors: [round2(y/x), round2(x*y/10), round2((100-x)/100*y)] };
+  }
+  if (mode === 'change') {
+    const y = rnd(50,300), x = rnd(5,40), inc = Math.random()<0.5;
+    const ans = round2(y * (1 + (inc?1:-1)*x/100));
+    return { pattern: 'Percentage Increase/Decrease', q: `A value of ${y} is ${inc?'increased':'decreased'} by ${x}%. Find the new value.`,
+      correct: ans, distractors: [round2(y*(1+(inc?-1:1)*x/100)), y - x, y + x] };
+  }
+  if (mode === 'successive') {
+    const a = rnd(5,30), bIsInc = Math.random()<0.5, b = rnd(5,30) * (bIsInc?1:-1);
+    const ans = round2(a + b + (a*b)/100);
+    return { pattern: 'Successive Percentage Change', q: `A price rises by ${a}%, then ${bIsInc?'rises':'falls'} by ${Math.abs(b)}%. Find the net % change.`,
+      correct: ans, distractors: [a+b, round2(a-b), round2(a*b/100)] };
+  }
+  // reverse
+  const orig = rnd(100,500), x = rnd(5,30);
+  const final = round2(orig * (1 + x/100));
+  const ans = orig;
+  return { pattern: 'Reverse Percentage', q: `After a ${x}% increase, a value became ${final}. Find the original value.`,
+    correct: ans, distractors: [round2(final*(1-x/100)), round2(final - x), round2(final*(1+x/100))] };
+},
+
+'ratio-proportion': () => {
+  const mode = Math.random()<0.5 ? 'divide' : 'fourth';
+  if (mode === 'divide') {
+    const a = rnd(1,5), b = rnd(1,5), total = (a+b) * rnd(10,40);
+    const ans = round2(total * a / (a+b));
+    return { pattern: 'Dividing in a Ratio', q: `Divide ${total} in the ratio ${a}:${b}. Find the larger/first share.`,
+      correct: ans, distractors: [round2(total*b/(a+b)), round2(total/2), round2(total*a/b)] };
+  }
+  const a = rnd(2,9), b = rnd(2,9), c = rnd(2,9)*a;
+  const ans = round2(b*c/a);
+  return { pattern: 'Fourth Proportional', q: `Find x if ${a}:${b} :: ${c}:x.`,
+    correct: ans, distractors: [round2(a*c/b), round2(a*b/c), c-a] };
+},
+
+'average-weighted': () => {
+  const mode = Math.random()<0.5 ? 'basic' : 'speed';
+  if (mode === 'basic') {
+    const n = rnd(4,6);
+    const vals = Array.from({length:n}, () => rnd(10,99));
+    const sum = vals.reduce((a,b)=>a+b,0);
+    const ans = round2(sum/n);
+    return { pattern: 'Basic Average', q: `Find the average of: ${vals.join(', ')}`,
+      correct: ans, distractors: [round2(sum/(n-1)), round2(sum/(n+1)), Math.max(...vals)] };
+  }
+  const x = rnd(20,50), y = rnd(20,50);
+  const ans = round2(2*x*y/(x+y));
+  return { pattern: 'Average Speed (Equal Distances)', q: `A car travels one way at ${x} km/h and returns at ${y} km/h. Find the average speed for the whole trip.`,
+    correct: ans, distractors: [round2((x+y)/2), x, y] };
+},
+
+'profit-loss-discount': () => {
+  const mode = Math.random()<0.5 ? 'basic' : 'discount';
+  if (mode === 'basic') {
+    const cp = rnd(100,500), profitPct = rnd(5,40)*(Math.random()<0.7?1:-1);
+    const sp = round2(cp*(1+profitPct/100));
+    const ans = profitPct;
+    return { pattern: 'Basic Profit/Loss %', q: `CP = ₹${cp}, SP = ₹${sp}. Find the profit or loss %.`,
+      correct: ans, distractors: [round2((sp-cp)/sp*100), round2((sp-cp)/100), -profitPct] };
+  }
+  const a = rnd(5,30), b = rnd(5,30);
+  const ans = round2(a + b - (a*b)/100);
+  return { pattern: 'Successive Discounts', q: `Two successive discounts of ${a}% and ${b}% are given. Find the net discount %.`,
+    correct: ans, distractors: [a+b, round2(a+b+(a*b)/100), round2((a+b)/2)] };
+},
+
+'si-ci-interest': () => {
+  const mode = Math.random()<0.5 ? 'si' : 'cidiff';
+  if (mode === 'si') {
+    const p = rnd(1000,9000), r = rnd(4,15), t = rnd(2,5);
+    const ans = round2(p*r*t/100);
+    return { pattern: 'Basic Simple Interest', q: `Find the Simple Interest on ₹${p} at ${r}% p.a. for ${t} years.`,
+      correct: ans, distractors: [round2(p*r*t/1000), round2(p*(Math.pow(1+r/100,t)-1)), round2(p*r/100)] };
+  }
+  const p = rnd(2000,10000), r = rnd(4,12);
+  const ans = round2(p * Math.pow(r/100, 2));
+  return { pattern: 'CI − SI Difference (2 years)', q: `Find CI − SI on ₹${p} at ${r}% p.a. for 2 years.`,
+    correct: ans, distractors: [round2(p*r*2/100), round2(p*r/100), round2(p*Math.pow(r/100,3))] };
+},
+
+'partnership-invest': () => {
+  const ca = rnd(2,9), cb = rnd(2,9), profit = (ca+cb) * rnd(100,500);
+  const ans = round2(profit * ca / (ca+cb));
+  return { pattern: 'Basic Partnership', q: `A and B invest in ratio ${ca}:${cb}. Total profit is ₹${profit}. Find A's share.`,
+    correct: ans, distractors: [round2(profit*cb/(ca+cb)), round2(profit/2), round2(profit*ca/cb)] };
+},
+
+'mixture-alligation': () => {
+  const cheap = rnd(20,50), dear = rnd(cheap+10, cheap+50), mean = rnd(cheap+2, dear-2);
+  const total = (dear - cheap) * rnd(2,6);
+  const ans = round2(total * (dear - mean) / (dear - cheap));
+  return { pattern: 'Basic Alligation', q: `How many kg of a cheaper item (₹${cheap}/kg) must be mixed with a dearer item (₹${dear}/kg) to make ${total} kg of a mixture worth ₹${mean}/kg?`,
+    correct: ans, distractors: [round2(total - ans), round2(total * (dear - mean) / (mean - cheap)), round2(total/2)] };
+},
+
+'time-work-mdh': () => {
+  const mode = Math.random()<0.5 ? 'combined' : 'mdh';
+  if (mode === 'combined') {
+    const a = rnd(4,20), b = rnd(4,20);
+    const ans = round2((a*b)/(a+b));
+    return { pattern: 'Combined Work', q: `A can finish a job in ${a} days, B in ${b} days. Working together, how many days will they take?`,
+      correct: ans, distractors: [round2((a+b)/2), a+b, round2(Math.abs(a-b))] };
+  }
+  const m1 = rnd(5,20), d1 = rnd(4,15), h1 = rnd(4,10), m2 = rnd(5,20), h2 = rnd(4,10);
+  const ans = round2((m1*d1*h1)/(m2*h2));
+  return { pattern: 'MDH Rule', q: `${m1} men work ${h1} hrs/day for ${d1} days to finish a job. How many days will ${m2} men working ${h2} hrs/day take for the same job?`,
+    correct: ans, distractors: [round2((m2*h2)/(m1*h1)*d1), d1, round2((m1*d1)/m2)] };
+},
+
+'tsd-trains-boats': () => {
+  const mode = Math.random()<0.5 ? 'relative' : 'boat';
+  if (mode === 'relative') {
+    const s1 = rnd(30,80), s2 = rnd(20,70), opposite = Math.random()<0.5;
+    const ans = opposite ? s1+s2 : Math.abs(s1-s2);
+    return { pattern: 'Relative Speed', q: `Two trains move at ${s1} km/h and ${s2} km/h in ${opposite?'opposite':'the same'} direction. Find their relative speed.`,
+      correct: ans, distractors: [opposite?Math.abs(s1-s2):s1+s2, round2((s1+s2)/2), s1] };
+  }
+  const boat = rnd(10,25), stream = rnd(2,10);
+  const down = boat+stream, up = boat-stream;
+  const ans = down;
+  return { pattern: 'Boats & Streams', q: `A boat's speed in still water is ${boat} km/h and the stream's speed is ${stream} km/h. Find the downstream speed.`,
+    correct: ans, distractors: [up, boat, round2((down+up)/2)] };
+}
+
+};
+
+let currentPractice = null;
+
+function renderPracticeTab(content, d) {
+  if (!PRACTICE_GENERATORS[currentTopicKey]) {
+    content.innerHTML = `<div style="padding:30px; color:var(--text-dim);">Practice engine not yet available for this topic.</div>`;
+    return;
+  }
+  if (!practiceStats[currentTopicKey]) practiceStats[currentTopicKey] = { attempts: 0, correct: 0, byPattern: {} };
+  const stats = practiceStats[currentTopicKey];
+  content.innerHTML = `
+    <div style="display:flex; gap:10px; margin-bottom:16px;">
+      <div class="panel-card" style="flex:1; text-align:center; padding:12px;">
+        <div style="font-size:20px; font-weight:800; font-family:monospace; color:#4ade80;" id="pracCorrectN">${stats.correct}</div>
+        <div style="font-size:9.5px; color:var(--text-dim); text-transform:uppercase;">Correct</div>
+      </div>
+      <div class="panel-card" style="flex:1; text-align:center; padding:12px;">
+        <div style="font-size:20px; font-weight:800; font-family:monospace; color:#f43f5e;" id="pracWrongN">${stats.attempts - stats.correct}</div>
+        <div style="font-size:9.5px; color:var(--text-dim); text-transform:uppercase;">Missed</div>
+      </div>
+      <div class="panel-card" style="flex:1; text-align:center; padding:12px;">
+        <div style="font-size:20px; font-weight:800; font-family:monospace; color:#22d3ee;" id="pracAccN">${stats.attempts ? Math.round(stats.correct/stats.attempts*100) : 0}%</div>
+        <div style="font-size:9.5px; color:var(--text-dim); text-transform:uppercase;">Accuracy</div>
+      </div>
+    </div>
+    <div id="pracWeakPanel"></div>
+    <div id="pracArea"></div>
+  `;
+  renderWeakPatterns();
+  nextPracticeQuestion();
+}
+
+function renderWeakPatterns() {
+  const stats = practiceStats[currentTopicKey];
+  const panel = document.getElementById('pracWeakPanel');
+  if (!panel) return;
+  const weak = Object.entries(stats.byPattern)
+    .filter(([name, s]) => s.attempts >= 2 && (s.correct / s.attempts) < 0.6)
+    .map(([name, s]) => `${name} (${s.correct}/${s.attempts})`);
+  panel.innerHTML = weak.length ? `
+    <div class="panel-card" style="border-color:rgba(250,204,21,0.4); background:rgba(250,204,21,0.04); margin-bottom:16px;">
+      <div class="panel-title" style="color:#facc15;"><i class="fa-solid fa-triangle-exclamation"></i> Weak Patterns This Session</div>
+      <div class="panel-body" style="font-size:12px;">${weak.join(' · ')}</div>
+    </div>` : '';
+}
+
+function nextPracticeQuestion() {
+  const gen = PRACTICE_GENERATORS[currentTopicKey];
+  currentPractice = gen();
+  const options = makeDistractors(currentPractice.correct, currentPractice.distractors);
+  const area = document.getElementById('pracArea');
+  if (!area) return;
+  area.innerHTML = `
+    <div class="panel-card">
+      <div style="font-size:9.5px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-dim); margin-bottom:8px;">${currentPractice.pattern}</div>
+      <div style="font-size:14px; margin-bottom:16px; line-height:1.6;">${currentPractice.q}</div>
+      <div style="display:flex; flex-direction:column; gap:8px;" id="pracOptions">
+        ${options.map(o => `<div class="pattern-opt" data-v="${o}" onclick="checkPractice(this)" style="padding:11px 14px; border-radius:8px; cursor:pointer; background:var(--bg-card-alt); border:1px solid var(--border); font-size:13px;">${o}</div>`).join('')}
+      </div>
+      <div id="pracFeedback" style="margin-top:12px;"></div>
+    </div>
+  `;
+}
+
+function checkPractice(el) {
+  const chosen = parseFloat(el.dataset.v);
+  const correct = Math.abs(chosen - currentPractice.correct) < 0.01;
+  document.querySelectorAll('#pracOptions .pattern-opt').forEach(o => {
+    o.onclick = null;
+    if (Math.abs(parseFloat(o.dataset.v) - currentPractice.correct) < 0.01) o.style.cssText += 'background:rgba(74,222,128,0.15); border-color:#4ade80; color:#4ade80;';
+    else if (o === el && !correct) o.style.cssText += 'background:rgba(244,63,94,0.15); border-color:#f43f5e; color:#f43f5e;';
+  });
+  const stats = practiceStats[currentTopicKey];
+  stats.attempts++;
+  if (correct) stats.correct++;
+  if (!stats.byPattern[currentPractice.pattern]) stats.byPattern[currentPractice.pattern] = { attempts: 0, correct: 0 };
+  stats.byPattern[currentPractice.pattern].attempts++;
+  if (correct) stats.byPattern[currentPractice.pattern].correct++;
+
+  document.getElementById('pracCorrectN').textContent = stats.correct;
+  document.getElementById('pracWrongN').textContent = stats.attempts - stats.correct;
+  document.getElementById('pracAccN').textContent = Math.round(stats.correct/stats.attempts*100) + '%';
+  renderWeakPatterns();
+
+  document.getElementById('pracFeedback').innerHTML = `<button onclick="nextPracticeQuestion()" style="width:100%; padding:11px; border-radius:8px; border:none; cursor:pointer; background:var(--cyan, #22d3ee); color:#04222f; font-weight:700; font-size:12.5px;">${correct?'✓ Correct':'✗ Correct answer: '+currentPractice.correct} — Next question →</button>`;
+}
+
+function renderTable(rows) {
+  if (!rows || rows.length === 0) return '';
+  const head = `<tr>${rows[0].map(h => `<th>${h}</th>`).join('')}</tr>`;
+  const body = rows.slice(1).map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
+  return head + body;
+}
+
+function toggleToolbox() {
+  document.getElementById('toolboxDrawer').classList.toggle('open');
+}
+
+function spinTopic() {
+  const all = [];
+  SECTIONS.forEach(s => s.topics.forEach(t => all.push({ secId: s.id, tKey: t.key })));
+  const rand = all[Math.floor(Math.random() * all.length)];
+  selectSection(rand.secId);
+  selectTopic(rand.tKey);
+}
+
+/* 8 INTERACTIVE TOOLS */
+function t1Solve() {
+  const a = parseInt(document.getElementById('t1A').value);
+  const b = parseInt(document.getElementById('t1B').value);
+  const out = document.getElementById('t1Out');
+  if (!a || !b) { out.textContent = 'Enter 2 valid numbers.'; return; }
+  const gcd = (x, y) => y === 0 ? x : gcd(y, x % y);
+  const h = gcd(a, b);
+  const l = (a * b) / h;
+  out.textContent = `HCF(${a}, ${b}) = ${h}\nLCM(${a}, ${b}) = ${l}\nProduct Verification: ${h} × ${l} = ${h*l} (A × B = ${a*b})`;
+}
+
+function t2Solve() {
+  const a = parseFloat(document.getElementById('t2A').value);
+  const b = parseFloat(document.getElementById('t2B').value);
+  const c = parseFloat(document.getElementById('t2C').value);
+  const out = document.getElementById('t2Out');
+  if (isNaN(a) || isNaN(b) || isNaN(c) || a === 0) { out.textContent = 'Enter A, B, C (A ≠ 0).'; return; }
+  const disc = b*b - 4*a*c;
+  if (disc > 0) {
+    const x1 = (-b + Math.sqrt(disc))/(2*a);
+    const x2 = (-b - Math.sqrt(disc))/(2*a);
+    out.textContent = `Discriminant (Δ) = ${disc}\nReal Roots:\nx1 = ${x1.toFixed(3)}\nx2 = ${x2.toFixed(3)}`;
+  } else if (disc === 0) {
+    out.textContent = `Discriminant (Δ) = 0\nEqual Roots: x = ${(-b/(2*a)).toFixed(3)}`;
+  } else {
+    out.textContent = `Discriminant (Δ) = ${disc} < 0 (Complex roots)`;
+  }
+}
+
+function t3Solve() {
+  const cp = parseFloat(document.getElementById('t3Cp').value);
+  const sp = parseFloat(document.getElementById('t3Sp').value);
+  const out = document.getElementById('t3Out');
+  if (isNaN(cp) || isNaN(sp)) { out.textContent = 'Enter CP and SP.'; return; }
+  const diff = sp - cp;
+  const pct = (diff / cp) * 100;
+  out.textContent = diff >= 0 ? `PROFIT: +₹${diff.toFixed(2)} (+${pct.toFixed(2)}%)` : `LOSS: -₹${Math.abs(diff).toFixed(2)} (-${Math.abs(pct).toFixed(2)}%)`;
+}
+
+function t4Solve() {
+  const p = parseFloat(document.getElementById('t4P').value);
+  const r = parseFloat(document.getElementById('t4R').value);
+  const t = parseFloat(document.getElementById('t4T').value);
+  const out = document.getElementById('t4Out');
+  if (isNaN(p) || isNaN(r) || isNaN(t)) { out.textContent = 'Enter P, R, T.'; return; }
+  const si = (p * r * t) / 100;
+  const ciAmount = p * Math.pow(1 + (r/100), t);
+  const ci = ciAmount - p;
+  const diff = ci - si;
+  out.textContent = `Simple Interest (SI) = ₹${si.toFixed(2)}\nCompound Interest (CI) = ₹${ci.toFixed(2)}\nDifference (CI - SI) = ₹${diff.toFixed(2)}`;
+}
+
+function t5Solve() {
+  const a = parseFloat(document.getElementById('t5A').value);
+  const b = parseFloat(document.getElementById('t5B').value);
+  const c = parseFloat(document.getElementById('t5C').value);
+  const out = document.getElementById('t5Out');
+  if (isNaN(a) || isNaN(b) || isNaN(c)) { out.textContent = 'Enter sides a, b, c.'; return; }
+  if (Math.abs((a*a + b*b) - c*c) < 0.001) {
+    const area = 0.5 * a * b;
+    out.textContent = `YES! (${a}, ${b}, ${c}) is a Pythagorean Triplet!\nRight-Triangle Area = ½ × ${a} × ${b} = ${area}`;
+  } else {
+    out.textContent = `NO! a² + b² ≠ c². Not a Pythagorean Triplet.`;
+  }
+}
+
+function t6Solve() {
+  const d = parseFloat(document.getElementById('t6D').value);
+  const t = parseFloat(document.getElementById('t6T').value);
+  const out = document.getElementById('t6Out');
+  if (isNaN(d) || isNaN(t) || t === 0) { out.textContent = 'Enter Distance and Time (T ≠ 0).'; return; }
+  const kmh = d / t;
+  const ms = kmh * (5/18);
+  out.textContent = `Speed = ${kmh.toFixed(2)} km/h\nIn m/s = ${ms.toFixed(2)} m/s`;
+}
+
+function t7Solve() {
+  const num = parseFloat(document.getElementById('t7Num').value);
+  const den = parseFloat(document.getElementById('t7Den').value);
+  const out = document.getElementById('t7Out');
+  if (isNaN(num) || isNaN(den) || den === 0) { out.textContent = 'Enter numerator and denominator (y ≠ 0).'; return; }
+  const pct = (num / den) * 100;
+  out.textContent = `Fraction ${num}/${den} = ${pct.toFixed(2)}%`;
+}
+
+function t8Solve() {
+  const deg = parseFloat(document.getElementById('t8Deg').value);
+  const out = document.getElementById('t8Out');
+  if (isNaN(deg)) { out.textContent = 'Enter angle in degrees.'; return; }
+  const rad = deg * (Math.PI / 180);
+  const sin = Math.sin(rad);
+  const cos = Math.cos(rad);
+  const tan = Math.abs(cos) < 0.0001 ? 'Undefined' : (sin / cos).toFixed(4);
+  out.textContent = `sin(${deg}°) = ${sin.toFixed(4)}\ncos(${deg}°) = ${cos.toFixed(4)}\ntan(${deg}°) = ${tan}`;
+}
+
+/* SEARCH MODAL */
+function openSearch() {
+  document.getElementById('searchModal').classList.add('open');
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchInput').focus();
+}
+
+function closeSearch() {
+  document.getElementById('searchModal').classList.remove('open');
+}
+
+function onSearch(val) {
+  const q = val.trim().toLowerCase();
+  const res = document.getElementById('searchResults');
+  if (q.length < 2) { res.innerHTML = ''; return; }
+
+  const matches = [];
+  const stripHtml = s => (s || '').replace(/<[^>]+>/g, ' ').replace(/\$/g, '');
+
+  SECTIONS.forEach(s => {
+    s.topics.forEach(t => {
+      const d = DETAILS[t.key] || {};
+      let hitField = null, snippet = '';
+
+      if (t.name.toLowerCase().includes(q) || t.key.toLowerCase().includes(q)) {
+        hitField = 'Topic';
+        snippet = t.name;
+      } else if (stripHtml(d.concept).toLowerCase().includes(q)) {
+        hitField = 'Concept';
+        snippet = stripHtml(d.concept);
+      } else if (stripHtml(d.laws).toLowerCase().includes(q)) {
+        hitField = 'Rule';
+        snippet = stripHtml(d.laws);
+      } else if (d.formulae && d.formulae.some(f => (f.f + ' ' + f.d).toLowerCase().includes(q))) {
+        hitField = 'Formula';
+        const f = d.formulae.find(f => (f.f + ' ' + f.d).toLowerCase().includes(q));
+        snippet = f.f + ' — ' + f.d;
+      } else if (stripHtml(d.trap).toLowerCase().includes(q)) {
+        hitField = 'SSC Trap';
+        snippet = stripHtml(d.trap);
+      } else if (d.patterns && d.patterns.some(p => (p.name + ' ' + p.recognize + ' ' + p.method).toLowerCase().includes(q))) {
+        hitField = 'Question Pattern';
+        const p = d.patterns.find(p => (p.name + ' ' + p.recognize + ' ' + p.method).toLowerCase().includes(q));
+        snippet = p.name + ' — ' + p.recognize;
+      }
+
+      if (hitField) {
+        matches.push({ sId: s.id, tKey: t.key, tName: t.name, sName: s.name, hitField, snippet: snippet.trim().slice(0, 90) });
+      }
+    });
+  });
+
+  if (matches.length === 0) {
+    res.innerHTML = `<div style="padding:12px; font-size:12px; color:var(--text-dim);">No topics match "${val}".</div>`;
+    return;
+  }
+
+  res.innerHTML = matches.map(m => `
+    <div class="sr-item" onclick="selectFromSearch('${m.sId}', '${m.tKey}', '${m.hitField}')">
+      <div style="flex:1; min-width:0;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:2px;">
+          <span style="font-size:12px; font-weight:700; color:#fff;">${m.tName}</span>
+          <span style="font-size:8.5px; padding:1px 7px; border-radius:999px; background:rgba(34,211,238,0.12); border:1px solid rgba(34,211,238,0.3); color:var(--cyan); text-transform:uppercase; letter-spacing:0.4px;">${m.hitField}</span>
+        </div>
+        <div style="font-size:10px; color:var(--text-dim);">${m.sName}${m.snippet ? ' · ' + m.snippet + (m.snippet.length>=90?'…':'') : ''}</div>
+      </div>
+      <span style="font-size:10px; font-weight:700; color:var(--cyan); flex-shrink:0;">Open &rarr;</span>
+    </div>
+  `).join('');
+}
+
+const FIELD_TO_TAB = { 'Formula': 'formulas', 'SSC Trap': 'traps', 'Question Pattern': 'patterns', 'Rule': 'concept', 'Concept': 'concept', 'Topic': 'concept' };
+
+function selectFromSearch(sId, tKey, hitField) {
+  closeSearch();
+  selectSection(sId);
+  selectTopic(tKey);
+  const targetTab = FIELD_TO_TAB[hitField] || 'concept';
+  if (targetTab !== 'concept') switchWbTab(targetTab);
+}
+
+/* ═══════════════════════════════════════════════════════
+   REVISION DECK — every formula, every topic, one scroll
+   ═══════════════════════════════════════════════════════ */
+
+function openRevisionDeck() {
+  const box = document.getElementById('revisionBoxMath');
+  let totalFormulas = 0;
+  let html = `
+    <div class="rev-head">
+      <span class="rev-title"><i class="fa-solid fa-layer-group"></i> Revision Deck — Formula Quick-Reference</span>
+      <span class="rev-close" onclick="closeRevisionDeck()">✕</span>
+    </div>
+    <div class="rev-sub" id="revisionSub">Every formula across all 32 topics. Click a topic name to jump to it.</div>
+  `;
+  SECTIONS.forEach(sec => {
+    html += `<div class="rev-chapter-h">${sec.name}</div>`;
+    sec.topics.forEach(t => {
+      const d = DETAILS[t.key];
+      if (!d || !d.formulae || !d.formulae.length) return;
+      totalFormulas += d.formulae.length;
+      html += `<div class="rev-topic-group">
+        <div class="rev-topic-name" onclick="jumpFromRevision('${sec.id}','${t.key}')">${t.name}</div>
+        ${d.formulae.map(f => `<div class="rev-formula-row"><span class="rf">${f.f}</span><span class="rd">${f.d}</span></div>`).join('')}
+      </div>`;
+    });
+  });
+  box.innerHTML = html;
+  document.getElementById('revisionSub').textContent = `${totalFormulas} formulas across 32 topics. Click a topic name to jump to it.`;
+  document.getElementById('revisionModal').classList.add('open');
+  renderMathIn(box);
+}
+function closeRevisionDeck() {
+  document.getElementById('revisionModal').classList.remove('open');
+}
+function jumpFromRevision(sId, tKey) {
+  closeRevisionDeck();
+  selectSection(sId);
+  selectTopic(tKey);
+}
+
+/* KEY LISTENERS */
+function setupKeyListeners() {
+  document.addEventListener('keydown', e => {
+    const isInput = ['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName);
+    if (e.key === 'Escape') {
+      if (document.getElementById('searchModal').classList.contains('open')) closeSearch();
+      else if (document.getElementById('revisionModal').classList.contains('open')) closeRevisionDeck();
+      else if (document.getElementById('toolboxDrawer').classList.contains('open')) toggleToolbox();
+      else closeApp();
+    } else if (!isInput) {
+      if (e.key === 'b' || e.key === 'B') { e.preventDefault(); closeApp(); }
+      else if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleToolbox(); }
+      else if (e.key === '/') { e.preventDefault(); openSearch(); }
+    }
+  });
+}
+
+function closeApp() {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: 'closeFullscreen' }, '*');
+    if (typeof window.parent.closeFullscreenPage === 'function') window.parent.closeFullscreenPage();
+  } else {
+    window.history.back();
+  }
+}
+</script>
+</body>
+</html>
