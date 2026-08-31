@@ -215,6 +215,30 @@ const DIRECT_MASTER_PAGES = [
         badge: "bg-blue-500/20 text-blue-300 border-blue-500/30",
         badgeText: "Direct Master Page",
         desc: "Interactive OS simulation: keyboard shortcuts, computer abbreviations & typing lab."
+    },
+    {
+        id: "science_lab",
+        title: "General Science Specimen Lab",
+        page: "pages/science-lab.html",
+        icon: "fa-flask-vial",
+        color: "text-emerald-400",
+        bg: "from-emerald-950/70 via-slate-900/80 to-cyan-900/40",
+        border: "border-emerald-500/40 hover:border-emerald-400",
+        badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive General Science specimen lab: Physics, Chemistry & Biology topics & experiments."
+    },
+    {
+        id: "math_pager",
+        title: "Math Pager (Quant Lab)",
+        page: "pages/math-pager.html",
+        icon: "fa-calculator",
+        color: "text-cyan-400",
+        bg: "from-cyan-950/70 via-slate-900/80 to-purple-900/40",
+        border: "border-cyan-500/40 hover:border-cyan-400",
+        badge: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive SSC CGL & CHSL Quantitative Aptitude lab: Number System, Algebra, Geometry, Arithmetic & Calculators."
     }
 ];
 

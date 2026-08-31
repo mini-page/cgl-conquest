@@ -1,16 +1,16 @@
-# Graph Report - ssc_cgl_dashboard  (2026-08-06)
+# Graph Report - ssc_cgl_dashboard  (2026-08-07)
 
 ## Corpus Check
-- 106 files · ~206,977 words
+- 107 files · ~214,652 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 564 nodes · 777 edges · 98 communities (87 shown, 11 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.65)
+- 563 nodes · 771 edges · 99 communities (88 shown, 11 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 17 edges (avg confidence: 0.66)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f632a4b2`
+- Built from commit: `dfab5cf6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -72,33 +72,33 @@
 6. `flags()` - 11 edges
 7. `CustomDropdown` - 10 edges
 8. `initTheme()` - 10 edges
-9. `initTest()` - 10 edges
-10. `triggerMathTypesetting()` - 9 edges
+9. `triggerMathTypesetting()` - 10 edges
+10. `initTest()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/app.js → js/state.js
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/dashboard.js → js/state.js
+- `navigateToPage()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
+  js/navigation.js → js/state.js
 - `renderStudyPlan()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/plan.js → js/state.js
 - `calculateOverallStats()` --references--> `SYLLABUS_DATA`  [EXTRACTED]
   js/dashboard.js → js/state.js
-- `renderWeakDropdownOptions()` --references--> `SYLLABUS_DATA`  [EXTRACTED]
-  js/mocks.js → js/state.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (98 total, 11 thin omitted)
+## Communities (99 total, 11 thin omitted)
 
 ### Community 0 - "js/syllabus.js"
 Cohesion: 0.10
-Nodes (55): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+47 more)
+Nodes (53): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+45 more)
 
 ### Community 1 - "toolkit.js"
 Cohesion: 0.08
-Nodes (45): renderAll(), navigateToPage(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), buildTableOfContents(), clearStudyFilters() (+37 more)
+Nodes (41): renderAll(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), clearStudyFilters(), deleteNote(), findSubtopicById() (+33 more)
 
 ### Community 2 - "typingtest.js"
 Cohesion: 0.17
@@ -117,8 +117,8 @@ Cohesion: 0.14
 Nodes (20): calculateOverallStats(), formatTimeSeconds(), initExamTargetEditor(), initSessionTimer(), initTierToggler(), loadRituals(), renderAll(), renderDashboardOverview() (+12 more)
 
 ### Community 6 - "navigation.js"
-Cohesion: 0.25
-Nodes (17): closeShortcutsHelpModal(), expandNav(), filterShortcuts(), handleShortcutAction(), initHeaderScroll(), initNavigation(), initTheme(), openShortcutsHelpModal() (+9 more)
+Cohesion: 0.23
+Nodes (18): closeShortcutsHelpModal(), expandNav(), filterShortcuts(), handleShortcutAction(), initHeaderScroll(), initNavigation(), initTheme(), navigateToPage() (+10 more)
 
 ### Community 7 - "speed.js"
 Cohesion: 0.26
@@ -244,7 +244,7 @@ Nodes (3): 4.1 Import/Export Relationships, 4.2 Cross-Module Coupling Summary, 4
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `state.js`, `dashboard.js`?**
+- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `state.js`, `dashboard.js`, `navigation.js`?**
   _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`, `4. MODULE DEPENDENCY MAP`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
@@ -253,8 +253,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
   _204 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `js/syllabus.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.09649122807017543 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10168350168350168 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.07738095238095238 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07712765957446809 - nodes in this community are weakly interconnected._
 - **Should `compile_data.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
