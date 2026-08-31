@@ -11,8 +11,8 @@ The competition is tough, but this dashboard eliminates decision fatigue and gui
 Since this dashboard is built using standard, highly optimized **Vanilla HTML5, CSS3, and JavaScript**, you don't need complex frameworks, compilation steps, or an active internet connection to run it.
 
 ### Option 1: Direct File Open (Easiest)
-1. Open your File Explorer and navigate to: `C:\Users\umang\Documents\ssc_cgl_dashboard\`
-2. Double-click the [index.html](file:///C:/Users/umang/Documents/ssc_cgl_dashboard/index.html) file.
+1. Open your File Explorer and navigate to: `C:\Users\umang\Documents\cgl-conquest\`
+2. Double-click the [index.html](file:///C:/Users/umang/Documents/cgl-conquest/index.html) file.
 3. It will open instantly in your default web browser (Chrome, Edge, Firefox, Brave, etc.).
 
 ### Option 2: Live Local Server (Recommended for dynamic resizing)
