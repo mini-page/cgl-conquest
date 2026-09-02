@@ -22,80 +22,77 @@
 
     <!-- Glow Filter -->
     <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feGaussianBlur stdDeviation="10" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
 
   <!-- Background Base -->
-  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="4"/>
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)" stroke="#22d3ee" stroke-width="10"/>
 
-  <!-- Outer Neon Battle Ring -->
-  <circle cx="256" cy="256" r="218" fill="none" stroke="url(#cyanGrad)" stroke-width="4" stroke-dasharray="12 8" opacity="0.6"/>
-  <circle cx="256" cy="256" r="204" fill="none" stroke="#22d3ee" stroke-width="2" opacity="0.3"/>
+  <!-- Scaled Emblem Group for High Contrast Tab Visibility -->
+  <g transform="translate(256, 256) scale(1.35) translate(-256, -256)">
+    <!-- Outer Neon Battle Ring -->
+    <circle cx="256" cy="256" r="218" fill="none" stroke="url(#cyanGrad)" stroke-width="4" stroke-dasharray="12 8" opacity="0.6"/>
+    <circle cx="256" cy="256" r="204" fill="none" stroke="#22d3ee" stroke-width="2" opacity="0.3"/>
 
-  <!-- CROSSED BATTLE SWORDS (BACKGROUND ELEM) -->
-  <!-- Sword 1 (Left to Right) -->
-  <g stroke="url(#cyanGrad)" stroke-width="12" stroke-linecap="round">
-    <line x1="120" y1="392" x2="392" y2="120" />
-    <!-- Guard & Pommel -->
-    <line x1="130" y1="340" x2="172" y2="382" stroke="#f59e0b" stroke-width="14" />
-    <circle cx="114" cy="398" r="12" fill="#fbbf24" stroke="#b45309" stroke-width="3" />
+    <!-- CROSSED BATTLE SWORDS -->
+    <g stroke="url(#cyanGrad)" stroke-width="14" stroke-linecap="round">
+      <line x1="120" y1="392" x2="392" y2="120" />
+      <line x1="130" y1="340" x2="172" y2="382" stroke="#f59e0b" stroke-width="16" />
+      <circle cx="114" cy="398" r="14" fill="#fbbf24" stroke="#b45309" stroke-width="4" />
+    </g>
+
+    <g stroke="url(#cyanGrad)" stroke-width="14" stroke-linecap="round">
+      <line x1="392" y1="392" x2="120" y2="120" />
+      <line x1="382" y1="340" x2="340" y2="382" stroke="#f59e0b" stroke-width="16" />
+      <circle cx="398" cy="398" r="14" fill="#fbbf24" stroke="#b45309" stroke-width="4" />
+    </g>
+
+    <!-- CONQUEST BATTLE SHIELD -->
+    <path d="M256 96 
+             C320 96, 376 112, 384 144 
+             C384 256, 352 352, 256 416 
+             C160 352, 128 256, 128 144 
+             C136 112, 192 96, 256 96 Z" 
+          fill="#090d16" 
+          stroke="url(#goldGrad)" 
+          stroke-width="16" 
+          stroke-linejoin="round"
+          filter="url(#glow)"/>
+
+    <!-- Inner Shield Inset Line -->
+    <path d="M256 116 
+             C310 116, 356 130, 364 156 
+             C364 248, 336 332, 256 388 
+             C176 332, 148 248, 148 156 
+             C156 130, 202 116, 256 116 Z" 
+          fill="none" 
+          stroke="#22d3ee" 
+          stroke-width="5" 
+          opacity="0.8"/>
+
+    <!-- CONQUEST CROWN CREST -->
+    <path d="M196 210 L220 260 L256 200 L292 260 L316 210 L324 280 L188 280 Z" 
+          fill="url(#goldGrad)" 
+          stroke="#78350f" 
+          stroke-width="4" 
+          stroke-linejoin="round"/>
+    <!-- Crown Jewels -->
+    <circle cx="196" cy="204" r="7" fill="#22d3ee"/>
+    <circle cx="256" cy="194" r="9" fill="#22d3ee"/>
+    <circle cx="316" cy="204" r="7" fill="#22d3ee"/>
+
+    <!-- TARGET CROSSHAIR / VICTORY STAR IN CENTER -->
+    <g fill="#ffffff">
+      <path d="M256 295 L264 315 L286 315 L268 328 L275 348 L256 335 L237 348 L244 328 L226 315 L248 315 Z" fill="#22d3ee" stroke="#0891b2" stroke-width="2"/>
+    </g>
+
+    <!-- LIGHTNING BOLT OF SPEED & VICTORY -->
+    <path d="M264 130 L238 210 L260 210 L242 275 L282 195 L258 195 Z" 
+          fill="#fef08a" 
+          stroke="#f59e0b" 
+          stroke-width="2.5" 
+          filter="url(#glow)"/>
   </g>
-
-  <!-- Sword 2 (Right to Left) -->
-  <g stroke="url(#cyanGrad)" stroke-width="12" stroke-linecap="round">
-    <line x1="392" y1="392" x2="120" y2="120" />
-    <!-- Guard & Pommel -->
-    <line x1="382" y1="340" x2="340" y2="382" stroke="#f59e0b" stroke-width="14" />
-    <circle cx="398" cy="398" r="12" fill="#fbbf24" stroke="#b45309" stroke-width="3" />
-  </g>
-
-  <!-- CONQUEST BATTLE SHIELD -->
-  <path d="M256 96 
-           C320 96, 376 112, 384 144 
-           C384 256, 352 352, 256 416 
-           C160 352, 128 256, 128 144 
-           C136 112, 192 96, 256 96 Z" 
-        fill="#090d16" 
-        stroke="url(#goldGrad)" 
-        stroke-width="14" 
-        stroke-linejoin="round"
-        filter="url(#glow)"/>
-
-  <!-- Inner Shield Inset Line -->
-  <path d="M256 116 
-           C310 116, 356 130, 364 156 
-           C364 248, 336 332, 256 388 
-           C176 332, 148 248, 148 156 
-           C156 130, 202 116, 256 116 Z" 
-        fill="none" 
-        stroke="#22d3ee" 
-        stroke-width="4" 
-        opacity="0.7"/>
-
-  <!-- CONQUEST CROWN CREST -->
-  <path d="M196 210 L220 260 L256 200 L292 260 L316 210 L324 280 L188 280 Z" 
-        fill="url(#goldGrad)" 
-        stroke="#78350f" 
-        stroke-width="3" 
-        stroke-linejoin="round"/>
-  <!-- Crown Jewels -->
-  <circle cx="196" cy="204" r="6" fill="#22d3ee"/>
-  <circle cx="256" cy="194" r="8" fill="#22d3ee"/>
-  <circle cx="316" cy="204" r="6" fill="#22d3ee"/>
-
-  <!-- TARGET CROSSHAIR / VICTORY STAR IN CENTER -->
-  <g fill="#ffffff">
-    <!-- Star Emblem -->
-    <path d="M256 295 L264 315 L286 315 L268 328 L275 348 L256 335 L237 348 L244 328 L226 315 L248 315 Z" fill="#22d3ee" stroke="#0891b2" stroke-width="2"/>
-  </g>
-
-  <!-- LIGHTNING BOLT OF SPEED & VICTORY -->
-  <path d="M264 130 L238 210 L260 210 L242 275 L282 195 L258 195 Z" 
-        fill="#fef08a" 
-        stroke="#f59e0b" 
-        stroke-width="2" 
-        filter="url(#glow)"/>
-
 </svg>
