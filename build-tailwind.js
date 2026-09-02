@@ -73,10 +73,29 @@ body {
 }
 
 /* Custom utility overrides */
+#mobile-floating-nav:not(.nav-shrunk) #floating-nav-trigger {
+  display: none !important;
+}
+
+#mobile-floating-nav.nav-shrunk #floating-nav-trigger {
+  display: flex !important;
+}
+
+#mobile-floating-nav.nav-shrunk #floating-nav-items {
+  display: none !important;
+}
+
+.nav-item.active-nav {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.6) !important;
+  border-radius: 9999px !important;
+}
+
 .active-nav-tab {
-  background-color: rgba(6, 182, 212, 0.15);
-  border-color: rgba(6, 182, 212, 0.4);
-  color: #06b6d4;
+  background-color: rgba(37, 99, 235, 0.25) !important;
+  border-color: rgba(37, 99, 235, 0.6) !important;
+  color: #60a5fa !important;
 }
 
 .active-pomo-mode {
