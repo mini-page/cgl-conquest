@@ -1,8 +1,10 @@
-const CACHE_NAME = 'cgl-conquest-cache-v9';
+const CACHE_NAME = 'cgl-conquest-cache-v10';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
+  './icon.svg',
+  './manifest.json',
   './js/app.js',
   './js/components/calendar.js',
   './js/components/dropdown.js',
