@@ -1555,3 +1555,18 @@ body.light-theme #viewer-document-body table td {
     .ac-info-row { font-size: 11.5px; }
 }
 
+/* Smooth View Switch Animation */
+@keyframes viewSwitch {
+    0% {
+        opacity: 0;
+        transform: translateY(6px) scale(0.985);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+.animate-viewSwitch {
+    animation: viewSwitch 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

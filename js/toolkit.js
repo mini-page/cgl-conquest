@@ -248,8 +248,8 @@ function setStudyCardViewMode(mode) {
     currentStudyViewMode = mode;
     localStorage.setItem("study_view_mode", mode);
     
-    // Update active button styles & slider position
-    const modeLevels = { 'big': 1, 'compact': 2, 'folder': 3, 'list': 4 };
+    // Update active button styles & slider position (Order: Big=1, Folder=2, Compact=3, List=4)
+    const modeLevels = { 'big': 1, 'folder': 2, 'compact': 3, 'list': 4 };
     const slider = document.getElementById('study-view-range');
     if (slider && modeLevels[mode]) {
         slider.value = modeLevels[mode];
@@ -257,9 +257,9 @@ function setStudyCardViewMode(mode) {
     
     document.querySelectorAll('.study-view-btn').forEach(btn => {
         if (btn.getAttribute('data-view') === mode) {
-            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition cursor-pointer';
+            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition duration-200 cursor-pointer';
         } else {
-            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition cursor-pointer';
+            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition duration-200 cursor-pointer';
         }
     });
 
@@ -271,7 +271,7 @@ function setStudyCardViewMode(mode) {
 }
 
 function onStudyViewSliderChange(val) {
-    const valMap = { '1': 'big', '2': 'compact', '3': 'folder', '4': 'list' };
+    const valMap = { '1': 'big', '2': 'folder', '3': 'compact', '4': 'list' };
     if (valMap[val]) {
         setStudyCardViewMode(valMap[val]);
     }
@@ -304,41 +304,43 @@ function renderSubjectGrid(subjects, searchQuery = "") {
 
     const showAllDeck = !q || "all subjects hub".includes(q) || "master deck".includes(q) || "all deck".includes(q);
 
-    // Sync button state on render
-    const modeLevels = { 'big': 1, 'compact': 2, 'folder': 3, 'list': 4 };
+    // Sync button state on render (Order: Big=1, Folder=2, Compact=3, List=4)
+    const modeLevels = { 'big': 1, 'folder': 2, 'compact': 3, 'list': 4 };
     const slider = document.getElementById('study-view-range');
     if (slider && modeLevels[currentStudyViewMode]) {
         slider.value = modeLevels[currentStudyViewMode];
     }
     document.querySelectorAll('.study-view-btn').forEach(btn => {
         if (btn.getAttribute('data-view') === currentStudyViewMode) {
-            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition cursor-pointer';
+            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition duration-200 cursor-pointer';
         } else {
-            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition cursor-pointer';
+            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition duration-200 cursor-pointer';
         }
     });
 
-    let html = `<div class="space-y-6 animate-fadeIn">`;
+    let html = `<div class="animate-viewSwitch">`;
 
-    // VIEW MODE 1: BIG GRID MODE (3 Columns)
+    // VIEW MODE 1: BIG GRID MODE (3 Columns - Sleek, compact interior spacing, zero hollow voids)
     if (currentStudyViewMode === 'big') {
-        html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4.5">`;
+        html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">`;
         
         // Master Pages
         filteredMasterPages.forEach(mp => {
             html += `
-                <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-5 shadow-2xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-4 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
                     <div>
-                        <div class="flex items-center gap-3.5 mb-3">
-                            <span class="w-10 h-10 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-lg group-hover:scale-110 transition shrink-0">
-                                <i class="fa-solid ${mp.icon}"></i>
-                            </span>
-                            <h4 class="font-heading font-black text-white text-base group-hover:text-cyan-300 transition leading-snug">${mp.title}</h4>
+                        <div class="flex items-start justify-between gap-3 mb-2.5">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <span class="w-9 h-9 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
+                                    <i class="fa-solid ${mp.icon}"></i>
+                                </span>
+                                <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:text-cyan-300 transition leading-snug truncate">${mp.title}</h4>
+                            </div>
                         </div>
-                        <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">${mp.desc}</p>
+                        <p class="text-xs text-gray-300/90 leading-relaxed line-clamp-2">${mp.desc}</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end">
-                        <button class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                    <div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-end">
+                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition duration-200">
                             Launch Page &rarr;
                         </button>
                     </div>
@@ -349,18 +351,20 @@ function renderSubjectGrid(subjects, searchQuery = "") {
         // All Subjects Deck
         if (showAllDeck) {
             html += `
-                <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 hover:border-cyan-400 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
+                <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 hover:border-cyan-400 p-4 rounded-2xl shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
                     <div>
-                        <div class="flex items-center gap-3.5 mb-3">
-                            <span class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-lg group-hover:scale-110 transition shrink-0">
+                        <div class="flex items-center gap-3 mb-2.5">
+                            <span class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
                                 <i class="fa-solid fa-layer-group"></i>
                             </span>
-                            <h4 class="font-heading font-black text-white text-base group-hover:text-cyan-300 transition">All Subjects Hub</h4>
+                            <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:text-cyan-300 transition truncate">All Subjects Hub</h4>
                         </div>
-                        <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">Full interactive mastery deck across Quant, English, Reasoning, GK & Atlases.</p>
+                        <p class="text-xs text-gray-300/90 line-clamp-2 leading-relaxed">Full interactive mastery deck across Quant, English, Reasoning, GK & Atlases.</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end text-xs text-cyan-400 font-extrabold">
-                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">Explore All &rarr;</span>
+                    <div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-end">
+                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-black transition duration-200">
+                            Explore All &rarr;
+                        </button>
                     </div>
                 </div>
             `;
@@ -371,18 +375,20 @@ function renderSubjectGrid(subjects, searchQuery = "") {
             const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
             const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
             html += `
-                <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
+                <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-4 rounded-2xl shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
                     <div>
-                        <div class="flex items-center gap-3.5 mb-3">
-                            <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-lg group-hover:scale-110 transition shrink-0">
+                        <div class="flex items-center gap-3 mb-2.5">
+                            <span class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
                                 <i class="fa-solid ${icon}"></i>
                             </span>
-                            <h4 class="font-heading font-black text-white text-base group-hover:text-${color} transition">${subj.name}</h4>
+                            <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:text-${color} transition truncate">${subj.name}</h4>
                         </div>
                         <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">${subj.description || 'Comprehensive exam rules, pyqs, and weightage cards.'}</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end text-xs text-gray-400 font-bold group-hover:text-white transition">
-                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">Browse Deck &rarr;</span>
+                    <div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-end">
+                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition duration-200">
+                            Browse Deck &rarr;
+                        </button>
                     </div>
                 </div>
             `;
