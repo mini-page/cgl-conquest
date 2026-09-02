@@ -1570,3 +1570,23 @@ body.light-theme #viewer-document-body table td {
     animation: viewSwitch 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Floating Navigation Dock - Active Tab Circular Highlight */
+.nav-item {
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav-item.active-nav {
+    background-color: rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 0 12px rgba(34, 211, 238, 0.25) !important;
+    transform: scale(1.1) !important;
+}
+
+.nav-item.active-nav i {
+    color: #ffffff !important;
+    filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.6));
+}
+
