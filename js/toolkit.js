@@ -263,9 +263,10 @@ function setStudyCardViewMode(mode) {
         }
     });
 
-    if (window.studyCatalog && window.studyCatalog.subjects) {
+    const catalog = studyCatalog || window.studySubjects;
+    if (catalog && catalog.subjects) {
         const searchQuery = document.getElementById('study-global-search')?.value || '';
-        renderSubjectGrid(window.studyCatalog.subjects, searchQuery);
+        renderSubjectGrid(catalog.subjects, searchQuery);
     }
 }
 
