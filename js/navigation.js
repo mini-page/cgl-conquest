@@ -269,6 +269,7 @@ function navigateToPage(target, updateHash = true) {
         
         globalPageTitle.innerText = friendlyName;
         if (globalPageIcon) globalPageIcon.innerHTML = iconClass;
+        document.title = `Conquest • ${friendlyName}`;
     }
     
     // Close mobile menu dropdown
