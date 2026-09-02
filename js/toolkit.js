@@ -242,6 +242,40 @@ const DIRECT_MASTER_PAGES = [
     }
 ];
 
+let currentStudyViewMode = localStorage.getItem("study_view_mode") || "big";
+
+function setStudyCardViewMode(mode) {
+    currentStudyViewMode = mode;
+    localStorage.setItem("study_view_mode", mode);
+    
+    // Update active button styles & slider position
+    const modeLevels = { 'big': 1, 'compact': 2, 'folder': 3, 'list': 4 };
+    const slider = document.getElementById('study-view-range');
+    if (slider && modeLevels[mode]) {
+        slider.value = modeLevels[mode];
+    }
+    
+    document.querySelectorAll('.study-view-btn').forEach(btn => {
+        if (btn.getAttribute('data-view') === mode) {
+            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition cursor-pointer';
+        } else {
+            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition cursor-pointer';
+        }
+    });
+
+    if (window.studyCatalog && window.studyCatalog.subjects) {
+        const searchQuery = document.getElementById('study-global-search')?.value || '';
+        renderSubjectGrid(window.studyCatalog.subjects, searchQuery);
+    }
+}
+
+function onStudyViewSliderChange(val) {
+    const valMap = { '1': 'big', '2': 'compact', '3': 'folder', '4': 'list' };
+    if (valMap[val]) {
+        setStudyCardViewMode(valMap[val]);
+    }
+}
+
 function renderSubjectGrid(subjects, searchQuery = "") {
     const grid = document.getElementById("study-subject-grid");
     if (!grid) return;
@@ -269,118 +303,329 @@ function renderSubjectGrid(subjects, searchQuery = "") {
 
     const showAllDeck = !q || "all subjects hub".includes(q) || "master deck".includes(q) || "all deck".includes(q);
 
-    let html = `<div class="space-y-8 animate-fadeIn">`;
+    // Sync button state on render
+    const modeLevels = { 'big': 1, 'compact': 2, 'folder': 3, 'list': 4 };
+    const slider = document.getElementById('study-view-range');
+    if (slider && modeLevels[currentStudyViewMode]) {
+        slider.value = modeLevels[currentStudyViewMode];
+    }
+    document.querySelectorAll('.study-view-btn').forEach(btn => {
+        if (btn.getAttribute('data-view') === currentStudyViewMode) {
+            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition cursor-pointer';
+        } else {
+            btn.className = 'study-view-btn flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition cursor-pointer';
+        }
+    });
 
-    // SECTION 1: DIRECT INTERACTIVE MASTER PAGES (NO MIDDLE MAN)
-    if (filteredMasterPages.length > 0) {
-        html += `
-            <div class="space-y-3">
-                <div class="flex items-center justify-between pb-1 border-b border-white/10">
-                    <h3 class="text-xs font-heading font-extrabold text-white uppercase tracking-widest flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                        <i class="fa-solid fa-bolt text-accentCyan"></i> Direct Master Interactive Books &amp; Atlases
-                    </h3>
-                    <span class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full">
-                        Instant Launch (No Middle-Man)
-                    </span>
-                </div>
+    let html = `<div class="space-y-6 animate-fadeIn">`;
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    ${filteredMasterPages.map(mp => `
-                        <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-5 shadow-2xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
-                            <div>
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="w-10 h-10 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-lg group-hover:scale-110 transition">
-                                        <i class="fa-solid ${mp.icon}"></i>
-                                    </span>
-                                    <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${mp.badge}">
-                                        ${mp.badgeText}
-                                    </span>
-                                </div>
-                                <h4 class="font-heading font-black text-white text-base mb-1 group-hover:text-cyan-300 transition leading-snug">${mp.title}</h4>
-                                <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">${mp.desc}</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                                <span class="text-[10px] font-extrabold uppercase text-gray-400 group-hover:text-white transition">Direct Open</span>
-                                <button class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
-                                    Launch Page &rarr;
-                                </button>
-                            </div>
+    // VIEW MODE 1: BIG GRID MODE (3 Columns)
+    if (currentStudyViewMode === 'big') {
+        html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4.5">`;
+        
+        // Master Pages
+        filteredMasterPages.forEach(mp => {
+            html += `
+                <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-5 shadow-2xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                    <div>
+                        <div class="flex items-center gap-3.5 mb-3">
+                            <span class="w-10 h-10 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-lg group-hover:scale-110 transition shrink-0">
+                                <i class="fa-solid ${mp.icon}"></i>
+                            </span>
+                            <h4 class="font-heading font-black text-white text-base group-hover:text-cyan-300 transition leading-snug">${mp.title}</h4>
                         </div>
-                    `).join('')}
+                        <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">${mp.desc}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end">
+                        <button class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                            Launch Page &rarr;
+                        </button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        });
+
+        // All Subjects Deck
+        if (showAllDeck) {
+            html += `
+                <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 hover:border-cyan-400 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
+                    <div>
+                        <div class="flex items-center gap-3.5 mb-3">
+                            <span class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-lg group-hover:scale-110 transition shrink-0">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </span>
+                            <h4 class="font-heading font-black text-white text-base group-hover:text-cyan-300 transition">All Subjects Hub</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">Full interactive mastery deck across Quant, English, Reasoning, GK & Atlases.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end text-xs text-cyan-400 font-extrabold">
+                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">Explore All &rarr;</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Subject Decks
+        filteredSubjects.forEach(subj => {
+            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
+            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
+            html += `
+                <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
+                    <div>
+                        <div class="flex items-center gap-3.5 mb-3">
+                            <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-lg group-hover:scale-110 transition shrink-0">
+                                <i class="fa-solid ${icon}"></i>
+                            </span>
+                            <h4 class="font-heading font-black text-white text-base group-hover:text-${color} transition">${subj.name}</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">${subj.description || 'Comprehensive exam rules, pyqs, and weightage cards.'}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-end text-xs text-gray-400 font-bold group-hover:text-white transition">
+                        <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">Browse Deck &rarr;</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
     }
 
-    // SECTION 2: MASTER SYLLABUS & WEIGHTAGE DECKS
-    const totalSection2Count = (showAllDeck ? 1 : 0) + filteredSubjects.length;
-    if (totalSection2Count > 0) {
-        html += `
-            <div class="space-y-3 pt-2">
-                <div class="flex items-center justify-between pb-1 border-b border-white/10">
-                    <h3 class="text-xs font-heading font-extrabold text-white uppercase tracking-widest flex items-center gap-2">
-                        <i class="fa-solid fa-layer-group text-accentGreen"></i> Subject Syllabus Decks &amp; Question Banks
-                    </h3>
-                    <span class="text-[10px] font-extrabold text-gray-400 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">
-                        ${totalSection2Count} Decks
-                    </span>
-                </div>
+    // VIEW MODE 2: COMPACT GRID MODE (4 Columns)
+    else if (currentStudyViewMode === 'compact') {
+        html += `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">`;
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-                    ${showAllDeck ? `
-                        <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 hover:border-cyan-400 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
-                            <div>
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-lg group-hover:scale-110 transition">
-                                        <i class="fa-solid fa-layer-group"></i>
-                                    </span>
-                                    <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Master Deck</span>
-                                </div>
-                                <h4 class="font-heading font-black text-white text-base mb-1 group-hover:text-cyan-300 transition">All Subjects Hub</h4>
-                                <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed">Full interactive mastery deck across Quant, English, Reasoning, GK & Atlases.</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-cyan-400 font-extrabold">
-                                <span>Explore All Topics</span>
-                                <span>&rarr;</span>
-                            </div>
+        // Master Pages
+        filteredMasterPages.forEach(mp => {
+            html += `
+                <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-xl p-3.5 shadow-xl backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-8 h-8 rounded-lg bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-sm shrink-0">
+                                <i class="fa-solid ${mp.icon}"></i>
+                            </span>
+                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:text-cyan-300 transition line-clamp-1">${mp.title}</h4>
                         </div>
-                    ` : ''}
-
-                    ${filteredSubjects.map(subj => {
-                        const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
-                        const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
-                        const totalTopics = subj.topics ? subj.topics.length : 0;
-                        
-                        return `
-                            <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-5 rounded-2xl shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
-                                <div>
-                                    <div class="flex items-center justify-between mb-3">
-                                        <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-lg group-hover:scale-110 transition">
-                                            <i class="fa-solid ${icon}"></i>
-                                        </span>
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase bg-white/5 text-gray-400 border border-white/10">${totalTopics} Decks</span>
-                                    </div>
-                                    <h4 class="font-heading font-black text-white text-base mb-1 group-hover:text-${color} transition">${subj.name}</h4>
-                                    <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">${subj.description || 'Comprehensive exam rules, pyqs, and weightage cards.'}</p>
-                                </div>
-                                <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400 font-bold group-hover:text-white transition">
-                                    <span>Browse Deck</span>
-                                    <span>&rarr;</span>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
+                        <p class="text-[11px] text-gray-300 line-clamp-2 leading-tight">${mp.desc}</p>
+                    </div>
+                    <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-end">
+                        <span class="text-[10px] font-extrabold uppercase text-cyan-400 group-hover:translate-x-0.5 transition">Launch &rarr;</span>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        });
+
+        // All Subjects Deck
+        if (showAllDeck) {
+            html += `
+                <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 p-3.5 rounded-xl shadow-lg backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-sm shrink-0">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </span>
+                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:text-cyan-300 transition truncate">All Subjects Hub</h4>
+                        </div>
+                        <p class="text-[11px] text-gray-300 line-clamp-2 leading-tight">Full interactive mastery deck across Quant, English, Reasoning & GK.</p>
+                    </div>
+                    <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-end text-[10px] font-extrabold text-cyan-400">
+                        <span>Explore &rarr;</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Subject Decks
+        filteredSubjects.forEach(subj => {
+            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
+            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
+            html += `
+                <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-3.5 rounded-xl shadow-lg backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-sm shrink-0">
+                                <i class="fa-solid ${icon}"></i>
+                            </span>
+                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:text-${color} transition truncate">${subj.name}</h4>
+                        </div>
+                        <p class="text-[11px] text-gray-400 line-clamp-2 leading-tight">${subj.description || 'Exam rules and cards.'}</p>
+                    </div>
+                    <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-end text-[10px] font-extrabold text-gray-400 group-hover:text-white transition">
+                        <span>Browse &rarr;</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+    }
+
+    // VIEW MODE 3: FOLDER MODE
+    else if (currentStudyViewMode === 'folder') {
+        html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">`;
+
+        // Master Pages
+        filteredMasterPages.forEach(mp => {
+            html += `
+                <div class="group relative cursor-pointer transition duration-300 hover:-translate-y-1" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-800/90 border-t border-l border-r border-white/15 text-[10px] font-black uppercase text-cyan-300 tracking-wider">
+                        <i class="fa-solid fa-folder-open text-xs"></i>
+                        <span class="truncate max-w-[170px]">${mp.title}</span>
+                    </div>
+                    <div class="bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-b-2xl rounded-tr-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[135px]">
+                        <div>
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-sm shrink-0">
+                                    <i class="fa-solid ${mp.icon}"></i>
+                                </span>
+                                <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition leading-snug">${mp.title}</h4>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">${mp.desc}</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-end">
+                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                                Open Folder &rarr;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // All Subjects Deck
+        if (showAllDeck) {
+            html += `
+                <div class="group relative cursor-pointer transition duration-300 hover:-translate-y-1" onclick="showSubjectDetail('all')">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-800/90 border-t border-l border-r border-cyan-500/30 text-[10px] font-black uppercase text-cyan-300 tracking-wider">
+                        <i class="fa-solid fa-folder-open text-xs"></i>
+                        <span>All Subjects Hub</span>
+                    </div>
+                    <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 rounded-b-2xl rounded-tr-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[135px]">
+                        <div>
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-sm shrink-0">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </span>
+                                <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition">All Subjects Hub</h4>
+                            </div>
+                            <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">Full interactive mastery deck across Quant, English, Reasoning & GK.</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-end">
+                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                                Open Folder &rarr;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Subject Decks
+        filteredSubjects.forEach(subj => {
+            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
+            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
+            html += `
+                <div class="group relative cursor-pointer transition duration-300 hover:-translate-y-1" onclick="showSubjectDetail('${subj.id}')">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-800/90 border-t border-l border-r border-white/15 text-[10px] font-black uppercase text-gray-300 tracking-wider">
+                        <i class="fa-solid fa-folder-open text-xs"></i>
+                        <span class="truncate max-w-[170px]">${subj.name}</span>
+                    </div>
+                    <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 rounded-b-2xl rounded-tr-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[135px]">
+                        <div>
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-sm shrink-0">
+                                    <i class="fa-solid ${icon}"></i>
+                                </span>
+                                <h4 class="font-heading font-black text-white text-sm group-hover:text-${color} transition">${subj.name}</h4>
+                            </div>
+                            <p class="text-xs text-gray-400 leading-relaxed line-clamp-2">${subj.description || 'Comprehensive exam rules and cards.'}</p>
+                        </div>
+                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-end">
+                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                                Open Folder &rarr;
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+    }
+
+    // VIEW MODE 4: LIST MODE
+    else if (currentStudyViewMode === 'list') {
+        html += `<div class="space-y-2.5">`;
+
+        // Master Pages
+        filteredMasterPages.forEach(mp => {
+            html += `
+                <div class="group bg-gradient-to-r ${mp.bg} border ${mp.border} rounded-xl p-3.5 shadow-lg backdrop-blur-xl transition duration-200 hover:border-cyan-400 cursor-pointer flex items-center justify-between gap-4" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                        <span class="w-10 h-10 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid ${mp.icon}"></i>
+                        </span>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition truncate">${mp.title}</h4>
+                            <p class="text-xs text-gray-300 truncate">${mp.desc}</p>
+                        </div>
+                    </div>
+                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                        Launch &rarr;
+                    </button>
+                </div>
+            `;
+        });
+
+        // All Subjects Deck
+        if (showAllDeck) {
+            html += `
+                <div class="group bg-gradient-to-r from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 rounded-xl p-3.5 shadow-lg backdrop-blur-xl transition duration-200 hover:border-cyan-400 cursor-pointer flex items-center justify-between gap-4" onclick="showSubjectDetail('all')">
+                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                        <span class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition truncate">All Subjects Hub</h4>
+                            <p class="text-xs text-gray-300 truncate">Full interactive mastery deck across Quant, English, Reasoning & GK.</p>
+                        </div>
+                    </div>
+                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                        Explore &rarr;
+                    </button>
+                </div>
+            `;
+        }
+
+        // Subject Decks
+        filteredSubjects.forEach(subj => {
+            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
+            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
+            html += `
+                <div class="group bg-bgCard/60 border border-white/10 hover:border-${color}/40 rounded-xl p-3.5 shadow-lg backdrop-blur-xl transition duration-200 cursor-pointer flex items-center justify-between gap-4" onclick="showSubjectDetail('${subj.id}')">
+                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                        <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid ${icon}"></i>
+                        </span>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="font-heading font-black text-white text-sm group-hover:text-${color} transition truncate">${subj.name}</h4>
+                            <p class="text-xs text-gray-400 truncate">${subj.description || 'Exam rules & decks.'}</p>
+                        </div>
+                    </div>
+                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                        Browse &rarr;
+                    </button>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
     }
 
     if (filteredMasterPages.length === 0 && filteredSubjects.length === 0) {
         html += `
             <div class="text-center py-12 space-y-3 bg-bgCard/30 border border-white/10 rounded-2xl">
                 <i class="fa-solid fa-magnifying-glass text-gray-500 text-3xl"></i>
-                <div class="text-sm font-extrabold text-white">No topics or master pages match "${q}"</div>
+                <div class="text-sm font-extrabold text-white">No topics match "${q}"</div>
                 <div class="text-xs text-gray-400">Try searching for terms like "Grammar", "Atlas", "Geometry", "Constitution", "History", or "Calendar".</div>
             </div>
         `;
