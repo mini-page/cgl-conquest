@@ -73,35 +73,89 @@ body {
 }
 
 /* Custom utility overrides */
+#mobile-floating-nav {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+  will-change: transform;
+}
+
+#floating-nav-items {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+#floating-nav-trigger {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
 #mobile-floating-nav:not(.nav-shrunk) #floating-nav-trigger {
-  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  transform: scale(0.4) !important;
 }
 
 #mobile-floating-nav.nav-shrunk #floating-nav-trigger {
-  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  transform: scale(1) !important;
 }
 
 #mobile-floating-nav.nav-shrunk #floating-nav-items {
-  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  transform: scale(0.7) !important;
+}
+
+.nav-item {
+  transition: background-color 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.nav-item:hover {
+  transform: translateY(-2px) scale(1.08);
 }
 
 .nav-item.active-nav {
   background-color: #2563eb !important;
   color: #ffffff !important;
-  box-shadow: 0 0 14px rgba(37, 99, 235, 0.6) !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.55), 0 0 20px rgba(37, 99, 235, 0.3) !important;
   border-radius: 9999px !important;
+  transform: scale(1.12);
+}
+
+.nav-item.active-nav i {
+  color: #ffffff !important;
+  transform: scale(1.1);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .active-nav-tab {
   background-color: rgba(37, 99, 235, 0.25) !important;
   border-color: rgba(37, 99, 235, 0.6) !important;
   color: #60a5fa !important;
+  transition: all 0.2s ease-out !important;
 }
 
 .active-pomo-mode {
   background-color: rgba(244, 63, 94, 0.15);
   border-color: rgba(244, 63, 94, 0.4);
   color: #f43f5e;
+}
+
+/* Page Entrance Slide-In Animation */
+.content-page:not(.hidden) {
+  animation: pageSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Transition helpers */
