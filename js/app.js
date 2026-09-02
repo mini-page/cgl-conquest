@@ -91,3 +91,93 @@ window.showToast = (message, type = 'info') => {
         });
     }, 3500);
 };
+
+// Native Glassmorphic Custom Confirm Modal
+window.showConfirm = (title, message) => {
+    return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.className = "fixed inset-0 z-[10000] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-200";
+        
+        overlay.innerHTML = `
+            <div class="bg-slate-900 border border-white/20 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 transform scale-100 transition-transform duration-200">
+                <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+                    <div class="w-9 h-9 rounded-2xl bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center text-base font-bold shadow-inner">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider">${title || 'Confirmation'}</h3>
+                        <span class="text-[10px] text-gray-400">Please confirm your action</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-300 leading-relaxed">${message}</p>
+                <div class="flex gap-2.5 pt-2">
+                    <button type="button" id="custom-confirm-yes" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-blue-500/25 border border-blue-400/30 transition cursor-pointer">
+                        Confirm
+                    </button>
+                    <button type="button" id="custom-confirm-no" class="px-4 bg-white/10 hover:bg-white/20 text-gray-300 font-bold py-2.5 rounded-xl text-xs uppercase transition cursor-pointer">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        overlay.querySelector("#custom-confirm-yes").onclick = () => {
+            overlay.remove();
+            resolve(true);
+        };
+        overlay.querySelector("#custom-confirm-no").onclick = () => {
+            overlay.remove();
+            resolve(false);
+        };
+    });
+};
+
+// Native Glassmorphic Custom Alert Modal
+window.showAlert = (title, message, type = 'info') => {
+    return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.className = "fixed inset-0 z-[10000] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-200";
+        
+        let icon = "fa-info-circle text-cyan-400";
+        let iconBg = "bg-cyan-500/20 border-cyan-500/30";
+        if (type === 'success') {
+            icon = "fa-circle-check text-emerald-400";
+            iconBg = "bg-emerald-500/20 border-emerald-500/30";
+        } else if (type === 'warning') {
+            icon = "fa-triangle-exclamation text-amber-400";
+            iconBg = "bg-amber-500/20 border-amber-500/30";
+        } else if (type === 'error') {
+            icon = "fa-circle-xmark text-rose-400";
+            iconBg = "bg-rose-500/20 border-rose-500/30";
+        }
+
+        overlay.innerHTML = `
+            <div class="bg-slate-900 border border-white/20 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 transform scale-100 transition-transform duration-200">
+                <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+                    <div class="w-9 h-9 rounded-2xl ${iconBg} border flex items-center justify-center text-base font-bold shadow-inner">
+                        <i class="fa-solid ${icon}"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider">${title || 'Notice'}</h3>
+                        <span class="text-[10px] text-gray-400">Conquest Alert</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-300 leading-relaxed">${message}</p>
+                <div class="pt-2">
+                    <button type="button" id="custom-alert-ok" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold py-2.5 rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-blue-500/25 border border-blue-400/30 transition cursor-pointer">
+                        OK
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        overlay.querySelector("#custom-alert-ok").onclick = () => {
+            overlay.remove();
+            resolve();
+        };
+    });
+};

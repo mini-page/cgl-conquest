@@ -67,8 +67,9 @@ function initExamTargetEditor() {
             updateDisplay();
             startExamCountdown();
 
-            editPanel.classList.add("hidden");
-            viewPanel.classList.remove("hidden");
+            if (typeof closeExamTargetModal === "function") closeExamTargetModal();
+            if (editPanel) editPanel.classList.add("hidden");
+            if (viewPanel) viewPanel.classList.remove("hidden");
             if (btnToggle) btnToggle.innerText = "Edit";
             if (window.showToast) window.showToast("Target settings saved successfully!", "success");
         };
@@ -375,29 +376,35 @@ function renderTodayMissions() {
                                    "bg-accentRose/10 border-accentRose/20 text-accentRose";
 
             html += `
-                <div class="bg-bgCard border border-white/5 rounded-xl p-4 shadow hover:border-white/10 transition duration-200" data-subtopic-id="${subFound.id}">
-                    <div class="flex justify-between items-start gap-2 flex-wrap mb-2">
-                        <span class="text-[10px] font-bold uppercase text-${subClass}"><i class="fa-solid fa-folder-open mr-1"></i> ${topicFound.subject} &bull; ${topicFound.topic}</span>
-                        <div class="flex gap-1.5">
-                            <span class="border px-2 py-0.5 rounded text-[9px] font-bold uppercase ${badgeDiffClass}">${subFound.difficulty}</span>
-                            <span class="bg-white/5 border border-white/5 px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 uppercase">${subFound.weightage} Weight</span>
+                <div class="bg-bgCard/90 border border-white/10 rounded-2xl p-4 shadow-lg hover:border-white/20 transition duration-200" data-subtopic-id="${subFound.id}">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <!-- Left Side: Topic Info & Badges -->
+                        <div class="space-y-1.5 flex-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[10px] font-bold uppercase text-${subClass}"><i class="fa-solid fa-folder-open mr-1"></i> ${topicFound.subject} &bull; ${topicFound.topic}</span>
+                                <span class="border px-2 py-0.5 rounded text-[9px] font-bold uppercase ${badgeDiffClass}">${subFound.difficulty}</span>
+                                <span class="bg-white/5 border border-white/5 px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 uppercase">${subFound.weightage} Weight</span>
+                            </div>
+                            <h4 class="text-xs font-extrabold text-white leading-snug">${subFound.name}${appState.weakAlerts && appState.weakAlerts[subFound.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1.5 animate-pulse">🚨 Weak</span>' : ''}</h4>
                         </div>
-                    </div>
-                    <h4 class="text-xs font-bold text-white mb-3">${subFound.name}${appState.weakAlerts && appState.weakAlerts[subFound.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1.5 animate-pulse">🚨 Weak</span>' : ''}</h4>
-                    
-                    <div class="flex gap-4 border-t border-white/5 pt-3">
-                        <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-400 hover:text-white select-none">
-                            <input type="checkbox" class="task-cb-learned accent-accentCyan" data-id="${subFound.id}" ${prog.learned ? 'checked' : ''}>
-                            <span>Learned</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-400 hover:text-white select-none">
-                            <input type="checkbox" class="task-cb-practiced accent-accentPurple" data-id="${subFound.id}" ${prog.practiced ? 'checked' : ''}>
-                            <span>Practiced (PYQs)</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-400 hover:text-white select-none">
-                            <input type="checkbox" class="task-cb-mastered accent-accentGreen" data-id="${subFound.id}" ${prog.mastered ? 'checked' : ''}>
-                            <span>Mastered</span>
-                        </label>
+                        
+                        <!-- Right Side (Desktop/Laptop): Clean Checkbox Pill Controls -->
+                        <div class="flex items-center gap-3 shrink-0 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-white/10 shadow-inner">
+                            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-gray-300 hover:text-white select-none">
+                                <input type="checkbox" class="task-cb-learned accent-cyan-400" data-id="${subFound.id}" ${prog.learned ? 'checked' : ''}>
+                                <span class="text-[11px] font-bold">Learned</span>
+                            </label>
+                            <span class="text-gray-600 text-xs">|</span>
+                            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-gray-300 hover:text-white select-none">
+                                <input type="checkbox" class="task-cb-practiced accent-purple-400" data-id="${subFound.id}" ${prog.practiced ? 'checked' : ''}>
+                                <span class="text-[11px] font-bold">Practiced</span>
+                            </label>
+                            <span class="text-gray-600 text-xs">|</span>
+                            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-gray-300 hover:text-white select-none">
+                                <input type="checkbox" class="task-cb-mastered accent-emerald-400" data-id="${subFound.id}" ${prog.mastered ? 'checked' : ''}>
+                                <span class="text-[11px] font-bold">Mastered</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             `;
@@ -421,6 +428,17 @@ function renderTodayMissions() {
             if (isLearned) appState.syllabusProgress[subId].learned = cb.checked;
             if (isPracticed) appState.syllabusProgress[subId].practiced = cb.checked;
             if (isMastered) appState.syllabusProgress[subId].mastered = cb.checked;
+
+            // Trigger ranked confetti celebration feedback
+            if (cb.checked) {
+                if (isMastered) {
+                    if (window.triggerConfetti) window.triggerConfetti('high');
+                } else if (isPracticed) {
+                    if (window.triggerConfetti) window.triggerConfetti('medium');
+                } else if (isLearned) {
+                    if (window.triggerConfetti) window.triggerConfetti('low');
+                }
+            }
 
             saveStateToStorage();
             renderAll();
@@ -586,46 +604,142 @@ function startExamCountdown() {
 }
 
 
-// 11. STOPWATCH SESSION STUDY & POMODORO TIMER
+// // 11. UNIFIED MASTER STUDY & POMODORO TIMER ENGINE
+let masterTimerInterval = null;
+
+function updateMasterTimerUI() {
+    const isStopwatch = (appState.timerMode || "stopwatch") === "stopwatch";
+    const isActive = appState.timerActive === true;
+    
+    // Formatted Time String
+    let formattedText = "";
+    if (isStopwatch) {
+        formattedText = formatTimeSeconds(appState.sessionTime || 0);
+    } else {
+        const mins = Math.floor((appState.pomoTime || 1500) / 60);
+        const secs = (appState.pomoTime || 1500) % 60;
+        formattedText = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    }
+
+    // 1. Dashboard Widget UI (#session-time, #btn-toggle-session)
+    const dashTimeEl = document.getElementById("session-time");
+    if (dashTimeEl) dashTimeEl.innerText = formattedText;
+    const dashToggleBtn = document.getElementById("btn-toggle-session");
+    if (dashToggleBtn) {
+        dashToggleBtn.innerHTML = isActive 
+            ? '<i class="fa-solid fa-pause text-rose-400"></i> Pause'
+            : '<i class="fa-solid fa-play text-cyan-400"></i> Start';
+    }
+
+    // 2. Top Bar Capsule UI (#pomo-capsule-time, #pomo-capsule-icon, #btn-pomo-capsule-toggle)
+    const capsuleTimeEl = document.getElementById("pomo-capsule-time");
+    if (capsuleTimeEl) capsuleTimeEl.innerText = formattedText;
+    const capsuleIconEl = document.getElementById("pomo-capsule-icon");
+    if (capsuleIconEl) capsuleIconEl.innerText = isStopwatch ? "⏱" : "🍅";
+    const capsuleToggleBtn = document.getElementById("btn-pomo-capsule-toggle");
+    if (capsuleToggleBtn) {
+        capsuleToggleBtn.innerHTML = isActive ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+    }
+
+    // 3. Popover Drawer UI (#pomo-time-display, #pomo-status-label, #btn-pomo-start, #btn-pomo-pause)
+    const popoverTimeEl = document.getElementById("pomo-time-display");
+    if (popoverTimeEl) popoverTimeEl.innerText = formattedText;
+    const popoverStatusEl = document.getElementById("pomo-status-label");
+    if (popoverStatusEl) {
+        popoverStatusEl.innerText = isStopwatch 
+            ? "STOPWATCH SESSION" 
+            : (appState.timerMode === "short-break" ? "REST BREAK" : "POMODORO FOCUS");
+    }
+
+    const popoverStartBtn = document.getElementById("btn-pomo-start");
+    const popoverPauseBtn = document.getElementById("btn-pomo-pause");
+    if (popoverStartBtn) popoverStartBtn.disabled = isActive;
+    if (popoverPauseBtn) popoverPauseBtn.disabled = !isActive;
+
+    // Progress Ring Calculation
+    const ringFill = document.getElementById("pomo-progress");
+    if (ringFill) {
+        if (isStopwatch) {
+            const pct = ((appState.sessionTime || 0) % 60) / 60;
+            ringFill.style.strokeDashoffset = pomoRingCircumference * (1 - pct);
+            ringFill.style.stroke = "#22d3ee";
+        } else {
+            const initialTime = appState.pomoInitialTime || 1500;
+            const pct = (appState.pomoTime || 0) / initialTime;
+            const offset = pomoRingCircumference * (1 - pct);
+            ringFill.style.strokeDashoffset = isNaN(offset) ? 0 : offset;
+            ringFill.style.stroke = appState.timerMode === "short-break" ? "#10b981" : "#f43f5e";
+        }
+    }
+}
+
+function toggleMasterTimer() {
+    if (appState.timerActive) {
+        pauseMasterTimer();
+    } else {
+        startMasterTimer();
+    }
+}
+
+function startMasterTimer() {
+    appState.timerActive = true;
+    appState.sessionActive = true;
+    appState.pomoActive = true;
+    updateMasterTimerUI();
+
+    if (masterTimerInterval) clearInterval(masterTimerInterval);
+    masterTimerInterval = setInterval(() => {
+        const isStopwatch = (appState.timerMode || "stopwatch") === "stopwatch";
+        if (isStopwatch) {
+            appState.sessionTime = (appState.sessionTime || 0) + 1;
+            if (appState.sessionTime % 60 === 0) saveStateToStorage();
+        } else {
+            if (appState.pomoTime > 0) {
+                appState.pomoTime--;
+            } else {
+                pauseMasterTimer();
+                const msg = "Focus session completed! Great job soldier, take a short rest.";
+                if (typeof speakText === "function") speakText(msg);
+                if (window.showToast) window.showToast(msg, "success");
+                appState.pomoTime = appState.pomoInitialTime || 1500;
+            }
+        }
+        updateMasterTimerUI();
+    }, 1000);
+}
+
+function pauseMasterTimer() {
+    appState.timerActive = false;
+    appState.sessionActive = false;
+    appState.pomoActive = false;
+    if (masterTimerInterval) clearInterval(masterTimerInterval);
+    saveStateToStorage();
+    updateMasterTimerUI();
+}
+
+function resetMasterTimer() {
+    pauseMasterTimer();
+    const isStopwatch = (appState.timerMode || "stopwatch") === "stopwatch";
+    if (isStopwatch) {
+        appState.sessionTime = 0;
+    } else {
+        appState.pomoTime = appState.pomoInitialTime || 1500;
+    }
+    saveStateToStorage();
+    updateMasterTimerUI();
+}
+
 function initSessionTimer() {
     const btnToggle = document.getElementById("btn-toggle-session");
     const btnReset = document.getElementById("btn-reset-session");
-    const timeDisplay = document.getElementById("session-time");
 
-    btnToggle.onclick = () => {
-        if (appState.sessionActive) {
-            appState.sessionActive = false;
-            clearInterval(sessionTimerInterval);
-            btnToggle.innerHTML = '<i class="fa-solid fa-play text-accentCyan"></i> Start Timer';
-            saveStateToStorage();
-        } else {
-            appState.sessionActive = true;
-            btnToggle.innerHTML = '<i class="fa-solid fa-pause text-accentRose"></i> Pause';
-            sessionTimerInterval = setInterval(() => {
-                appState.sessionTime++;
-                timeDisplay.innerText = formatTimeSeconds(appState.sessionTime);
-                if (appState.sessionTime % 60 === 0) saveStateToStorage();
-            }, 1000);
-        }
-    };
-
-    btnReset.onclick = () => {
-        if (confirm("Reset current session timer?")) {
-            appState.sessionActive = false;
-            clearInterval(sessionTimerInterval);
-            appState.sessionTime = 0;
-            timeDisplay.innerText = "00:00:00";
-            btnToggle.innerHTML = '<i class="fa-solid fa-play text-accentCyan"></i> Start Timer';
-            saveStateToStorage();
-        }
-    };
-
-    if (appState.sessionActive) {
-        appState.sessionActive = false;
-        btnToggle.click();
-    } else {
-        timeDisplay.innerText = formatTimeSeconds(appState.sessionTime);
+    if (btnToggle) btnToggle.onclick = () => toggleMasterTimer();
+    if (btnReset) {
+        btnReset.onclick = () => {
+            if (confirm("Reset current study session timer?")) resetMasterTimer();
+        };
     }
+    updateMasterTimerUI();
 }
 
 function formatTimeSeconds(secs) {
@@ -636,104 +750,45 @@ function formatTimeSeconds(secs) {
 }
 
 function initPomoTimer() {
-    // Enforce 25m study timer as default
-    appState.pomoTime = 1500;
-    appState.pomoMode = "study";
-    appState.pomoActive = false;
-    
+    if (!appState.timerMode) appState.timerMode = "stopwatch";
+    if (!appState.sessionTime) appState.sessionTime = 0;
+    if (!appState.pomoTime) appState.pomoTime = 1500;
+    if (!appState.pomoInitialTime) appState.pomoInitialTime = 1500;
+
     const btnStart = document.getElementById("btn-pomo-start");
     const btnPause = document.getElementById("btn-pomo-pause");
     const btnReset = document.getElementById("btn-pomo-reset");
-    const timeDisplay = document.getElementById("pomo-time-display");
-    const ringFill = document.getElementById("pomo-progress");
-    const statusLabel = document.getElementById("pomo-status-label");
     const modesButtons = document.querySelectorAll(".btn-pomo-mode");
 
-    let initialTime = appState.pomoTime;
-
-    const updatePomoDisplay = () => {
-        const mins = Math.floor(appState.pomoTime / 60);
-        const secs = appState.pomoTime % 60;
-        const formatted = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-        
-        if (timeDisplay) timeDisplay.innerText = formatted;
-        
-        const capsuleTime = document.getElementById("pomo-capsule-time");
-        if (capsuleTime) capsuleTime.innerText = formatted;
-        
-        const pct = appState.pomoTime / initialTime;
-        const offset = pomoRingCircumference * (1 - pct);
-        if (ringFill) ringFill.style.strokeDashoffset = isNaN(offset) ? 0 : offset;
-        
-        // Update Play/Pause button icon inside Pomo Capsule in the Top Bar
-        const capsuleToggle = document.getElementById("btn-pomo-capsule-toggle");
-        if (capsuleToggle) {
-            capsuleToggle.innerHTML = appState.pomoActive ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
-        }
-    };
-
-    btnStart.onclick = () => {
-        appState.pomoActive = true;
-        if (btnStart) btnStart.disabled = true;
-        if (btnPause) btnPause.disabled = false;
-        
-        updatePomoDisplay(); // Sync Play/Pause icon immediately
-        
-        pomoTimerInterval = setInterval(() => {
-            if (appState.pomoTime > 0) {
-                appState.pomoTime--;
-                updatePomoDisplay();
-            } else {
-                clearInterval(pomoTimerInterval);
-                appState.pomoActive = false;
-                if (btnStart) btnStart.disabled = false;
-                if (btnPause) btnPause.disabled = true;
-                const msg = "Focus timer completed. Great job, soldier! Take a rest break.";
-                speakText(msg);
-                if (window.showToast) window.showToast(msg, "success");
-                appState.pomoTime = initialTime;
-                updatePomoDisplay();
-            }
-        }, 1000);
-    };
-
-    btnPause.onclick = () => {
-        appState.pomoActive = false;
-        if (btnStart) btnStart.disabled = false;
-        if (btnPause) btnPause.disabled = true;
-        clearInterval(pomoTimerInterval);
-        updatePomoDisplay(); // Sync Play/Pause icon immediately
-    };
-
-    btnReset.onclick = () => {
-        appState.pomoActive = false;
-        if (btnStart) btnStart.disabled = false;
-        if (btnPause) btnPause.disabled = true;
-        clearInterval(pomoTimerInterval);
-        appState.pomoTime = initialTime;
-        updatePomoDisplay();
-    };
+    if (btnStart) btnStart.onclick = () => startMasterTimer();
+    if (btnPause) btnPause.onclick = () => pauseMasterTimer();
+    if (btnReset) btnReset.onclick = () => resetMasterTimer();
 
     modesButtons.forEach(btn => {
         btn.onclick = () => {
-            modesButtons.forEach(b => b.classList.remove("active-nav-tab"));
-            btn.classList.add("active-nav-tab");
-            
-            const seconds = parseInt(btn.getAttribute("data-time"));
+            modesButtons.forEach(b => {
+                b.classList.remove("active-pomo-mode", "bg-cyan-600", "text-white");
+                b.classList.add("bg-white/5", "text-gray-400");
+            });
+            btn.classList.add("active-pomo-mode", "bg-cyan-600", "text-white");
+            btn.classList.remove("bg-white/5", "text-gray-400");
+
             const mode = btn.getAttribute("data-mode");
-            
-            appState.pomoMode = mode;
-            initialTime = seconds;
-            appState.pomoTime = seconds;
-            
-            if (statusLabel) statusLabel.innerText = mode === "study" ? "STUDY TIME" : "REST BREAK";
-            if (ringFill) ringFill.style.stroke = mode === "study" ? "var(--accent-rose)" : "var(--accent-green)";
-            
-            btnReset.click();
+            const seconds = parseInt(btn.getAttribute("data-time")) || 0;
+
+            appState.timerMode = mode;
+            if (mode === "stopwatch") {
+                appState.sessionTime = 0;
+            } else {
+                appState.pomoInitialTime = seconds;
+                appState.pomoTime = seconds;
+            }
+
+            resetMasterTimer();
         };
     });
 
-    // === TOP BAR POMODORO CAPSULE & POPOVER TOGGLE LISTENERS ===
+    // Top Bar Capsule & Drawer Popover Toggle
     const pomoCapsule = document.getElementById("pomo-capsule");
     const pomoDrawer = document.getElementById("pomo-drawer");
     const pomoDrawerClose = document.getElementById("btn-pomo-drawer-close");
@@ -753,46 +808,38 @@ function initPomoTimer() {
     function togglePomoPopover() {
         if (!pomoDrawer) return;
         const isHidden = pomoDrawer.classList.contains("opacity-0");
-        if (isHidden) {
-            showPomoPopover();
-        } else {
-            hidePomoPopover();
-        }
+        if (isHidden) showPomoPopover();
+        else hidePomoPopover();
     }
 
     if (pomoCapsule && pomoDrawer) {
         pomoCapsule.onclick = (e) => {
-            // If play/pause button inside capsule was clicked
             if (e.target.closest("#btn-pomo-capsule-toggle")) {
-                if (appState.pomoActive) {
-                    if (btnPause) btnPause.click();
-                } else {
-                    if (btnStart) btnStart.click();
-                }
+                toggleMasterTimer();
                 e.stopPropagation();
                 return;
             }
             togglePomoPopover();
         };
-    }
 
-    if (pomoDrawerClose) {
-        pomoDrawerClose.onclick = () => {
-            hidePomoPopover();
-        };
-    }
+        if (pomoDrawerClose) {
+            pomoDrawerClose.onclick = () => hidePomoPopover();
+        }
 
-    // Close popover when clicking outside it
-    document.addEventListener("click", (e) => {
-        if (pomoDrawer && !pomoDrawer.classList.contains("opacity-0")) {
-            if (!pomoDrawer.contains(e.target) && !pomoCapsule.contains(e.target)) {
+        document.addEventListener("click", (e) => {
+            if (!pomoCapsule.contains(e.target) && !pomoDrawer.contains(e.target)) {
                 hidePomoPopover();
             }
-        }
-    });
+        });
+    }
 
-    updatePomoDisplay();
+    updateMasterTimerUI();
 }
+
+window.toggleMasterTimer = toggleMasterTimer;
+window.startMasterTimer = startMasterTimer;
+window.pauseMasterTimer = pauseMasterTimer;
+window.resetMasterTimer = resetMasterTimer;
 
 // Update Daily Streak Calculation
 function updateStreakData() {
@@ -822,8 +869,40 @@ function updateStreakData() {
     saveStateToStorage();
 }
 
-// Global Lightweight Canvas Confetti Engine
-window.triggerConfetti = function() {
+// Exam Target Popup Modal Functions
+function openExamTargetModal() {
+    const modal = document.getElementById("exam-target-modal");
+    if (!modal) return;
+    const inputName = document.getElementById("input-exam-name");
+    const inputDate = document.getElementById("input-exam-date");
+    if (inputName) inputName.value = appState.examName || "Conquest";
+    if (inputDate) inputDate.value = appState.examDate ? appState.examDate.split("T")[0] : "2026-08-15";
+
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    modal.classList.add("opacity-100", "pointer-events-auto");
+    const card = modal.firstElementChild;
+    if (card) {
+        card.classList.remove("scale-95");
+        card.classList.add("scale-100");
+    }
+}
+
+function closeExamTargetModal() {
+    const modal = document.getElementById("exam-target-modal");
+    if (!modal) return;
+    const card = modal.firstElementChild;
+    if (card) {
+        card.classList.remove("scale-100");
+        card.classList.add("scale-95");
+    }
+    modal.classList.remove("opacity-100", "pointer-events-auto");
+    modal.classList.add("opacity-0", "pointer-events-none");
+}
+window.openExamTargetModal = openExamTargetModal;
+window.closeExamTargetModal = closeExamTargetModal;
+
+// Global Lightweight Canvas Confetti Engine with Tiered Celebration Intensities
+window.triggerConfetti = function(intensity = 'medium') {
     try {
         const canvas = document.createElement("canvas");
         canvas.style.position = "fixed";
@@ -841,14 +920,29 @@ window.triggerConfetti = function() {
 
         const colors = ["#06b6d4", "#8b5cf6", "#f43f5e", "#f59e0b", "#10b981", "#ec4899", "#3b82f6"];
         const particles = [];
-        const particleCount = 75;
+        let particleCount = 50;
+        let speedMult = 1.0;
+
+        if (intensity === 'low') {
+            particleCount = 25;
+            speedMult = 0.7;
+        } else if (intensity === 'medium') {
+            particleCount = 55;
+            speedMult = 1.0;
+        } else if (intensity === 'high') {
+            particleCount = 95;
+            speedMult = 1.3;
+        } else if (intensity === 'grand') {
+            particleCount = 150;
+            speedMult = 1.6;
+        }
 
         for (let i = 0; i < particleCount; i++) {
             particles.push({
-                x: canvas.width / 2 + (Math.random() * 240 - 120),
+                x: canvas.width / 2 + (Math.random() * 260 - 130),
                 y: canvas.height * 0.35 + (Math.random() * 100 - 50),
-                vx: (Math.random() - 0.5) * 14,
-                vy: (Math.random() - 0.8) * 14,
+                vx: (Math.random() - 0.5) * 14 * speedMult,
+                vy: (Math.random() - 0.85) * 14 * speedMult,
                 size: Math.random() * 9 + 4,
                 color: colors[Math.floor(Math.random() * colors.length)],
                 rotation: Math.random() * 360,
@@ -858,6 +952,7 @@ window.triggerConfetti = function() {
         }
 
         const startTime = Date.now();
+        const duration = intensity === 'low' ? 1400 : intensity === 'medium' ? 1800 : 2500;
         function animate() {
             const elapsed = Date.now() - startTime;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -867,7 +962,7 @@ window.triggerConfetti = function() {
                 p.y += p.vy;
                 p.vy += 0.28; // Gravity
                 p.rotation += p.rSpeed;
-                p.opacity = Math.max(0, 1 - elapsed / 2200);
+                p.opacity = Math.max(0, 1 - elapsed / duration);
 
                 ctx.save();
                 ctx.translate(p.x, p.y);
@@ -878,7 +973,7 @@ window.triggerConfetti = function() {
                 ctx.restore();
             });
 
-            if (elapsed < 2200) {
+            if (elapsed < duration) {
                 requestAnimationFrame(animate);
             } else {
                 canvas.remove();

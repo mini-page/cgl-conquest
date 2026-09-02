@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE VAULT — SSC Study Intelligence Archive</title>
+<link rel="icon" type="image/svg+xml" href="../icon.svg?v=2">
+<link rel="apple-touch-icon" href="../icon.svg?v=2">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b0d;
+  --bg-grid:#0d0f12;
+  --panel:#14161b;
+  --panel-hi:#191c22;
+  --border:#262a31;
+  --border-hi:#343943;
+  --text:#eef0f3;
+  --muted:#8b93a1;
+  --muted-dim:#5b6270;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 42px 42px;
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.font-display{font-family:'Space Grotesk',sans-serif;}
+.font-mono{font-family:'JetBrains Mono',monospace;}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#2a2e36;border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:#3a3f4a}
+
+/* subject accent colors */
+.subj-Math{--accent:#fb923c;--accent-dim:#fb923c22;}
+.subj-Reasoning{--accent:#a3e635;--accent-dim:#a3e63522;}
+.subj-GKGS{--accent:#2dd4bf;--accent-dim:#2dd4bf22;}
+.subj-English{--accent:#e879f9;--accent-dim:#e879f922;}
+.subj-Computer{--accent:#60a5fa;--accent-dim:#60a5fa22;}
+
+.pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.02em;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:var(--muted);
+  cursor:pointer;
+  transition:all .15s ease;
+  white-space:nowrap;
+  user-select:none;
+}
+.pill:hover{border-color:var(--border-hi);color:var(--text)}
+#sort-select{outline:none}
+#sort-select option{background:var(--panel);color:var(--text)}
+.pill.active{
+  background:var(--accent, #eef0f3);
+  border-color:var(--accent, #eef0f3);
+  color:#0a0b0d;
+  font-weight:600;
+}
+.subj-pill{position:relative;padding-left:20px}
+.subj-pill::before{
+  content:'';
+  position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  width:7px;height:7px;border-radius:999px;background:var(--accent);
+}
+.subj-pill.active::before{background:#0a0b0d}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:border-color .15s ease, transform .15s ease;
+  display:flex;
+  flex-direction:column;
+}
+.card:hover{border-color:var(--accent);}
+.card-code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--accent);
+  letter-spacing:.05em;
+}
+.card-viz{
+  background:var(--bg-grid);
+  border-bottom:1px solid var(--border);
+  padding:20px 16px;
+  min-height:190px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.tag-chip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  padding:3px 8px;
+  border-radius:5px;
+  background:var(--panel-hi);
+  border:1px solid var(--border);
+  color:var(--muted);
+}
+
+/* ============ visual diagram components ============ */
+.viz-svg-icon{width:18px;height:18px;flex-shrink:0}
+
+/* quadrant */
+.quad-wrap{display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:1fr 1fr;gap:10px 14px;align-items:center;width:100%}
+.quad-center{
+  grid-column:2;grid-row:1/3;
+  width:76px;height:76px;border-radius:999px;
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;font-family:'Space Grotesk';font-weight:600;font-size:10.5px;line-height:1.15;
+  color:var(--accent);
+}
+.quad-item{font-size:11px;line-height:1.3}
+.quad-item b{color:var(--text);font-weight:600;display:block;font-size:11.5px}
+.quad-item span{color:var(--muted-dim);font-size:10px}
+.quad-item.right{text-align:right}
+
+/* table */
+.viz-table{width:100%;display:grid;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.viz-table-col{background:var(--panel-hi);padding:8px 9px;}
+.viz-table-head{font-family:'Space Grotesk';font-weight:600;font-size:11.5px;color:var(--accent);margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.viz-table-body{font-size:10px;color:var(--muted);line-height:1.4}
+.viz-table-body b{color:var(--text)}
+
+/* checklist */
+.viz-checklist{width:100%;display:flex;flex-direction:column;gap:7px}
+.viz-check-item{display:flex;gap:8px;align-items:flex-start;font-size:11px}
+.viz-check-mark{width:15px;height:15px;flex-shrink:0;border-radius:4px;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.viz-check-item b{color:var(--text);font-weight:600}
+.viz-check-item span{color:var(--muted-dim);font-size:10px}
+
+/* radial */
+.radial-wrap{position:relative;width:100%;height:190px;display:flex;align-items:center;justify-content:center}
+.radial-center{
+  width:64px;height:64px;border-radius:10px;border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:'Space Grotesk';font-weight:600;font-size:9.5px;color:var(--accent);z-index:2;background:var(--bg-grid)
+}
+.radial-spoke{position:absolute;font-size:9.5px;line-height:1.25;width:96px;color:var(--muted)}
+.radial-spoke b{color:var(--text);display:block;font-size:10px}
+
+/* staircase */
+.stair-wrap{width:100%;display:flex;flex-direction:column-reverse;gap:5px}
+.stair-step{display:flex;align-items:center;gap:8px}
+.stair-bar{height:20px;border-radius:4px;background:var(--accent-dim);border-left:3px solid var(--accent)}
+.stair-label{font-size:10px;color:var(--text);white-space:nowrap}
+.stair-label i{color:var(--muted-dim);font-style:normal;font-size:9px}
+
+/* equation */
+.eq-wrap{width:100%;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.eq-line{font-family:'JetBrains Mono';font-size:12px;color:var(--text);background:var(--panel-hi);border:1px solid var(--border);border-radius:6px;padding:9px 12px;width:100%}
+.eq-line b{color:var(--accent)}
+
+/* flow */
+.flow-wrap{width:100%;display:flex;flex-direction:column;gap:10px}
+.flow-nodes{display:flex;justify-content:space-between;align-items:center}
+.flow-node{border:1.5px solid var(--accent);border-radius:8px;padding:8px 14px;font-family:'Space Grotesk';font-weight:600;font-size:11px;color:var(--accent)}
+.flow-arrow-row{display:flex;justify-content:space-between;gap:10px}
+.flow-arrow-col{flex:1;text-align:center;font-size:9.5px;color:var(--muted);line-height:1.3}
+.flow-arrow-col b{color:var(--text);display:block;font-size:10.5px;margin-bottom:2px}
+
+/* funnel */
+.funnel-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.funnel-shape{width:120px;height:0;border-left:60px solid transparent;border-right:60px solid transparent;border-top:56px solid var(--panel-hi);position:relative}
+.funnel-shape::after{content:attr(data-label);position:absolute;top:-46px;left:-60px;width:120px;text-align:center;font-size:9px;color:var(--muted);font-family:'JetBrains Mono'}
+.funnel-cats{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+
+/* scale */
+.scale-wrap{width:100%;display:flex;flex-direction:column;gap:8px}
+.scale-bar{display:flex;align-items:flex-end;gap:2px;height:60px}
+.scale-side{flex:1;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:6px;font-family:'Space Grotesk';font-weight:600;font-size:10.5px}
+.scale-side.heavy{background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);height:100%}
+.scale-side.light{background:var(--panel-hi);border:1px solid var(--border);color:var(--muted);height:55%;align-self:flex-end}
+.scale-note{font-size:9.5px;color:var(--muted-dim);text-align:center;line-height:1.35}
+
+/* pillars */
+.pillars-wrap{width:100%;display:flex;gap:5px;align-items:flex-end;justify-content:center;height:150px}
+.pillar{width:20px;background:var(--panel-hi);border:1px solid var(--border);border-top:2px solid var(--accent);display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;height:100%}
+.pillar span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:8.5px;color:var(--muted);letter-spacing:.02em}
+
+/* annotated sentence */
+.sentence-wrap{width:100%;display:flex;flex-direction:column;gap:12px}
+.sentence-box{font-size:12px;line-height:1.7;color:var(--text);background:var(--panel-hi);border:1px solid var(--border);border-radius:6px;padding:12px}
+.sentence-box .err{border-bottom:2px dotted var(--accent);color:var(--accent);padding-bottom:1px}
+.err-tags{display:flex;flex-wrap:wrap;gap:5px}
+
+/* target */
+.target-wrap{position:relative;width:150px;height:150px;margin:0 auto;display:flex;align-items:center;justify-content:center}
+.target-ring{position:absolute;border-radius:999px;border:1.5px solid var(--border-hi);display:flex;align-items:center;justify-content:center}
+.target-core{
+  width:56px;height:56px;border-radius:999px;background:var(--accent);color:#0a0b0d;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:'Space Grotesk';font-weight:700;font-size:9.5px;z-index:3;
+}
+.target-label{
+  position:absolute;font-size:8px;color:var(--muted);font-family:'JetBrains Mono';
+  background:var(--bg-grid);padding:0 4px;
+}
+
+/* vs comparison */
+.vs-wrap{width:100%;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch}
+.vs-col{background:var(--panel-hi);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:10px;color:var(--muted);line-height:1.4}
+.vs-col.no{border-color:#7f1d1d}
+.vs-col.yes{border-color:var(--accent)}
+.vs-col h4{font-family:'Space Grotesk';font-weight:600;font-size:11.5px;margin-bottom:5px}
+.vs-col.no h4{color:#f87171}
+.vs-col.yes h4{color:var(--accent)}
+.vs-mid{display:flex;align-items:center;font-family:'JetBrains Mono';font-size:10px;color:var(--muted-dim)}
+
+/* pyramid */
+.pyramid-wrap{width:100%;display:flex;flex-direction:column;align-items:center;gap:3px}
+.pyr-layer{border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk';font-weight:600;font-size:10px;color:#0a0b0d;padding:8px 0}
+
+/* chain */
+.chain-wrap{width:100%;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.chain-item{
+  border:1px solid var(--border);border-top:2px solid var(--accent);
+  background:var(--panel-hi);border-radius:6px;padding:6px 8px;font-size:9.5px;color:var(--text);
+  text-align:center;flex:1 1 70px;min-width:70px;
+}
+.chain-item.starred{border-top-color:#facc15;box-shadow:0 0 0 1px #facc1544 inset}
+
+/* numberline */
+.nline-wrap{width:100%;display:flex;flex-direction:column;gap:14px;align-items:center}
+.nline-track{position:relative;width:100%;height:56px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 4px}
+.nline-pt{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;flex:1}
+.nline-dot{width:7px;height:7px;border-radius:999px;background:var(--accent)}
+.nline-val{font-family:'JetBrains Mono';font-size:11px;color:var(--text)}
+.nline-op{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono';font-size:10px;color:var(--accent);background:var(--bg-grid);padding:0 3px}
+.nline-line{position:absolute;top:3px;left:0;right:0;height:1px;background:var(--border-hi);z-index:0}
+
+/* rules list */
+.rules-wrap{width:100%;display:flex;flex-direction:column;gap:8px}
+.rules-item{display:flex;gap:8px;font-size:11px;color:var(--muted);line-height:1.4}
+.rules-item .dash{color:var(--accent);flex-shrink:0}
+.rules-item b{color:var(--text)}
+
+/* twocol */
+.twocol-wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.twocol-col h4{font-family:'Space Grotesk';font-weight:600;font-size:11.5px;color:var(--accent);margin-bottom:6px}
+.twocol-col ol{list-style:none;counter-reset:step;display:flex;flex-direction:column;gap:4px}
+.twocol-col li{counter-increment:step;font-size:10px;color:var(--muted);display:flex;gap:6px}
+.twocol-col li::before{content:counter(step);font-family:'JetBrains Mono';font-size:9px;color:var(--accent);border:1px solid var(--border-hi);border-radius:999px;width:14px;height:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* floor stack */
+.stack-wrap{width:100%;display:flex;flex-direction:column;gap:10px}
+.stack-floors{display:flex;flex-direction:column-reverse;gap:2px;width:100%}
+.stack-floor{display:flex;align-items:center;gap:8px}
+.stack-num{font-family:'JetBrains Mono';font-size:9px;color:var(--accent);width:14px}
+.stack-box{flex:1;height:16px;border:1px solid var(--border-hi);border-radius:3px;background:var(--panel-hi)}
+.stack-clues{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+
+/* grid2x2 */
+.grid2-wrap{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.grid2-cell{background:var(--panel-hi);padding:10px;font-size:10px;color:var(--muted)}
+.grid2-cell b{color:var(--text);font-family:'Space Grotesk';font-weight:600;font-size:11px;display:block;margin-bottom:3px}
+
+/* modal */
+#modal-overlay{background:rgba(6,7,9,0.82);backdrop-filter:blur(3px)}
+#modal-panel{background:var(--panel);border:1px solid var(--border-hi)}
+.modal-nav-btn{
+  position:fixed; top:50%; transform:translateY(-50%);
+  width:40px;height:40px;border-radius:999px;
+  background:var(--panel); border:1px solid var(--border-hi);
+  color:var(--text); display:flex;align-items:center;justify-content:center;
+  cursor:pointer; z-index:60; transition:border-color .15s ease, background .15s ease;
+}
+.modal-nav-btn:hover{border-color:var(--muted); background:var(--panel-hi)}
+#modal-prev{left:16px}
+#modal-next{right:16px}
+#modal-close{
+  position:fixed; top:20px; right:20px; z-index:60;
+  width:34px;height:34px;border-radius:999px;
+  background:var(--panel); border:1px solid var(--border-hi); color:var(--muted);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:color .15s ease, border-color .15s ease;
+}
+#modal-close:hover{color:var(--text);border-color:var(--muted)}
+.modal-index{font-family:'JetBrains Mono';font-size:10px;color:var(--muted-dim)}
+@media (max-width:768px){
+  .modal-nav-btn{width:34px;height:34px}
+  #modal-prev{left:6px}
+  #modal-next{right:6px}
+}
+
+/* lock screen */
+#lock-overlay{background:var(--bg)}
+.pin-input{
+  width:180px;text-align:center;letter-spacing:0.6em;
+  font-family:'JetBrains Mono',monospace;font-size:26px;
+  background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  padding:14px 10px 14px 18px;outline:none;color:var(--text);
+}
+.pin-input:focus{border-color:var(--border-hi)}
+@keyframes pin-shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-9px)}
+  40%{transform:translateX(9px)}
+  60%{transform:translateX(-6px)}
+  80%{transform:translateX(6px)}
+}
+.pin-shake{animation:pin-shake .35s ease}
+#lock-btn{
+  width:34px;height:34px;border-radius:999px;flex-shrink:0;
+  background:var(--panel);border:1px solid var(--border);color:var(--muted);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:color .15s ease, border-color .15s ease;
+}
+#lock-btn:hover{color:var(--text);border-color:var(--border-hi)}
+</style>
+</head>
+<body class="min-h-screen overflow-hidden">
+
+<!-- LOCK SCREEN -->
+<div id="lock-overlay" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/95 backdrop-blur-2xl">
+  <!-- Ambient Glow -->
+  <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800/20 via-zinc-950/80 to-black opacity-80"></div>
+
+  <!-- Terminal Card -->
+  <div class="relative z-10 w-full max-w-md bg-[#12141a]/90 border border-white/15 rounded-3xl p-8 sm:p-10 shadow-[0_0_80px_rgba(0,0,0,0.9)] backdrop-blur-2xl flex flex-col items-center text-center">
+    
+    <!-- Top Close Exit Button -->
+    <button id="lock-screen-close-btn" title="Exit to Dashboard" aria-label="Close" onclick="closeVaultPage()" class="absolute top-5 right-5 w-8.5 h-8.5 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/25 flex items-center justify-center cursor-pointer transition">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+
+    <!-- Shield / Lock Badge -->
+    <div class="w-14 h-14 rounded-2xl bg-gradient-to-b from-zinc-800 to-zinc-950 border border-white/20 flex items-center justify-center text-white shadow-xl mb-4">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    </div>
+
+    <!-- Header Title & Subtitle -->
+    <h1 class="font-display text-xl font-bold tracking-tight text-white mb-1">THE VAULT</h1>
+    <p class="font-mono text-xs text-zinc-400 mb-6">Enter 4-digit security PIN to unlock archive</p>
+
+    <!-- PIN Input -->
+    <div class="relative mb-2 w-full flex flex-col items-center">
+      <input id="pin-input" class="pin-input" type="text" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="••••">
+    </div>
+
+    <!-- Error Message -->
+    <p id="pin-error" class="font-mono text-[11px] text-rose-400 h-4 mb-2 font-semibold" style="opacity:0;transition:opacity .2s ease">Access Denied • Incorrect Code</p>
+
+    <!-- Quote / Hint -->
+    <div class="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 mb-6 w-full max-w-[280px]">
+      <p id="pin-hint" class="font-mono text-[10px] text-zinc-400 leading-relaxed"></p>
+    </div>
+
+    <!-- Return to Conquest Action Link -->
+    <button onclick="closeVaultPage()" class="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-xs font-mono text-zinc-300 hover:text-white transition cursor-pointer flex items-center justify-center gap-2">
+      <span>← Return to Conquest Dashboard</span>
+    </button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="border-b border-[var(--border)] sticky top-0 z-30 bg-[var(--bg)]/95 backdrop-blur">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-3 flex items-center justify-between gap-4">
+    
+    <!-- Top Left Title -->
+    <div class="flex items-center gap-2.5 shrink-0">
+      <div class="w-7 h-7 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-white text-xs shadow-inner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </div>
+      <h1 class="font-display text-base sm:text-lg font-bold tracking-tight text-white whitespace-nowrap">THE VAULT</h1>
+    </div>
+
+    <!-- Center Pill Searchbar -->
+    <div class="flex-1 flex justify-center max-w-md mx-2">
+      <div class="relative w-full max-w-xs sm:max-w-sm flex items-center">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--muted-dim)] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="search-input" type="text" placeholder="Search archive..."
+          class="w-full bg-[var(--panel)] border border-[var(--border)] focus:border-[var(--border-hi)] rounded-full pl-9 pr-9 py-1.5 text-xs outline-none placeholder:text-[var(--muted-dim)] text-[var(--text)] transition duration-200 shadow-inner">
+        <kbd class="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[9px] text-[var(--muted-dim)] bg-white/5 border border-white/10 px-1.5 py-0.5 rounded pointer-events-none">/</kbd>
+      </div>
+    </div>
+
+    <!-- Top Right Actions: Lock & Close side-by-side -->
+    <div class="flex items-center gap-2 shrink-0">
+      <button id="lock-btn" title="Lock Vault" aria-label="Lock vault" class="w-8 h-8 rounded-full bg-[var(--panel)] border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border-hi)] flex items-center justify-center cursor-pointer transition">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </button>
+      <button id="close-vault-btn" title="Close Vault (Press B or ESC)" aria-label="Close Vault" onclick="closeVaultPage()" class="w-8 h-8 rounded-full bg-[var(--panel)] border border-[var(--border)] text-[var(--muted)] hover:text-white hover:border-[var(--border-hi)] flex items-center justify-center cursor-pointer transition">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-5 md:px-8 py-7">
+
+  <!-- FILTER BAR -->
+  <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+    <div id="subject-pills" class="flex flex-wrap gap-2"></div>
+    <div class="flex items-center gap-3">
+      <select id="sort-select" class="pill font-mono" style="appearance:none;padding-right:22px;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22 viewBox=%220 0 10 6%22><path d=%22M1 1l4 4 4-4%22 stroke=%22%238b93a1%22 stroke-width=%221.5%22 fill=%22none%22/></svg>');background-repeat:no-repeat;background-position:right 8px center">
+        <option value="newest">Newest first</option>
+        <option value="az">A – Z</option>
+        <option value="subject">By subject</option>
+      </select>
+      <span id="result-count" class="font-mono text-xs text-[var(--muted-dim)] whitespace-nowrap">18 / 18</span>
+      <button id="clear-filters" class="font-mono text-xs text-[var(--muted-dim)] hover:text-[var(--text)] underline decoration-dotted">reset</button>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <main>
+    <div id="card-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+    <div id="empty-state" class="hidden text-center py-20">
+      <p class="font-mono text-sm text-[var(--muted-dim)]">No case files match this query.</p>
+    </div>
+    <div class="mt-6 border border-dashed border-[var(--border)] rounded-lg p-6 text-center">
+      <p class="font-mono text-xs text-[var(--muted-dim)]">+ MORE CASE FILES QUEUED</p>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div id="modal-overlay" class="fixed inset-0 z-50 hidden items-center justify-center p-4 overflow-y-auto">
+  <button id="modal-close" aria-label="Close">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <button id="modal-prev" class="modal-nav-btn" aria-label="Previous">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button id="modal-next" class="modal-nav-btn" aria-label="Next">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <div id="modal-panel" class="rounded-xl max-w-2xl w-full my-8 overflow-hidden">
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   VAULT DATA — append new entries to this array.
+   Each entry: { id, code, subject, title, tags, note, visual }
+   ============================================================ */
+const VAULT_DATA = [
+{
+  id:'hist-01', code:'HIS-01', subject:'GK/GS', title:"The Core Ancient & Medieval Clusters",
+  tags:['Ancient','Medieval','Buddhism','Jainism','Mauryan Empire','Gupta Empire','Bhakti Movement'],
+  note:"Ignore obscure dates & random regional wars. Focus on the core.",
+  visual:{ type:'quadrant', center:"SSC's Obsessions", items:[
+    {label:'Buddhism & Jainism', sub:'Teachings, councils, rulers'},
+    {label:'Mauryan Empire', sub:'Ashoka, edicts, Kautilya'},
+    {label:'Gupta Empire', sub:'Golden Age, literature, science'},
+    {label:'Bhakti Movement & Mughals', sub:'Saints, Revenue, Mansabdari'},
+  ]}
+},
+{
+  id:'hist-02', code:'HIS-02', subject:'GK/GS', title:"The Peak of the Mughal Empire",
+  tags:['Medieval','Mughals','Akbar','Aurangzeb'],
+  note:"Four rulers, four one-line identities — that's what SSC actually tests.",
+  visual:{ type:'table', cols:[
+    {head:'Akbar', body:'Introduced <b>Din-i-Ilahi</b> & <b>Mansabdari</b> system. Removed Jizya tax.'},
+    {head:'Jahangir', body:'Known for strict justice. Heavily influenced by <b>Nur Jahan</b>.'},
+    {head:'Shah Jahan', body:'The Master Builder. Built <b>Taj Mahal</b>, Red Fort, Jama Masjid.'},
+    {head:'Aurangzeb', body:'Most controversial. <b>Reimposed Jizya</b> tax.'},
+  ]}
+},
+{
+  id:'hist-03', code:'HIS-03', subject:'GK/GS', title:'Modern History: The "Big 6" Checklist',
+  tags:['Modern','Freedom Movement','1857 Revolt','Constitution'],
+  note:'SSC returns to these 6 themes repeatedly — do not spread attention equally. Stop memorizing every event; SSC asks Who? When? Objective? Outcome?',
+  visual:{ type:'checklist', items:[
+    {label:"India's Freedom Movements", sub:'INC, Swadeshi, Quit India'},
+    {label:'Important Personalities', sub:'Gandhi, Bose, Tilak, Bhagat Singh'},
+    {label:'Acts & Constitutions', sub:'1773–1935 — focus on features, not all provisions'},
+    {label:'Revolt of 1857', sub:'Causes, Leaders, Centers'},
+  ]}
+},
+{
+  id:'geo-01', code:'GEO-01', subject:'GK/GS', title:'The Beautifully Boring Routine',
+  tags:['Rivers','Mountains','Climate','Agriculture','Wildlife'],
+  note:'SSC tests Class 10 & 11 fundamentals. Know them cold.',
+  visual:{ type:'radial', center:'India', spokes:[
+    {label:'Rivers', sub:'Origin, tributaries, passing states'},
+    {label:'Mountains', sub:'Peaks, ranges, passes'},
+    {label:'Parks & Wildlife', sub:'Which state, which animal'},
+    {label:'Climate', sub:'Monsoon patterns and rainfall'},
+    {label:'Agriculture & Soil', sub:'Crop locations, seasons, soil types'},
+  ]}
+},
+{
+  id:'pol-01', code:'POL-01', subject:'GK/GS', title:'Polity: The Predictable Goldmine',
+  tags:['Constitution','Fundamental Rights','Amendments','Parliament'],
+  note:'Master these systematically for guaranteed marks.',
+  visual:{ type:'staircase', steps:[
+    {label:'Fundamental Rights', note:'every single year'},
+    {label:'Fundamental Duties & DPSP'},
+    {label:'Parliament', note:'sessions, bills, committees'},
+    {label:'President & PM', note:'roles, powers'},
+    {label:'Key Amendments', note:'42nd, 44th, 73rd, 74th, 86th'},
+  ]}
+},
+{
+  id:'eco-01', code:'ECO-01', subject:'GK/GS', title:'The National Output Equation',
+  tags:['GDP','GNP','National Income'],
+  note:'Both are basic definitions — memorize the difference.',
+  visual:{ type:'equation', lines:[
+    '<b>GDP</b> = Total value of goods & services produced within a country',
+    '<b>GNP</b> = GDP + Income from abroad',
+  ]}
+},
+{
+  id:'eco-02', code:'ECO-02', subject:'GK/GS', title:'RBI Rate Mechanics: The Flow of Money',
+  tags:['RBI','Repo Rate','CRR','SLR','Monetary Policy'],
+  note:'Also know CRR (Cash Reserve Ratio) & SLR (Statutory Liquidity Ratio).',
+  visual:{ type:'flow', nodeA:'RBI', nodeB:'Commercial Bank', cols:[
+    {label:'Repo Rate', sub:'Rate at which RBI lends money to commercial banks'},
+    {label:'Reverse Repo Rate', sub:'Rate at which RBI borrows from commercial banks'},
+  ]}
+},
+{
+  id:'sci-01', code:'SCI-01', subject:'GK/GS', title:'Science: Selection vs. Rejection',
+  tags:['Physics','Chemistry','Biology'],
+  note:'Strictly Class 9 & 10 Science. Skipping this costs 4–5 marks per paper.',
+  visual:{ type:'table', cols:[
+    {head:'Physics', body:'Motion. Sound. Light. Electricity.'},
+    {head:'Chemistry', body:'Acids/Bases. Metals/Non-metals. Everyday real-life chemistry.'},
+    {head:'Biology', body:'Human Body. Diseases. Vitamins. Nutrition. Plant Kingdom.'},
+  ]}
+},
+{
+  id:'ca-01', code:'CA-01', subject:'GK/GS', title:'Current Affairs: The Uncomfortable Truth',
+  tags:['Awards','Govt Schemes','Sports','International Organizations'],
+  note:'Stop reading every political/economic news piece. Retain more by studying less.',
+  visual:{ type:'funnel', top:'2–3 hrs daily news', cats:['Awards','Govt Schemes','Sports','Important Days','Int. Organizations'] }
+},
+{
+  id:'eng-01', code:'ENG-01', subject:'English', title:'The Biggest Shortcut in SSC English',
+  tags:['Grammar','Vocabulary','Strategy'],
+  note:"SSC English is a grammar test: learnable, predictable, repeatable. Reading newspapers and blindly memorizing words won't fix your score.",
+  visual:{ type:'scale', heavy:'Grammar', light:'Vocabulary' }
+},
+{
+  id:'eng-02', code:'ENG-02', subject:'English', title:'SSC English Score: The 8 Pillars',
+  tags:['Grammar','Tenses','Articles','Prepositions'],
+  note:'These 8 areas cover the bulk of the paper. None can be ignored.',
+  visual:{ type:'pillars', items:['Tenses','Articles','Prepositions','Conjunctions','Pronouns','Subject-Verb','Voice','Narration'] }
+},
+{
+  id:'eng-03', code:'ENG-03', subject:'English', title:'Error Detection Is Mechanical',
+  tags:['Grammar','Error Detection','Subject-Verb Agreement'],
+  note:'SSC hides errors in 5 places: Articles, Tenses, Pronouns, Prepositions, Subject-Verb agreement. Internalize grammar and you will physically feel what is wrong.',
+  visual:{ type:'sentence',
+    html:'The boy <span class="err">have</span> been waiting at a stat<span class="err">i</span>on since <span class="err">two hour</span>.',
+    errs:['Subject-Verb mismatch','Article misuse','Preposition error']
+  }
+},
+{
+  id:'eng-04', code:'ENG-04', subject:'English', title:'Vocabulary Is Smarter Than You Think',
+  tags:['Vocabulary','Synonyms','Antonyms','Idioms','PYQ'],
+  note:'SSC has clear preferences and repeating patterns. Master the PYQ bullseye first, then expand outward.',
+  visual:{ type:'target', rings:['Upper-Intermediate Synonyms/Antonyms','Favorites & Classic Idioms'], core:'SSC PYQs' }
+},
+{
+  id:'eng-05', code:'ENG-05', subject:'English', title:'Cloze Test vs. Comprehension',
+  tags:['Cloze Test','Comprehension','Reading'],
+  note:'Reality check for both formats — one is disguised grammar, the other is a plain text-search.',
+  visual:{ type:'vs',
+    no:{title:'Cloze Test', body:'80% Grammar. Read → Apply Rules → Answer becomes obvious.'},
+    yes:{title:'Comprehension', body:'SSC passages aren\'t literary masterpieces. Read slowly, mark key info, answer directly from the text.'}
+  }
+},
+{
+  id:'mat-01', code:'MAT-01', subject:'Math', title:'The Math Weightage Pyramid',
+  tags:['Arithmetic','Algebra','Mensuration','Strategy'],
+  note:'Fix the bottom first. Everything else comes after.',
+  visual:{ type:'pyramid', layers:[
+    {label:'Time, Work, Distance', color:'#fb923c'},
+    {label:'Mensuration', color:'#4ade80'},
+    {label:'Algebra & Geometry', color:'#e879f9'},
+    {label:'Arithmetic (40–50%)', color:'#38bdf8'},
+  ]}
+},
+{
+  id:'mat-02', code:'MAT-02', subject:'Math', title:'Arithmetic: The Load-Bearing Chapter',
+  tags:['Arithmetic','Percentage','Profit Loss','SI CI'],
+  note:'If your Arithmetic is weak, nothing else matters.',
+  visual:{ type:'chain', items:[
+    {label:'Percentage'},{label:'Profit & Loss'},{label:'Ratio & Proportion'},{label:'Average'},
+    {label:'SI & CI'},{label:'Mixture & Alligation', star:true},{label:'Partnership'},
+  ]}
+},
+{
+  id:'mat-03', code:'MAT-03', subject:'Math', title:'Algebra Is No Longer Optional',
+  tags:['Algebra','Quadratic Equations','Identities'],
+  note:'Leaving 2 to 4 marks on the table is the difference between clearing Tier 1 and failing.',
+  visual:{ type:'checklist', items:[
+    {label:'Linear Equations', sub:'2 variables'},
+    {label:'Quadratic', sub:'Roots / coefficients'},
+    {label:'Identities', sub:'Memorize & apply'},
+    {label:'Surds / Indices'},
+  ]}
+},
+{
+  id:'mat-04', code:'MAT-04', subject:'Math', title:'Geometry: Proofs vs. Properties',
+  tags:['Geometry','Properties','Circles','Triangles'],
+  note:'3 days of focused effort to memorize properties = 4 to 6 marks per paper. Do the math.',
+  visual:{ type:'vs',
+    no:{title:'Proofs', body:"Don't do this — SSC does not test derivations."},
+    yes:{title:'Properties', body:'Master this — memorize and directly apply circle & triangle properties.'}
+  }
+},
+{
+  id:'mat-05', code:'MAT-05', subject:'Math', title:'Mensuration: Same Formulas. Forever.',
+  tags:['Mensuration','Surface Area','Volume','Formulas'],
+  note:'SSC just rotates through these 5 shapes, testing surface area, volume, or combining two shapes. Know the formulas cold = guaranteed marks.',
+  visual:{ type:'radial', center:'Same Formulas. Forever.', spokes:[
+    {label:'Cube'}, {label:'Cuboid'}, {label:'Cone'}, {label:'Sphere'}, {label:'Hemisphere'},
+  ]}
+},
+{
+  id:'mat-06', code:'MAT-06', subject:'Math', title:'The Concept Engine (Math Mechanic)',
+  tags:['Time and Work','Pipes and Cisterns','Boats and Streams','Trains'],
+  note:'SSC dresses the identical math concept in a thousand different stories. Master the gear, drive any vehicle.',
+  visual:{ type:'radial', center:'The Concept Engine', spokes:[
+    {label:'Time & Work', sub:'Efficiency'},
+    {label:'Pipes & Cisterns'},
+    {label:'Boats & Streams', sub:'Upstream & Downstream'},
+    {label:'Trains', sub:'Crossing time'},
+  ]}
+},
+{
+  id:'rea-01', code:'REA-01', subject:'Reasoning', title:'Series: Find The Pattern, Score The Mark',
+  tags:['Number Series','Alphabet Series','Mixed Series'],
+  note:"SSC rarely requires genius insight — it requires practice. Do 200 series questions, you'll see patterns automatically.",
+  visual:{ type:'numberline', points:[2,4,8,16,'?'], ops:['+2','+4','+8','?'] }
+},
+{
+  id:'rea-02', code:'REA-02', subject:'Reasoning', title:'Coding-Decoding Is The Same Logic In A Different Skin',
+  tags:['Letter Shift','Position-Based','Number Coding'],
+  note:"Crack the rule → apply it → done. SSC loves coding-decoding because it looks hard but isn't.",
+  visual:{ type:'rules', items:[
+    '<b>Letter Shift</b> — each letter shifted by a fixed number',
+    '<b>Position-Based</b> — tied to alphabetical position',
+    '<b>Number Coding</b> — words coded as numbers by a strict rule',
+  ]}
+},
+{
+  id:'rea-03', code:'REA-03', subject:'Reasoning', title:'Easy Marks Hiding In Plain Sight',
+  tags:['Direction Sense','Blood Relations'],
+  note:'Solve in under 2 minutes combined. Stop leaving marks on the table.',
+  visual:{ type:'twocol', cols:[
+    {title:'Direction Sense', items:['Draw the path','Mark N, S, E, W','Calculate']},
+    {title:'Blood Relations', items:['Draw a family tree','Map relationships','Read from diagram']},
+  ]}
+},
+{
+  id:'rea-04', code:'REA-04', subject:'Reasoning', title:'Floor And Box Based Puzzles',
+  tags:['Floor Puzzles','Seating Arrangement','Logic'],
+  note:'Six people, six floors — convert every clue into a direct floor mapping.',
+  visual:{ type:'stack', floors:[1,2,3,4,5,6], clues:['A↑B','C=6','B↓D','A–E–C','F=1'] }
+},
+{
+  id:'rea-05', code:'REA-05', subject:'Reasoning', title:'Non-Verbal Reasoning Requires Zero Memorization',
+  tags:['Mirror Image','Water Image','Paper Folding','Embedded Figures'],
+  note:'Requires spatial thinking. Improves dramatically with just 5 to 6 days of focused practice.',
+  visual:{ type:'grid2x2', cells:[
+    {title:'Mirror Image', sub:'Right becomes left'},
+    {title:'Water Image', sub:'Top and bottom flip'},
+    {title:'Paper Folding', sub:'Imagine the fold'},
+    {title:'Embedded Figures', sub:'Find the hidden shape'},
+  ]}
+},
+{
+  id:'str-01', code:'STR-01', subject:'GK/GS', title:'PYQs Are The Actual Blueprint Of How SSC Thinks',
+  tags:['PYQs','Exam Strategy','Preparation'],
+  note:"You don't just prepare harder — you prepare with precision.",
+  visual:{ type:'checklist', items:[
+    {label:'PYQs are not just practice material'},
+    {label:"You are learning SSC's language"},
+    {label:"You are understanding SSC's mindset"},
+    {label:"You are mapping the examiner's brain"},
+  ]}
+},
+];
+
+/* ============================================================
+   RENDERERS
+   ============================================================ */
+function esc(s){ return s.replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+const RENDERERS = {
+  quadrant(v){
+    const [a,b,c,d] = v.items;
+    return `<div class="quad-wrap">
+      <div class="quad-item"><b>${a.label}</b><span>${a.sub}</span></div>
+      <div class="quad-center">${v.center}</div>
+      <div class="quad-item right"><b>${b.label}</b><span>${b.sub}</span></div>
+      <div class="quad-item"><b>${c.label}</b><span>${c.sub}</span></div>
+      <div></div>
+      <div class="quad-item right"><b>${d.label}</b><span>${d.sub}</span></div>
+    </div>`;
+  },
+  table(v){
+    return `<div class="viz-table" style="grid-template-columns:repeat(${v.cols.length},1fr)">
+      ${v.cols.map(c=>`<div class="viz-table-col"><div class="viz-table-head">${c.head}</div><div class="viz-table-body">${c.body}</div></div>`).join('')}
+    </div>`;
+  },
+  checklist(v){
+    return `<div class="viz-checklist">${v.items.map(it=>`
+      <div class="viz-check-item">
+        <div class="viz-check-mark"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div>
+        <div><b>${it.label}</b>${it.sub?` — <span>${it.sub}</span>`:''}</div>
+      </div>`).join('')}</div>`;
+  },
+  radial(v){
+    const n = v.spokes.length;
+    const R = 78;
+    const spokes = v.spokes.map((s,i)=>{
+      const angle = (i/n) * 2*Math.PI - Math.PI/2;
+      const x = 50 + (R/1.9) * Math.cos(angle);
+      const y = 50 + (R/1.9) * Math.sin(angle);
+      const align = Math.cos(angle) > 0.3 ? 'text-align:left' : Math.cos(angle) < -0.3 ? 'text-align:right' : 'text-align:center';
+      return `<div class="radial-spoke" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%);${align}"><b>${s.label}</b>${s.sub||''}</div>`;
+    }).join('');
+    return `<div class="radial-wrap"><div class="radial-center">${v.center}</div>${spokes}</div>`;
+  },
+  numberline(v){
+    const pts = v.points.map((p,i)=>{
+      const op = v.ops[i-1];
+      return `<div class="nline-pt">${op?`<span class="nline-op">${op}</span>`:''}<div class="nline-dot"></div><div class="nline-val">${p}</div></div>`;
+    }).join('');
+    return `<div class="nline-wrap"><div class="nline-track"><div class="nline-line"></div>${pts}</div></div>`;
+  },
+  rules(v){
+    return `<div class="rules-wrap">${v.items.map(it=>`<div class="rules-item"><span class="dash">—</span><div>${it}</div></div>`).join('')}</div>`;
+  },
+  twocol(v){
+    return `<div class="twocol-wrap">${v.cols.map(c=>`
+      <div class="twocol-col"><h4>${c.title}</h4><ol>${c.items.map(i=>`<li>${i}</li>`).join('')}</ol></div>
+    `).join('')}</div>`;
+  },
+  stack(v){
+    const n = v.floors.length;
+    return `<div class="stack-wrap">
+      <div class="stack-floors">${v.floors.map((f,i)=>`<div class="stack-floor"><span class="stack-num">${n-i}</span><div class="stack-box"></div></div>`).join('')}</div>
+      <div class="stack-clues">${v.clues.map(c=>`<span class="tag-chip">${c}</span>`).join('')}</div>
+    </div>`;
+  },
+  grid2x2(v){
+    return `<div class="grid2-wrap">${v.cells.map(c=>`<div class="grid2-cell"><b>${c.title}</b>${c.sub}</div>`).join('')}</div>`;
+  },
+  staircase(v){
+    const n = v.steps.length;
+    return `<div class="stair-wrap">${v.steps.map((s,i)=>`
+      <div class="stair-step">
+        <div class="stair-bar" style="width:${30 + (i * (65/(n-1)))}%"></div>
+        <div class="stair-label">${s.label}${s.note?` <i>(${s.note})</i>`:''}</div>
+      </div>`).join('')}</div>`;
+  },
+  equation(v){
+    return `<div class="eq-wrap">${v.lines.map(l=>`<div class="eq-line">${l}</div>`).join('')}</div>`;
+  },
+  flow(v){
+    return `<div class="flow-wrap">
+      <div class="flow-nodes"><div class="flow-node">${v.nodeA}</div><div class="flow-node">${v.nodeB}</div></div>
+      <div class="flow-arrow-row">${v.cols.map(c=>`<div class="flow-arrow-col"><b>${c.label}</b>${c.sub}</div>`).join('')}</div>
+    </div>`;
+  },
+  funnel(v){
+    return `<div class="funnel-wrap">
+      <div class="funnel-shape" data-label="${v.top}"></div>
+      <div class="funnel-cats">${v.cats.map(c=>`<span class="tag-chip">${c}</span>`).join('')}</div>
+    </div>`;
+  },
+  scale(v){
+    return `<div class="scale-wrap">
+      <div class="scale-bar">
+        <div class="scale-side heavy">${v.heavy}</div>
+        <div class="scale-side light">${v.light}</div>
+      </div>
+    </div>`;
+  },
+  pillars(v){
+    return `<div class="pillars-wrap">${v.items.map(l=>`<div class="pillar"><span>${l}</span></div>`).join('')}</div>`;
+  },
+  sentence(v){
+    return `<div class="sentence-wrap">
+      <div class="sentence-box">${v.html}</div>
+      <div class="err-tags">${v.errs.map(e=>`<span class="tag-chip">${e}</span>`).join('')}</div>
+    </div>`;
+  },
+  target(v){
+    const rings = v.rings.map((r,i)=>{
+      const size = 150 - i*46;
+      const labelPos = i===0 ? 'top:-2px;left:8px' : 'bottom:6px;right:2px';
+      return `<div class="target-ring" style="width:${size}px;height:${size}px"></div><div class="target-label" style="${labelPos}">${r}</div>`;
+    }).join('');
+    return `<div class="target-wrap">${rings}<div class="target-core">${v.core}</div></div>`;
+  },
+  vs(v){
+    return `<div class="vs-wrap">
+      <div class="vs-col no"><h4>${v.no.title}</h4>${v.no.body}</div>
+      <div class="vs-mid">vs</div>
+      <div class="vs-col yes"><h4>${v.yes.title}</h4>${v.yes.body}</div>
+    </div>`;
+  },
+  pyramid(v){
+    const n = v.layers.length;
+    return `<div class="pyramid-wrap">${v.layers.map((l,i)=>`<div class="pyr-layer" style="width:${30 + (i+1)*(70/n)}%;background:${l.color}">${l.label}</div>`).join('')}</div>`;
+  },
+  chain(v){
+    return `<div class="chain-wrap">${v.items.map(it=>`<div class="chain-item${it.star?' starred':''}">${it.label}${it.star?' ★':''}</div>`).join('')}</div>`;
+  },
+};
+
+/* ============================================================
+   LOCK SCREEN — PIN = current device time, 24-hour format, HHMM
+   e.g. 2:37 PM -> "1437". Accepts current minute ±1 for typing lag.
+   ============================================================ */
+const TIME_QUOTES = [
+  "Time is the quiet currency of rankers. Invest every hour with ruthless discipline.",
+  "The key that unlocks closed doors is carved from consistency in quiet hours.",
+  "Mastering the present hour is the only real strategy for the final merit list.",
+  "Precision isn't born in the exam hall; it is forged minute by minute today.",
+  "Every tick of the clock is a non-negotiable step closer to your dream post.",
+  "The most valuable key you possess is your unyielding respect for time.",
+  "Focused hours today unlock the doors that double-lock tomorrow.",
+  "Consistency turns fleeting minutes into permanent rank."
+];
+
+function pinForDate(d){
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mm = String(d.getMinutes()).padStart(2,'0');
+  return hh + mm;
+}
+function validPins(){
+  const now = new Date();
+  return [
+    pinForDate(new Date(now.getTime() - 60000)),
+    pinForDate(now),
+    pinForDate(new Date(now.getTime() + 60000)),
+  ];
+}
+
+const lockOverlay = document.getElementById('lock-overlay');
+const pinInput = document.getElementById('pin-input');
+const pinError = document.getElementById('pin-error');
+const pinHint = document.getElementById('pin-hint');
+
+function showHint(){
+  pinHint.textContent = TIME_QUOTES[Math.floor(Math.random() * TIME_QUOTES.length)];
+}
+
+function lockVault(){
+  lockOverlay.classList.remove('hidden');
+  lockOverlay.classList.add('flex');
+  document.body.classList.add('overflow-hidden');
+  pinInput.value = '';
+  showHint();
+  setTimeout(()=> pinInput.focus(), 50);
+}
+
+function unlockVault(){
+  lockOverlay.classList.add('hidden');
+  lockOverlay.classList.remove('flex');
+  document.body.classList.remove('overflow-hidden');
+}
+
+function tryUnlock(){
+  const val = pinInput.value.trim();
+  if(val.length !== 4) return;
+  if(validPins().includes(val)){
+    unlockVault();
+  } else {
+    pinError.style.opacity = '1';
+    pinInput.classList.add('pin-shake');
+    setTimeout(()=> pinInput.classList.remove('pin-shake'), 350);
+    setTimeout(()=> { pinInput.value = ''; }, 150);
+    setTimeout(()=> { pinError.style.opacity = '0'; }, 1800);
+  }
+}
+
+pinInput.addEventListener('input', ()=>{
+  pinInput.value = pinInput.value.replace(/[^0-9]/g,'').slice(0,4);
+  if(pinInput.value.length === 4) tryUnlock();
+});
+pinInput.addEventListener('keydown', e=>{ if(e.key === 'Enter') tryUnlock(); });
+document.getElementById('lock-btn').addEventListener('click', lockVault);
+
+showHint();
+setTimeout(()=> pinInput.focus(), 100);
+
+/* ============================================================
+   APP LOGIC
+   ============================================================ */
+const SUBJECTS = ['Math','Reasoning','GK/GS','English','Computer'];
+let activeFilters = new Set();
+let searchQuery = '';
+let sortMode = 'newest';
+let currentResults = [];
+let currentIndex = -1;
+
+function subjClass(s){ return 'subj-' + s.replace(/[^a-zA-Z]/g,''); }
+
+function renderSidebar(){
+  const subjWrap = document.getElementById('subject-pills');
+  subjWrap.innerHTML = SUBJECTS.map(s=>{
+    const count = VAULT_DATA.filter(d=>d.subject===s).length;
+    return `<button class="pill subj-pill ${subjClass(s)} ${activeFilters.has(s)?'active':''}" data-filter="${s}">${s} <span class="opacity-50">${count}</span></button>`;
+  }).join('');
+
+  document.querySelectorAll('[data-filter]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const f = btn.dataset.filter;
+      activeFilters.has(f) ? activeFilters.delete(f) : activeFilters.add(f);
+      renderSidebar();
+      renderGrid();
+    });
+  });
+}
+
+function matches(entry){
+  const hay = (entry.title+' '+entry.subject+' '+entry.tags.join(' ')+' '+entry.note).toLowerCase();
+  const searchOk = !searchQuery || hay.includes(searchQuery.toLowerCase());
+  const filterOk = activeFilters.size===0 || activeFilters.has(entry.subject);
+  return searchOk && filterOk;
+}
+
+function sortResults(list){
+  const arr = [...list];
+  if(sortMode === 'az') arr.sort((a,b)=> a.title.localeCompare(b.title));
+  else if(sortMode === 'subject') arr.sort((a,b)=> a.subject.localeCompare(b.subject) || a.title.localeCompare(b.title));
+  else arr.reverse(); // newest first — VAULT_DATA is appended in the order entries were added
+  return arr;
+}
+
+function renderGrid(){
+  const grid = document.getElementById('card-grid');
+  const results = sortResults(VAULT_DATA.filter(matches));
+  currentResults = results;
+  document.getElementById('result-count').textContent = `${results.length} / ${VAULT_DATA.length}`;
+  document.getElementById('empty-state').classList.toggle('hidden', results.length>0);
+
+  grid.innerHTML = results.map(entry=>`
+    <div class="card ${subjClass(entry.subject)}" data-id="${entry.id}">
+      <div class="card-viz">${RENDERERS[entry.visual.type](entry.visual)}</div>
+      <div class="p-4 flex flex-col gap-2 flex-1">
+        <div class="flex items-center justify-between">
+          <span class="card-code">${entry.code}</span>
+          <span class="pill subj-pill ${subjClass(entry.subject)}" style="pointer-events:none;padding:3px 9px 3px 18px;font-size:9.5px">${entry.subject}</span>
+        </div>
+        <h3 class="font-display font-600 text-[15px] leading-snug">${entry.title}</h3>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', ()=> openModal(card.dataset.id));
+  });
+}
+
+function renderModalContent(entry){
+  document.getElementById('modal-content').innerHTML = `
+    <div class="card-viz" style="min-height:230px">${RENDERERS[entry.visual.type](entry.visual)}</div>
+    <div class="p-6 flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <span class="card-code text-xs">${entry.code}</span>
+        <div class="flex items-center gap-3">
+          <span class="modal-index">${currentIndex+1} / ${currentResults.length}</span>
+          <span class="pill subj-pill ${subjClass(entry.subject)}" style="pointer-events:none;padding:4px 10px 4px 20px">${entry.subject}</span>
+        </div>
+      </div>
+      <h2 class="font-display font-700 text-2xl leading-tight">${entry.title}</h2>
+      <p class="text-sm text-[var(--muted)] leading-relaxed border-l-2 pl-3" style="border-color:var(--accent)">${entry.note}</p>
+      <div class="flex flex-wrap gap-1.5 pt-1">${entry.tags.map(t=>`<span class="tag-chip">${t}</span>`).join('')}</div>
+    </div>
+  `;
+  document.getElementById('modal-panel').className = `rounded-xl max-w-2xl w-full my-8 overflow-hidden ${subjClass(entry.subject)}`;
+}
+
+function openModal(id){
+  currentIndex = currentResults.findIndex(d=>d.id===id);
+  if(currentIndex === -1){ currentResults = VAULT_DATA; currentIndex = VAULT_DATA.findIndex(d=>d.id===id); }
+  renderModalContent(currentResults[currentIndex]);
+  const navVisible = currentResults.length > 1 ? 'flex' : 'none';
+  document.getElementById('modal-prev').style.display = navVisible;
+  document.getElementById('modal-next').style.display = navVisible;
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.remove('hidden');
+  overlay.classList.add('flex');
+}
+
+function stepModal(delta){
+  if(currentResults.length === 0) return;
+  currentIndex = (currentIndex + delta + currentResults.length) % currentResults.length;
+  renderModalContent(currentResults[currentIndex]);
+}
+
+function closeModal(){
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.add('hidden');
+  overlay.classList.remove('flex');
+}
+
+document.getElementById('modal-prev').addEventListener('click', ()=>stepModal(-1));
+document.getElementById('modal-next').addEventListener('click', ()=>stepModal(1));
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e=>{
+  if(e.target.id==='modal-overlay') closeModal();
+});
+
+function closeVaultPage() {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "closeFullscreen" }, "*");
+  } else {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "../index.html";
+    }
+  }
+}
+window.closeVaultPage = closeVaultPage;
+
+document.addEventListener('keydown', e=>{
+  if(!lockOverlay.classList.contains('hidden')) {
+    if(e.key === 'Escape') closeVaultPage();
+    return;
+  }
+  const overlay = document.getElementById('modal-overlay');
+  const modalOpen = !overlay.classList.contains('hidden');
+  const typing = ['INPUT','TEXTAREA'].includes(document.activeElement.tagName);
+
+  if(modalOpen){
+    if(e.key === 'Escape'){ closeModal(); }
+    else if(e.key === 'ArrowRight'){ stepModal(1); }
+    else if(e.key === 'ArrowLeft'){ stepModal(-1); }
+    return;
+  }
+  if(e.key === 'Escape' || ((e.key === 'b' || e.key === 'B') && !typing)){
+    closeVaultPage();
+  } else if(e.key === '/' && !typing){
+    e.preventDefault();
+    document.getElementById('search-input').focus();
+  }
+});
+
+document.getElementById('sort-select').addEventListener('change', e=>{
+  sortMode = e.target.value;
+  renderGrid();
+});
+
+document.getElementById('search-input').addEventListener('input', e=>{
+  searchQuery = e.target.value;
+  renderGrid();
+});
+document.getElementById('clear-filters').addEventListener('click', ()=>{
+  activeFilters.clear();
+  searchQuery='';
+  sortMode='newest';
+  document.getElementById('search-input').value='';
+  document.getElementById('sort-select').value='newest';
+  renderSidebar();
+  renderGrid();
+});
+
+renderSidebar();
+renderGrid();
+</script>
+</body>
+</html>

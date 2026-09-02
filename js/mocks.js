@@ -441,26 +441,32 @@ function renderMockAnalytics() {
     renderRevisionRadar();
 }
 
-function deleteMock(mockId) {
-    if (confirm("Delete this mock record?")) {
-        appState.mocks = appState.mocks.filter(m => m.id !== mockId);
-        
-        // Recalculate weak alerts from remaining mocks
-        appState.weakAlerts = {};
-        appState.mocks.forEach(m => {
-            const ids = m.weakTopicIds || (m.weakTopicId ? [m.weakTopicId] : []);
-            ids.forEach(id => {
-                if (id) {
-                    appState.weakAlerts[id] = true;
-                }
-            });
-        });
-
-        saveStateToStorage();
-        renderAll();
-        renderMockAnalytics();
-        if (window.showToast) window.showToast("Mock record deleted successfully", "error");
+async function deleteMock(mockId) {
+    let confirmed = false;
+    if (window.showConfirm) {
+        confirmed = await window.showConfirm("Delete Mock Record", "Are you sure you want to delete this mock record?");
+    } else {
+        confirmed = confirm("Delete this mock record?");
     }
+    if (!confirmed) return;
+
+    appState.mocks = appState.mocks.filter(m => m.id !== mockId);
+    
+    // Recalculate weak alerts from remaining mocks
+    appState.weakAlerts = {};
+    appState.mocks.forEach(m => {
+        const ids = m.weakTopicIds || (m.weakTopicId ? [m.weakTopicId] : []);
+        ids.forEach(id => {
+            if (id) {
+                appState.weakAlerts[id] = true;
+            }
+        });
+    });
+
+    saveStateToStorage();
+    renderAll();
+    renderMockAnalytics();
+    if (window.showToast) window.showToast("Mock record deleted successfully", "error");
 }
 
 function editMock(mockId) {

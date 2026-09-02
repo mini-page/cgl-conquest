@@ -17,8 +17,8 @@
   --text:#e7edf3;
   --text-dim:#8ea0b3;
   --text-faint:#546274;
-  --accent:#38bdf8;
-  --accent-dim:#0284c7;
+  --accent:#cbd5e1;
+  --accent-dim:#64748b;
   --mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif;
 }
@@ -522,6 +522,10 @@ body{
   </div>
   <div id="taskApps"></div>
   <div id="clock"><div id="clockTime">00:00</div><div class="d" id="clockDate">—</div></div>
+  <button id="osCloseBtn" title="Close OS & Return to Study Page (ESC)" onclick="closeComputerOSPage()" style="margin-left: 6px; height: 34px; padding: 0 12px; border-radius: 8px; background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.45); color: #f87171; font-family: var(--mono); font-size: 11.5px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; flex-shrink: 0; transition: all .15s ease;" onmouseover="this.style.background='rgba(239,68,68,0.35)'; this.style.borderColor='#f87171'; this.style.color='#ffffff';" onmouseout="this.style.background='rgba(239,68,68,0.18)'; this.style.borderColor='rgba(239,68,68,0.45)'; this.style.color='#f87171';">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <span>EXIT</span>
+  </button>
 </div>
 
 <div id="searchOverlay">
@@ -1311,13 +1315,28 @@ globalSearchInput.addEventListener("input", ()=>{
 })();
 </script>
 
-<!-- Close button: bottom-right corner, closes the fullscreen overlay -->
-<div id="pageCloseBtn" style="position:fixed; bottom:24px; right:24px; z-index:9999; width:44px; height:44px; border-radius:12px; background:rgba(0,0,0,0.55); border:1px solid rgba(148,175,199,0.3); color:#38bdf8; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .15s, color .15s;" onmouseover="this.style.borderColor='#38bdf8'; this.style.color='#fbbf24';" onmouseout="this.style.borderColor='rgba(148,175,199,0.3)'; this.style.color='#38bdf8';">
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-</div>
 <script>
-document.getElementById("pageCloseBtn").addEventListener("click", () => {
-  window.parent.postMessage({type: "closeFullscreen"}, "*");
+function closeComputerOSPage() {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "closeFullscreen" }, "*");
+  } else {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "../index.html";
+    }
+  }
+}
+window.closeComputerOSPage = closeComputerOSPage;
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const winLayer = document.getElementById("windowLayer");
+    if (!winLayer || !winLayer.classList.contains("show")) {
+      closeComputerOSPage();
+    }
+  }
 });
+</script>
 </body>
 </html>

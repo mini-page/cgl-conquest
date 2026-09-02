@@ -184,9 +184,16 @@ function togglePlanDay(dayNum) {
     }
 }
 
-function completeActiveDay() {
+async function completeActiveDay() {
     if (appState.currentDay < PLAN_DATA.length) {
-        if (!confirm(`Complete Day ${appState.currentDay} and advance roadmap to Day ${appState.currentDay + 1}?`)) return;
+        let confirmed = false;
+        if (window.showConfirm) {
+            confirmed = await window.showConfirm("Advance Study Plan", `Complete Day ${appState.currentDay} and advance roadmap to Day ${appState.currentDay + 1}?`);
+        } else {
+            confirmed = confirm(`Complete Day ${appState.currentDay} and advance roadmap to Day ${appState.currentDay + 1}?`);
+        }
+        if (!confirmed) return;
+
         appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
         appState.currentDay++;
         saveStateToStorage();
@@ -195,7 +202,7 @@ function completeActiveDay() {
         const successMsg = `Day ${appState.currentDay - 1} completed! Welcome to Day ${appState.currentDay}.`;
         speakText(successMsg);
         if (window.showToast) window.showToast(successMsg, "success");
-        if (window.triggerConfetti) window.triggerConfetti();
+        if (window.triggerConfetti) window.triggerConfetti('grand');
 
         const nextDayData = PLAN_DATA.find(d => d.day === appState.currentDay);
         if (nextDayData) {
@@ -212,15 +219,21 @@ function completeActiveDay() {
     }
 }
 
-function resetActiveDayTo(dayNum) {
-    if (confirm(`Reset preparation progress back to Day ${dayNum}?`)) {
-        appState.currentDay = dayNum;
-        appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
-        saveStateToStorage();
-        renderAll();
-        renderStudyPlan();
-        if (window.showToast) window.showToast(`Preparation progress reset back to Day ${dayNum}`, "warning");
+async function resetActiveDayTo(dayNum) {
+    let confirmed = false;
+    if (window.showConfirm) {
+        confirmed = await window.showConfirm("Reset Preparation Day", `Reset preparation progress back to Day ${dayNum}?`);
+    } else {
+        confirmed = confirm(`Reset preparation progress back to Day ${dayNum}?`);
     }
+    if (!confirmed) return;
+
+    appState.currentDay = dayNum;
+    appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
+    saveStateToStorage();
+    renderAll();
+    renderStudyPlan();
+    if (window.showToast) window.showToast(`Preparation progress reset back to Day ${dayNum}`, "warning");
 }
 
 // Complete day trigger in Dashboard view

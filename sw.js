@@ -18,7 +18,6 @@ const ASSETS = [
   './js/mocks.js',
   './js/toolkit.js',
   './js/speed.js',
-  './js/typingtest.js',
   './js/cmdpalette.js',
   './study/subjects.js',
   './data/plan.json',

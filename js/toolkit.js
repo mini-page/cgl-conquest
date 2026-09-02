@@ -145,28 +145,56 @@ const SUBJECT_COLORS = {
 
 const DIRECT_MASTER_PAGES = [
     {
-        id: "grammar_book",
-        title: "English Grammar Master Book",
-        page: "pages/grammar-book.html",
-        icon: "fa-book-open-reader",
-        color: "text-amber-400",
-        bg: "from-amber-950/70 via-slate-900/80 to-amber-900/40",
-        border: "border-amber-500/40 hover:border-amber-400",
-        badge: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+        id: "vault",
+        title: "THE VAULT — Study Intelligence Archive",
+        page: "pages/vault.html",
+        icon: "fa-vault",
+        color: "text-zinc-200",
+        bg: "from-black via-black to-zinc-950",
+        border: "border-zinc-800 hover:border-zinc-500 shadow-2xl",
+        iconBg: "bg-zinc-900/90 border border-zinc-700 text-white",
+        badge: "bg-zinc-800 text-zinc-200 border-zinc-700",
         badgeText: "Direct Master Page",
-        desc: "Full interactive grammar book: 8 core pillars, common traps, rule search & PYQs."
+        desc: "Unified master intelligence archive: search, filter & explore 100+ high-ROI study cards, rules & formulas."
+    },
+    {
+        id: "math_pager",
+        title: "Math Pager (Quant Lab)",
+        page: "pages/math-pager.html",
+        icon: "fa-calculator",
+        color: "text-red-400",
+        bg: "from-red-950/90 via-slate-900 to-rose-950/60",
+        border: "border-red-500/60 hover:border-red-400 shadow-red-950/40",
+        iconBg: "bg-red-500/25 border border-red-500/50 text-red-400",
+        badge: "bg-red-500/20 text-red-300 border-red-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Interactive SSC CGL & CHSL Quantitative Aptitude lab: Number System, Algebra, Geometry, Arithmetic & Calculators."
     },
     {
         id: "geometry_atlas",
         title: "Geometry & Mensuration 3D Atlas",
         page: "pages/geometry-atlas.html",
         icon: "fa-draw-polygon",
-        color: "text-cyan-400",
-        bg: "from-cyan-950/70 via-slate-900/80 to-cyan-900/40",
-        border: "border-cyan-500/40 hover:border-cyan-400",
-        badge: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+        color: "text-fuchsia-400",
+        bg: "from-fuchsia-950/90 via-slate-900 to-pink-950/60",
+        border: "border-fuchsia-500/60 hover:border-fuchsia-400 shadow-fuchsia-950/40",
+        iconBg: "bg-fuchsia-500/25 border border-fuchsia-500/50 text-fuchsia-400",
+        badge: "bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30",
         badgeText: "Direct Master Page",
         desc: "Interactive 3D geometry & mensuration shapes, formulas, theorems & calculators."
+    },
+    {
+        id: "grammar_book",
+        title: "English Grammar Master Book",
+        page: "pages/grammar-book.html",
+        icon: "fa-book-open-reader",
+        color: "text-emerald-400",
+        bg: "from-emerald-950/90 via-slate-900 to-teal-950/60",
+        border: "border-emerald-500/60 hover:border-emerald-400 shadow-emerald-950/40",
+        iconBg: "bg-emerald-500/25 border border-emerald-500/50 text-emerald-400",
+        badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        badgeText: "Direct Master Page",
+        desc: "Full interactive grammar book: 8 core pillars, common traps, rule search & PYQs."
     },
     {
         id: "constitution_explorer",
@@ -174,8 +202,9 @@ const DIRECT_MASTER_PAGES = [
         page: "pages/constitution-explorer.html",
         icon: "fa-building-columns",
         color: "text-purple-400",
-        bg: "from-purple-950/70 via-slate-900/80 to-purple-900/40",
-        border: "border-purple-500/40 hover:border-purple-400",
+        bg: "from-purple-950/90 via-slate-900 to-indigo-950/60",
+        border: "border-purple-500/60 hover:border-purple-400 shadow-purple-950/40",
+        iconBg: "bg-purple-500/25 border border-purple-500/50 text-purple-400",
         badge: "bg-purple-500/20 text-purple-300 border-purple-500/30",
         badgeText: "Direct Master Page",
         desc: "Interactive Constitution reader with articles, parts, schedules, amendments & search."
@@ -185,10 +214,11 @@ const DIRECT_MASTER_PAGES = [
         title: "India Maps & Rivers Atlas",
         page: "pages/india-atlas.html",
         icon: "fa-map-location-dot",
-        color: "text-emerald-400",
-        bg: "from-emerald-950/70 via-slate-900/80 to-emerald-900/40",
-        border: "border-emerald-500/40 hover:border-emerald-400",
-        badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        color: "text-blue-400",
+        bg: "from-blue-950/90 via-slate-900 to-indigo-950/60",
+        border: "border-blue-500/60 hover:border-blue-400 shadow-blue-950/40",
+        iconBg: "bg-blue-500/25 border border-blue-500/50 text-blue-400",
+        badge: "bg-blue-500/20 text-blue-300 border-blue-500/30",
         badgeText: "Direct Master Page",
         desc: "Interactive visual map: states, river basins, mountain ranges, parks & PYQs."
     },
@@ -197,48 +227,39 @@ const DIRECT_MASTER_PAGES = [
         title: "History Timeline & Events Calendar",
         page: "pages/historical-calendar.html",
         icon: "fa-calendar-days",
-        color: "text-rose-400",
-        bg: "from-rose-950/70 via-slate-900/80 to-rose-900/40",
-        border: "border-rose-500/40 hover:border-rose-400",
-        badge: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+        color: "text-indigo-400",
+        bg: "from-indigo-950/90 via-slate-900 to-purple-950/60",
+        border: "border-indigo-500/60 hover:border-indigo-400 shadow-indigo-950/40",
+        iconBg: "bg-indigo-500/25 border border-indigo-500/50 text-indigo-400",
+        badge: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
         badgeText: "Direct Master Page",
         desc: "Chronological history events, important dates, revision drills & timeline."
-    },
-    {
-        id: "computer_os",
-        title: "SSC Tier-2 Computer OS Simulator",
-        page: "pages/ssc-os-computer-tier2.html",
-        icon: "fa-laptop-code",
-        color: "text-blue-400",
-        bg: "from-blue-950/70 via-slate-900/80 to-blue-900/40",
-        border: "border-blue-500/40 hover:border-blue-400",
-        badge: "bg-blue-500/20 text-blue-300 border-blue-500/30",
-        badgeText: "Direct Master Page",
-        desc: "Interactive OS simulation: keyboard shortcuts, computer abbreviations & typing lab."
     },
     {
         id: "science_lab",
         title: "General Science Specimen Lab",
         page: "pages/science-lab.html",
         icon: "fa-flask-vial",
-        color: "text-emerald-400",
-        bg: "from-emerald-950/70 via-slate-900/80 to-cyan-900/40",
-        border: "border-emerald-500/40 hover:border-emerald-400",
-        badge: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        color: "text-sky-400",
+        bg: "from-sky-950/90 via-slate-900 to-blue-950/60",
+        border: "border-sky-500/60 hover:border-sky-400 shadow-sky-950/40",
+        iconBg: "bg-sky-500/25 border border-sky-500/50 text-sky-400",
+        badge: "bg-sky-500/20 text-sky-300 border-sky-500/30",
         badgeText: "Direct Master Page",
         desc: "Interactive General Science specimen lab: Physics, Chemistry & Biology topics & experiments."
     },
     {
-        id: "math_pager",
-        title: "Math Pager (Quant Lab)",
-        page: "pages/math-pager.html",
-        icon: "fa-calculator",
-        color: "text-cyan-400",
-        bg: "from-cyan-950/70 via-slate-900/80 to-purple-900/40",
-        border: "border-cyan-500/40 hover:border-cyan-400",
-        badge: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+        id: "computer_os",
+        title: "SSC Tier-2 Computer OS Simulator",
+        page: "pages/ssc-os-computer-tier2.html",
+        icon: "fa-laptop-code",
+        color: "text-slate-200",
+        bg: "from-slate-800/90 via-slate-900 to-zinc-950",
+        border: "border-slate-400/60 hover:border-white shadow-slate-900/80",
+        iconBg: "bg-slate-700/60 border border-slate-400/50 text-slate-100 shadow-inner",
+        badge: "bg-slate-700/40 text-slate-200 border-slate-500/40",
         badgeText: "Direct Master Page",
-        desc: "Interactive SSC CGL & CHSL Quantitative Aptitude lab: Number System, Algebra, Geometry, Arithmetic & Calculators."
+        desc: "Interactive OS simulation: keyboard shortcuts, computer abbreviations & typing lab."
     }
 ];
 
@@ -257,7 +278,7 @@ function setStudyCardViewMode(mode) {
     
     document.querySelectorAll('.study-view-btn').forEach(btn => {
         if (btn.getAttribute('data-view') === mode) {
-            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition duration-200 cursor-pointer';
+            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white border border-blue-400 shadow-md transition duration-200 cursor-pointer';
         } else {
             btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition duration-200 cursor-pointer';
         }
@@ -283,26 +304,13 @@ function renderSubjectGrid(subjects, searchQuery = "") {
 
     const q = (searchQuery || "").trim().toLowerCase();
 
-    // Filter Direct Master Page Cards
+    // Filter Master Page Cards (including THE VAULT)
     const filteredMasterPages = DIRECT_MASTER_PAGES.filter(p => {
         if (!q) return true;
         return p.title.toLowerCase().includes(q) ||
                p.desc.toLowerCase().includes(q) ||
                p.id.toLowerCase().includes(q);
     });
-
-    // Filter Subjects for Section 2: keep ONLY "general_rules" (Fixed Rules) and "conquest_patterns" (Conquest Weightage) alongside All Subjects Hub
-    const allowedSection2Ids = ["general_rules", "conquest_patterns"];
-    const filteredSubjects = (subjects || []).filter(subj => {
-        if (!allowedSection2Ids.includes(subj.id)) return false;
-
-        if (!q) return true;
-        return subj.name.toLowerCase().includes(q) ||
-               (subj.description && subj.description.toLowerCase().includes(q)) ||
-               (subj.topics && subj.topics.some(t => t.name.toLowerCase().includes(q)));
-    });
-
-    const showAllDeck = !q || "all subjects hub".includes(q) || "master deck".includes(q) || "all deck".includes(q);
 
     // Sync button state on render (Order: Big=1, Folder=2, Compact=3, List=4)
     const modeLevels = { 'big': 1, 'folder': 2, 'compact': 3, 'list': 4 };
@@ -312,7 +320,7 @@ function renderSubjectGrid(subjects, searchQuery = "") {
     }
     document.querySelectorAll('.study-view-btn').forEach(btn => {
         if (btn.getAttribute('data-view') === currentStudyViewMode) {
-            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black bg-cyan-500/25 text-cyan-300 border border-cyan-500/40 shadow-sm transition duration-200 cursor-pointer';
+            btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-black bg-blue-600 text-white border border-blue-400 shadow-md transition duration-200 cursor-pointer';
         } else {
             btn.className = 'study-view-btn flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition duration-200 cursor-pointer';
         }
@@ -324,70 +332,23 @@ function renderSubjectGrid(subjects, searchQuery = "") {
     if (currentStudyViewMode === 'big') {
         html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">`;
         
-        // Master Pages
         filteredMasterPages.forEach(mp => {
             html += `
-                <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-4 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-cyan-500/10 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
+                <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-2xl p-4 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
                     <div>
                         <div class="flex items-start justify-between gap-3 mb-2.5">
                             <div class="flex items-center gap-3 min-w-0">
-                                <span class="w-9 h-9 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
+                                <span class="w-9 h-9 rounded-xl ${mp.iconBg} flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
                                     <i class="fa-solid ${mp.icon}"></i>
                                 </span>
-                                <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:text-cyan-300 transition leading-snug truncate">${mp.title}</h4>
+                                <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:${mp.color} transition leading-snug truncate">${mp.title}</h4>
                             </div>
                         </div>
                         <p class="text-xs text-gray-300/90 leading-relaxed line-clamp-2">${mp.desc}</p>
                     </div>
                     <div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-end">
-                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition duration-200">
+                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-white/10 ${mp.color} border border-white/20 group-hover:bg-white group-hover:text-black transition duration-200">
                             Launch Page &rarr;
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-
-        // All Subjects Deck
-        if (showAllDeck) {
-            html += `
-                <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 hover:border-cyan-400 p-4 rounded-2xl shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
-                    <div>
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
-                                <i class="fa-solid fa-layer-group"></i>
-                            </span>
-                            <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:text-cyan-300 transition truncate">All Subjects Hub</h4>
-                        </div>
-                        <p class="text-xs text-gray-300/90 line-clamp-2 leading-relaxed">Full interactive mastery deck across Quant, English, Reasoning, GK & Atlases.</p>
-                    </div>
-                    <div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-end">
-                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-black transition duration-200">
-                            Explore All &rarr;
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Subject Decks
-        filteredSubjects.forEach(subj => {
-            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
-            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
-            html += `
-                <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-4 rounded-2xl shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
-                    <div>
-                        <div class="flex items-center gap-3 mb-2.5">
-                            <span class="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-base group-hover:scale-110 transition shrink-0 shadow-inner">
-                                <i class="fa-solid ${icon}"></i>
-                            </span>
-                            <h4 class="font-heading font-black text-white text-sm sm:text-base group-hover:text-${color} transition truncate">${subj.name}</h4>
-                        </div>
-                        <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">${subj.description || 'Comprehensive exam rules, pyqs, and weightage cards.'}</p>
-                    </div>
-                    <div class="mt-3.5 pt-2.5 border-t border-white/10 flex items-center justify-end">
-                        <button class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition duration-200">
-                            Browse Deck &rarr;
                         </button>
                     </div>
                 </div>
@@ -401,63 +362,20 @@ function renderSubjectGrid(subjects, searchQuery = "") {
     else if (currentStudyViewMode === 'compact') {
         html += `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">`;
 
-        // Master Pages
         filteredMasterPages.forEach(mp => {
             html += `
                 <div class="group relative bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-xl p-3.5 shadow-xl backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
                     <div>
                         <div class="flex items-center gap-2.5 mb-2">
-                            <span class="w-8 h-8 rounded-lg bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-sm shrink-0">
+                            <span class="w-8 h-8 rounded-lg ${mp.iconBg} flex items-center justify-center text-sm shrink-0 shadow-inner">
                                 <i class="fa-solid ${mp.icon}"></i>
                             </span>
-                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:text-cyan-300 transition line-clamp-1">${mp.title}</h4>
+                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:${mp.color} transition line-clamp-1">${mp.title}</h4>
                         </div>
                         <p class="text-[11px] text-gray-300 line-clamp-2 leading-tight">${mp.desc}</p>
                     </div>
                     <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-end">
-                        <span class="text-[10px] font-extrabold uppercase text-cyan-400 group-hover:translate-x-0.5 transition">Launch &rarr;</span>
-                    </div>
-                </div>
-            `;
-        });
-
-        // All Subjects Deck
-        if (showAllDeck) {
-            html += `
-                <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 p-3.5 rounded-xl shadow-lg backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('all')">
-                    <div>
-                        <div class="flex items-center gap-2.5 mb-2">
-                            <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-sm shrink-0">
-                                <i class="fa-solid fa-layer-group"></i>
-                            </span>
-                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:text-cyan-300 transition truncate">All Subjects Hub</h4>
-                        </div>
-                        <p class="text-[11px] text-gray-300 line-clamp-2 leading-tight">Full interactive mastery deck across Quant, English, Reasoning & GK.</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-end text-[10px] font-extrabold text-cyan-400">
-                        <span>Explore &rarr;</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Subject Decks
-        filteredSubjects.forEach(subj => {
-            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
-            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
-            html += `
-                <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 p-3.5 rounded-xl shadow-lg backdrop-blur-xl transition duration-200 hover:-translate-y-0.5 cursor-pointer flex flex-col justify-between group" onclick="showSubjectDetail('${subj.id}')">
-                    <div>
-                        <div class="flex items-center gap-2.5 mb-2">
-                            <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-sm shrink-0">
-                                <i class="fa-solid ${icon}"></i>
-                            </span>
-                            <h4 class="font-heading font-extrabold text-white text-xs group-hover:text-${color} transition truncate">${subj.name}</h4>
-                        </div>
-                        <p class="text-[11px] text-gray-400 line-clamp-2 leading-tight">${subj.description || 'Exam rules and cards.'}</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-end text-[10px] font-extrabold text-gray-400 group-hover:text-white transition">
-                        <span>Browse &rarr;</span>
+                        <span class="text-[10px] font-extrabold uppercase ${mp.color} group-hover:translate-x-0.5 transition">Launch &rarr;</span>
                     </div>
                 </div>
             `;
@@ -470,84 +388,25 @@ function renderSubjectGrid(subjects, searchQuery = "") {
     else if (currentStudyViewMode === 'folder') {
         html += `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">`;
 
-        // Master Pages
         filteredMasterPages.forEach(mp => {
             html += `
                 <div class="group relative cursor-pointer transition duration-300 hover:-translate-y-1" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-800/90 border-t border-l border-r border-white/15 text-[10px] font-black uppercase text-cyan-300 tracking-wider">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-900/90 border-t border-l border-r ${mp.border.split(' ')[0]} text-[10px] font-black uppercase ${mp.color} tracking-wider">
                         <i class="fa-solid fa-folder-open text-xs"></i>
                         <span class="truncate max-w-[170px]">${mp.title}</span>
                     </div>
                     <div class="bg-gradient-to-br ${mp.bg} border ${mp.border} rounded-b-2xl rounded-tr-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[135px]">
                         <div>
                             <div class="flex items-center gap-2.5 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-sm shrink-0">
+                                <span class="w-8 h-8 rounded-lg ${mp.iconBg} flex items-center justify-center text-sm shrink-0 shadow-inner">
                                     <i class="fa-solid ${mp.icon}"></i>
                                 </span>
-                                <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition leading-snug">${mp.title}</h4>
+                                <h4 class="font-heading font-black text-white text-sm group-hover:${mp.color} transition leading-snug">${mp.title}</h4>
                             </div>
                             <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">${mp.desc}</p>
                         </div>
                         <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-end">
-                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
-                                Open Folder &rarr;
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-
-        // All Subjects Deck
-        if (showAllDeck) {
-            html += `
-                <div class="group relative cursor-pointer transition duration-300 hover:-translate-y-1" onclick="showSubjectDetail('all')">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-800/90 border-t border-l border-r border-cyan-500/30 text-[10px] font-black uppercase text-cyan-300 tracking-wider">
-                        <i class="fa-solid fa-folder-open text-xs"></i>
-                        <span>All Subjects Hub</span>
-                    </div>
-                    <div class="bg-gradient-to-br from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 rounded-b-2xl rounded-tr-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[135px]">
-                        <div>
-                            <div class="flex items-center gap-2.5 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-sm shrink-0">
-                                    <i class="fa-solid fa-layer-group"></i>
-                                </span>
-                                <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition">All Subjects Hub</h4>
-                            </div>
-                            <p class="text-xs text-gray-300 leading-relaxed line-clamp-2">Full interactive mastery deck across Quant, English, Reasoning & GK.</p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-end">
-                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
-                                Open Folder &rarr;
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Subject Decks
-        filteredSubjects.forEach(subj => {
-            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
-            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
-            html += `
-                <div class="group relative cursor-pointer transition duration-300 hover:-translate-y-1" onclick="showSubjectDetail('${subj.id}')">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-t-xl bg-slate-800/90 border-t border-l border-r border-white/15 text-[10px] font-black uppercase text-gray-300 tracking-wider">
-                        <i class="fa-solid fa-folder-open text-xs"></i>
-                        <span class="truncate max-w-[170px]">${subj.name}</span>
-                    </div>
-                    <div class="bg-bgCard/60 border border-white/10 hover:border-${color}/40 rounded-b-2xl rounded-tr-2xl p-4 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[135px]">
-                        <div>
-                            <div class="flex items-center gap-2.5 mb-2">
-                                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-sm shrink-0">
-                                    <i class="fa-solid ${icon}"></i>
-                                </span>
-                                <h4 class="font-heading font-black text-white text-sm group-hover:text-${color} transition">${subj.name}</h4>
-                            </div>
-                            <p class="text-xs text-gray-400 leading-relaxed line-clamp-2">${subj.description || 'Comprehensive exam rules and cards.'}</p>
-                        </div>
-                        <div class="mt-3 pt-2 border-t border-white/10 flex items-center justify-end">
-                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                            <span class="px-3 py-1 rounded-lg text-[10px] font-extrabold uppercase bg-white/10 ${mp.color} border border-white/20 group-hover:bg-white group-hover:text-black transition duration-200">
                                 Open Folder &rarr;
                             </span>
                         </div>
@@ -563,63 +422,20 @@ function renderSubjectGrid(subjects, searchQuery = "") {
     else if (currentStudyViewMode === 'list') {
         html += `<div class="space-y-2.5">`;
 
-        // Master Pages
         filteredMasterPages.forEach(mp => {
             html += `
                 <div class="group bg-gradient-to-r ${mp.bg} border ${mp.border} rounded-xl p-3.5 shadow-lg backdrop-blur-xl transition duration-200 hover:border-cyan-400 cursor-pointer flex items-center justify-between gap-4" onclick="openFullscreenPage('${mp.page}', '${mp.id}')">
                     <div class="flex items-center gap-3.5 min-w-0 flex-1">
-                        <span class="w-10 h-10 rounded-xl bg-white/10 border border-white/10 ${mp.color} flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition">
+                        <span class="w-10 h-10 rounded-xl ${mp.iconBg} flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition shadow-inner">
                             <i class="fa-solid ${mp.icon}"></i>
                         </span>
                         <div class="min-w-0 flex-1">
-                            <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition truncate">${mp.title}</h4>
+                            <h4 class="font-heading font-black text-white text-sm group-hover:${mp.color} transition truncate">${mp.title}</h4>
                             <p class="text-xs text-gray-300 truncate">${mp.desc}</p>
                         </div>
                     </div>
-                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
+                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 ${mp.color} border border-white/20 group-hover:bg-white group-hover:text-black transition duration-200">
                         Launch &rarr;
-                    </button>
-                </div>
-            `;
-        });
-
-        // All Subjects Deck
-        if (showAllDeck) {
-            html += `
-                <div class="group bg-gradient-to-r from-cyan-950/60 to-slate-900/80 border border-cyan-500/40 rounded-xl p-3.5 shadow-lg backdrop-blur-xl transition duration-200 hover:border-cyan-400 cursor-pointer flex items-center justify-between gap-4" onclick="showSubjectDetail('all')">
-                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
-                        <span class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </span>
-                        <div class="min-w-0 flex-1">
-                            <h4 class="font-heading font-black text-white text-sm group-hover:text-cyan-300 transition truncate">All Subjects Hub</h4>
-                            <p class="text-xs text-gray-300 truncate">Full interactive mastery deck across Quant, English, Reasoning & GK.</p>
-                        </div>
-                    </div>
-                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
-                        Explore &rarr;
-                    </button>
-                </div>
-            `;
-        }
-
-        // Subject Decks
-        filteredSubjects.forEach(subj => {
-            const icon = subj.icon || SUBJECT_ICONS[subj.id] || 'fa-book';
-            const color = SUBJECT_COLORS[subj.id] || 'accentCyan';
-            html += `
-                <div class="group bg-bgCard/60 border border-white/10 hover:border-${color}/40 rounded-xl p-3.5 shadow-lg backdrop-blur-xl transition duration-200 cursor-pointer flex items-center justify-between gap-4" onclick="showSubjectDetail('${subj.id}')">
-                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
-                        <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-${color} flex items-center justify-center text-base shrink-0 group-hover:scale-105 transition">
-                            <i class="fa-solid ${icon}"></i>
-                        </span>
-                        <div class="min-w-0 flex-1">
-                            <h4 class="font-heading font-black text-white text-sm group-hover:text-${color} transition truncate">${subj.name}</h4>
-                            <p class="text-xs text-gray-400 truncate">${subj.description || 'Exam rules & decks.'}</p>
-                        </div>
-                    </div>
-                    <button class="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-extrabold uppercase tracking-wider bg-white/10 text-cyan-300 border border-white/20 group-hover:bg-cyan-500 group-hover:text-black transition">
-                        Browse &rarr;
                     </button>
                 </div>
             `;
@@ -628,7 +444,7 @@ function renderSubjectGrid(subjects, searchQuery = "") {
         html += `</div>`;
     }
 
-    if (filteredMasterPages.length === 0 && filteredSubjects.length === 0) {
+    if (filteredMasterPages.length === 0) {
         html += `
             <div class="text-center py-12 space-y-3 bg-bgCard/30 border border-white/10 rounded-2xl">
                 <i class="fa-solid fa-magnifying-glass text-gray-500 text-3xl"></i>
@@ -1889,14 +1705,216 @@ function setupGlobalSearch() {
     
     // Hide panel on blur/click away
     document.addEventListener("click", (e) => {
-        if (!searchResults.contains(e.target) && e.target !== searchInput) {
+        if (searchResults && !searchResults.contains(e.target) && e.target !== searchInput) {
             searchResults.classList.add("hidden");
         }
     });
 }
 
-// Render Mistake Book / Custom Notes List (preserves notes functionality completely)
+// Close button in fullscreen overlay
+const fullscreenCloseBtn = document.getElementById("btn-fullscreen-close");
+if (fullscreenCloseBtn) fullscreenCloseBtn.addEventListener("click", closeFullscreenPage);
+
+// Listen for close requests from iframe (e.g., atlas page close button)
+window.addEventListener("message", (e) => {
+    if (e.data && e.data.type === "closeFullscreen") closeFullscreenPage();
+});
+
+window.initStudyPage = initStudyPage;
+window.closeStudyViewer = closeStudyViewer;
+window.navigateViewer = navigateViewer;
+
+// Live Search Controller with Debounce for Master Page Cards
+let searchDebounceTimer = null;
+
+function setupGlobalSearch() {
+    const searchInput = document.getElementById("study-global-search");
+    const clearBtn = document.getElementById("btn-study-search-clear");
+    if (!searchInput) return;
+
+    searchInput.addEventListener("input", (e) => {
+        const val = (e.target.value || "").trim();
+        if (clearBtn) {
+            clearBtn.classList.toggle("hidden", !val);
+        }
+        
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+            const catalog = studyCatalog || window.studySubjects;
+            renderSubjectGrid(catalog ? catalog.subjects : [], val);
+        }, 180);
+    });
+
+}
+
+function closeStudyViewer() {
+    const viewer = document.getElementById("study-content-viewer");
+    const topicArea = document.getElementById("study-topic-area");
+    const subjectGrid = document.getElementById("study-subject-grid");
+    
+    if (viewer) viewer.classList.add("hidden");
+    if (topicArea) topicArea.classList.add("hidden");
+    if (subjectGrid) subjectGrid.classList.remove("hidden");
+    
+    currentReadingSubtopic = null;
+}
+
+// Scan headings to create sidebar anchors
+function buildTableOfContents(container) {
+    const sidebarNav = document.getElementById("viewer-toc-nav");
+    if (!sidebarNav) return;
+    sidebarNav.innerHTML = "";
+    
+    const headings = container.querySelectorAll("h2, h3, h4, h5");
+    if (headings.length === 0) {
+        sidebarNav.innerHTML = `<span class="text-[10px] text-gray-500 italic block">No subsections mapped</span>`;
+        return;
+    }
+    
+    headings.forEach((heading, idx) => {
+        const headingId = `toc-heading-${idx}`;
+        heading.id = headingId;
+        
+        const link = document.createElement("a");
+        link.href = `#${headingId}`;
+        link.className = "block text-[11px] py-1.5 text-gray-400 hover:text-accentCyan transition truncate border-l border-white/5 pl-3 -ml-px hover:border-accentCyan";
+        
+        const tagName = heading.tagName.toLowerCase();
+        if (tagName === "h3") link.classList.add("pl-6");
+        else if (tagName === "h4") link.classList.add("pl-9");
+        else if (tagName === "h5") link.classList.add("pl-12");
+        
+        link.innerText = heading.innerText;
+        link.onclick = (e) => {
+            e.preventDefault();
+            heading.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+        
+        sidebarNav.appendChild(link);
+    });
+}
+
+// Hook scroll events inside document reader
+function setupScrollProgressTracker() {
+    const container = document.getElementById("content-document-body");
+    const pctLabel = document.getElementById("content-progress-pct");
+    if (!container || !pctLabel) return;
+    
+    pctLabel.innerText = "0%";
+    
+    container.onscroll = () => {
+        const total = container.scrollHeight - container.clientHeight;
+        if (total <= 0) {
+            pctLabel.innerText = "100%";
+            return;
+        }
+        const pct = Math.min(100, Math.round((container.scrollTop / total) * 100));
+        pctLabel.innerText = `${pct}%`;
+    };
+}
+
+// Previous/Next Topic cycling
+function navigateViewer(direction) {
+    if (!currentReadingSubtopic || !studyCatalog) return;
+    
+    const flatIds = [];
+    studyCatalog.subjects.forEach(subject => {
+        subject.topics.forEach(topic => {
+            const subtopics = topic.subtopics || [topic];
+            subtopics.forEach(sub => {
+                flatIds.push(sub.id);
+            });
+        });
+    });
+    
+    const currIdx = flatIds.indexOf(currentReadingSubtopic.id);
+    if (currIdx === -1) return;
+    
+    let targetIdx = currIdx + direction;
+    if (targetIdx < 0) targetIdx = flatIds.length - 1;
+    else if (targetIdx >= flatIds.length) targetIdx = 0;
+    
+    renderStudyContent(flatIds[targetIdx]);
+}
+
+// Set up Global Search listeners and display
+function setupGlobalSearch() {
+    const searchInput = document.getElementById("study-global-search");
+    const searchResults = document.getElementById("study-search-results");
+    const searchList = document.getElementById("study-search-list");
+    
+    if (!searchInput || !searchResults || !searchList) return;
+    
+    searchInput.oninput = () => {
+        const query = searchInput.value.trim().toLowerCase();
+        
+        // Filter direct surface cards in real-time on the Study page
+        if (studyCatalog && studyCatalog.subjects) {
+            renderSubjectGrid(studyCatalog.subjects, query);
+        }
+
+        if (query.length < 2) {
+            searchResults.classList.add("hidden");
+            return;
+        }
+        
+        // Scan searchable background index
+        const matches = searchIndex.filter(item => {
+            return item.subtopicName.toLowerCase().includes(query) ||
+                   item.topicName.toLowerCase().includes(query) ||
+                   item.subjectName.toLowerCase().includes(query) ||
+                   item.tags.some(t => t.toLowerCase().includes(query)) ||
+                   item.content.toLowerCase().includes(query);
+        });
+        
+        searchList.innerHTML = "";
+        
+        if (matches.length === 0) {
+            searchList.innerHTML = `<div class="text-xs text-gray-500 italic py-3 text-center">No match found</div>`;
+        } else {
+            matches.slice(0, 8).forEach(match => {
+                const item = document.createElement("div");
+                item.className = "p-2.5 rounded-xl border border-white/5 hover:border-accentCyan/30 bg-white/2px hover:bg-accentCyan/5 cursor-pointer transition select-none flex flex-col gap-1";
+                item.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="text-[9px] text-accentCyan font-bold uppercase tracking-wider">${match.subjectName} &bull; ${match.topicName}</span>
+                        <span class="text-[8px] px-2 py-0.5 rounded-full bg-white/5 border border-white/5 text-gray-400 uppercase tracking-widest font-extrabold">${match.roi} ROI</span>
+                    </div>
+                    <span class="text-xs text-white font-bold">${match.subtopicName}</span>
+                `;
+                item.onclick = () => {
+                    searchResults.classList.add("hidden");
+                    searchInput.value = "";
+                    renderStudyContent(match.subtopicId);
+                };
+                searchList.appendChild(item);
+            });
+        }
+        
+        searchResults.classList.remove("hidden");
+    };
+    
+    // Hide panel on blur/click away
+    document.addEventListener("click", (e) => {
+        if (!searchResults.contains(e.target) && e.target !== searchInput) {
+            searchResults.classList.add("hidden");
+            return;
+        }
+        const contentViewer = document.getElementById("study-content-viewer");
+        if (contentViewer && !contentViewer.classList.contains("hidden")) {
+            if (window.closeStudyViewer) window.closeStudyViewer();
+            e.preventDefault();
+            return;
+        }
+    });
+}
+
+// Render Mistake Book / Custom Notes List
 function renderToolkit() {
+    showCustomNotes();
+}
+
+function showCustomNotes() {
     const container = document.getElementById("notes-container");
     if (!container) return;
     
@@ -1940,16 +1958,21 @@ function renderToolkit() {
     setTimeout(triggerMathTypesetting, 50);
 }
 
-function deleteNote(id) {
-    if (confirm("Are you sure you want to delete this custom note?")) {
-        appState.notes = appState.notes.filter(n => n.id !== id);
-        saveStateToStorage();
-        renderToolkit();
-        if (window.showToast) window.showToast("Note deleted successfully", "error");
+async function deleteNote(id) {
+    let confirmed = false;
+    if (window.showConfirm) {
+        confirmed = await window.showConfirm("Delete Custom Note", "Are you sure you want to delete this custom note?");
+    } else {
+        confirmed = confirm("Are you sure you want to delete this custom note?");
     }
+    if (!confirmed) return;
+
+    appState.notes = appState.notes.filter(n => n.id !== id);
+    saveStateToStorage();
+    renderToolkit();
+    if (window.showToast) window.showToast("Note deleted successfully", "error");
 }
 
-// Define tab dispatcher logic mapping back to our Subjects menu
 function renderToolkitSubTab(targetPanelId) {
     if (targetPanelId === "tk-custom") {
         showCustomNotes();
@@ -1959,7 +1982,6 @@ function renderToolkitSubTab(targetPanelId) {
     setTimeout(triggerMathTypesetting, 50);
 }
 
-// Open full-screen page overlay (for atlas, maps, and special topic pages)
 function openFullscreenPage(pagePath, subtopicId) {
     const overlay = document.getElementById("fullscreen-page");
     const iframe = document.getElementById("fullscreen-page-frame");
@@ -1973,7 +1995,6 @@ function openFullscreenPage(pagePath, subtopicId) {
     document.body.style.overflow = "hidden";
 }
 
-// Close full-screen page overlay
 function closeFullscreenPage() {
     const overlay = document.getElementById("fullscreen-page");
     if (!overlay) return;
@@ -1988,48 +2009,8 @@ function closeFullscreenPage() {
     currentReadingSubtopic = null;
 }
 
-// Global keydown: 'b' closes any active viewer/overlay
-document.addEventListener("keydown", (e) => {
-    // Only intercept 'b' when NOT typing in an input field
-    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-    if (e.target.isContentEditable) return;
-    
-    if (e.key === "b" || e.key === "B") {
-        const fullscreen = document.getElementById("fullscreen-page");
-        if (fullscreen && !fullscreen.classList.contains("hidden")) {
-            closeFullscreenPage();
-            e.preventDefault();
-            return;
-        }
-        const contentViewer = document.getElementById("study-content-viewer");
-        if (contentViewer && !contentViewer.classList.contains("hidden")) {
-            if (window.closeStudyViewer) window.closeStudyViewer();
-            e.preventDefault();
-            return;
-        }
-    }
-});
-
-// Close button in fullscreen overlay
-const fullscreenCloseBtn = document.getElementById("btn-fullscreen-close");
-if (fullscreenCloseBtn) fullscreenCloseBtn.addEventListener("click", closeFullscreenPage);
-
-// Listen for close requests from iframe (e.g., atlas page close button)
-window.addEventListener("message", (e) => {
-    if (e.data && e.data.type === "closeFullscreen") closeFullscreenPage();
-});
-
-
-
-// Expose elements globally
 window.renderToolkit = renderToolkit;
 window.renderToolkitSubTab = renderToolkitSubTab;
 window.deleteNote = deleteNote;
-window.openStudyViewer = renderStudyContent;
-window.renderStudyContent = renderStudyContent;
 window.openFullscreenPage = openFullscreenPage;
 window.closeFullscreenPage = closeFullscreenPage;
-window.showQuickRefTables = showQuickRefTables;
-window.initStudyPage = initStudyPage;
-window.closeStudyViewer = closeStudyViewer;
-window.navigateViewer = navigateViewer;
