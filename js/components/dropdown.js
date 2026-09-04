@@ -15,7 +15,7 @@ class CustomDropdown {
 
         // Create wrapper
         this.wrapper = document.createElement("div");
-        this.wrapper.className = "relative custom-dropdown-wrapper w-full";
+        this.wrapper.className = "relative custom-dropdown-wrapper min-w-[130px]";
         this.select.parentNode.insertBefore(this.wrapper, this.select);
         this.wrapper.appendChild(this.select);
 
@@ -26,14 +26,14 @@ class CustomDropdown {
         // Match style of original select
         const originalClasses = this.select.className;
         // Keep dimensions and basic padding, border classes
-        this.button.className = "w-full text-left flex justify-between items-center bg-white/5 border border-black/10 dark:border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-gray-800 dark:text-gray-300 outline-none focus:border-accentCyan cursor-pointer transition select-none";
+        this.button.className = "min-w-[130px] text-left flex justify-between items-center bg-white/5 border border-black/10 dark:border-white/10 rounded-lg px-3 py-1.5 text-xs text-gray-800 dark:text-gray-300 outline-none focus:border-accentCyan cursor-pointer transition select-none whitespace-nowrap gap-2";
         
         this.updateButtonText();
         this.wrapper.appendChild(this.button);
 
         // Create options panel
         this.panel = document.createElement("div");
-        this.panel.className = "absolute left-0 w-full mt-1 bg-white dark:bg-[#151526] border border-black/10 dark:border-white/10 shadow-2xl z-50 rounded-lg p-1 max-h-48 overflow-y-auto hidden divide-y divide-black/5 dark:divide-white/5 scrollbar-thin";
+        this.panel.className = "absolute left-0 min-w-full w-max mt-1 bg-white dark:bg-[#151526] border border-black/10 dark:border-white/10 shadow-2xl z-50 rounded-lg p-1 max-h-48 overflow-y-auto hidden divide-y divide-black/5 dark:divide-white/5 scrollbar-thin";
         this.wrapper.appendChild(this.panel);
 
         // Render option items
@@ -70,7 +70,7 @@ class CustomDropdown {
     updateButtonText() {
         const selectedOption = this.select.options[this.select.selectedIndex];
         const text = selectedOption ? selectedOption.text : "-- Select Option --";
-        this.button.innerHTML = `<span>${text}</span><span class="text-[9px] opacity-60 ml-2">▼</span>`;
+        this.button.innerHTML = `<span class="truncate">${text}</span><span class="text-[9px] opacity-60 ml-2 shrink-0">▼</span>`;
     }
 
     renderOptions() {
@@ -78,7 +78,7 @@ class CustomDropdown {
         Array.from(this.select.options).forEach((opt, idx) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "w-full text-left px-2.5 py-1.5 rounded text-xs transition select-none flex items-center justify-between ";
+            btn.className = "w-full text-left px-3 py-1.5 rounded text-xs transition select-none flex items-center justify-between gap-3 whitespace-nowrap ";
             
             // Highlight selected option
             if (this.select.selectedIndex === idx) {
@@ -89,7 +89,7 @@ class CustomDropdown {
 
             btn.innerHTML = `<span>${opt.text}</span>`;
             if (this.select.selectedIndex === idx) {
-                btn.innerHTML += `<i class="fa-solid fa-check text-[10px] text-accentCyan"></i>`;
+                btn.innerHTML += `<i class="fa-solid fa-check text-[10px] text-accentCyan shrink-0"></i>`;
             }
 
             btn.onclick = (e) => {

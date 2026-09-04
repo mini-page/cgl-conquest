@@ -3298,7 +3298,8 @@ let appState = {
     dailyRituals: { drill: false, vocab: false, ca: false, computer: false },
     speechEnabled: true,  // Default speech enabled
     toastEnabled: true,   // Default toasts enabled
-    examTier: 1           // Default exam tier target (1 = Tier 1, 2 = Tier 2)
+    examTier: 1,          // Default exam tier target (1 = Tier 1, 2 = Tier 2)
+    mobileNavHand: "right" // Default mobile nav thumb hand ("right" | "left")
 };
 
 // Timer Intervals
@@ -3354,6 +3355,7 @@ function loadStateFromStorage() {
             if (appState.speechEnabled === undefined) appState.speechEnabled = true;
             if (appState.toastEnabled === undefined) appState.toastEnabled = true;
             if (appState.examTier === undefined) appState.examTier = 1;
+            if (!appState.mobileNavHand) appState.mobileNavHand = "right";
             if (appState.streak === undefined) appState.streak = 1;
             if (!appState.lastActiveDate) appState.lastActiveDate = new Date().toISOString().split('T')[0];
             if (!appState.mocks) appState.mocks = [];

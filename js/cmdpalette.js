@@ -226,6 +226,7 @@
         filterCommands('');
         render();
 
+        if (window.updateHandSettingsUI) window.updateHandSettingsUI();
         overlay.classList.add('active');
         palette.classList.add('active');
 
@@ -246,6 +247,11 @@
     document.addEventListener('keydown', e => {
         // Close on Escape
         if (e.key === 'Escape' && isOpen) { close(); return; }
+
+        // Block Command Palette during active Speed Drills
+        if (window.drillIsPlaying || window.isChallengeActive) {
+            return;
+        }
 
         // Also support Ctrl+K / Cmd+K as alternative
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -272,6 +278,22 @@
         }
 
         if (!isOpen) return;
+
+        const inputVal = (document.getElementById('cmd-palette-input')?.value || '').trim();
+
+        // Direct Toggle Keys (T, V, N, P, C) when search input is empty or Ctrl/Cmd pressed
+        const lowerKey = e.key.toLowerCase();
+        if (!inputVal && ['t', 'v', 'n', 'p', 'c'].includes(lowerKey)) {
+            e.preventDefault();
+            switch (lowerKey) {
+                case 't': document.getElementById('theme-toggle')?.click(); break;
+                case 'v': document.getElementById('speech-toggle')?.click(); break;
+                case 'n': document.getElementById('toast-toggle')?.click(); break;
+                case 'p': if (!window.drillIsPlaying && !window.isChallengeActive && window.handleShortcutAction) window.handleShortcutAction('toggle-pomodoro'); break;
+                case 'c': if (!window.drillIsPlaying && !window.isChallengeActive && window.handleShortcutAction) window.handleShortcutAction('toggle-conquest'); break;
+            }
+            return;
+        }
 
         // Arrow navigation
         if (e.key === 'ArrowDown') {
@@ -303,10 +325,13 @@
             });
         }
 
-        // Click backdrop to close
+        // Click backdrop or outside modal card to close
         if (overlay) {
             overlay.addEventListener('click', e => {
-                if (e.target === overlay) close();
+                const palette = document.getElementById('cmd-palette');
+                if (!palette || !palette.contains(e.target)) {
+                    close();
+                }
             });
         }
 

@@ -7,6 +7,7 @@ let drillStreak = 0;
 let drillTimerInterval = null;
 let drillTimerSecs = 15;
 let drillIsPlaying = false;
+let consecutiveTimeoutsCount = 0;
 
 let isChallengeActive = false;
 let challengeTimeRemaining = 900;
@@ -405,11 +406,21 @@ function generateDrillQuestion() {
         optionsGrid.innerHTML = "";
         optionsGrid.classList.remove("hidden");
         
+        let optIdx = 1;
         choices.forEach(val => {
             const btn = document.createElement("button");
-            btn.className = "math-opt-btn p-3 rounded-xl border border-white/5 bg-white/2px hover:bg-cyan-500/10 hover:border-accentCyan transition text-sm font-bold text-gray-200";
-            btn.innerText = val;
+            btn.className = "math-opt-btn relative group p-4 rounded-xl border border-white/5 bg-white/2px hover:bg-cyan-500/10 hover:border-accentCyan transition text-sm font-bold text-gray-200 flex items-center justify-center";
             btn.setAttribute("data-val", String(val));
+
+            const badge = document.createElement("span");
+            badge.className = "absolute top-2 left-2.5 text-[10px] font-bold text-gray-500 font-mono group-hover:text-cyan-400 transition pointer-events-none select-none";
+            badge.innerText = String(optIdx++);
+
+            const textSpan = document.createElement("span");
+            textSpan.innerText = val;
+
+            btn.appendChild(badge);
+            btn.appendChild(textSpan);
             btn.onclick = () => checkDrillAnswer(val);
             optionsGrid.appendChild(btn);
         });
@@ -432,6 +443,7 @@ function generateDrillQuestion() {
             clearInterval(drillTimerInterval);
             drillAttempts++;
             drillStreak = 0;
+            consecutiveTimeoutsCount++;
             
             const scoreEl = document.getElementById("drill-score");
 
@@ -451,6 +463,18 @@ function generateDrillQuestion() {
             });
 
             speakText("Time out");
+
+            if (consecutiveTimeoutsCount >= 2) {
+                setTimeout(() => {
+                    resetDrillSession();
+                    if (typeof showToast === "function") {
+                        showToast("Drill auto-stopped due to inactivity (2 consecutive missed questions)", "warning");
+                    }
+                    speakText("Drill auto stopped due to inactivity");
+                }, 1200);
+                return;
+            }
+
             setTimeout(generateDrillQuestion, 1500);
         }
     }, 1000);
@@ -460,6 +484,7 @@ function generateDrillQuestion() {
 function checkDrillAnswer(chosenVal) {
     clearInterval(drillTimerInterval);
     drillAttempts++;
+    consecutiveTimeoutsCount = 0;
 
     const feedback = document.getElementById("drill-feedback");
     const scoreEl = document.getElementById("drill-score");
@@ -470,8 +495,14 @@ function checkDrillAnswer(chosenVal) {
         const val = b.getAttribute("data-val") || b.innerText.trim();
         if (val === String(drillAnswerVal)) {
             b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
+            if (window.gsap) {
+                gsap.fromTo(b, { scale: 0.94 }, { scale: 1.06, duration: 0.3, ease: "elastic.out(1, 0.6)" });
+            }
         } else if (val === String(chosenVal)) {
             b.className = b.className.replace("border-white/5", "border-accentRose bg-accentRose/15 text-accentRose");
+            if (window.gsap) {
+                gsap.fromTo(b, { x: -6 }, { x: 0, duration: 0.35, ease: "elastic.out(1.5, 0.4)" });
+            }
         }
     });
 
@@ -503,6 +534,7 @@ function resetDrillSession() {
     drillAttempts = 0;
     drillCorrect = 0;
     drillStreak = 0;
+    consecutiveTimeoutsCount = 0;
     drillIsPlaying = false; 
     
     clearIdleTimer();
@@ -587,6 +619,40 @@ function startChallengeRun() {
     toggleFreeModeComponents(false);
     updateChallengeUI();
 
+    // 3-2-1 Countdown Overlay Sequence with GSAP
+    const countdownOverlay = document.getElementById("conquest-countdown-overlay");
+    const countdownNum = document.getElementById("conquest-countdown-num");
+    
+    if (countdownOverlay && countdownNum && window.gsap) {
+        countdownOverlay.classList.remove("hidden", "opacity-0", "pointer-events-none");
+        countdownOverlay.classList.add("opacity-100");
+        
+        let count = 3;
+        countdownNum.innerText = count;
+        speakText("3");
+        gsap.fromTo(countdownNum, { scale: 2.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" });
+        
+        const timer = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownNum.innerText = count;
+                speakText(String(count));
+                gsap.fromTo(countdownNum, { scale: 2.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" });
+            } else if (count === 0) {
+                countdownNum.innerText = "GO!";
+                speakText("Go!");
+                gsap.fromTo(countdownNum, { scale: 2.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "elastic.out(1, 0.5)" });
+            } else {
+                clearInterval(timer);
+                countdownOverlay.classList.remove("opacity-100");
+                countdownOverlay.classList.add("opacity-0", "pointer-events-none");
+                setTimeout(() => countdownOverlay.classList.add("hidden"), 300);
+            }
+        }, 550);
+    } else {
+        speakText("Challenge started");
+    }
+
     clearInterval(challengeTimerInterval);
     challengeTimerInterval = setInterval(() => {
         challengeTimeRemaining--;
@@ -596,7 +662,6 @@ function startChallengeRun() {
         }
     }, 1000);
 
-    speakText("Challenge started");
     generateChallengeQuestion();
 }
 
@@ -667,10 +732,21 @@ function generateChallengeQuestion() {
         qLabel.innerText = qData.q;
         challengeCorrectAnswerVal = qData.a;
         
+        let optIdx = 1;
         qData.o.forEach(choice => {
             const btn = document.createElement("button");
-            btn.className = "math-opt-btn p-3 rounded-xl border border-white/5 bg-white/2px hover:bg-cyan-500/10 hover:border-accentCyan transition text-sm font-bold text-gray-200";
-            btn.innerText = choice;
+            btn.className = "math-opt-btn relative group p-4 rounded-xl border border-white/5 bg-white/2px hover:bg-cyan-500/10 hover:border-accentCyan transition text-sm font-bold text-gray-200 flex items-center justify-center";
+            btn.setAttribute("data-val", String(choice));
+
+            const badge = document.createElement("span");
+            badge.className = "absolute top-2 left-2.5 text-[10px] font-bold text-gray-500 font-mono group-hover:text-cyan-400 transition pointer-events-none select-none";
+            badge.innerText = String(optIdx++);
+
+            const textSpan = document.createElement("span");
+            textSpan.innerText = choice;
+
+            btn.appendChild(badge);
+            btn.appendChild(textSpan);
             btn.onclick = () => submitChallengeAnswer("maths", choice, qData.a, optionsGrid.querySelectorAll("button"));
             optionsGrid.appendChild(btn);
         });
@@ -682,7 +758,7 @@ function submitChallengeAnswer(subject, chosenVal, correctVal, optButtons) {
     
     optButtons.forEach(b => {
         b.disabled = true;
-        const val = b.innerText;
+        const val = b.getAttribute("data-val") || b.innerText.trim();
         if (val === String(correctVal)) {
             b.className = b.className.replace("border-white/5", "border-accentGreen bg-accentGreen/15 text-accentGreen");
         } else if (val === String(chosenVal)) {
@@ -740,7 +816,15 @@ function endChallengeRun(completed = false, aborted = false) {
 
     if (aborted) {
         speakText("Challenge aborted");
-        alert("Challenge Run was aborted.");
+        if (window.showCustomAlert) {
+            window.showCustomAlert({
+                title: "Conquest Run Aborted",
+                message: "The 15-minute Conquest challenge run was aborted.",
+                icon: "fa-ban",
+                type: "warning",
+                buttonText: "Got It"
+            });
+        }
     } else if (completed) {
         const timeTaken = 900 - challengeTimeRemaining;
         const pass = (challengeScore >= 20); 
@@ -748,14 +832,70 @@ function endChallengeRun(completed = false, aborted = false) {
         if (pass) {
             speakText("Conquest cleared");
             if (window.triggerConfetti) window.triggerConfetti();
-            alert(`🔥 CONQUEST RUN CLEARED!\nScore: ${challengeScore} / 25 correct!\nTime taken: ${timeTaken} seconds.\nRating: Super Human reflexes unlocked!`);
+            if (window.showCustomAlert) {
+                window.showCustomAlert({
+                    title: "🔥 CONQUEST RUN CLEARED!",
+                    message: "Super Human reflexes unlocked! You passed the qualifying cutoff.",
+                    detailsHtml: `
+                        <div class="grid grid-cols-2 gap-2 text-center">
+                            <div class="p-2.5 bg-emerald-500/10 border border-emerald-500/25 rounded-xl">
+                                <span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Score</span>
+                                <span class="text-lg text-emerald-400 font-black">${challengeScore} / 25</span>
+                            </div>
+                            <div class="p-2.5 bg-cyan-500/10 border border-cyan-500/25 rounded-xl">
+                                <span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Time Taken</span>
+                                <span class="text-lg text-cyan-400 font-black">${timeTaken}s</span>
+                            </div>
+                        </div>
+                        <div class="text-center pt-1 text-cyan-300 font-extrabold text-xs">
+                            ⚡ Tier-2 Cutoff Cleared!
+                        </div>
+                    `,
+                    icon: "fa-trophy",
+                    type: "success",
+                    buttonText: "Awesome!"
+                });
+            }
         } else {
             speakText("Cutoff not cleared");
-            alert(`❌ CHALLENGE FINISHED\nScore: ${challengeScore} / 25 correct.\nTime taken: ${timeTaken} seconds.\nYou need at least 20/25 to clear the CGL Tier-2 qualifying cutoff. Keep practicing!`);
+            if (window.showCustomAlert) {
+                window.showCustomAlert({
+                    title: "❌ Conquest Run Finished",
+                    message: "You need at least 20/25 correct to clear the CGL Tier-2 qualifying cutoff. Keep practicing!",
+                    detailsHtml: `
+                        <div class="grid grid-cols-2 gap-2 text-center">
+                            <div class="p-2.5 bg-rose-500/10 border border-rose-500/25 rounded-xl">
+                                <span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Score</span>
+                                <span class="text-lg text-rose-400 font-black">${challengeScore} / 25</span>
+                            </div>
+                            <div class="p-2.5 bg-cyan-500/10 border border-cyan-500/25 rounded-xl">
+                                <span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Time Taken</span>
+                                <span class="text-lg text-cyan-400 font-black">${timeTaken}s</span>
+                            </div>
+                        </div>
+                    `,
+                    icon: "fa-circle-xmark",
+                    type: "error",
+                    buttonText: "Try Again"
+                });
+            }
         }
     } else {
         speakText("Time out");
-        alert(`⏰ TIMEOUT! You ran out of time on question ${challengeQuestionIndex + 1}.\nScore: ${challengeScore} / 25 correct.`);
+        if (window.showCustomAlert) {
+            window.showCustomAlert({
+                title: "⏰ Time Limit Expired!",
+                message: `You ran out of time on question ${challengeQuestionIndex + 1}.`,
+                detailsHtml: `
+                    <div class="text-center font-bold text-white text-xs py-2 bg-amber-500/10 border border-amber-500/25 rounded-xl">
+                        Final Score: <span class="text-amber-400 font-extrabold text-sm ml-1">${challengeScore} / 25</span>
+                    </div>
+                `,
+                icon: "fa-clock",
+                type: "warning",
+                buttonText: "Close"
+            });
+        }
     }
 
     resetDrillSession();
@@ -777,7 +917,15 @@ function initSpeedDrillsPage() {
         tab.onclick = () => {
             if (isChallengeActive) {
                 speakText("Challenge in progress");
-                alert("Conquest run is active! Abort or complete the current 15-minute challenge before switching categories.");
+                if (window.showCustomAlert) {
+                    window.showCustomAlert({
+                        title: "Conquest Run Active",
+                        message: "Conquest run is active! Abort or complete the current 15-minute challenge before switching categories.",
+                        icon: "fa-bolt",
+                        type: "warning",
+                        buttonText: "Understood"
+                    });
+                }
                 return;
             }
             modeTabs.forEach(t => t.classList.remove("active-nav-tab"));
@@ -922,7 +1070,15 @@ function initSpeedDrillsPage() {
             e.stopPropagation();
             if (isChallengeActive) {
                 speakText("Challenge in progress");
-                alert("Conquest run is active! Use the Close button in the simulator card to abort the challenge.");
+                if (window.showCustomAlert) {
+                    window.showCustomAlert({
+                        title: "Conquest Run Active",
+                        message: "Conquest run is active! Use the CLOSE button on the card to abort the challenge.",
+                        icon: "fa-bolt",
+                        type: "warning",
+                        buttonText: "Understood"
+                    });
+                }
                 return;
             }
             const isHidden = conquestPopover.classList.contains("hidden");
@@ -1094,7 +1250,7 @@ function initCustomTooltips() {
                 if (activeTarget === target && !isScrolling) {
                     showTooltip(target);
                 }
-            }, 700); 
+            }, 180); 
         });
 
         document.body.addEventListener("mouseout", (e) => {

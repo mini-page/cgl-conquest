@@ -142,19 +142,111 @@ function handleShortcutAction(action) {
 }
 window.handleShortcutAction = handleShortcutAction;
 
+let currentNavAnimStyle = "magnetic"; // Permanent Animation Preset: Type 3 (Magnetic Drop)
+
+function setNavAnimStyle(style) {
+    currentNavAnimStyle = "magnetic";
+    if (window.appState) window.appState.navAnimStyle = "magnetic";
+    if (typeof saveStateToStorage === "function") saveStateToStorage();
+}
+window.setNavAnimStyle = setNavAnimStyle;
+
 function expandNav() {
     if (navExpanded) return;
     navExpanded = true;
     const mobileFloatingNav = document.getElementById("mobile-floating-nav");
-    if (mobileFloatingNav) mobileFloatingNav.classList.remove("nav-shrunk");
+    const itemsContainer = document.getElementById("floating-nav-items");
+    const triggerBtn = document.getElementById("floating-nav-trigger");
+
+    if (mobileFloatingNav) {
+        mobileFloatingNav.classList.remove("nav-shrunk");
+
+        if (window.gsap) {
+            gsap.killTweensOf([mobileFloatingNav, itemsContainer, triggerBtn, "#floating-nav-items .nav-item"]);
+            const tl = gsap.timeline();
+
+            // Preset 3: Magnetic Drop Expand (Permanent)
+            if (triggerBtn) tl.to(triggerBtn, { scale: 0, opacity: 0, y: -10, duration: 0.12 }, 0);
+            tl.fromTo(mobileFloatingNav, { scale: 0.6, y: 20 }, { scale: 1, y: 0, duration: 0.38, ease: "elastic.out(1, 0.6)" }, 0.02);
+            tl.fromTo("#floating-nav-items .nav-item", { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, stagger: { amount: 0.1, from: "center" }, ease: "back.out(2)" }, 0.06);
+        }
+    }
 }
 
 function shrinkNav() {
     if (!navExpanded) return;
     navExpanded = false;
     const mobileFloatingNav = document.getElementById("mobile-floating-nav");
-    if (mobileFloatingNav) mobileFloatingNav.classList.add("nav-shrunk");
+    const triggerBtn = document.getElementById("floating-nav-trigger");
+
+    if (mobileFloatingNav) {
+        if (window.gsap) {
+            gsap.killTweensOf([mobileFloatingNav, triggerBtn, "#floating-nav-items .nav-item"]);
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    mobileFloatingNav.classList.add("nav-shrunk");
+                }
+            });
+
+            // Preset 3: Magnetic Drop Shrink (Permanent)
+            tl.to("#floating-nav-items .nav-item", { scale: 0.1, opacity: 0, duration: 0.14, stagger: { amount: 0.08, from: "center" }, ease: "power3.in" }, 0);
+            tl.to(mobileFloatingNav, { scale: 0.5, y: 12, duration: 0.24, ease: "back.in(1.6)" }, 0.03);
+            if (triggerBtn) tl.fromTo(triggerBtn, { scale: 0, y: 12 }, { scale: 1.15, y: 0, duration: 0.25, ease: "elastic.out(1, 0.5)" }, 0.09);
+        } else {
+            mobileFloatingNav.classList.add("nav-shrunk");
+        }
+    }
 }
+
+function setMobileNavHand(hand) {
+    if (hand !== "left" && hand !== "right") return;
+    if (typeof appState !== "undefined") {
+        appState.mobileNavHand = hand;
+    }
+    if (window.appState) {
+        window.appState.mobileNavHand = hand;
+    }
+    if (typeof saveStateToStorage === "function") saveStateToStorage();
+    
+    const nav = document.getElementById("mobile-floating-nav");
+    if (nav && nav.classList.contains("nav-shrunk")) {
+        nav.classList.remove("nav-hand-right", "nav-hand-left");
+        if (window.innerWidth < 768) {
+            nav.classList.add(hand === "left" ? "nav-hand-left" : "nav-hand-right");
+        }
+        
+        if (window.gsap) {
+            gsap.fromTo(nav, { scale: 0.75, rotation: hand === "left" ? -15 : 15 }, { scale: 1, rotation: 0, duration: 0.45, ease: "back.out(1.8)" });
+        }
+    }
+    
+    updateHandSettingsUI();
+    if (window.showToast) {
+        window.showToast(`Mobile navigation set to ${hand === "left" ? "Left Hand" : "Right Hand"} mode`, "info");
+    }
+}
+
+function updateHandSettingsUI() {
+    if (!window.appState) return;
+    const isLeft = window.appState.mobileNavHand === "left";
+
+    const btnRight = document.getElementById("btn-hand-right");
+    const btnLeft = document.getElementById("btn-hand-left");
+    if (btnRight && btnLeft) {
+        btnRight.className = `hand-btn px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${!isLeft ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-400/40' : 'bg-transparent text-gray-400 hover:text-white'}`;
+        btnLeft.className = `hand-btn px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${isLeft ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-400/40' : 'bg-transparent text-gray-400 hover:text-white'}`;
+    }
+
+    const btnRightCmd = document.getElementById("btn-hand-right-cmd");
+    const btnLeftCmd = document.getElementById("btn-hand-left-cmd");
+    if (btnRightCmd && btnLeftCmd) {
+        btnRightCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${!isLeft ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`;
+        btnLeftCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${isLeft ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`;
+    }
+}
+window.setMobileNavHand = setMobileNavHand;
+window.updateHandSettingsUI = updateHandSettingsUI;
 
 // Header Scroll Shrink (Floating Island Dock UI)
 function initHeaderScroll() {
@@ -236,11 +328,22 @@ function navigateToPage(target, updateHash = true) {
     pages.forEach(p => p.classList.add("hidden"));
     
     // Highlight both desktop and mobile items matching target
-    document.querySelectorAll(`[data-target="${target}"]`).forEach(ni => ni.classList.add("active-nav"));
+    const activeItems = document.querySelectorAll(`[data-target="${target}"]`);
+    activeItems.forEach(ni => {
+        ni.classList.add("active-nav");
+        if (window.gsap) {
+            gsap.fromTo(ni, { scale: 0.85 }, { scale: 1.12, duration: 0.35, ease: "back.out(2)" });
+            const icon = ni.querySelector("i");
+            if (icon) gsap.fromTo(icon, { scale: 0.7, rotation: -15 }, { scale: 1.1, rotation: 0, duration: 0.3, ease: "back.out(1.8)" });
+        }
+    });
     
     const targetPage = document.getElementById(target);
     if (targetPage) {
         targetPage.classList.remove("hidden");
+        if (window.gsap) {
+            gsap.fromTo(targetPage, { opacity: 0, y: 16, scale: 0.99 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+        }
     }
     
     // Dynamically update the global sticky top bar header page title and icon
@@ -485,9 +588,9 @@ function initNavigation() {
             }
         }
 
-        // 4. Difficulty selection overrides (E/M/A/D keys when Speed Page is visible)
+        // 4. Difficulty selection overrides (E/M/A/D keys when Speed Page is visible and NO drill is actively running)
         const speedPage = document.getElementById("page-speed");
-        if (speedPage && !speedPage.classList.contains("hidden")) {
+        if (speedPage && !speedPage.classList.contains("hidden") && !window.drillIsPlaying && !window.isChallengeActive) {
             const levelSelect = document.getElementById("select-maths-level");
             const modalSelect = document.getElementById("modal-select-maths-level");
             const triggerChange = (val) => {
@@ -522,8 +625,10 @@ function initNavigation() {
             }
         }
 
-        if (window.drillIsPlaying) {
-            if (["1", "2", "3", "4", "5", "6"].includes(e.key)) {
+        // If drill is actively running: lock out C (Conquest), P (Pomodoro), and page navigation keys (1-6)
+        if (window.drillIsPlaying || window.isChallengeActive) {
+            const keyLower = e.key.toLowerCase();
+            if (keyLower === "c" || keyLower === "p" || ["1", "2", "3", "4", "5", "6"].includes(e.key)) {
                 return;
             }
         }
@@ -571,66 +676,50 @@ function initNavigation() {
 }
 
 function updateThemeToggleUI(theme) {
-    const themeBtn = document.getElementById("theme-toggle");
-    if (themeBtn) {
-        const knob = themeBtn.querySelector("#theme-toggle-knob");
-        if (knob) {
-            if (theme === "light") {
-                themeBtn.classList.remove("bg-white/5", "border-white/5");
-                themeBtn.classList.add("bg-indigo-600/20", "border-indigo-600/40");
-                knob.style.transform = "translateX(20px)";
-                knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500"></i>';
-            } else {
-                themeBtn.classList.remove("bg-indigo-600/20", "border-indigo-600/40");
-                themeBtn.classList.add("bg-white/5", "border-white/5");
-                knob.style.transform = "translateX(0px)";
-                knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900"></i>';
-            }
-        }
+    const btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+    const knob = btn.querySelector("div");
+    if (!knob) return;
+    if (theme === "light") {
+        knob.style.transform = "translateX(24px)";
+        knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500"></i>';
+        btn.title = "Switch to Dark Mode [T]";
+    } else {
+        knob.style.transform = "translateX(0px)";
+        knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900"></i>';
+        btn.title = "Switch to Light Mode [T]";
     }
 }
 
 function updateSpeechToggleUI() {
-    const speechBtn = document.getElementById("speech-toggle");
-    if (speechBtn) {
-        const knob = speechBtn.querySelector("#speech-toggle-knob");
-        if (knob) {
-            if (appState.speechEnabled !== false) {
-                speechBtn.classList.remove("bg-white/5", "border-white/5");
-                speechBtn.classList.add("bg-emerald-600/20", "border-emerald-600/40");
-                knob.style.transform = "translateX(20px)";
-                knob.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-500"></i>';
-                speechBtn.title = "Mute Voice Announcements [V]";
-            } else {
-                speechBtn.classList.remove("bg-emerald-600/20", "border-emerald-600/40");
-                speechBtn.classList.add("bg-white/5", "border-white/5");
-                knob.style.transform = "translateX(0px)";
-                knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-900"></i>';
-                speechBtn.title = "Enable Voice Announcements [V]";
-            }
-        }
+    const btn = document.getElementById("speech-toggle");
+    if (!btn) return;
+    const knob = btn.querySelector("div");
+    if (!knob) return;
+    if (appState.speechEnabled) {
+        knob.style.transform = "translateX(24px)";
+        knob.innerHTML = '<i class="fa-solid fa-volume-high text-accentGreen"></i>';
+        btn.title = "Disable Voice Announcements [V]";
+    } else {
+        knob.style.transform = "translateX(0px)";
+        knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-900"></i>';
+        btn.title = "Enable Voice Announcements [V]";
     }
 }
 
 function updateToastToggleUI() {
-    const toastBtn = document.getElementById("toast-toggle");
-    if (toastBtn) {
-        const knob = toastBtn.querySelector("#toast-toggle-knob");
-        if (knob) {
-            if (appState.toastEnabled !== false) {
-                toastBtn.classList.remove("bg-white/5", "border-white/5");
-                toastBtn.classList.add("bg-amber-600/20", "border-amber-600/40");
-                knob.style.transform = "translateX(20px)";
-                knob.innerHTML = '<i class="fa-solid fa-bell text-amber-500"></i>';
-                toastBtn.title = "Disable Toast Notifications [N]";
-            } else {
-                toastBtn.classList.remove("bg-amber-600/20", "border-amber-600/40");
-                toastBtn.classList.add("bg-white/5", "border-white/5");
-                knob.style.transform = "translateX(0px)";
-                knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-900"></i>';
-                toastBtn.title = "Enable Toast Notifications [N]";
-            }
-        }
+    const btn = document.getElementById("toast-toggle");
+    if (!btn) return;
+    const knob = btn.querySelector("div");
+    if (!knob) return;
+    if (appState.toastEnabled) {
+        knob.style.transform = "translateX(24px)";
+        knob.innerHTML = '<i class="fa-solid fa-bell text-accentCyan"></i>';
+        btn.title = "Disable Toast Notifications [N]";
+    } else {
+        knob.style.transform = "translateX(0px)";
+        knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-900"></i>';
+        btn.title = "Enable Toast Notifications [N]";
     }
 }
 
@@ -638,14 +727,19 @@ function toggleThemeMode() {
     appState.theme = appState.theme === "dark" ? "light" : "dark";
     updateMetaThemeColor(appState.theme);
     if (appState.theme === "light") {
-        document.body.classList.add("light-theme");
+        document.body.classList.add("light", "light-theme");
+        document.documentElement.classList.add("light");
         document.documentElement.classList.remove("dark");
     } else {
-        document.body.classList.remove("light-theme");
+        document.body.classList.remove("light", "light-theme");
+        document.documentElement.classList.remove("light");
         document.documentElement.classList.add("dark");
     }
     updateThemeToggleUI(appState.theme);
     saveStateToStorage();
+    if (window.showToast) {
+        window.showToast(appState.theme === "light" ? "Light theme enabled" : "Dark theme enabled", "info");
+    }
     
     // Re-render SVG Mindmap if visible to adjust colors
     const mindmap = document.getElementById("view-mindmap");
@@ -660,6 +754,9 @@ function toggleSpeechMode() {
     updateSpeechToggleUI();
     if (appState.speechEnabled) {
         speakText("Voice announcements enabled");
+    }
+    if (window.showToast) {
+        window.showToast(appState.speechEnabled ? "Voice announcements enabled 🔊" : "Voice announcements disabled 🔇", "info");
     }
 }
 
@@ -695,25 +792,48 @@ function initTheme() {
     // Apply theme classes
     updateMetaThemeColor(appState.theme);
     if (appState.theme === "light") {
-        document.body.classList.add("light-theme");
+        document.body.classList.add("light", "light-theme");
+        document.documentElement.classList.add("light");
         document.documentElement.classList.remove("dark");
     } else {
-        document.body.classList.remove("light-theme");
+        document.body.classList.remove("light", "light-theme");
+        document.documentElement.classList.remove("light");
         document.documentElement.classList.add("dark");
     }
     updateThemeToggleUI(appState.theme);
     updateSpeechToggleUI();
     updateToastToggleUI();
     
-    if (themeBtn) {
-        themeBtn.addEventListener("click", toggleThemeMode);
-    }
-    if (speechBtn) {
-        speechBtn.addEventListener("click", toggleSpeechMode);
-    }
-    if (toastBtn) {
-        toastBtn.addEventListener("click", toggleToastMode);
-    }
+    const bindToggleEvents = (btn, handler) => {
+        if (!btn) return;
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            handler();
+        });
+        btn.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handler();
+        });
+    };
+
+    bindToggleEvents(themeBtn, toggleThemeMode);
+    bindToggleEvents(speechBtn, toggleSpeechMode);
+    bindToggleEvents(toastBtn, toggleToastMode);
+
+    // Bind touch events on toggle rows for mobile devices
+    document.querySelectorAll(".ac-toggle-row").forEach(row => {
+        row.style.cursor = "pointer";
+        row.addEventListener("touchend", (e) => {
+            if (e.target.closest("button")) return;
+            const innerToggle = row.querySelector("#theme-toggle, #speech-toggle, #toast-toggle");
+            if (innerToggle) {
+                e.preventDefault();
+                e.stopPropagation();
+                innerToggle.click();
+            }
+        });
+    });
 
     // Bind Backup & Restore Data Management buttons
     const btnExport = document.getElementById("btn-export-backup");

@@ -666,8 +666,17 @@ function updateMasterTimerUI() {
         } else {
             const initialTime = appState.pomoInitialTime || 1500;
             const pct = (appState.pomoTime || 0) / initialTime;
-            const offset = pomoRingCircumference * (1 - pct);
-            ringFill.style.strokeDashoffset = isNaN(offset) ? 0 : offset;
+            const rawOffset = pomoRingCircumference * (1 - pct);
+            const offset = isNaN(rawOffset) ? 0 : rawOffset;
+            if (window.gsap) {
+                gsap.to(ringFill, {
+                    strokeDashoffset: offset,
+                    duration: 0.35,
+                    ease: "power2.out"
+                });
+            } else {
+                ringFill.style.strokeDashoffset = offset;
+            }
             ringFill.style.stroke = appState.timerMode === "short-break" ? "#10b981" : "#f43f5e";
         }
     }

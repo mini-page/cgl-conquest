@@ -3,11 +3,11 @@ try {
   // Sourced and adapted from ssc-cgl-syllabus-console_1.html for full integration
 
   const SUBJECT_META = {
-    'Quantitative Aptitude': { icon:'📐', color:'teal', weightagePct:28 },
-    'General Intelligence & Reasoning': { icon:'🧠', color:'violet', weightagePct:25 },
-    'English Language & Comprehension': { icon:'📖', color:'amber', weightagePct:22 },
-    'General Awareness': { icon:'🌍', color:'rose', weightagePct:25 },
-    'Computer Knowledge': { icon:'💻', color:'blue', weightagePct:10 }
+    'Quantitative Aptitude': { shortName: 'Quantitative', icon:'📐', color:'teal', weightagePct:28, description: 'Master Arithmetic, Algebra, Geometry, Trigonometry & Data Interpretation speed & accuracy.' },
+    'General Intelligence & Reasoning': { shortName: 'Reasoning', icon:'🧠', color:'violet', weightagePct:25, description: 'Build speed & accuracy across Verbal, Non-Verbal, Analytical & Logical Reasoning patterns.' },
+    'English Language & Comprehension': { shortName: 'English', icon:'📖', color:'amber', weightagePct:22, description: 'Strengthen Grammar rules, Vocabulary, Reading Comprehension, Cloze Tests & Error Spotting.' },
+    'General Awareness': { shortName: 'GK/GS', icon:'🌍', color:'rose', weightagePct:25, description: 'High-yield coverage of History, Polity, Geography, Economics, General Science & Current Affairs.' },
+    'Computer Knowledge': { shortName: 'Computer', icon:'💻', color:'blue', weightagePct:10, description: 'Fundamentals, Hardware, Software, Networking, Cyber Security & MS Office essential operations.' }
   };
 
   function slugify(s) {
@@ -25,15 +25,17 @@ try {
   function buildSubjects(raw) {
     const bySubject = {};
     raw.forEach(entry => {
-      const meta = SUBJECT_META[entry.subject] || { icon:'📘', color:'blue', weightagePct:null };
+      const meta = SUBJECT_META[entry.subject] || { shortName: entry.subject.split(' ')[0], icon:'📘', color:'blue', weightagePct:null, description:'' };
       const subjId = slugify(entry.subject);
       if (!bySubject[subjId]) {
         bySubject[subjId] = {
           id: subjId,
           name: entry.subject,
+          shortName: meta.shortName || entry.subject.split(' ')[0],
           icon: meta.icon,
           color: meta.color,
           weightagePct: meta.weightagePct,
+          description: meta.description || '',
           chaptersMap: {}
         };
       }
@@ -59,9 +61,11 @@ try {
     return Object.values(bySubject).map(s => ({
       id: s.id,
       name: s.name,
+      shortName: s.shortName,
       icon: s.icon,
       color: s.color,
       weightagePct: s.weightagePct,
+      description: s.description,
       chapters: Object.entries(s.chaptersMap).map(([name, groups]) => ({ name, groups })),
     }));
   }
@@ -93,7 +97,7 @@ try {
   }
 
   // Global toggle stages
-  function toggleFlag(id, key) {
+  function toggleFlag(id, key, targetEl) {
     const f = { ...flags(id) };
     f[key] = !f[key];
     if (key === 'mastered' && f.mastered) { f.learned = true; f.practiced = true; }
@@ -102,7 +106,62 @@ try {
     if (key === 'practiced' && !f.practiced) { f.mastered = false; }
     appState.syllabusProgress[id] = f;
     save();
-    renderAll();
+
+    if (targetEl) {
+      updateTriRowDOM(id, targetEl);
+    } else {
+      renderAll();
+    }
+  }
+
+  function updateTriRowDOM(id, targetEl) {
+    const f = flags(id);
+    const rowEl = targetEl.closest('.border-b, .px-4') || targetEl.parentElement;
+    if (rowEl) {
+      const container = rowEl.parentElement && rowEl.parentElement.classList.contains('flex-col') ? rowEl.parentElement : rowEl;
+      ['learned', 'practiced', 'mastered'].forEach(flagKey => {
+        const optionEl = container.querySelector(`[data-tri="${id}"][data-flag="${flagKey}"]`);
+        if (optionEl) {
+          const box = optionEl.querySelector('.tri-box');
+          const lbl = optionEl.querySelector('span:last-child');
+          if (box) {
+            if (f[flagKey]) {
+              box.classList.add('on');
+              box.textContent = '✓';
+            } else {
+              box.classList.remove('on');
+              box.textContent = '';
+            }
+          }
+          if (lbl) {
+            if (flagKey === 'learned') {
+              lbl.className = `text-xs font-medium ${f.learned ? 'text-teal-400 font-semibold' : 'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition`;
+            } else if (flagKey === 'practiced') {
+              lbl.className = `text-xs font-medium ${f.practiced ? 'text-violet-400 font-semibold' : 'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition`;
+            } else if (flagKey === 'mastered') {
+              lbl.className = `text-xs font-medium ${f.mastered ? 'text-amber-400 font-semibold' : 'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition`;
+            }
+          }
+        }
+      });
+    }
+
+    const groupCard = targetEl.closest('.border-line, .rounded-xl');
+    if (groupCard) {
+      const statsBadge = groupCard.querySelector('[data-gstats]');
+      if (statsBadge) {
+        const itemRows = groupCard.querySelectorAll('[data-tri]');
+        const itemIds = new Set();
+        itemRows.forEach(r => itemIds.add(r.dataset.tri));
+        let doneCount = 0;
+        itemIds.forEach(itemId => {
+          if (flags(itemId).mastered) doneCount++;
+        });
+        statsBadge.textContent = `${doneCount}/${itemIds.size} Done`;
+      }
+    }
+
+    renderRingDeck();
   }
 
   function save() {
@@ -221,8 +280,8 @@ try {
     const chLabel = syllabusState.chapter ? syllabusState.chapter.split('|')[1] : 'All Chapters';
     const statusLabels = {new:'Not Started', learned:'Learned', practiced:'Practiced', mastered:'Mastered'};
     return [
-      { id:'subject', icon:'📚', label: subj ? `${subj.icon} ${subj.name.split(' ')[0]}` : 'All Subjects', active: !!syllabusState.subject,
-        panelHTML: simpleOptionsHTML('subject', [{value:'',label:'All Subjects'}, ...SUBJECTS.map(s=>({value:s.id,label:`${s.icon} ${s.name}`}))], syllabusState.subject) },
+      { id:'subject', icon: subj ? subj.icon : '📚', label: subj ? (subj.shortName || subj.name) : 'All Subjects', active: !!syllabusState.subject,
+        panelHTML: simpleOptionsHTML('subject', [{value:'',label:'All Subjects'}, ...SUBJECTS.map(s=>({value:s.id,label:`${s.icon} ${s.shortName || s.name}`}))], syllabusState.subject) },
       { id:'chapter', icon:'📂', label: chLabel, active: !!syllabusState.chapter, panelHTML: chapterPanelHTML() },
       { id:'difficulty', icon:'🎯', label: syllabusState.difficulty || 'All Difficulties', active: !!syllabusState.difficulty,
         panelHTML: simpleOptionsHTML('difficulty', [{value:'',label:'All Difficulties'},{value:'Easy',label:'Easy'},{value:'Moderate',label:'Moderate'},{value:'Hard',label:'Hard'}], syllabusState.difficulty) },
@@ -489,17 +548,17 @@ try {
       const r=22, circ=2*Math.PI*r, offset = circ - (pct/100)*circ;
       const active = syllabusState.subject === s.id;
       return `
-      <button data-subj="${s.id}" class="subj-ring shrink-0 snap-start w-[190px] md:w-auto text-left ${active ? c.soft+' '+c.border : 'bg-panel border-line'} border rounded-2xl p-3 flex items-center gap-3 hover:border-${s.color==='blue'?'blue-400':s.color}/40 transition">
+      <button data-subj="${s.id}" class="subj-ring shrink-0 snap-start w-[190px] md:w-auto text-left ${active ? c.soft+' '+c.border+' ring-1 ring-'+(s.color==='blue'?'blue-400':s.color) : 'bg-panel border-line'} border rounded-2xl p-3 flex items-center gap-3 hover:border-${s.color==='blue'?'blue-400':s.color}/40 transition">
         <div class="relative shrink-0">
           <svg width="52" height="52" viewBox="0 0 52 52" class="-rotate-90">
-          <circle class="ring-track" cx="26" cy="26" r="${r}" stroke-width="4"></circle>
-          <circle class="ring-progress" cx="26" cy="26" r="${r}" stroke-width="4" stroke="${c.ring}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"></circle>
-            <text x="26" y="26" text-anchor="middle" dominant-baseline="middle" class="text-[7px] font-mono font-bold fill-current ${c.text}" transform="rotate(90 26 26)">${pct}%</text>
+            <circle class="ring-track" cx="26" cy="26" r="${r}" stroke-width="4" fill="none" stroke="rgba(255,255,255,0.08)"></circle>
+            <circle class="ring-progress" cx="26" cy="26" r="${r}" stroke-width="4" fill="none" stroke="${c.ring}" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"></circle>
+            <text x="26" y="26" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="bold" fill="#ffffff" transform="rotate(90 26 26)">${pct}%</text>
           </svg>
         </div>
         <div class="min-w-0">
-          <div class="text-sm font-bold text-zinc-200 truncate">${s.icon} ${s.name.split(' ')[0]}</div>
-          <div class="text-[10px] text-zinc-500 font-mono">${done}/${total} mastered</div>
+          <div class="text-sm font-bold text-zinc-100 truncate">${s.icon} ${s.shortName || s.name}</div>
+          <div class="text-[10px] text-zinc-400 font-mono mt-0.5">${done}/${total} mastered</div>
         </div>
       </button>`;
     }).join('');
@@ -532,38 +591,65 @@ try {
   }
 
   function diffPill(d) {
-    const map={Easy:'text-teal bg-teal/10 border-teal/20', Moderate:'text-amber bg-amber/10 border-amber/20', Hard:'text-rose bg-rose/10 border-rose/20'};
-    return `<span class="text-[10px] font-mono px-1.5 py-0.5 rounded border ${map[d]}">${d.toUpperCase()}</span>`;
+    if (!d) return '';
+    const map = {
+      Easy: 'text-emerald-400 bg-emerald-950/40 border-emerald-800/40',
+      Moderate: 'text-amber bg-amber/10 border-amber/20',
+      Hard: 'text-rose bg-rose/10 border-rose/20'
+    };
+    const cls = map[d] || 'text-zinc-400 bg-zinc-800/50 border-zinc-700/50';
+    return `<span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded border ${cls}">${d.toUpperCase()}</span>`;
   }
 
-  function weightPill(w){ return `<span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-panel2 text-zinc-400 border border-line">${w.toUpperCase()} WEIGHT</span>`; }
-  function effortLabel(e){ return `<span class="text-[10px] font-mono text-zinc-500">EFFORT: ${e.toUpperCase()}</span>`; }
+  function weightPill(w){
+    if (!w) return '';
+    return `<span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-800/60 text-zinc-300 border border-zinc-700/50">${w.toUpperCase()} WEIGHT</span>`;
+  }
+
+  function effortLabel(e){
+    if (!e) return '';
+    return `<span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-800/40 text-zinc-400 border border-zinc-700/40">EFFORT: ${e.toUpperCase()}</span>`;
+  }
 
   function miniTri(it) {
     const f = flags(it.id);
     return `<div class="flex items-center gap-1" title="L / P / M">
-      <span data-tri="${it.id}" data-flag="learned" title="Learned" class="tri-box ${f.learned?'on':''}">${f.learned?'✓':''}</span>
-      <span data-tri="${it.id}" data-flag="practiced" title="Practiced" class="tri-box p ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span>
-      <span data-tri="${it.id}" data-flag="mastered" title="Mastered" class="tri-box m ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span>
+      <span data-tri="${it.id}" data-flag="learned" title="Learned" class="tri-box learned ${f.learned?'on':''}">${f.learned?'✓':''}</span>
+      <span data-tri="${it.id}" data-flag="practiced" title="Practiced" class="tri-box practiced p ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span>
+      <span data-tri="${it.id}" data-flag="mastered" title="Mastered" class="tri-box mastered m ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span>
     </div>`;
   }
 
   function triStateRow(it) {
     const f = flags(it.id);
     return `
-    <div class="px-4 py-3 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition">
-      <p class="text-sm text-zinc-100 mb-1.5 font-medium">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
-      <div class="flex items-center flex-wrap gap-2 mb-2.5">${diffPill(it.difficulty)}${weightPill(it.weight)}${effortLabel(it.effort)}</div>
-      <div class="flex items-center gap-4">
-        <label class="flex items-center gap-1.5 cursor-pointer select-none">
-          <span data-tri="${it.id}" data-flag="learned" class="tri-box ${f.learned?'on':''}">${f.learned?'✓':''}</span><span class="text-xs text-zinc-400">Learned</span>
-        </label>
-        <label class="flex items-center gap-1.5 cursor-pointer select-none">
-          <span data-tri="${it.id}" data-flag="practiced" class="tri-box p ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span><span class="text-xs text-zinc-400">Practiced</span>
-        </label>
-        <label class="flex items-center gap-1.5 cursor-pointer select-none">
-          <span data-tri="${it.id}" data-flag="mastered" class="tri-box m ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span><span class="text-xs text-zinc-400">Mastered</span>
-        </label>
+    <div class="px-4 py-3.5 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div class="flex-1 min-w-0">
+        <h4 class="text-xs sm:text-sm font-medium text-zinc-200 dark:text-zinc-200 text-zinc-800 mb-2 flex items-center flex-wrap gap-2">
+          <span>${it.name}</span>
+          ${appState.weakAlerts && appState.weakAlerts[it.id] ? '<span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold">🚨 Weak</span>' : ''}
+        </h4>
+        <div class="flex items-center flex-wrap gap-2">
+          ${diffPill(it.difficulty)}
+          ${weightPill(it.weight)}
+          ${effortLabel(it.effort)}
+        </div>
+      </div>
+      <div class="flex items-center gap-3 dark:bg-zinc-900/90 bg-white/90 border dark:border-zinc-700/60 border-zinc-200 shadow-sm rounded-xl px-3.5 py-2 shrink-0 self-start md:self-center">
+        <div data-tri="${it.id}" data-flag="learned" class="flex items-center gap-2 cursor-pointer select-none group/tb">
+          <span class="tri-box learned ${f.learned?'on':''}">${f.learned?'✓':''}</span>
+          <span class="text-xs font-medium ${f.learned?'text-teal-400 font-semibold':'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition">Learned</span>
+        </div>
+        <span class="dark:text-zinc-700 text-zinc-300 select-none">|</span>
+        <div data-tri="${it.id}" data-flag="practiced" class="flex items-center gap-2 cursor-pointer select-none group/tb">
+          <span class="tri-box practiced p ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span>
+          <span class="text-xs font-medium ${f.practiced?'text-violet-400 font-semibold':'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition">Practiced</span>
+        </div>
+        <span class="dark:text-zinc-700 text-zinc-300 select-none">|</span>
+        <div data-tri="${it.id}" data-flag="mastered" class="flex items-center gap-2 cursor-pointer select-none group/tb">
+          <span class="tri-box mastered m ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span>
+          <span class="text-xs font-medium ${f.mastered?'text-amber-400 font-semibold':'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition">Mastered</span>
+        </div>
       </div>
     </div>`;
   }
@@ -571,7 +657,7 @@ try {
   function bindTriRows(root) {
     root.querySelectorAll('[data-tri]').forEach(el => el.onclick = (e) => {
       e.stopPropagation();
-      toggleFlag(el.dataset.tri, el.dataset.flag);
+      toggleFlag(el.dataset.tri, el.dataset.flag, el);
     });
     root.querySelectorAll('[data-toggle-all]').forEach(el => el.onclick = (e) => {
       e.stopPropagation();
@@ -588,59 +674,97 @@ try {
       const subjOpen = syllabusState.expandedGroups.has('S:'+s.id) || syllabusState.subject === s.id;
       return `
       <div class="mb-3 bg-panel border border-line rounded-2xl overflow-hidden shadow">
-        <button data-toggle-subj="${s.id}" class="w-full flex items-center gap-2 px-4 py-3 ${c.soft} border-b ${subjOpen?'border-line':'border-transparent'} text-left">
-          <span class="text-lg">${s.icon}</span>
-          <span class="font-heading font-semibold text-sm text-zinc-100">${s.name}</span>
-          ${s.weightagePct ? `<span class="ml-auto text-[11px] font-mono ${c.text}">${pct}% &bull; ${s.weightagePct}% weight</span>` : `<span class="ml-auto text-[11px] font-mono ${c.text}">${pct}%</span>`}
-          <span class="chev ${subjOpen?'open':''} text-zinc-500 text-xs ml-1">›</span>
+        <button data-toggle-subj="${s.id}" class="w-full flex items-center gap-2.5 px-4 py-3.5 ${c.soft} border-b border-line/60 text-left transition">
+          <span class="text-lg sm:text-xl">${s.icon}</span>
+          <span class="font-heading font-semibold text-sm sm:text-base text-zinc-100">${s.name}</span>
+          ${s.weightagePct ? `<span class="ml-auto text-xs sm:text-sm font-mono font-semibold ${c.text}">${pct}% &bull; ${s.weightagePct}% weight</span>` : `<span class="ml-auto text-xs sm:text-sm font-mono font-semibold ${c.text}">${pct}%</span>`}
+          <span class="chev ${subjOpen?'open':''} text-zinc-400 text-xs ml-1">›</span>
         </button>
-        ${subjOpen ? `<div class="p-4 space-y-5">
-          ${s.chapters.map(ch => `
-            <div>
-              <p class="text-[10px] font-mono uppercase tracking-wider text-zinc-500 mb-2">${ch.name}</p>
-              <div class="space-y-2">
-                ${ch.groups.map(g => {
-                  const gs = groupStats(g);
-                  const key = `G:${s.id}:${ch.name}:${g.name}`;
-                  const gOpen = syllabusState.expandedGroups.has(key);
-                  return `
-                  <div class="bg-panel2/60 border border-line rounded-xl overflow-hidden">
-                    <button data-toggle-group="${key}" class="w-full flex items-center gap-2 px-3.5 py-2.5 text-left hover:bg-white/[0.02] transition">
-                      <span class="text-cyan-300/80 text-sm">📁</span>
-                      ${g.high ? '<span class="text-amber text-xs">⭐</span>' : ''}
-                      <span class="text-xs font-medium text-zinc-100 flex-1">${g.name}</span>
-                      <span class="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-panel text-zinc-400">${gs.done}/${gs.total} Done</span>
-                      <span class="chev ${gOpen?'open':''} text-zinc-500 text-xs">›</span>
-                    </button>
-                    ${gOpen ? `<div class="border-t border-line">${sortItems(g.items).map(triStateRow).join('')}</div>` : ''}
-                  </div>`;
-                }).join('')}
-              </div>
-            </div>`).join('')}
+
+        ${s.description ? `
+        <div data-subj-desc="${s.id}" class="transition-all duration-300 ${subjOpen ? 'hidden opacity-0' : 'block opacity-100 px-4 py-2 text-xs text-zinc-400 font-mono bg-panel'}">
+          ${s.description}
         </div>` : ''}
+
+        <div data-subj-body="${s.id}" class="collapsible-content ${subjOpen?'open':''}">
+          <div class="collapsible-inner p-4 space-y-5">
+            ${s.chapters.map(ch => `
+              <div>
+                <p class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 mb-2">${ch.name}</p>
+                <div class="space-y-2">
+                  ${ch.groups.map(g => {
+                    const gs = groupStats(g);
+                    const key = `G:${s.id}:${ch.name}:${g.name}`;
+                    const gOpen = syllabusState.expandedGroups.has(key);
+                    return `
+                    <div class="bg-panel2/60 border border-line rounded-xl overflow-hidden">
+                      <button data-toggle-group="${key}" class="w-full flex items-center gap-2.5 px-4 py-3 text-left hover:bg-white/[0.02] transition">
+                        <span class="text-amber-400 text-base">📁</span>
+                        ${g.high ? '<span class="text-amber text-xs">⭐</span>' : ''}
+                        <span class="text-sm sm:text-base font-semibold text-zinc-100 flex-1">${g.name}</span>
+                        <span data-gstats="${key}" class="text-xs font-mono font-medium px-2.5 py-1 rounded-lg bg-panel border border-line text-zinc-400">${gs.done}/${gs.total} Done</span>
+                        <span class="chev ${gOpen?'open':''} text-zinc-500 text-xs">›</span>
+                      </button>
+                      <div data-group-body="${key}" class="collapsible-content ${gOpen?'open':''}">
+                        <div class="collapsible-inner border-t border-line">${sortItems(g.items).map(triStateRow).join('')}</div>
+                      </div>
+                    </div>`;
+                  }).join('')}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
       </div>`;
     }).join('');
   }
 
   function bindTree(root) {
-    root.querySelectorAll('[data-toggle-subj]').forEach(el => el.onclick = () => {
-      const key = 'S:' + el.dataset.toggleSubj;
-      if (syllabusState.expandedGroups.has(key)) {
-        syllabusState.expandedGroups.delete(key);
-      } else {
-        syllabusState.expandedGroups.add(key);
-      }
-      renderAll();
+    root.querySelectorAll('[data-toggle-subj]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const sId = btn.dataset.toggleSubj;
+        const key = 'S:' + sId;
+        const body = root.querySelector(`[data-subj-body="${sId}"]`);
+        const chev = btn.querySelector('.chev');
+        const descEl = root.querySelector(`[data-subj-desc="${sId}"]`);
+        if (syllabusState.expandedGroups.has(key)) {
+          syllabusState.expandedGroups.delete(key);
+          if (body) body.classList.remove('open');
+          if (chev) chev.classList.remove('open');
+          if (descEl) {
+            descEl.classList.remove('hidden', 'opacity-0');
+            descEl.classList.add('block', 'opacity-100');
+          }
+        } else {
+          syllabusState.expandedGroups.add(key);
+          if (body) body.classList.add('open');
+          if (chev) chev.classList.add('open');
+          if (descEl) {
+            descEl.classList.remove('block', 'opacity-100');
+            descEl.classList.add('hidden', 'opacity-0');
+          }
+        }
+      };
     });
-    root.querySelectorAll('[data-toggle-group]').forEach(el => el.onclick = () => {
-      const key = el.dataset.toggleGroup;
-      if (syllabusState.expandedGroups.has(key)) {
-        syllabusState.expandedGroups.delete(key);
-      } else {
-        syllabusState.expandedGroups.add(key);
-      }
-      renderAll();
+
+    root.querySelectorAll('[data-toggle-group]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const key = btn.dataset.toggleGroup;
+        const body = btn.parentElement ? btn.parentElement.querySelector(`.collapsible-content[data-group-body]`) : null;
+        const chev = btn.querySelector('.chev');
+        if (syllabusState.expandedGroups.has(key)) {
+          syllabusState.expandedGroups.delete(key);
+          if (body) body.classList.remove('open');
+          if (chev) chev.classList.remove('open');
+        } else {
+          syllabusState.expandedGroups.add(key);
+          if (body) body.classList.add('open');
+          if (chev) chev.classList.add('open');
+        }
+      };
     });
+
     bindTriRows(root);
   }
 
