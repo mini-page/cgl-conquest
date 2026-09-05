@@ -82,6 +82,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- QR Code Generator & Scanner Libraries for Instant Sync -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
     <!-- Atlas-inspired Study Zone CSS -->
     <style>
@@ -650,16 +653,16 @@
                         </div>
                     </div>
 
-                    <!-- Grouped Horizontal Pills Row (No Separation Line) -->
-                    <div class="flex items-center flex-wrap gap-2.5">
+                    <!-- Grouped Horizontal Pills Row (Snap Scroll Stream Across All Screens) -->
+                    <div class="flex items-center gap-2.5 sm:gap-3 overflow-x-auto scrollbar-none snap-x snap-mandatory flex-nowrap py-1 -mx-1 px-1 sm:mx-0 sm:px-0">
                         <!-- Pill 1: Preparation Score -->
-                        <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-cyan-500/30 text-xs font-bold text-white shadow-inner backdrop-blur-md">
+                        <div class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-cyan-500/30 text-xs font-bold text-white shadow-inner backdrop-blur-md">
                             <i class="fa-solid fa-percent text-cyan-400 text-xs"></i>
                             <span>Score: <strong id="prep-score" class="text-cyan-400 font-extrabold">0%</strong></span>
                         </div>
 
                         <!-- Pill 2: Roadmap Progress (Click to jump to Study Plan) -->
-                        <button type="button" onclick="navigateToPage('page-plan')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-cyan-950/40 border border-cyan-500/30 hover:border-cyan-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to open Study Plan">
+                        <button type="button" onclick="navigateToPage('page-plan')" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-cyan-950/40 border border-cyan-500/30 hover:border-cyan-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to open Study Plan">
                             <i class="fa-solid fa-map-location-dot text-cyan-400 text-xs group-hover:scale-110 transition"></i>
                             <span class="text-gray-300 group-hover:text-white transition">Roadmap:</span>
                             <span id="plan-pct" class="text-cyan-400 font-extrabold">0% (0/40)</span>
@@ -670,7 +673,7 @@
                         </button>
 
                         <!-- Pill 3: Plan Progress & Daily Target -->
-                        <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-purple-500/30 text-xs font-bold text-white shadow-inner backdrop-blur-md">
+                        <div class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-purple-500/30 text-xs font-bold text-white shadow-inner backdrop-blur-md">
                             <i class="fa-solid fa-calendar-check text-purple-400 text-xs"></i>
                             <span id="day-progress" class="font-extrabold text-purple-300">Day 1 of 40</span>
                             <span class="text-gray-500">•</span>
@@ -678,13 +681,13 @@
                         </div>
 
                         <!-- Pill 4: Study Streak -->
-                        <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-amber-500/30 text-xs font-bold text-amber-300 shadow-inner backdrop-blur-md">
+                        <div class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-amber-500/30 text-xs font-bold text-amber-300 shadow-inner backdrop-blur-md">
                             <i class="fa-solid fa-fire-flame-curved text-amber-400 text-xs"></i>
                             <span id="streak-count-display" class="font-extrabold text-amber-400">1d Streak</span>
                         </div>
 
                         <!-- Pill 5: Mocks Taken (Click to jump to Mock Analysis) -->
-                        <button type="button" onclick="navigateToPage('page-mocks')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/30 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to open Mock & Sectional Analytics">
+                        <button type="button" onclick="navigateToPage('page-mocks')" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/30 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to open Mock & Sectional Analytics">
                             <i class="fa-solid fa-trophy text-rose-400 text-xs group-hover:scale-110 transition"></i>
                             <span class="text-gray-300 group-hover:text-white transition">Mocks:</span>
                             <strong id="mocks-taken-count" class="text-rose-400 font-extrabold">0</strong>
@@ -692,7 +695,7 @@
                         </button>
 
                         <!-- Pill 6: Exam Target Countdown Pill (Clicking opens Edit Popup Modal!) -->
-                        <button type="button" onclick="openExamTargetModal()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/40 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to edit target exam date">
+                        <button type="button" onclick="openExamTargetModal()" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/40 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to edit target exam date">
                             <i class="fa-solid fa-bullseye text-rose-400 text-xs group-hover:scale-110 transition"></i>
                             <span id="display-exam-name" class="font-extrabold text-rose-300 uppercase">Conquest</span>
                             <span class="text-gray-500">•</span>
@@ -2001,6 +2004,11 @@
                         </button>
                         <input type="file" id="input-restore-file" class="hidden" accept=".json">
                     </div>
+                    <!-- Instant Peer QR Sync -->
+                    <button id="btn-open-qr-sync" type="button" onclick="window.openQrSyncModal()" class="w-full mt-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600/25 via-teal-600/25 to-emerald-600/25 hover:from-cyan-600/40 hover:to-emerald-600/40 text-cyan-300 hover:text-white text-xs font-bold border border-cyan-500/40 transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 cursor-pointer active:scale-95" title="Sync All Records Across Devices via QR Code">
+                        <i class="fa-solid fa-qrcode text-cyan-400"></i>
+                        <span>Instant QR Sync (Mobile &harr; Laptop)</span>
+                    </button>
                 </div>
 
             </div>
@@ -2116,9 +2124,10 @@
     <script src="js/dashboard.js?v=22"></script>
     <script src="js/syllabus.js?v=29"></script>
     <script src="js/plan.js?v=18"></script>
-    <script src="js/mocks.js?v=24"></script>
-    <script src="js/toolkit.js?v=16"></script>
+    <script src="js/mocks.js?v=25"></script>
+    <script src="js/toolkit.js?v=17"></script>
     <script src="js/speed.js?v=19"></script>
+    <script src="components/qr-sync-modal.js?v=2"></script>
     <script src="js/app.js?v=16"></script>
 </body>
 </html>

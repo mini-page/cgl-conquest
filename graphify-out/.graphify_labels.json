@@ -45,6 +45,7 @@
   "43": "mountains.js",
   "44": "passes.js",
   "45": "rivers.js",
+  "46": "index.js",
   "47": "constitution_articles_memory_roadmap.js",
   "48": "daily_micro_trick_the_5-point_memory_chain.js",
   "49": "tier_1_constitutional_articles_must_know.js",
@@ -84,6 +85,7 @@
   "83": "Exploring Codebases with GitNexus",
   "84": "GitNexus — Code Intelligence",
   "85": "GitNexus — Code Intelligence",
+  "86": "QrSyncModal",
   "87": "SSC CGL 40-Day Rank-Maker Dashboard 🏆",
   "88": "6. ALL GLOBAL VARIABLES",
   "89": "9. EXECUTION FLOWS (33 Total from GitNexus)",
@@ -95,5 +97,7 @@
   "95": "4. MODULE DEPENDENCY MAP",
   "96": "rules/graphify.md",
   "97": "workflows/graphify.md",
-  "98": "study_content.js"
+  "98": "study_content.js",
+  "99": "ModalDialog",
+  "100": "ToastNotification"
 }

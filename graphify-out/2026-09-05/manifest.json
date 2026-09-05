@@ -156,21 +156,21 @@
     "semantic_hash": "f557a5a4c29215c5710f2fba97124dd4"
   },
   "js/dashboard.js": {
-    "mtime": 1788594747.0510426,
-    "seen": 1788595555.6974745,
-    "ast_hash": "e655db4766b5678a49b940b8d94c9d7e",
+    "mtime": 1788609028.9757092,
+    "seen": 1788609588.206825,
+    "ast_hash": "4e5e6f53f82ae4dfa7f626efdfc5af96",
     "semantic_hash": ""
   },
   "js/mocks.js": {
-    "mtime": 1788603693.8557584,
-    "seen": 1788603751.5562882,
-    "ast_hash": "d37d1855746d1e790b6c7aed19e89f24",
+    "mtime": 1788608823.2712362,
+    "seen": 1788609588.206825,
+    "ast_hash": "2e87965a6f184022ed785f57153d1ad7",
     "semantic_hash": ""
   },
   "js/navigation.js": {
-    "mtime": 1788517839.4992042,
-    "seen": 1788593961.4134526,
-    "ast_hash": "da2243cc13d218d70913501525e8e42f",
+    "mtime": 1788608711.6807716,
+    "seen": 1788609588.206825,
+    "ast_hash": "39e163997b0297eedb30758b1e90d6ad",
     "semantic_hash": ""
   },
   "js/plan.js": {
@@ -180,27 +180,27 @@
     "semantic_hash": ""
   },
   "js/speed.js": {
-    "mtime": 1788516192.4555578,
-    "seen": 1788593961.4134526,
-    "ast_hash": "10a52b1b6ba62ad7c955b0e6efc47020",
+    "mtime": 1788609243.7352576,
+    "seen": 1788609588.206825,
+    "ast_hash": "93c10c2909ca21783ce7049d5c77d5c2",
     "semantic_hash": ""
   },
   "js/state.js": {
-    "mtime": 1788594732.5316815,
-    "seen": 1788595555.6974745,
-    "ast_hash": "8761ea307d8529b14fdf80289012bb79",
+    "mtime": 1788608354.576561,
+    "seen": 1788609588.206825,
+    "ast_hash": "b3843d89fc733521fe17f8d3bc6d5044",
     "semantic_hash": ""
   },
   "js/syllabus.js": {
-    "mtime": 1788595471.745754,
-    "seen": 1788595555.6974745,
-    "ast_hash": "5328dbbcc901ff89a81e852083042e1d",
+    "mtime": 1788609133.7376306,
+    "seen": 1788609588.206825,
+    "ast_hash": "94c283885fe893d1daa3b234f30e9721",
     "semantic_hash": ""
   },
   "js/toolkit.js": {
-    "mtime": 1788382406.0276723,
-    "seen": 1788593961.4134526,
-    "ast_hash": "6a4246d2a1978d93c53cef0b3923e7f3",
+    "mtime": 1788608747.4817078,
+    "seen": 1788609588.206825,
+    "ast_hash": "926ed148f57e59517f507c42d68f3c5e",
     "semantic_hash": ""
   },
   "js/typingtest.js": {
@@ -594,9 +594,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1788603726.2962263,
-    "seen": 1788603751.5577996,
-    "ast_hash": "94fe732c43359d303f589ff8346aece0",
+    "mtime": 1788608963.4338188,
+    "seen": 1788609588.206825,
+    "ast_hash": "877c6192b45c6ba1f1f91fce109ab722",
     "semantic_hash": ""
   },
   "icon.svg": {
@@ -675,6 +675,66 @@
     "mtime": 1788373166.344408,
     "seen": 1788593961.4139752,
     "ast_hash": "ddee21b1c3359dad90cf60d4b88c9db7",
+    "semantic_hash": ""
+  },
+  "components/calendar-picker.js": {
+    "mtime": 1788606388.726585,
+    "seen": 1788609588.206825,
+    "ast_hash": "a0d2be7a1f68ebcdb3e490f52c698f2b",
+    "semantic_hash": ""
+  },
+  "components/hero-header.js": {
+    "mtime": 1788606377.9107451,
+    "seen": 1788609588.206825,
+    "ast_hash": "3342761469b037323a22827f5db36168",
+    "semantic_hash": ""
+  },
+  "components/index.js": {
+    "mtime": 1788608113.5054512,
+    "seen": 1788609588.206825,
+    "ast_hash": "a7f3e9b1cca7a79e19527f383537398d",
+    "semantic_hash": ""
+  },
+  "components/modal-dialog.js": {
+    "mtime": 1788606346.3597329,
+    "seen": 1788609588.206825,
+    "ast_hash": "9a07b171fa5b5c2280dde6d614d310db",
+    "semantic_hash": ""
+  },
+  "components/pill-group.js": {
+    "mtime": 1788606363.6474957,
+    "seen": 1788609588.206825,
+    "ast_hash": "8e7ffbe5ed294cb9792ebe37b6965b12",
+    "semantic_hash": ""
+  },
+  "components/qr-sync-modal.js": {
+    "mtime": 1788608106.759753,
+    "seen": 1788609588.206825,
+    "ast_hash": "91075afdbdf632de5b2f60f35364312e",
+    "semantic_hash": ""
+  },
+  "components/search-bar.js": {
+    "mtime": 1788606354.8469899,
+    "seen": 1788609588.206825,
+    "ast_hash": "087feb18e386b8a175b3dd4bdc473ad0",
+    "semantic_hash": ""
+  },
+  "components/toast-notification.js": {
+    "mtime": 1788606395.1322398,
+    "seen": 1788609588.206825,
+    "ast_hash": "5dddba25dc8c515e04eb367e6da7b49f",
+    "semantic_hash": ""
+  },
+  "components/toggle-switch.js": {
+    "mtime": 1788606371.2433007,
+    "seen": 1788609588.206825,
+    "ast_hash": "a45351bcbe6dc6bed469392c5cb16c3f",
+    "semantic_hash": ""
+  },
+  "components/tri-state-checkbox.js": {
+    "mtime": 1788606333.154574,
+    "seen": 1788609588.206825,
+    "ast_hash": "7a814e3bf2fa92d13b31af65a187562b",
     "semantic_hash": ""
   }
 }

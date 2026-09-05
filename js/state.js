@@ -3360,6 +3360,7 @@ function loadStateFromStorage() {
             if (!appState.lastActiveDate) appState.lastActiveDate = new Date().toISOString().split('T')[0];
             if (!appState.mocks) appState.mocks = [];
             if (!appState.notes) appState.notes = [];
+            if (!appState.srsRecords) appState.srsRecords = {};
             if (!appState.dailyRituals) appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
             if (!appState.syllabusProgress) appState.syllabusProgress = {};
             // Hydrate any new syllabus entries not yet in saved state
@@ -3381,11 +3382,54 @@ function loadStateFromStorage() {
             });
         });
         appState.weakAlerts = {};
+        appState.srsRecords = {};
         appState.examName = "Conquest";
         appState.examDate = "2026-08-15";
         saveStateToStorage();
     }
 }
+
+// Centralized Reactive Exam Countdown Calculator
+function getExamCountdownData() {
+    const examDateStr = appState.examDate || "2026-08-15";
+    let targetTime;
+    if (typeof examDateStr === 'string' && /^\d{2}-\d{2}-\d{4}$/.test(examDateStr.trim())) {
+        const [d, m, y] = examDateStr.trim().split('-').map(Number);
+        targetTime = new Date(y, m - 1, d, 9, 0, 0).getTime();
+    } else {
+        targetTime = new Date(examDateStr).getTime();
+    }
+    if (isNaN(targetTime)) {
+        targetTime = new Date(2026, 7, 15, 9, 0, 0).getTime();
+    }
+
+    const now = Date.now();
+    const distance = targetTime - now;
+
+    if (distance <= 0) {
+        return {
+            reached: true,
+            days: 0, hours: 0, minutes: 0, seconds: 0,
+            formattedShort: "TARGET REACHED!",
+            formattedFull: "00d : 00h : 00m : 00s",
+            examName: appState.examName || "Conquest"
+        };
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    return {
+        reached: false,
+        days, hours, minutes, seconds,
+        formattedShort: `${days}d Left`,
+        formattedFull: `${days}d : ${String(hours).padStart(2, '0')}h : ${String(minutes).padStart(2, '0')}m : ${String(seconds).padStart(2, '0')}s`,
+        examName: appState.examName || "Conquest"
+    };
+}
+window.getExamCountdownData = getExamCountdownData;
 
 // Save state to local storage
 function saveStateToStorage() {

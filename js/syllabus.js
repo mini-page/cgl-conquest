@@ -147,6 +147,13 @@ try {
       mastered:{learned:true,practiced:true,mastered:true},
     };
     appState.syllabusProgress[id] = map[stage] || map.new;
+    if (!appState.srsRecords) appState.srsRecords = {};
+    const lvl = stage === 'mastered' ? 3 : (stage === 'practiced' ? 2 : (stage === 'learned' ? 1 : 0));
+    if (lvl > 0) {
+      appState.srsRecords[id] = { lastReviewed: Date.now(), level: lvl };
+    } else {
+      delete appState.srsRecords[id];
+    }
     save();
     renderAll();
   }
@@ -160,6 +167,16 @@ try {
     if (key === 'learned' && !f.learned) { f.practiced = false; f.mastered = false; }
     if (key === 'practiced' && !f.practiced) { f.mastered = false; }
     appState.syllabusProgress[id] = f;
+
+    // Update Spaced Repetition (SRS) schedule
+    if (!appState.srsRecords) appState.srsRecords = {};
+    const currentStage = f.mastered ? 3 : (f.practiced ? 2 : (f.learned ? 1 : 0));
+    if (currentStage > 0) {
+      appState.srsRecords[id] = { lastReviewed: Date.now(), level: currentStage };
+    } else {
+      delete appState.srsRecords[id];
+    }
+
     save();
 
     // Trigger ranked confetti celebration feedback matching dashboard

@@ -954,5 +954,45 @@ window.toggleToastMode = toggleToastMode;
 window.updateThemeToggleUI = updateThemeToggleUI;
 window.updateSpeechToggleUI = updateSpeechToggleUI;
 window.updateToastToggleUI = updateToastToggleUI;
+window.navigateTab = navigateToPage;
 
+// // Dual-Way QR Device Sync Handler
+let qrModalInstance = null;
+function openQrSyncModal() {
+    const drawer = document.getElementById("action-center-drawer");
+    if (drawer && typeof window.closeActionCenter === "function") {
+        window.closeActionCenter();
+    }
 
+    if (!qrModalInstance && window.QrSyncModal) {
+        qrModalInstance = new window.QrSyncModal({
+            getState: () => appState,
+            onApplyState: (newState) => {
+                delete newState.__proto__;
+                delete newState.constructor;
+                delete newState.prototype;
+
+                appState = { ...appState, ...newState };
+                saveStateToStorage();
+                if (typeof renderAll === "function") renderAll();
+                if (typeof renderMockAnalytics === "function") renderMockAnalytics();
+                if (typeof renderStudyPlan === "function") renderStudyPlan();
+                if (typeof renderToolkit === "function") renderToolkit();
+                if (typeof updateDashboardProgress === "function") updateDashboardProgress();
+                if (typeof updateCountdown === "function") updateCountdown();
+                if (typeof renderSrsBanner === "function") renderSrsBanner();
+            },
+            onToast: (msg, type) => {
+                if (window.showToast) window.showToast(msg, type);
+                else alert(msg);
+            }
+        });
+    }
+
+    if (qrModalInstance) {
+        qrModalInstance.open('scan');
+    } else {
+        console.warn("QrSyncModal component not loaded yet.");
+    }
+}
+window.openQrSyncModal = openQrSyncModal;

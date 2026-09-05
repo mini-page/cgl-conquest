@@ -2009,8 +2009,44 @@ function closeFullscreenPage() {
     currentReadingSubtopic = null;
 }
 
+function openAddNoteModal(prefillData = {}) {
+    if (window.navigateToPage) {
+        window.navigateToPage('page-toolkit');
+    }
+    const customContainer = document.getElementById("study-custom-container");
+    const subjectsContainer = document.getElementById("toolkit-subjects");
+    const chapterView = document.getElementById("study-chapter-view");
+    if (customContainer) customContainer.classList.remove("hidden");
+    if (subjectsContainer) subjectsContainer.classList.add("hidden");
+    if (chapterView) chapterView.classList.add("hidden");
+
+    const titleInp = document.getElementById("note-title");
+    const catInp = document.getElementById("note-category");
+    const subjInp = document.getElementById("note-subject");
+    const contentInp = document.getElementById("note-content");
+
+    if (titleInp && prefillData.title) titleInp.value = prefillData.title;
+    if (catInp && prefillData.category) catInp.value = prefillData.category;
+    if (subjInp && prefillData.subject) subjInp.value = prefillData.subject;
+    if (contentInp && prefillData.content) {
+        contentInp.value = prefillData.content;
+        contentInp.dispatchEvent(new Event('input'));
+    }
+
+    const formNote = document.getElementById("form-note");
+    if (formNote) {
+        formNote.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (contentInp) setTimeout(() => contentInp.focus(), 150);
+    }
+
+    if (window.showToast) {
+        window.showToast(prefillData.category === 'mistake' ? "Mistake note opened - add takeaways & save!" : "Notes editor ready!", "info");
+    }
+}
+
 window.renderToolkit = renderToolkit;
 window.renderToolkitSubTab = renderToolkitSubTab;
 window.deleteNote = deleteNote;
 window.openFullscreenPage = openFullscreenPage;
 window.closeFullscreenPage = closeFullscreenPage;
+window.openAddNoteModal = openAddNoteModal;

@@ -289,7 +289,46 @@ function renderDashboardOverview() {
     
     // Load daily rituals checkbox states
     loadRituals();
+
+    // Render Spaced Repetition Review (SRS) Due Banner
+    renderSrsBanner();
 }
+
+function getSrsDueTopics() {
+    const srs = appState.srsRecords || {};
+    const now = Date.now();
+    const intervals = [1 * 86400000, 3 * 86400000, 7 * 86400000, 14 * 86400000, 30 * 86400000];
+    const dueIds = [];
+
+    Object.keys(appState.syllabusProgress || {}).forEach(subId => {
+        const prog = appState.syllabusProgress[subId];
+        if (prog && (prog.learned || prog.practiced) && !prog.mastered) {
+            const record = srs[subId] || { lastReviewed: 0, level: 0 };
+            const lvl = Math.min(record.level || 0, intervals.length - 1);
+            const interval = intervals[lvl];
+            if (now - record.lastReviewed >= interval) {
+                dueIds.push(subId);
+            }
+        }
+    });
+    return dueIds;
+}
+
+function renderSrsBanner() {
+    const banner = document.getElementById("srs-due-banner");
+    const badge = document.getElementById("srs-count-badge");
+    if (!banner) return;
+
+    const dueTopics = getSrsDueTopics();
+    if (dueTopics.length > 0) {
+        banner.classList.remove("hidden");
+        if (badge) badge.innerText = `${dueTopics.length} Due Today`;
+    } else {
+        banner.classList.add("hidden");
+    }
+}
+window.getSrsDueTopics = getSrsDueTopics;
+window.renderSrsBanner = renderSrsBanner;
 
 function updateTodayGoalsRatio() {
     const dayData = PLAN_DATA.find(d => d.day === appState.currentDay);
@@ -586,37 +625,25 @@ function startExamCountdown() {
     }
     
     function updateCountdown() {
-        const targetDate = getTargetTime();
-        const now = new Date().getTime();
-        const distance = targetDate - now;
+        const cd = (typeof window.getExamCountdownData === 'function') 
+            ? window.getExamCountdownData()
+            : { formattedFull: "40d : 00h : 00m : 00s", formattedShort: "40d Left", examName: appState.examName || "Conquest" };
         
         const labelEl = document.getElementById("countdown-label");
         if (labelEl) {
-            labelEl.innerText = `${appState.examName || "Countdown"}:`;
+            labelEl.innerText = `${cd.examName}:`;
         }
 
-        if (distance < 0) {
-            const labelStr = "TARGET REACHED!";
-            const timerEl = document.getElementById("countdown-timer");
-            if (timerEl) timerEl.innerText = labelStr;
-            const mobTimer = document.getElementById("countdown-timer-mobile");
-            if (mobTimer) mobTimer.innerText = labelStr;
-            return;
-        }
-        
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        const formatStr = `${days}d : ${hours.toString().padStart(2, "0")}h : ${minutes.toString().padStart(2, "0")}m : ${seconds.toString().padStart(2, "0")}s`;
         const timerEl = document.getElementById("countdown-timer");
-        if (timerEl) timerEl.innerText = formatStr;
+        if (timerEl) timerEl.innerText = cd.formattedFull;
         
         const mobTimer = document.getElementById("countdown-timer-mobile");
         if (mobTimer) {
-            mobTimer.innerText = formatStr;
+            mobTimer.innerText = cd.formattedFull;
         }
+
+        const nameDisplay = document.getElementById("display-exam-name");
+        if (nameDisplay) nameDisplay.innerText = cd.examName;
     }
     
     updateCountdown();

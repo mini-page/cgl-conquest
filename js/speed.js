@@ -579,12 +579,16 @@ function resetDrillSession() {
 }
 
 // === CONQUEST CHALLENGE ENGINE CONTROLLERS ===
+let challengeQuestionStartTime = 0;
+let challengeQuestionTelemetry = [];
+
 function startChallengeRun() {
     isChallengeActive = true;
     drillIsPlaying = true;
     challengeTimeRemaining = 900; 
     challengeQuestionIndex = 0;
     challengeScore = 0;
+    challengeQuestionTelemetry = [];
     
     const btnChallengeStart = document.getElementById("btn-challenge-start");
     if (btnChallengeStart) {
@@ -731,6 +735,7 @@ function generateChallengeQuestion() {
         const qData = generateProceduralMathQuestion(diff);
         qLabel.innerText = qData.q;
         challengeCorrectAnswerVal = qData.a;
+        challengeQuestionStartTime = Date.now();
         
         let optIdx = 1;
         qData.o.forEach(choice => {
@@ -755,6 +760,14 @@ function generateChallengeQuestion() {
 
 function submitChallengeAnswer(subject, chosenVal, correctVal, optButtons) {
     let isCorrect = (String(chosenVal) === String(correctVal));
+    
+    // Telemetry tracking
+    const elapsedSec = challengeQuestionStartTime ? Math.round(((Date.now() - challengeQuestionStartTime) / 1000) * 10) / 10 : 0;
+    challengeQuestionTelemetry.push({
+        qIndex: challengeQuestionIndex + 1,
+        timeSec: elapsedSec,
+        correct: isCorrect
+    });
     
     optButtons.forEach(b => {
         b.disabled = true;
@@ -828,7 +841,28 @@ function endChallengeRun(completed = false, aborted = false) {
     } else if (completed) {
         const timeTaken = 900 - challengeTimeRemaining;
         const pass = (challengeScore >= 20); 
+        const telemetryCount = challengeQuestionTelemetry.length || 1;
+        const avgSpeed = (timeTaken / telemetryCount).toFixed(1);
+        const slowCount = challengeQuestionTelemetry.filter(t => t.timeSec > 10).length;
+        const fastCount = challengeQuestionTelemetry.filter(t => t.timeSec <= 3 && t.correct).length;
         
+        const telemetryCardHtml = `
+            <div class="mt-3 p-3 bg-white/5 border border-white/10 rounded-xl text-left space-y-1.5 text-xs">
+                <div class="flex items-center justify-between font-bold text-gray-300">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt text-cyan-400"></i> Avg Speed / Question:</span>
+                    <span class="text-cyan-400 font-mono font-black">${avgSpeed}s</span>
+                </div>
+                <div class="flex items-center justify-between font-bold text-gray-300">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-rocket text-emerald-400"></i> Rapid Solves (≤3s):</span>
+                    <span class="text-emerald-400 font-mono font-black">${fastCount} / ${telemetryCount}</span>
+                </div>
+                <div class="flex items-center justify-between font-bold text-gray-300">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-hourglass-half text-amber-400"></i> Slow Solves (>10s):</span>
+                    <span class="${slowCount > 0 ? 'text-amber-400 font-black' : 'text-gray-400 font-mono'}">${slowCount} questions</span>
+                </div>
+            </div>
+        `;
+
         if (pass) {
             speakText("Conquest cleared");
             if (window.triggerConfetti) window.triggerConfetti();
@@ -850,6 +884,7 @@ function endChallengeRun(completed = false, aborted = false) {
                         <div class="text-center pt-1 text-cyan-300 font-extrabold text-xs">
                             ⚡ Tier-2 Cutoff Cleared!
                         </div>
+                        ${telemetryCardHtml}
                     `,
                     icon: "fa-trophy",
                     type: "success",
@@ -873,6 +908,7 @@ function endChallengeRun(completed = false, aborted = false) {
                                 <span class="text-lg text-cyan-400 font-black">${timeTaken}s</span>
                             </div>
                         </div>
+                        ${telemetryCardHtml}
                     `,
                     icon: "fa-circle-xmark",
                     type: "error",

@@ -1222,10 +1222,16 @@ function openMockDetailModal(mockId) {
                                     <span class="text-[8.5px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30">
                                         ${escapeHTML(subj)}
                                     </span>
-                                    <button type="button" onclick="closeMockDetailModal(); window.jumpToSyllabusTopic('${id}')" class="px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 transition cursor-pointer flex items-center gap-1.5 shrink-0 shadow-sm active:scale-95">
-                                        <span>Revise</span>
-                                        <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
-                                    </button>
+                                    <div class="flex items-center gap-1.5 shrink-0">
+                                        <button type="button" onclick="window.logMistakeFromMock('${escapeHTML(subj)}', '${escapeHTML(name)}')" class="px-2 py-0.5 rounded-lg text-[9.5px] font-bold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 transition cursor-pointer flex items-center gap-1 shadow-sm active:scale-95" title="Log to Mistake Notebook">
+                                            <i class="fa-solid fa-pen-to-square text-[8px]"></i>
+                                            <span>Note</span>
+                                        </button>
+                                        <button type="button" onclick="closeMockDetailModal(); window.jumpToSyllabusTopic('${id}')" class="px-2 py-0.5 rounded-lg text-[9.5px] font-bold bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 transition cursor-pointer flex items-center gap-1 shadow-sm active:scale-95" title="Jump to Syllabus">
+                                            <span>Revise</span>
+                                            <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="text-xs font-bold text-white leading-snug break-words">
                                     ${escapeHTML(name)}
@@ -1243,9 +1249,15 @@ function openMockDetailModal(mockId) {
     if (mock.notes && mock.notes.trim()) {
         notesHtml = `
             <div class="space-y-1.5 pt-1 border-t border-white/10">
-                <span class="text-[10px] font-extrabold uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-clipboard-question text-xs"></i> Mistakes Analysis & Notes
-                </span>
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-clipboard-question text-xs"></i> Mistakes Analysis & Notes
+                    </span>
+                    <button type="button" onclick="window.logMockNotesToNotebook('${escapeHTML(mock.name)}', '${escapeHTML(mock.notes)}')" class="px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 transition cursor-pointer flex items-center gap-1" title="Copy to Notebook">
+                        <i class="fa-solid fa-book-bookmark text-[8px] text-cyan-400"></i>
+                        <span>Save to Notebook</span>
+                    </button>
+                </div>
                 <div class="bg-slate-950/90 border border-white/10 rounded-xl p-3 text-xs text-gray-300 leading-relaxed max-h-32 overflow-y-auto scrollbar-thin whitespace-pre-wrap font-sans">
                     ${escapeHTML(mock.notes)}
                 </div>
@@ -2065,6 +2077,32 @@ function drillWeakTopic(subtopicId, topicName) {
     }
 }
 window.drillWeakTopic = drillWeakTopic;
+
+function logMistakeFromMock(subject, topicName) {
+    if (typeof closeMockDetailModal === 'function') closeMockDetailModal();
+    if (window.openAddNoteModal) {
+        window.openAddNoteModal({
+            title: `[Mistake] ${topicName}`,
+            category: 'mistake',
+            subject: subject || 'Quantitative Aptitude',
+            content: `Flagged during mock test review on ${new Date().toLocaleDateString()}.\n\n**Mistake Breakdown:**\n- Concept / Identity missed:\n- Correct formula or method:\n- Why did I get it wrong:\n- Prevention rule for next test:`
+        });
+    }
+}
+window.logMistakeFromMock = logMistakeFromMock;
+
+function logMockNotesToNotebook(mockName, notes) {
+    if (typeof closeMockDetailModal === 'function') closeMockDetailModal();
+    if (window.openAddNoteModal) {
+        window.openAddNoteModal({
+            title: `[Review] ${mockName}`,
+            category: 'mistake',
+            subject: 'Quantitative Aptitude',
+            content: notes || ''
+        });
+    }
+}
+window.logMockNotesToNotebook = logMockNotesToNotebook;
 
 function exportMockReport() {
     if (!appState.mocks || appState.mocks.length === 0) {

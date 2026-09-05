@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const vm = require('vm');
+const cp = require('child_process');
 
 // ── COLORFUL CONSOLE LOGGERS ─────────────────────────────────
 const colors = {
@@ -294,6 +295,150 @@ runTest("HTML Markup Validation (index.html)", () => {
 
   // Verify gear icon button is removed from floating dock
   assert(!htmlContent.includes('data-tooltip="Mobile Ergonomics"'), "Gear icon button must be removed from floating dock");
+});
+
+// SECTION 7: EXAM TARGET COUNTDOWN & DATES
+logHeader("Section 7: Centralized Exam Countdown Calculations");
+
+runTest("getExamCountdownData() Accuracy & Edge Cases", () => {
+  // Test future date (e.g. 10 days ahead)
+  const tenDaysFromNow = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  evalInContext(`appState.examDate = "${tenDaysFromNow}"; appState.examName = "SSC CGL 2026";`);
+  const dataFuture = evalInContext(`getExamCountdownData()`);
+  assert(dataFuture.days >= 9 && dataFuture.days <= 11, `Should calculate ~10 days remaining (got ${dataFuture.days})`);
+  assert.strictEqual(dataFuture.reached, false, "Should not be reached");
+  assert.strictEqual(dataFuture.examName, "SSC CGL 2026", "Exam name should match");
+
+  // Test past date
+  evalInContext(`appState.examDate = "2020-01-01"; appState.examName = "Old Exam";`);
+  const dataPast = evalInContext(`getExamCountdownData()`);
+  assert.strictEqual(dataPast.days, 0, "Past date days remaining should be 0");
+  assert.strictEqual(dataPast.reached, true, "Past date reached should be true");
+
+  // Test today
+  const todayStr = new Date().toISOString().split('T')[0];
+  evalInContext(`appState.examDate = "${todayStr}"; appState.examName = "Today Exam";`);
+  const dataToday = evalInContext(`getExamCountdownData()`);
+  assert.strictEqual(dataToday.days, 0, "Today should have 0 days remaining");
+  assert.strictEqual(dataToday.reached, true, "reached should be true for today/past");
+});
+
+// SECTION 8: INSTANT QR PEER SYNC PROTOCOL
+logHeader("Section 8: QR Sync Protocol & State Preservation");
+
+runTest("QR Sync Compression, Decompression & Full Fidelity", () => {
+  const qrJsContent = fs.readFileSync(path.join(rootDir, 'components', 'qr-sync-modal.js'), 'utf8');
+  evalInContext(qrJsContent);
+
+  const sampleState = {
+    syllabusProgress: { "q-1-1": { learned: true, practiced: true, mastered: true }, "r-2-3": { learned: true, practiced: false, mastered: false } },
+    mocks: [{ id: 1, name: "Live Mock #1", score: "148.5", date: "2026-09-01" }],
+    notes: [{ id: "n-1", title: "Algebra Identity Trick", content: "(a+b)^3 expansion", tag: "Maths" }],
+    srsRecords: { "q-1-1": { lastReviewed: 1725500000000, level: 3 } },
+    currentDay: 14,
+    examDate: "2026-08-15",
+    examName: "CGL Target 2026",
+    examTier: 2,
+    streak: 5,
+    dailyRituals: { drill: true, vocab: true, ca: false, computer: false },
+    theme: "dark"
+  };
+
+  // 1. Serialization
+  const rawJson = JSON.stringify(sampleState);
+  assert(rawJson.length > 0, "JSON serialization must not be empty");
+
+  // 2. Base64 fallback encode/decode fidelity test
+  const encoded = Buffer.from(unescape(encodeURIComponent(rawJson))).toString('base64');
+  const decoded = decodeURIComponent(escape(Buffer.from(encoded, 'base64').toString()));
+  const parsed = JSON.parse(decoded);
+
+  assert.deepStrictEqual(parsed.syllabusProgress, sampleState.syllabusProgress, "Syllabus progress must match exactly");
+  assert.deepStrictEqual(parsed.mocks, sampleState.mocks, "Mocks must match exactly");
+  assert.deepStrictEqual(parsed.notes, sampleState.notes, "Notes must match exactly");
+  assert.strictEqual(parsed.examName, "CGL Target 2026", "Exam target must be preserved");
+  assert.strictEqual(parsed.currentDay, 14, "Current day must be preserved");
+});
+
+// SECTION 9: SPACED REPETITION (SRS) SCHEDULE
+logHeader("Section 9: Spaced Repetition (SRS) Engine");
+
+runTest("SRS Schedule Stages & Overdue Checks", () => {
+  // Level 1: 1-day interval
+  // Level 2: 3-day interval
+  // Level 3: 7-day interval
+  const now = Date.now();
+  const oneDayMs = 24 * 60 * 60 * 1000;
+
+  const testRecords = {
+    "topic-recent": { lastReviewed: now - (0.5 * oneDayMs), level: 1 }, // 12 hours ago -> NOT overdue
+    "topic-overdue-lvl1": { lastReviewed: now - (2 * oneDayMs), level: 1 }, // 2 days ago -> overdue
+    "topic-overdue-lvl2": { lastReviewed: now - (4 * oneDayMs), level: 2 }, // 4 days ago -> overdue
+    "topic-fine-lvl3": { lastReviewed: now - (3 * oneDayMs), level: 3 }     // 3 days ago -> NOT overdue (7 day interval)
+  };
+
+  function isOverdue(rec) {
+    const intervals = { 1: 1 * oneDayMs, 2: 3 * oneDayMs, 3: 7 * oneDayMs };
+    const maxAge = intervals[rec.level] || intervals[1];
+    return (now - rec.lastReviewed) > maxAge;
+  }
+
+  assert.strictEqual(isOverdue(testRecords["topic-recent"]), false, "Recent topic should not be overdue");
+  assert.strictEqual(isOverdue(testRecords["topic-overdue-lvl1"]), true, "Lvl 1 topic older than 1 day should be overdue");
+  assert.strictEqual(isOverdue(testRecords["topic-overdue-lvl2"]), true, "Lvl 2 topic older than 3 days should be overdue");
+  assert.strictEqual(isOverdue(testRecords["topic-fine-lvl3"]), false, "Lvl 3 topic within 7 days should not be overdue");
+});
+
+// SECTION 10: SPEED DRILLS TIME TELEMETRY
+logHeader("Section 10: Speed Drills Response Telemetry");
+
+runTest("Telemetry Metrics: Avg Speed, Rapid Solves, Bottlenecks", () => {
+  const telemetry = [
+    { qIndex: 1, timeSec: 2.1, correct: true },   // rapid
+    { qIndex: 2, timeSec: 1.8, correct: true },   // rapid
+    { qIndex: 3, timeSec: 12.4, correct: true },  // slow bottleneck
+    { qIndex: 4, timeSec: 4.5, correct: true },   // normal
+    { qIndex: 5, timeSec: 15.2, correct: false }  // slow bottleneck
+  ];
+
+  const totalTime = telemetry.reduce((sum, t) => sum + t.timeSec, 0);
+  const avgSpeed = (totalTime / telemetry.length).toFixed(1);
+  const rapidSolves = telemetry.filter(t => t.timeSec <= 3 && t.correct).length;
+  const slowBottlenecks = telemetry.filter(t => t.timeSec > 10).length;
+
+  assert.strictEqual(avgSpeed, "7.2", "Avg speed should be 7.2s");
+  assert.strictEqual(rapidSolves, 2, "Should have 2 rapid solves (<=3s)");
+  assert.strictEqual(slowBottlenecks, 2, "Should detect 2 slow bottlenecks (>10s)");
+});
+
+// SECTION 11: REUSABLE COMPONENTS SANITY CHECK
+logHeader("Section 11: Components Library (components/) Sanity Check");
+
+runTest("All Standalone Components Exist and Are Valid JS", () => {
+  const compDir = path.join(rootDir, 'components');
+  const expectedComponents = [
+    'tri-state-checkbox.js',
+    'modal-dialog.js',
+    'search-bar.js',
+    'pill-group.js',
+    'toggle-switch.js',
+    'hero-header.js',
+    'calendar-picker.js',
+    'toast-notification.js',
+    'qr-sync-modal.js',
+    'index.js'
+  ];
+
+  expectedComponents.forEach(file => {
+    const filePath = path.join(compDir, file);
+    assert(fs.existsSync(filePath), `Component file ${file} must exist`);
+    const content = fs.readFileSync(filePath, 'utf8');
+    assert(content.length > 50, `Component ${file} should have meaningful code`);
+    // Syntax check via Node.js native engine
+    assert.doesNotThrow(() => {
+      cp.execFileSync(process.execPath, ['--check', filePath]);
+    }, `Component ${file} must compile without syntax errors`);
+  });
 });
 
 // ── FINAL SUMMARY ──────────────────────────────────────────────

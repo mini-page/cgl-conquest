@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cgl-conquest-cache-v15';
+const CACHE_NAME = 'cgl-conquest-cache-v16';
 const ASSETS = [
   './',
   './index.html',
@@ -19,6 +19,7 @@ const ASSETS = [
   './js/toolkit.js',
   './js/speed.js',
   './js/cmdpalette.js',
+  './components/qr-sync-modal.js',
   './study/subjects.js',
   './data/plan.json',
   './data/quizzes.json',
