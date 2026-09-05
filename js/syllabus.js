@@ -3,11 +3,11 @@ try {
   // Sourced and adapted from ssc-cgl-syllabus-console_1.html for full integration
 
   const SUBJECT_META = {
-    'Quantitative Aptitude': { shortName: 'Quantitative', icon:'📐', color:'teal', weightagePct:28, description: 'Master Arithmetic, Algebra, Geometry, Trigonometry & Data Interpretation speed & accuracy.' },
-    'General Intelligence & Reasoning': { shortName: 'Reasoning', icon:'🧠', color:'violet', weightagePct:25, description: 'Build speed & accuracy across Verbal, Non-Verbal, Analytical & Logical Reasoning patterns.' },
-    'English Language & Comprehension': { shortName: 'English', icon:'📖', color:'amber', weightagePct:22, description: 'Strengthen Grammar rules, Vocabulary, Reading Comprehension, Cloze Tests & Error Spotting.' },
-    'General Awareness': { shortName: 'GK/GS', icon:'🌍', color:'rose', weightagePct:25, description: 'High-yield coverage of History, Polity, Geography, Economics, General Science & Current Affairs.' },
-    'Computer Knowledge': { shortName: 'Computer', icon:'💻', color:'blue', weightagePct:10, description: 'Fundamentals, Hardware, Software, Networking, Cyber Security & MS Office essential operations.' }
+    'Quantitative Aptitude': { shortName: 'Quantitative', icon:'📐', color:'crimson', weightagePct:28, description: 'Master Arithmetic, Algebra, Geometry, Trigonometry & Data Interpretation speed & accuracy.' },
+    'General Intelligence & Reasoning': { shortName: 'Reasoning', icon:'🧠', color:'yellow', weightagePct:25, description: 'Build speed & accuracy across Verbal, Non-Verbal, Analytical & Logical Reasoning patterns.' },
+    'English Language & Comprehension': { shortName: 'English', icon:'📖', color:'green', weightagePct:22, description: 'Strengthen Grammar rules, Vocabulary, Reading Comprehension, Cloze Tests & Error Spotting.' },
+    'General Awareness': { shortName: 'GK/GS', icon:'🌍', color:'blue', weightagePct:25, description: 'High-yield coverage of History, Polity, Geography, Economics, General Science & Current Affairs.' },
+    'Computer Knowledge': { shortName: 'Computer', icon:'💻', color:'gray', weightagePct:10, description: 'Fundamentals, Hardware, Software, Networking, Cyber Security & MS Office essential operations.' }
   };
 
   function slugify(s) {
@@ -15,11 +15,66 @@ try {
   }
 
   const COLOR_MAP = {
-    teal:{text:'text-teal',bg:'bg-teal',ring:'#2dd4bf',soft:'bg-teal/10',border:'border-teal/30'},
-    violet:{text:'text-violet',bg:'bg-violet',ring:'#a78bfa',soft:'bg-violet/10',border:'border-violet/30'},
-    amber:{text:'text-amber',bg:'bg-amber',ring:'#fbbf24',soft:'bg-amber/10',border:'border-amber/30'},
-    rose:{text:'text-rose',bg:'bg-rose',ring:'#fb7185',soft:'bg-rose/10',border:'border-rose/30'},
-    blue:{text:'text-blue-400',bg:'bg-blue-400',ring:'#60a5fa',soft:'bg-blue-400/10',border:'border-blue-400/30'},
+    crimson: {
+      name: 'crimson',
+      text: 'text-red-400',
+      ring: '#f43f5e',
+      border: 'border-red-500/50',
+      glow: 'shadow-[0_0_24px_rgba(239,68,68,0.25)]',
+      soft: 'bg-gradient-to-r from-red-950/90 via-rose-950/60 to-slate-900',
+      idleCard: 'bg-gradient-to-br from-red-950/40 via-rose-950/20 to-slate-900/70 border-red-500/40 hover:border-red-400/80 shadow-[0_0_15px_rgba(239,68,68,0.12)]',
+      activeCard: 'bg-gradient-to-r from-red-950/90 via-rose-950/60 to-slate-900 border-red-400 ring-1 ring-red-400 shadow-[0_0_25px_rgba(239,68,68,0.35)]',
+      badge: 'bg-red-500/20 text-red-300 border border-red-500/30'
+    },
+    yellow: {
+      name: 'yellow',
+      text: 'text-yellow-400',
+      ring: '#fbbf24',
+      border: 'border-yellow-500/50',
+      glow: 'shadow-[0_0_24px_rgba(234,179,8,0.25)]',
+      soft: 'bg-gradient-to-r from-amber-950/90 via-yellow-950/60 to-slate-900',
+      idleCard: 'bg-gradient-to-br from-amber-950/40 via-yellow-950/20 to-slate-900/70 border-yellow-500/40 hover:border-yellow-400/80 shadow-[0_0_15px_rgba(234,179,8,0.12)]',
+      activeCard: 'bg-gradient-to-r from-amber-950/90 via-yellow-950/60 to-slate-900 border-yellow-400 ring-1 ring-yellow-400 shadow-[0_0_25px_rgba(234,179,8,0.35)]',
+      badge: 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30'
+    },
+    green: {
+      name: 'green',
+      text: 'text-emerald-400',
+      ring: '#34d399',
+      border: 'border-emerald-500/50',
+      glow: 'shadow-[0_0_24px_rgba(16,185,129,0.25)]',
+      soft: 'bg-gradient-to-r from-emerald-950/90 via-teal-950/60 to-slate-900',
+      idleCard: 'bg-gradient-to-br from-emerald-950/40 via-teal-950/20 to-slate-900/70 border-emerald-500/40 hover:border-emerald-400/80 shadow-[0_0_15px_rgba(16,185,129,0.12)]',
+      activeCard: 'bg-gradient-to-r from-emerald-950/90 via-teal-950/60 to-slate-900 border-emerald-400 ring-1 ring-emerald-400 shadow-[0_0_25px_rgba(16,185,129,0.35)]',
+      badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+    },
+    blue: {
+      name: 'blue',
+      text: 'text-blue-400',
+      ring: '#60a5fa',
+      border: 'border-blue-500/50',
+      glow: 'shadow-[0_0_24px_rgba(59,130,246,0.25)]',
+      soft: 'bg-gradient-to-r from-blue-950/90 via-indigo-950/60 to-slate-900',
+      idleCard: 'bg-gradient-to-br from-blue-950/40 via-indigo-950/20 to-slate-900/70 border-blue-500/40 hover:border-blue-400/80 shadow-[0_0_15px_rgba(59,130,246,0.12)]',
+      activeCard: 'bg-gradient-to-r from-blue-950/90 via-indigo-950/60 to-slate-900 border-blue-400 ring-1 ring-blue-400 shadow-[0_0_25px_rgba(59,130,246,0.35)]',
+      badge: 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+    },
+    gray: {
+      name: 'gray',
+      text: 'text-slate-300',
+      ring: '#94a3b8',
+      border: 'border-slate-500/50',
+      glow: 'shadow-[0_0_24px_rgba(148,163,184,0.18)]',
+      soft: 'bg-gradient-to-r from-slate-800/90 via-zinc-900/60 to-black',
+      idleCard: 'bg-gradient-to-br from-slate-800/40 via-zinc-900/20 to-slate-950/70 border-slate-500/40 hover:border-slate-400/80 shadow-[0_0_15px_rgba(148,163,184,0.12)]',
+      activeCard: 'bg-gradient-to-r from-slate-800/90 via-zinc-900/60 to-black border-slate-300 ring-1 ring-slate-300 shadow-[0_0_25px_rgba(148,163,184,0.25)]',
+      badge: 'bg-slate-700/40 text-slate-200 border border-slate-500/40'
+    },
+    // Aliases
+    teal: { text: 'text-red-400', ring: '#f43f5e', border: 'border-red-500/50', glow: 'shadow-[0_0_24px_rgba(239,68,68,0.25)]', soft: 'bg-gradient-to-r from-red-950/90 via-rose-950/60 to-slate-900' },
+    violet: { text: 'text-yellow-400', ring: '#fbbf24', border: 'border-yellow-500/50', glow: 'shadow-[0_0_24px_rgba(234,179,8,0.25)]', soft: 'bg-gradient-to-r from-amber-950/90 via-yellow-950/60 to-slate-900' },
+    amber: { text: 'text-emerald-400', ring: '#34d399', border: 'border-emerald-500/50', glow: 'shadow-[0_0_24px_rgba(16,185,129,0.25)]', soft: 'bg-gradient-to-r from-emerald-950/90 via-teal-950/60 to-slate-900' },
+    rose: { text: 'text-blue-400', ring: '#60a5fa', border: 'border-blue-500/50', glow: 'shadow-[0_0_24px_rgba(59,130,246,0.25)]', soft: 'bg-gradient-to-r from-blue-950/90 via-indigo-950/60 to-slate-900' }
   };
 
   function buildSubjects(raw) {
@@ -107,6 +162,17 @@ try {
     appState.syllabusProgress[id] = f;
     save();
 
+    // Trigger ranked confetti celebration feedback matching dashboard
+    if (f[key] && window.triggerConfetti) {
+      if (key === 'mastered') {
+        window.triggerConfetti('high');
+      } else if (key === 'practiced') {
+        window.triggerConfetti('medium');
+      } else if (key === 'learned') {
+        window.triggerConfetti('low');
+      }
+    }
+
     if (targetEl) {
       updateTriRowDOM(id, targetEl);
     } else {
@@ -135,11 +201,11 @@ try {
           }
           if (lbl) {
             if (flagKey === 'learned') {
-              lbl.className = `text-xs font-medium ${f.learned ? 'text-teal-400 font-semibold' : 'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition`;
+              lbl.className = `text-xs font-medium ${f.learned ? 'text-teal-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition`;
             } else if (flagKey === 'practiced') {
-              lbl.className = `text-xs font-medium ${f.practiced ? 'text-violet-400 font-semibold' : 'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition`;
+              lbl.className = `text-xs font-medium ${f.practiced ? 'text-violet-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition`;
             } else if (flagKey === 'mastered') {
-              lbl.className = `text-xs font-medium ${f.mastered ? 'text-amber-400 font-semibold' : 'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition`;
+              lbl.className = `text-xs font-medium ${f.mastered ? 'text-amber-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition`;
             }
           }
         }
@@ -198,6 +264,7 @@ try {
     weightage: '',
     status: '',
     highOnly: false,
+    weakOnly: false,
     sortBy: 'default',
     sortDir: 1,
     kanbanSearch: '',
@@ -207,6 +274,11 @@ try {
     expandedGroups: new Set(),
     openDropdown: null,
   };
+
+  function mockWeakPill(id) {
+    if (!appState.weakAlerts || !appState.weakAlerts[id]) return '';
+    return `<button type="button" onclick="event.stopPropagation(); window.openMockRadarTopic('${id}')" class="inline-flex items-center gap-1.5 text-[9px] bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 hover:border-rose-400 px-2 py-0.5 rounded-full font-black uppercase tracking-wider cursor-pointer shadow-sm shadow-rose-500/10 transition group" title="Flagged in Mock Revision Radar — Click to inspect in Mock Analysis"><i class="fa-solid fa-triangle-exclamation text-rose-400 text-[8px] animate-pulse"></i><span>Weak in Mocks</span><i class="fa-solid fa-arrow-up-right-from-square text-[7px] opacity-60 group-hover:opacity-100"></i></button>`;
+  }
 
   // Sorting Options
   const DIFF_ORDER = {Easy:0, Moderate:1, Hard:2};
@@ -246,8 +318,8 @@ try {
   }
 
   function optionRow(id, value, label, active) {
-    return `<button data-dd-option="${id}" data-value="${value}" class="view-btn w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-xl text-left text-xs transition ${active?'active text-teal':''}">
-      <span class="truncate">${label}</span>${active?'<span class="text-teal text-[10px]">✓</span>':''}
+    return `<button data-dd-option="${id}" data-value="${value}" class="view-btn w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-medium transition cursor-pointer ${active ? 'active text-cyan-300 bg-cyan-500/20 font-semibold border border-cyan-500/30 shadow-sm' : 'text-zinc-300 hover:text-white hover:bg-white/10'}">
+      <span class="truncate">${label}</span>${active ? '<span class="text-cyan-400 text-xs font-bold">✓</span>' : ''}
     </button>`;
   }
 
@@ -262,7 +334,7 @@ try {
       return simpleOptionsHTML('chapter', opts, syllabusState.chapter);
     }
     return optionRow('chapter','','All Chapters', syllabusState.chapter==='') + SUBJECTS.map(s => `
-      <p class="px-2.5 pt-2 pb-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500">${s.icon} ${s.name}</p>
+      <p class="px-2.5 pt-2 pb-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500 font-bold">${s.icon} ${s.name}</p>
       ${s.chapters.map(ch => optionRow('chapter', `${s.id}|${ch.name}`, ch.name, syllabusState.chapter===`${s.id}|${ch.name}`)).join('')}
     `).join('');
   }
@@ -270,7 +342,7 @@ try {
   function sortPanelHTML() {
     const current = `${syllabusState.sortBy}:${syllabusState.sortDir}`;
     return SORT_OPTIONS.map(g => `
-      <p class="px-2.5 pt-2 pb-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500">${g.group}</p>
+      <p class="px-2.5 pt-2 pb-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500 font-bold">${g.group}</p>
       ${g.opts.map(o => optionRow('sort', o.value, o.label, o.value===current)).join('')}
     `).join('');
   }
@@ -293,17 +365,17 @@ try {
   }
 
   function anyFilterActive() {
-    return !!(syllabusState.subject || syllabusState.chapter || syllabusState.difficulty || syllabusState.weightage || syllabusState.status || syllabusState.highOnly);
+    return !!(syllabusState.subject || syllabusState.chapter || syllabusState.difficulty || syllabusState.weightage || syllabusState.status || syllabusState.highOnly || syllabusState.weakOnly);
   }
 
   function dropdownMarkup(d) {
     const open = syllabusState.openDropdown === d.id;
     return `
     <div class="relative" data-dd-wrap="${d.id}">
-      <button data-dd-btn="${d.id}" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition ${d.active ? 'bg-teal/10 border-teal/40 text-teal' : 'bg-panel2 border-line text-zinc-300 hover:border-teal/40'}">
+      <button data-dd-btn="${d.id}" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition cursor-pointer ${d.active ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-sm' : 'bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5'}">
         <span>${d.icon}</span><span class="font-medium max-w-[130px] truncate">${d.label}</span><span class="text-[9px] opacity-60">▾</span>
       </button>
-      <div data-dd-panel="${d.id}" class="${open?'':'hidden'} dropdown-panel absolute left-0 mt-2 w-64 bg-panel border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin">
+      <div data-dd-panel="${d.id}" class="${open?'':'hidden'} dropdown-panel absolute left-0 mt-2 w-64 bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
         ${d.panelHTML}
       </div>
     </div>`;
@@ -313,9 +385,15 @@ try {
     const wrap = document.getElementById('filter-row');
     if (!wrap) return;
     const defs = getDropdownDefs();
+    const weakCount = Object.keys(appState.weakAlerts || {}).filter(k => appState.weakAlerts[k]).length;
+    let weakMarkup = '';
+    if (weakCount > 0) {
+      weakMarkup = `<button data-toggle-weak class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border transition cursor-pointer ${syllabusState.weakOnly ? 'bg-rose-500/25 border-rose-500/50 text-rose-300 shadow-md shadow-rose-500/20' : 'bg-rose-500/10 border-rose-500/25 text-rose-400 hover:bg-rose-500/20'}"><i class="fa-solid fa-triangle-exclamation text-rose-400 text-[10px] animate-pulse"></i><span class="font-bold">${weakCount} Mock Weak</span></button>`;
+    }
     wrap.innerHTML = defs.map(dropdownMarkup).join('')
-      + `<button data-toggle-high class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border transition ${syllabusState.highOnly ? 'bg-amber/10 border-amber/40 text-amber' : 'bg-panel2 border-line text-zinc-300 hover:border-amber/40'}">⭐ <span class="font-medium">High-weight only</span></button>`
-      + (anyFilterActive() ? `<button data-clear-filters class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border border-rose/30 bg-rose/5 text-rose hover:bg-rose/10 transition">✕ Clear filters</button>` : '');
+      + `<button data-toggle-high class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border transition cursor-pointer ${syllabusState.highOnly ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 shadow-sm' : 'bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5'}">⭐ <span class="font-medium">High-weight only</span></button>`
+      + weakMarkup
+      + (anyFilterActive() ? `<button data-clear-filters class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 transition cursor-pointer">✕ Clear filters</button>` : '');
     bindFilterRow();
   }
 
@@ -344,6 +422,13 @@ try {
       syllabusState.highOnly = !syllabusState.highOnly;
       renderAll();
     };
+
+    const wBtn = wrap.querySelector('[data-toggle-weak]');
+    if (wBtn) wBtn.onclick = (e) => {
+      e.stopPropagation();
+      syllabusState.weakOnly = !syllabusState.weakOnly;
+      renderAll();
+    };
     
     const clear = wrap.querySelector('[data-clear-filters]');
     if (clear) clear.onclick = (e) => {
@@ -354,6 +439,7 @@ try {
       syllabusState.weightage = '';
       syllabusState.status = '';
       syllabusState.highOnly = false;
+      syllabusState.weakOnly = false;
       resetPaths();
       renderAll();
     };
@@ -398,13 +484,13 @@ try {
 
   function viewPanelHTML() {
     return VIEW_GROUPS.map(g => `
-      <p class="px-2.5 pt-2 pb-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500">${g.label}</p>
+      <p class="px-2.5 pt-2 pb-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500 font-bold">${g.label}</p>
       ${g.views.map(v => `
-        <button data-value="${v.id}" class="view-btn w-full flex flex-col px-3 py-2 rounded-xl text-left transition ${syllabusState.view === v.id ? 'active text-teal bg-teal/10' : ''}">
+        <button data-value="${v.id}" class="view-btn w-full flex flex-col px-3 py-2 rounded-xl text-left transition cursor-pointer ${syllabusState.view === v.id ? 'active text-cyan-300 bg-cyan-500/20 font-semibold border border-cyan-500/30 shadow-sm' : 'text-zinc-300 hover:text-white hover:bg-white/10'}">
           <div class="flex items-center gap-1.5 text-xs font-semibold">
             <span>${v.icon}</span><span>${v.name}</span>
           </div>
-          <span class="text-[9px] text-zinc-500 mt-0.5">${v.desc}</span>
+          <span class="text-[9px] text-zinc-400 mt-0.5">${v.desc}</span>
         </button>
       `).join('')}
     `).join('');
@@ -433,10 +519,10 @@ try {
     if (sortWrap) {
       sortWrap.innerHTML = `
       <div class="relative" data-dd-wrap="sort">
-        <button data-dd-btn="sort" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-panel2 border-line text-zinc-300 hover:border-teal/40 transition">
+        <button data-dd-btn="sort" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5 transition cursor-pointer">
           <span>↕️</span><span class="font-medium">Sort Order</span><span class="text-[9px] opacity-60">▾</span>
         </button>
-        <div data-dd-panel="sort" class="hidden dropdown-panel absolute right-0 mt-2 w-56 bg-panel border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin">
+        <div data-dd-panel="sort" class="hidden dropdown-panel absolute right-0 mt-2 w-56 bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
           ${sortPanelHTML()}
         </div>
       </div>`;
@@ -448,10 +534,10 @@ try {
       const activeViewDef = VIEW_GROUPS.flatMap(g=>g.views).find(v=>v.id===syllabusState.view) || {icon:'🌲', name:'Tree Hierarchy'};
       viewWrap.innerHTML = `
       <div class="relative" data-dd-wrap="view">
-        <button data-dd-btn="view" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-teal/10 border-teal/40 text-teal hover:border-teal/60 transition">
+        <button data-dd-btn="view" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-cyan-500/15 border-cyan-500/40 text-cyan-300 hover:border-cyan-400/60 transition cursor-pointer">
           <span>${activeViewDef.icon}</span><span class="font-medium">${activeViewDef.name}</span><span class="text-[9px] opacity-60">▾</span>
         </button>
-        <div data-dd-panel="view" class="hidden dropdown-panel absolute right-0 mt-2 w-64 bg-panel border border-line rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin">
+        <div data-dd-panel="view" class="hidden dropdown-panel absolute right-0 mt-2 w-64 bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
           ${viewPanelHTML()}
         </div>
       </div>`;
@@ -519,6 +605,7 @@ try {
     if (syllabusState.weightage && it.weight !== syllabusState.weightage) return false;
     if (syllabusState.status && itemStage(it.id) !== syllabusState.status) return false;
     if (syllabusState.highOnly && !it.high) return false;
+    if (syllabusState.weakOnly && (!appState.weakAlerts || !appState.weakAlerts[it.id])) return false;
     if (syllabusState.search) {
       const hay = (it.name+' '+it.topicName+' '+it.chapterName+' '+it.subjectName).toLowerCase();
       if (!hay.includes(syllabusState.search)) return false;
@@ -536,7 +623,7 @@ try {
     }).filter(s => s.chapters.length > 0);
   }
 
-  // Circular SVG ring progress indicators
+  // Status Pills for subject selection with mini status ring, percentage, and mastered topics count
   function renderRingDeck() {
     const deck = document.getElementById('ring-deck');
     if (!deck) return;
@@ -545,20 +632,20 @@ try {
       const items = s.chapters.flatMap(ch=>ch.groups.flatMap(g=>g.items));
       const total = items.length, done = items.filter(i=>flags(i.id).mastered).length;
       const pct = total ? Math.round((done/total)*100) : 0;
-      const r=22, circ=2*Math.PI*r, offset = circ - (pct/100)*circ;
+      const r = 13.5, circ = 2 * Math.PI * r, offset = circ - (pct / 100) * circ;
       const active = syllabusState.subject === s.id;
       return `
-      <button data-subj="${s.id}" class="subj-ring shrink-0 snap-start w-[190px] md:w-auto text-left ${active ? c.soft+' '+c.border+' ring-1 ring-'+(s.color==='blue'?'blue-400':s.color) : 'bg-panel border-line'} border rounded-2xl p-3 flex items-center gap-3 hover:border-${s.color==='blue'?'blue-400':s.color}/40 transition">
-        <div class="relative shrink-0">
-          <svg width="52" height="52" viewBox="0 0 52 52" class="-rotate-90">
-            <circle class="ring-track" cx="26" cy="26" r="${r}" stroke-width="4" fill="none" stroke="rgba(255,255,255,0.08)"></circle>
-            <circle class="ring-progress" cx="26" cy="26" r="${r}" stroke-width="4" fill="none" stroke="${c.ring}" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"></circle>
-            <text x="26" y="26" text-anchor="middle" dominant-baseline="central" font-size="11" font-weight="bold" fill="#ffffff" transform="rotate(90 26 26)">${pct}%</text>
+      <button data-subj="${s.id}" class="subj-ring shrink-0 snap-start flex items-center gap-2.5 rounded-full ${active ? c.activeCard : c.idleCard} border transition-all duration-300 cursor-pointer shadow-md backdrop-blur-md pl-1.5 pr-4 sm:pl-2 sm:pr-4.5 py-1.5 select-none">
+        <div class="relative shrink-0 w-[34px] h-[34px] flex items-center justify-center cursor-help rounded-full" data-tooltip="${s.shortName || s.name}: ${done}/${total} topics mastered (${pct}%)">
+          <svg width="34" height="34" viewBox="0 0 34 34" class="-rotate-90">
+            <circle class="ring-track" cx="17" cy="17" r="${r}" stroke-width="3.5" fill="none" stroke="rgba(255,255,255,0.12)"></circle>
+            <circle class="ring-progress" cx="17" cy="17" r="${r}" stroke-width="3.5" fill="none" stroke="${c.ring}" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"></circle>
           </svg>
+          <span class="absolute inset-0 flex items-center justify-center text-[9.5px] font-black text-white select-none">${pct}%</span>
         </div>
-        <div class="min-w-0">
-          <div class="text-sm font-bold text-zinc-100 truncate">${s.icon} ${s.shortName || s.name}</div>
-          <div class="text-[10px] text-zinc-400 font-mono mt-0.5">${done}/${total} mastered</div>
+        <div class="flex items-center gap-1.5 min-w-0 pr-0.5">
+          <span class="text-sm shrink-0">${s.icon}</span>
+          <span class="text-xs sm:text-sm font-bold ${c.text} whitespace-nowrap">${s.shortName || s.name}</span>
         </div>
       </button>`;
     }).join('');
@@ -627,7 +714,7 @@ try {
       <div class="flex-1 min-w-0">
         <h4 class="text-xs sm:text-sm font-medium text-zinc-200 dark:text-zinc-200 text-zinc-800 mb-2 flex items-center flex-wrap gap-2">
           <span>${it.name}</span>
-          ${appState.weakAlerts && appState.weakAlerts[it.id] ? '<span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold">🚨 Weak</span>' : ''}
+          ${mockWeakPill(it.id)}
         </h4>
         <div class="flex items-center flex-wrap gap-2">
           ${diffPill(it.difficulty)}
@@ -635,20 +722,20 @@ try {
           ${effortLabel(it.effort)}
         </div>
       </div>
-      <div class="flex items-center gap-3 dark:bg-zinc-900/90 bg-white/90 border dark:border-zinc-700/60 border-zinc-200 shadow-sm rounded-xl px-3.5 py-2 shrink-0 self-start md:self-center">
+      <div class="flex items-center gap-3 bg-[#0a1128]/95 border border-blue-900/60 shadow-inner rounded-xl px-3.5 py-2 shrink-0 self-start md:self-center">
         <div data-tri="${it.id}" data-flag="learned" class="flex items-center gap-2 cursor-pointer select-none group/tb">
           <span class="tri-box learned ${f.learned?'on':''}">${f.learned?'✓':''}</span>
-          <span class="text-xs font-medium ${f.learned?'text-teal-400 font-semibold':'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition">Learned</span>
+          <span class="text-xs font-medium ${f.learned?'text-teal-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Learned</span>
         </div>
-        <span class="dark:text-zinc-700 text-zinc-300 select-none">|</span>
+        <span class="text-blue-900/80 select-none">|</span>
         <div data-tri="${it.id}" data-flag="practiced" class="flex items-center gap-2 cursor-pointer select-none group/tb">
           <span class="tri-box practiced p ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span>
-          <span class="text-xs font-medium ${f.practiced?'text-violet-400 font-semibold':'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition">Practiced</span>
+          <span class="text-xs font-medium ${f.practiced?'text-violet-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Practiced</span>
         </div>
-        <span class="dark:text-zinc-700 text-zinc-300 select-none">|</span>
+        <span class="text-blue-900/80 select-none">|</span>
         <div data-tri="${it.id}" data-flag="mastered" class="flex items-center gap-2 cursor-pointer select-none group/tb">
           <span class="tri-box mastered m ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span>
-          <span class="text-xs font-medium ${f.mastered?'text-amber-400 font-semibold':'dark:text-zinc-400 text-zinc-600 group-hover/tb:dark:text-zinc-200 group-hover/tb:text-zinc-900'} transition">Mastered</span>
+          <span class="text-xs font-medium ${f.mastered?'text-amber-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Mastered</span>
         </div>
       </div>
     </div>`;
@@ -673,16 +760,16 @@ try {
       const pct = total ? Math.round((done/total)*100) : 0;
       const subjOpen = syllabusState.expandedGroups.has('S:'+s.id) || syllabusState.subject === s.id;
       return `
-      <div class="mb-3 bg-panel border border-line rounded-2xl overflow-hidden shadow">
-        <button data-toggle-subj="${s.id}" class="w-full flex items-center gap-2.5 px-4 py-3.5 ${c.soft} border-b border-line/60 text-left transition">
+      <div class="mb-3.5 bg-panel border ${c.border} ${c.glow} rounded-2xl overflow-hidden shadow transition duration-300">
+        <button data-toggle-subj="${s.id}" class="w-full flex items-center gap-2.5 px-4 py-3.5 ${c.soft} border-b ${c.border} text-left transition cursor-pointer">
           <span class="text-lg sm:text-xl">${s.icon}</span>
           <span class="font-heading font-semibold text-sm sm:text-base text-zinc-100">${s.name}</span>
-          ${s.weightagePct ? `<span class="ml-auto text-xs sm:text-sm font-mono font-semibold ${c.text}">${pct}% &bull; ${s.weightagePct}% weight</span>` : `<span class="ml-auto text-xs sm:text-sm font-mono font-semibold ${c.text}">${pct}%</span>`}
+          ${s.weightagePct ? `<span class="ml-auto text-xs sm:text-sm font-mono font-bold ${c.text}">${pct}% &bull; ${s.weightagePct}% weight</span>` : `<span class="ml-auto text-xs sm:text-sm font-mono font-bold ${c.text}">${pct}%</span>`}
           <span class="chev ${subjOpen?'open':''} text-zinc-400 text-xs ml-1">›</span>
         </button>
 
         ${s.description ? `
-        <div data-subj-desc="${s.id}" class="transition-all duration-300 ${subjOpen ? 'hidden opacity-0' : 'block opacity-100 px-4 py-2 text-xs text-zinc-400 font-mono bg-panel'}">
+        <div data-subj-desc="${s.id}" class="px-4 py-3 text-xs text-zinc-400 font-mono bg-panel/80 transition-all duration-200 ${subjOpen ? 'hidden opacity-0' : 'block opacity-100'}">
           ${s.description}
         </div>` : ''}
 
@@ -773,9 +860,10 @@ try {
     const [subjId, chapName, groupName] = syllabusState.explorerPath;
     if (!subjId) {
       return `<div class="bg-panel border border-line rounded-2xl divide-y divide-line/60">` + subjects.map(s => {
+        const c = COLOR_MAP[s.color] || COLOR_MAP.blue;
         const {total,done} = subjectStats(s);
-        return `<button data-open-s="${s.id}" class="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-white/[0.03] transition text-left">
-          <span class="text-lg">${s.icon}</span><span class="text-xs font-medium text-zinc-100 flex-1">${s.name}</span>
+        return `<button data-open-s="${s.id}" class="w-full flex items-center gap-3 px-4 py-3.5 hover:bg-white/[0.03] transition text-left cursor-pointer">
+          <span class="text-lg">${s.icon}</span><span class="text-xs font-semibold ${c.text} flex-1">${s.name}</span>
           <span class="text-[10px] font-mono px-2 py-1 rounded-lg bg-panel2 text-zinc-400">${done}/${total} Done</span>
           <span class="text-zinc-600 text-xs">›</span></button>`;
       }).join('') + `</div>`;
@@ -859,13 +947,14 @@ try {
   // Compact view rendering
   function renderCompact(subjects) {
     return `<div class="bg-panel border border-line rounded-2xl divide-y divide-line/60">` + subjects.map(s => {
+      const c = COLOR_MAP[s.color] || COLOR_MAP.blue;
       const skey = 's:' + s.id, sOpen = syllabusState.compactPath.has(skey);
       const {total,done} = subjectStats(s);
       return `
       <div>
-        <button data-cp="${skey}" class="w-full flex items-center gap-2 px-3.5 py-2 hover:bg-white/[0.02] text-left">
+        <button data-cp="${skey}" class="w-full flex items-center gap-2 px-3.5 py-2 hover:bg-white/[0.02] text-left cursor-pointer">
           <span class="chev ${sOpen?'open':''} text-zinc-500 text-[10px] w-3">›</span>
-          <span class="text-xs text-zinc-200 font-medium">${s.icon} ${s.name}</span>
+          <span class="text-xs ${c.text} font-semibold">${s.icon} ${s.name}</span>
           <span class="ml-auto text-[10px] font-mono text-zinc-500">${done}/${total}</span>
         </button>
         ${sOpen ? s.chapters.map(ch => {
@@ -892,7 +981,8 @@ try {
                   return `
                   <div class="flex items-center gap-2 py-1">
                     <span data-toggle-all="${it.id}" title="Marks Learned + Practiced + Mastered together" class="tri-box m ${fullyDone(it.id)?'on m':''}">${fullyDone(it.id)?'✓':''}</span>
-                    <span class="text-[11px] ${fullyDone(it.id)?'text-zinc-600 line-through':'text-zinc-400'}">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</span>
+                    <span class="text-[11px] ${fullyDone(it.id)?'text-zinc-600 line-through':'text-zinc-400'}">${it.name}</span>
+                    ${mockWeakPill(it.id)}
                   </div>`;
                 }).join('')}</div>` : ''}
               </div>`;
@@ -961,7 +1051,7 @@ try {
           ${sortItems(g.items).map(it => `
             <div class="flex items-center justify-between gap-2 border-b border-white/5 pb-1.5 last:border-0">
               <div class="min-w-0">
-                <p class="text-xs text-zinc-300 truncate font-medium" title="${it.name}">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' 🚨' : ''}</p>
+                <p class="text-xs text-zinc-300 truncate font-medium flex items-center gap-1.5" title="${it.name}"><span>${it.name}</span>${mockWeakPill(it.id)}</p>
                 <div class="mt-0.5">${diffPill(it.difficulty)}</div>
               </div>
               ${miniTri(it)}
@@ -1016,7 +1106,7 @@ try {
         <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin">
           ${list.slice(0,60).map(it => `
             <div draggable="true" data-kitem="${it.id}" class="kanban-card bg-panel2 border border-line rounded-xl p-3 shadow-sm hover:border-teal/30 transition">
-              <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 py-0.2 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
+              <p class="text-xs text-zinc-200 mb-1.5 leading-snug font-medium flex items-center flex-wrap gap-1.5"><span>${it.name}</span>${mockWeakPill(it.id)}</p>
               <p class="text-[9px] text-zinc-500 font-mono mb-2">${it.topicName} &bull; ${it.subjectName.split(' ')[0]}</p>
               <div class="flex gap-1">${diffPill(it.difficulty)}</div>
             </div>`).join('')}
@@ -1081,7 +1171,7 @@ try {
           ${rows.map(it => `
             <tr class="zebra border-b border-line/60 last:border-0 hover:bg-white/[0.03] transition">
               <td class="px-4 py-2.5">
-                <p class="text-zinc-200 font-medium">${it.name}${appState.weakAlerts && appState.weakAlerts[it.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1">🚨 Weak</span>' : ''}</p>
+                <p class="text-zinc-200 font-medium flex items-center flex-wrap gap-1.5"><span>${it.name}</span>${mockWeakPill(it.id)}</p>
                 <p class="text-[9.5px] text-zinc-500 font-mono mt-0.5">${it.chapterName} &bull; ${it.topicName}</p>
               </td>
               <td class="px-4 py-2.5 text-zinc-400 text-xs whitespace-nowrap">${it.subjectName.split(' ').slice(0,2).join(' ')}</td>
@@ -1195,6 +1285,60 @@ try {
     }
   };
   window.syllabusState = syllabusState;
+
+  window.jumpToSyllabusTopic = function(topicId) {
+    if (window.navigateToPage) window.navigateToPage('page-syllabus');
+    
+    // Find subject ID for this topic
+    let targetSubjId = '';
+    for (const s of SUBJECTS) {
+      for (const ch of s.chapters) {
+        for (const g of ch.groups) {
+          if (g.items.some(it => it.id === topicId)) {
+            targetSubjId = s.id;
+            break;
+          }
+        }
+        if (targetSubjId) break;
+      }
+      if (targetSubjId) break;
+    }
+
+    if (targetSubjId) {
+      syllabusState.subject = targetSubjId;
+    }
+    syllabusState.chapter = '';
+    syllabusState.search = '';
+    syllabusState.weakOnly = false;
+    syllabusState.highOnly = false;
+    syllabusState.difficulty = '';
+    syllabusState.weightage = '';
+    syllabusState.status = '';
+    resetPaths();
+    renderAll();
+
+    setTimeout(() => {
+      const el = document.querySelector(`[data-tri="${topicId}"]`);
+      if (el) {
+        const row = el.closest('.border-b, tr, .p-3, .p-4') || el;
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        row.classList.add('ring-2', 'ring-rose-500', 'bg-rose-500/15');
+        setTimeout(() => {
+          row.classList.remove('ring-2', 'ring-rose-500', 'bg-rose-500/15');
+        }, 3000);
+      }
+    }, 300);
+  };
+
+  window.openMockRadarTopic = function(topicId) {
+    if (window.navigateToPage) window.navigateToPage('page-mocks');
+    setTimeout(() => {
+      const radar = document.getElementById('weak-topics-radar');
+      if (radar) {
+        radar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 200);
+  };
 
   // Initial triggers
   document.addEventListener("DOMContentLoaded", () => {

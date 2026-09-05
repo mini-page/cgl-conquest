@@ -3504,15 +3504,26 @@ function parseMarkdown(text) {
 }
 window.parseMarkdown = parseMarkdown;
 
-// Readable Date Formatter (DD MMM, YYYY)
+// Readable Date Formatter (DD MMM, YYYY) - Supports DD-MM-YYYY and YYYY-MM-DD
 function formatDateReadable(dateStr) {
     if (!dateStr) return "N/A";
-    const cleanStr = dateStr.split("T")[0];
-    const parts = cleanStr.split("-");
+    const cleanStr = String(dateStr).split("T")[0].trim();
+    const parts = cleanStr.split(/[-/.]/);
     if (parts.length !== 3) return dateStr;
-    const year = parseInt(parts[0]);
-    const monthIdx = parseInt(parts[1]) - 1;
-    const day = parseInt(parts[2]);
+    
+    let year, monthIdx, day;
+    if (parts[0].length === 4) {
+        // YYYY-MM-DD
+        year = parseInt(parts[0], 10);
+        monthIdx = parseInt(parts[1], 10) - 1;
+        day = parseInt(parts[2], 10);
+    } else {
+        // DD-MM-YYYY
+        day = parseInt(parts[0], 10);
+        monthIdx = parseInt(parts[1], 10) - 1;
+        year = parseInt(parts[2], 10);
+    }
+    
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     if (isNaN(year) || isNaN(monthIdx) || isNaN(day) || !months[monthIdx]) return dateStr;
     return `${day.toString().padStart(2, "0")} ${months[monthIdx]}, ${year}`;

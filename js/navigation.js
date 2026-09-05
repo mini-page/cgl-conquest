@@ -678,15 +678,19 @@ function initNavigation() {
 function updateThemeToggleUI(theme) {
     const btn = document.getElementById("theme-toggle");
     if (!btn) return;
-    const knob = btn.querySelector("div");
+    const knob = document.getElementById("theme-toggle-knob") || btn.querySelector("span, div");
     if (!knob) return;
     if (theme === "light") {
-        knob.style.transform = "translateX(24px)";
-        knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500"></i>';
+        knob.style.transform = "translateX(20px)";
+        knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500 text-[10px]"></i>';
+        btn.classList.add("bg-amber-500/25", "border-amber-400/50");
+        btn.classList.remove("bg-white/5", "border-white/5");
         btn.title = "Switch to Dark Mode [T]";
     } else {
         knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900"></i>';
+        knob.innerHTML = '<i class="fa-solid fa-moon text-slate-800 text-[10px]"></i>';
+        btn.classList.remove("bg-amber-500/25", "border-amber-400/50");
+        btn.classList.add("bg-white/5", "border-white/5");
         btn.title = "Switch to Light Mode [T]";
     }
 }
@@ -694,15 +698,19 @@ function updateThemeToggleUI(theme) {
 function updateSpeechToggleUI() {
     const btn = document.getElementById("speech-toggle");
     if (!btn) return;
-    const knob = btn.querySelector("div");
+    const knob = document.getElementById("speech-toggle-knob") || btn.querySelector("span, div");
     if (!knob) return;
     if (appState.speechEnabled) {
-        knob.style.transform = "translateX(24px)";
-        knob.innerHTML = '<i class="fa-solid fa-volume-high text-accentGreen"></i>';
+        knob.style.transform = "translateX(20px)";
+        knob.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-600 text-[10px]"></i>';
+        btn.classList.add("bg-emerald-500/25", "border-emerald-400/50");
+        btn.classList.remove("bg-white/5", "border-white/5");
         btn.title = "Disable Voice Announcements [V]";
     } else {
         knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-900"></i>';
+        knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-800 text-[10px]"></i>';
+        btn.classList.remove("bg-emerald-500/25", "border-emerald-400/50");
+        btn.classList.add("bg-white/5", "border-white/5");
         btn.title = "Enable Voice Announcements [V]";
     }
 }
@@ -710,15 +718,19 @@ function updateSpeechToggleUI() {
 function updateToastToggleUI() {
     const btn = document.getElementById("toast-toggle");
     if (!btn) return;
-    const knob = btn.querySelector("div");
+    const knob = document.getElementById("toast-toggle-knob") || btn.querySelector("span, div");
     if (!knob) return;
     if (appState.toastEnabled) {
-        knob.style.transform = "translateX(24px)";
-        knob.innerHTML = '<i class="fa-solid fa-bell text-accentCyan"></i>';
+        knob.style.transform = "translateX(20px)";
+        knob.innerHTML = '<i class="fa-solid fa-bell text-cyan-600 text-[10px]"></i>';
+        btn.classList.add("bg-cyan-500/25", "border-cyan-400/50");
+        btn.classList.remove("bg-white/5", "border-white/5");
         btn.title = "Disable Toast Notifications [N]";
     } else {
         knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-900"></i>';
+        knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-800 text-[10px]"></i>';
+        btn.classList.remove("bg-cyan-500/25", "border-cyan-400/50");
+        btn.classList.add("bg-white/5", "border-white/5");
         btn.title = "Enable Toast Notifications [N]";
     }
 }
@@ -803,6 +815,7 @@ function initTheme() {
     updateThemeToggleUI(appState.theme);
     updateSpeechToggleUI();
     updateToastToggleUI();
+    if (typeof updateHandSettingsUI === "function") updateHandSettingsUI();
     
     const bindToggleEvents = (btn, handler) => {
         if (!btn) return;
@@ -934,4 +947,12 @@ function updateMetaThemeColor(theme) {
     // Deep dark background for dark mode (#0d0e12), subtle grey for light mode (#f3f4f6)
     meta.setAttribute('content', theme === 'light' ? '#f3f4f6' : '#0d0e12');
 }
+
+window.toggleThemeMode = toggleThemeMode;
+window.toggleSpeechMode = toggleSpeechMode;
+window.toggleToastMode = toggleToastMode;
+window.updateThemeToggleUI = updateThemeToggleUI;
+window.updateSpeechToggleUI = updateSpeechToggleUI;
+window.updateToastToggleUI = updateToastToggleUI;
+
 

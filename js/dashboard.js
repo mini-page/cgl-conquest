@@ -88,11 +88,11 @@ function initTierToggler() {
     function updateTogglerUI() {
         const tier = appState.examTier || 1;
         if (tier === 1) {
-            btn1.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-white bg-accentPurple";
-            btn2.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-gray-400 hover:text-white";
+            btn1.className = "px-3 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md shadow-purple-500/20 cursor-pointer";
+            btn2.className = "px-3 py-1 rounded-lg text-xs font-bold transition duration-200 text-gray-400 hover:text-white cursor-pointer";
         } else {
-            btn1.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-gray-400 hover:text-white";
-            btn2.className = "px-2.5 py-0.5 rounded-md transition duration-200 text-white bg-accentPurple";
+            btn1.className = "px-3 py-1 rounded-lg text-xs font-bold transition duration-200 text-gray-400 hover:text-white cursor-pointer";
+            btn2.className = "px-3 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md shadow-purple-500/20 cursor-pointer";
         }
     }
     
@@ -261,6 +261,17 @@ function renderDashboardOverview() {
     const progressPercent = ((appState.currentDay) / 40) * 100;
     document.getElementById("day-progress-fill").style.width = Math.min(progressPercent, 100) + "%";
     
+    // Roadmap progress pill (links to Study Plan)
+    const pctEl = document.getElementById("plan-pct");
+    const fillEl = document.getElementById("plan-pct-fill");
+    if (pctEl && typeof PLAN_DATA !== "undefined" && PLAN_DATA.length) {
+        const totalDays = PLAN_DATA.length;
+        const completedDays = PLAN_DATA.filter(d => d.day < appState.currentDay).length;
+        const planPct = Math.round((completedDays / totalDays) * 100);
+        pctEl.innerText = `${planPct}% (${completedDays}/${totalDays} Completed)`;
+        if (fillEl) fillEl.style.width = planPct + "%";
+    }
+    
     // Mocks card
     const loggedMocks = appState.mocks.length;
     document.getElementById("mocks-taken-count").innerText = loggedMocks;
@@ -366,44 +377,45 @@ function renderTodayMissions() {
 
         if (subFound && topicFound) {
             const prog = appState.syllabusProgress[subFound.id] || { learned: false, practiced: false, mastered: false };
-            const subClass = topicFound.subject === "Quantitative Aptitude" ? "accentCyan" :
-                             topicFound.subject === "General Intelligence & Reasoning" ? "accentPurple" :
-                             topicFound.subject === "English Language & Comprehension" ? "accentRose" :
-                             topicFound.subject === "Computer Knowledge" ? "blue-400" : "accentAmber";
+            const subTheme = topicFound.subject === "Quantitative Aptitude" ? { text: "text-red-400", border: "border-l-red-500", glow: "hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]" } :
+                             topicFound.subject === "General Intelligence & Reasoning" ? { text: "text-yellow-400", border: "border-l-yellow-400", glow: "hover:shadow-[0_0_20px_rgba(234,179,8,0.2)]" } :
+                             topicFound.subject === "English Language & Comprehension" ? { text: "text-emerald-400", border: "border-l-emerald-500", glow: "hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]" } :
+                             topicFound.subject === "General Awareness" ? { text: "text-blue-400", border: "border-l-blue-500", glow: "hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]" } :
+                             { text: "text-slate-300", border: "border-l-slate-400", glow: "hover:shadow-[0_0_20px_rgba(148,163,184,0.15)]" };
             
             const badgeDiffClass = subFound.difficulty === "Easy" ? "bg-accentGreen/10 border-accentGreen/20 text-accentGreen" :
                                    subFound.difficulty === "Moderate" ? "bg-accentAmber/10 border-accentAmber/20 text-accentAmber" : 
                                    "bg-accentRose/10 border-accentRose/20 text-accentRose";
 
             html += `
-                <div class="bg-bgCard/90 border border-white/10 rounded-2xl p-4 shadow-lg hover:border-white/20 transition duration-200" data-subtopic-id="${subFound.id}">
+                <div class="bg-bgCard/90 border border-white/10 rounded-2xl p-4 shadow-lg hover:border-white/20 ${subTheme.glow} transition duration-200" data-subtopic-id="${subFound.id}">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <!-- Left Side: Topic Info & Badges -->
                         <div class="space-y-1.5 flex-1 min-w-0">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-[10px] font-bold uppercase text-${subClass}"><i class="fa-solid fa-folder-open mr-1"></i> ${topicFound.subject} &bull; ${topicFound.topic}</span>
+                                <span class="text-[10px] font-bold uppercase ${subTheme.text} flex items-center gap-1"><i class="fa-solid fa-folder-open"></i> ${topicFound.subject} &bull; ${topicFound.topic}</span>
                                 <span class="border px-2 py-0.5 rounded text-[9px] font-bold uppercase ${badgeDiffClass}">${subFound.difficulty}</span>
                                 <span class="bg-white/5 border border-white/5 px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 uppercase">${subFound.weightage} Weight</span>
                             </div>
                             <h4 class="text-xs font-extrabold text-white leading-snug">${subFound.name}${appState.weakAlerts && appState.weakAlerts[subFound.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1.5 animate-pulse">🚨 Weak</span>' : ''}</h4>
                         </div>
                         
-                        <!-- Right Side (Desktop/Laptop): Clean Checkbox Pill Controls -->
-                        <div class="flex items-center gap-3 shrink-0 bg-slate-900/90 px-3.5 py-2 rounded-xl border border-white/10 shadow-inner">
-                            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-gray-300 hover:text-white select-none">
-                                <input type="checkbox" class="task-cb-learned accent-cyan-400" data-id="${subFound.id}" ${prog.learned ? 'checked' : ''}>
-                                <span class="text-[11px] font-bold">Learned</span>
-                            </label>
-                            <span class="text-gray-600 text-xs">|</span>
-                            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-gray-300 hover:text-white select-none">
-                                <input type="checkbox" class="task-cb-practiced accent-purple-400" data-id="${subFound.id}" ${prog.practiced ? 'checked' : ''}>
-                                <span class="text-[11px] font-bold">Practiced</span>
-                            </label>
-                            <span class="text-gray-600 text-xs">|</span>
-                            <label class="flex items-center gap-1.5 cursor-pointer text-xs text-gray-300 hover:text-white select-none">
-                                <input type="checkbox" class="task-cb-mastered accent-emerald-400" data-id="${subFound.id}" ${prog.mastered ? 'checked' : ''}>
-                                <span class="text-[11px] font-bold">Mastered</span>
-                            </label>
+                        <!-- Right Side (Desktop/Laptop): Clean Checkbox Pill Controls Matching Syllabus -->
+                        <div class="flex items-center gap-3 shrink-0 bg-[#0a1128]/95 border border-blue-900/60 shadow-inner px-3.5 py-2 rounded-xl">
+                            <div data-dash-tri="${subFound.id}" data-flag="learned" class="flex items-center gap-2 cursor-pointer select-none group/tb">
+                                <span class="tri-box learned ${prog.learned ? 'on' : ''}">${prog.learned ? '✓' : ''}</span>
+                                <span class="text-xs font-medium ${prog.learned ? 'text-teal-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Learned</span>
+                            </div>
+                            <span class="text-blue-900/80 select-none">|</span>
+                            <div data-dash-tri="${subFound.id}" data-flag="practiced" class="flex items-center gap-2 cursor-pointer select-none group/tb">
+                                <span class="tri-box practiced p ${prog.practiced ? 'on p' : ''}">${prog.practiced ? '✓' : ''}</span>
+                                <span class="text-xs font-medium ${prog.practiced ? 'text-violet-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Practiced</span>
+                            </div>
+                            <span class="text-blue-900/80 select-none">|</span>
+                            <div data-dash-tri="${subFound.id}" data-flag="mastered" class="flex items-center gap-2 cursor-pointer select-none group/tb">
+                                <span class="tri-box mastered m ${prog.mastered ? 'on m' : ''}">${prog.mastered ? '✓' : ''}</span>
+                                <span class="text-xs font-medium ${prog.mastered ? 'text-amber-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Mastered</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -413,36 +425,33 @@ function renderTodayMissions() {
 
     container.innerHTML = html;
 
-    // Attach listeners to dashboard mission checkboxes
-    container.querySelectorAll("input[type='checkbox']").forEach(cb => {
-        cb.addEventListener("change", (e) => {
-            const subId = cb.getAttribute("data-id");
-            const isLearned = e.target.classList.contains("task-cb-learned");
-            const isPracticed = e.target.classList.contains("task-cb-practiced");
-            const isMastered = e.target.classList.contains("task-cb-mastered");
-
+    // Attach listeners to dashboard mission tri-boxes matching syllabus
+    container.querySelectorAll("[data-dash-tri]").forEach(el => {
+        el.onclick = (e) => {
+            e.stopPropagation();
+            const subId = el.dataset.dashTri;
+            const flagKey = el.dataset.flag;
             if (!appState.syllabusProgress[subId]) {
                 appState.syllabusProgress[subId] = { learned: false, practiced: false, mastered: false };
             }
-
-            if (isLearned) appState.syllabusProgress[subId].learned = cb.checked;
-            if (isPracticed) appState.syllabusProgress[subId].practiced = cb.checked;
-            if (isMastered) appState.syllabusProgress[subId].mastered = cb.checked;
+            const f = { ...appState.syllabusProgress[subId] };
+            f[flagKey] = !f[flagKey];
+            if (flagKey === 'mastered' && f.mastered) { f.learned = true; f.practiced = true; }
+            if (flagKey === 'practiced' && f.practiced) { f.learned = true; }
+            if (flagKey === 'learned' && !f.learned) { f.practiced = false; f.mastered = false; }
+            if (flagKey === 'practiced' && !f.practiced) { f.mastered = false; }
+            appState.syllabusProgress[subId] = f;
 
             // Trigger ranked confetti celebration feedback
-            if (cb.checked) {
-                if (isMastered) {
-                    if (window.triggerConfetti) window.triggerConfetti('high');
-                } else if (isPracticed) {
-                    if (window.triggerConfetti) window.triggerConfetti('medium');
-                } else if (isLearned) {
-                    if (window.triggerConfetti) window.triggerConfetti('low');
-                }
+            if (f[flagKey] && window.triggerConfetti) {
+                if (flagKey === 'mastered') window.triggerConfetti('high');
+                else if (flagKey === 'practiced') window.triggerConfetti('medium');
+                else if (flagKey === 'learned') window.triggerConfetti('low');
             }
 
             saveStateToStorage();
             renderAll();
-        });
+        };
     });
 }
 
@@ -510,29 +519,29 @@ function renderSubjectProgressBars() {
     
     Object.keys(stats.subjectScores).forEach(sub => {
         const score = stats.subjectScores[sub];
-        let subBarColor = "bg-accentCyan";
-        let subClass = "text-accentCyan";
+        let subBarColor = "bg-rose-500";
+        let subClass = "text-rose-400";
         let icon = "fa-calculator";
         let label = "QUANTITATIVE APTITUDE";
         
         if (sub === "General Intelligence & Reasoning") {
-            subBarColor = "bg-accentPurple";
-            subClass = "text-accentPurple";
+            subBarColor = "bg-amber-400";
+            subClass = "text-amber-400";
             icon = "fa-brain";
             label = "REASONING MODULE";
         } else if (sub === "English Language & Comprehension") {
-            subBarColor = "bg-accentRose";
-            subClass = "text-accentRose";
+            subBarColor = "bg-emerald-400";
+            subClass = "text-emerald-400";
             icon = "fa-language";
             label = "ENGLISH GRAMMAR & COMP";
         } else if (sub === "General Awareness") {
-            subBarColor = "bg-accentAmber";
-            subClass = "text-accentAmber";
+            subBarColor = "bg-blue-400";
+            subClass = "text-blue-400";
             icon = "fa-globe";
             label = "GENERAL GK & CURRENT";
         } else if (sub === "Computer Knowledge") {
-            subBarColor = "bg-blue-500";
-            subClass = "text-blue-400";
+            subBarColor = "bg-slate-400";
+            subClass = "text-slate-300";
             icon = "fa-laptop";
             label = "COMPUTER KNOWLEDGE";
         }
@@ -556,12 +565,24 @@ function renderSubjectProgressBars() {
 // 40-day countdown timer (Count from July 6, 2026 midnight - target August 15, 2026)
 function startExamCountdown() {
     function getTargetTime() {
-        const dateStr = appState.examDate || "2026-08-15";
-        const parts = dateStr.split("T")[0].split("-");
-        const year = parseInt(parts[0]);
-        const month = parseInt(parts[1]) - 1;
-        const day = parseInt(parts[2]);
-        return new Date(year, month, day).getTime();
+        const dateStr = String(appState.examDate || "2026-08-15").split("T")[0].trim();
+        const parts = dateStr.split(/[-/.]/);
+        if (parts.length === 3) {
+            let year, month, day;
+            if (parts[0].length === 4) {
+                year = parseInt(parts[0], 10);
+                month = parseInt(parts[1], 10) - 1;
+                day = parseInt(parts[2], 10);
+            } else {
+                day = parseInt(parts[0], 10);
+                month = parseInt(parts[1], 10) - 1;
+                year = parseInt(parts[2], 10);
+            }
+            const dt = new Date(year, month, day);
+            if (!isNaN(dt.getTime())) return dt.getTime();
+        }
+        const fallback = new Date(dateStr);
+        return isNaN(fallback.getTime()) ? new Date(2026, 7, 15).getTime() : fallback.getTime();
     }
     
     function updateCountdown() {

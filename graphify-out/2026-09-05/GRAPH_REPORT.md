@@ -1,11 +1,11 @@
 # Graph Report - CGL-conquest  (2026-09-05)
 
 ## Corpus Check
-- 102 files · ~303,962 words
+- 102 files · ~303,896 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 613 nodes · 845 edges · 97 communities (39 shown, 6 thin omitted)
+- 613 nodes · 844 edges · 97 communities (39 shown, 6 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -70,8 +70,8 @@
 6. `MockElement` - 13 edges
 7. `flags()` - 12 edges
 8. `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)` - 12 edges
-9. `initTheme()` - 11 edges
-10. `CustomDropdown` - 10 edges
+9. `CustomDropdown` - 10 edges
+10. `initTheme()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]

@@ -33,7 +33,7 @@ class CustomDropdown {
 
         // Create options panel
         this.panel = document.createElement("div");
-        this.panel.className = "absolute left-0 min-w-full w-max mt-1 bg-white dark:bg-[#151526] border border-black/10 dark:border-white/10 shadow-2xl z-50 rounded-lg p-1 max-h-48 overflow-y-auto hidden divide-y divide-black/5 dark:divide-white/5 scrollbar-thin";
+        this.panel.className = "dropdown-panel absolute left-0 min-w-full w-max mt-1 bg-[#0f172a]/95 border border-white/15 shadow-2xl z-50 rounded-xl p-1.5 max-h-56 overflow-y-auto hidden divide-y divide-white/5 scrollbar-thin backdrop-blur-xl";
         this.wrapper.appendChild(this.panel);
 
         // Render option items
@@ -78,13 +78,13 @@ class CustomDropdown {
         Array.from(this.select.options).forEach((opt, idx) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "w-full text-left px-3 py-1.5 rounded text-xs transition select-none flex items-center justify-between gap-3 whitespace-nowrap ";
+            btn.className = "w-full text-left px-3 py-1.5 rounded-lg text-xs transition select-none flex items-center justify-between gap-3 whitespace-nowrap cursor-pointer ";
             
             // Highlight selected option
             if (this.select.selectedIndex === idx) {
-                btn.className += "bg-black/5 dark:bg-white/5 text-accentCyan font-bold";
+                btn.className += "active bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30 shadow-sm";
             } else {
-                btn.className += "text-gray-700 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5";
+                btn.className += "text-gray-300 hover:text-white";
             }
 
             btn.innerHTML = `<span>${opt.text}</span>`;
