@@ -229,28 +229,80 @@ try {
       });
     }
 
-    const groupCard = targetEl.closest('.border-line, .rounded-xl');
-    if (groupCard) {
-      const statsBadge = groupCard.querySelector('[data-gstats]');
-      if (statsBadge) {
-        const itemRows = groupCard.querySelectorAll('[data-tri]');
-        const itemIds = new Set();
-        itemRows.forEach(r => itemIds.add(r.dataset.tri));
-        let doneCount = 0;
-        itemIds.forEach(itemId => {
-          if (flags(itemId).mastered) doneCount++;
-        });
-        statsBadge.textContent = `${doneCount}/${itemIds.size} Done`;
+    // 1. Update Group Badge ("X/Y Done")
+    const item = ALL_ITEMS.find(it => it.id === id);
+    if (item) {
+      SUBJECTS.forEach(s => {
+        if (s.id === item.subjectId) {
+          s.chapters.forEach(ch => {
+            ch.groups.forEach(g => {
+              if (g.items.some(i => i.id === id)) {
+                const key = `G:${s.id}:${ch.name}:${g.name}`;
+                const gBadge = document.querySelector(`[data-gstats="${key}"]`);
+                if (gBadge) {
+                  const gs = groupStats(g);
+                  gBadge.textContent = `${gs.done}/${gs.total} Done`;
+                }
+              }
+            });
+          });
+        }
+      });
+    }
+
+    const groupBody = targetEl.closest('[data-group-body]');
+    if (groupBody) {
+      const groupCard = groupBody.parentElement;
+      if (groupCard) {
+        const statsBadge = groupCard.querySelector('[data-gstats]');
+        if (statsBadge) {
+          const itemRows = groupBody.querySelectorAll('[data-tri][data-flag="mastered"]');
+          let doneCount = 0;
+          itemRows.forEach(r => {
+            if (flags(r.dataset.tri).mastered) doneCount++;
+          });
+          statsBadge.textContent = `${doneCount}/${itemRows.length} Done`;
+        }
       }
     }
 
+    // 2. Update Subject Card Percentage ("XX% • YY% weight")
+    if (item) {
+      const subj = SUBJECTS.find(s => s.id === item.subjectId);
+      if (subj) {
+        const { total, done } = subjectStats(subj);
+        const pct = total ? Math.round((done / total) * 100) : 0;
+        const subjPctEl = document.querySelector(`[data-subj-pct="${subj.id}"]`);
+        if (subjPctEl) {
+          subjPctEl.innerHTML = subj.weightagePct ? `${pct}% &bull; ${subj.weightagePct}% weight` : `${pct}%`;
+        }
+      }
+    }
+
+    // 3. Update Global Syllabus Counters
+    const totalMastered = ALL_ITEMS.filter(i => flags(i.id).mastered).length;
+    const doneEl = document.getElementById('stat-done');
+    if (doneEl) doneEl.textContent = `${totalMastered} mastered`;
+
+    // 4. Update Top Ring Deck Pills
     renderRingDeck();
+
+    // 5. Update Dashboard overview and progress bars immediately
+    if (typeof window.renderDashboardOverview === "function") {
+      window.renderDashboardOverview();
+    }
+    if (typeof window.renderSubjectProgressBars === "function") {
+      window.renderSubjectProgressBars();
+    }
   }
 
   function save() {
     saveStateToStorage();
-    if (typeof updateDashboardProgress === "function") {
-      updateDashboardProgress();
+    if (typeof window.renderDashboardOverview === "function") {
+      window.renderDashboardOverview();
+    }
+    if (typeof window.renderSubjectProgressBars === "function") {
+      window.renderSubjectProgressBars();
     }
   }
 
@@ -781,7 +833,7 @@ try {
         <button data-toggle-subj="${s.id}" class="w-full flex items-center gap-2.5 px-4 py-3.5 ${c.soft} border-b ${c.border} text-left transition cursor-pointer">
           <span class="text-lg sm:text-xl">${s.icon}</span>
           <span class="font-heading font-semibold text-sm sm:text-base text-zinc-100">${s.name}</span>
-          ${s.weightagePct ? `<span class="ml-auto text-xs sm:text-sm font-mono font-bold ${c.text}">${pct}% &bull; ${s.weightagePct}% weight</span>` : `<span class="ml-auto text-xs sm:text-sm font-mono font-bold ${c.text}">${pct}%</span>`}
+          ${s.weightagePct ? `<span data-subj-pct="${s.id}" class="ml-auto text-xs sm:text-sm font-mono font-bold ${c.text}">${pct}% &bull; ${s.weightagePct}% weight</span>` : `<span data-subj-pct="${s.id}" class="ml-auto text-xs sm:text-sm font-mono font-bold ${c.text}">${pct}%</span>`}
           <span class="chev ${subjOpen?'open':''} text-zinc-400 text-xs ml-1">›</span>
         </button>
 

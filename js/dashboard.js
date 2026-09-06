@@ -1041,3 +1041,11 @@ window.triggerConfetti = function(intensity = 'medium') {
         console.warn("Confetti trigger failed:", e);
     }
 };
+
+window.renderDashboardOverview = renderDashboardOverview;
+window.renderSubjectProgressBars = renderSubjectProgressBars;
+window.calculateOverallStats = calculateOverallStats;
+window.updateTodayGoalsRatio = updateTodayGoalsRatio;
+window.loadRituals = loadRituals;
+window.updateStreakData = updateStreakData;
+window.renderTodayMissions = renderTodayMissions;

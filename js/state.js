@@ -3301,6 +3301,7 @@ let appState = {
     examTier: 1,          // Default exam tier target (1 = Tier 1, 2 = Tier 2)
     mobileNavHand: "right" // Default mobile nav thumb hand ("right" | "left")
 };
+window.appState = appState;
 
 // Timer Intervals
 let sessionTimerInterval = null;
@@ -3348,6 +3349,7 @@ function loadStateFromStorage() {
         try {
             const parsed = JSON.parse(saved);
             appState = { ...appState, ...parsed };
+            window.appState = appState;
             // Guard all required fields
             if (!appState.weakAlerts) appState.weakAlerts = {};
             if (!appState.examName) appState.examName = "Conquest";

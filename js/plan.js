@@ -368,3 +368,7 @@ if (btnCompleteDay) {
     };
 }
 
+window.renderStudyPlan = renderStudyPlan;
+window.completeActiveDay = completeActiveDay;
+window.resetActiveDayTo = resetActiveDayTo;
+

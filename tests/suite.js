@@ -331,33 +331,50 @@ runTest("QR Sync Compression, Decompression & Full Fidelity", () => {
   evalInContext(qrJsContent);
 
   const sampleState = {
-    syllabusProgress: { "q-1-1": { learned: true, practiced: true, mastered: true }, "r-2-3": { learned: true, practiced: false, mastered: false } },
+    syllabusProgress: {
+      "q-1-1": { learned: true, practiced: true, mastered: true },
+      "r-2-3": { learned: true, practiced: false, mastered: false }
+    },
     mocks: [{ id: 1, name: "Live Mock #1", score: "148.5", date: "2026-09-01" }],
     notes: [{ id: "n-1", title: "Algebra Identity Trick", content: "(a+b)^3 expansion", tag: "Maths" }],
+    weakAlerts: { "q-1-1": 2 },
     srsRecords: { "q-1-1": { lastReviewed: 1725500000000, level: 3 } },
     currentDay: 14,
     examDate: "2026-08-15",
     examName: "CGL Target 2026",
     examTier: 2,
     streak: 5,
+    lastActiveDate: "2026-09-06",
     dailyRituals: { drill: true, vocab: true, ca: false, computer: false },
-    theme: "dark"
+    theme: "dark",
+    mobileNavHand: "left"
   };
 
-  // 1. Serialization
-  const rawJson = JSON.stringify(sampleState);
-  assert(rawJson.length > 0, "JSON serialization must not be empty");
+  // 1. Compact serialization
+  const compact = evalInContext(`window.extractCompactPayload(${JSON.stringify(sampleState)})`);
+  assert(compact && compact.v === 1, "Compact payload must have version 1");
+  assert.strictEqual(compact.sp["q-1-1"], 3, "Mastered topic should be encoded as stage 3");
+  assert.strictEqual(compact.sp["r-2-3"], 1, "Learned topic should be encoded as stage 1");
+  assert.strictEqual(compact.cd, 14, "Current day must match");
+  assert.strictEqual(compact.mh, "left", "Mobile hand must match");
 
-  // 2. Base64 fallback encode/decode fidelity test
-  const encoded = Buffer.from(unescape(encodeURIComponent(rawJson))).toString('base64');
-  const decoded = decodeURIComponent(escape(Buffer.from(encoded, 'base64').toString()));
-  const parsed = JSON.parse(decoded);
-
-  assert.deepStrictEqual(parsed.syllabusProgress, sampleState.syllabusProgress, "Syllabus progress must match exactly");
-  assert.deepStrictEqual(parsed.mocks, sampleState.mocks, "Mocks must match exactly");
-  assert.deepStrictEqual(parsed.notes, sampleState.notes, "Notes must match exactly");
-  assert.strictEqual(parsed.examName, "CGL Target 2026", "Exam target must be preserved");
-  assert.strictEqual(parsed.currentDay, 14, "Current day must be preserved");
+  // 2. Expand compact payload
+  const expanded = evalInContext(`window.expandCompactPayload(${JSON.stringify(compact)})`);
+  assert(expanded, "Expanded payload must exist");
+  assert.strictEqual(expanded.syllabusProgress["q-1-1"].mastered, true, "Mastered flag must be restored true");
+  assert.strictEqual(expanded.syllabusProgress["q-1-1"].practiced, true, "Practiced flag must be restored true");
+  assert.strictEqual(expanded.syllabusProgress["q-1-1"].learned, true, "Learned flag must be restored true");
+  assert.strictEqual(expanded.syllabusProgress["r-2-3"].learned, true, "Learned flag must be restored true");
+  assert.strictEqual(expanded.mocks.length, 1, "Mocks length must be 1");
+  assert.strictEqual(expanded.mocks[0].name, "Live Mock #1", "Mock name must match");
+  assert.strictEqual(expanded.mocks[0].score, "148.5", "Mock score must match");
+  assert.strictEqual(expanded.notes.length, 1, "Notes length must be 1");
+  assert.strictEqual(expanded.notes[0].title, "Algebra Identity Trick", "Notes title must match");
+  assert.strictEqual(expanded.weakAlerts["q-1-1"], 2, "Weak alerts count must match");
+  assert.strictEqual(expanded.examName, "CGL Target 2026", "Exam name must match");
+  assert.strictEqual(expanded.examTier, 2, "Exam tier must match");
+  assert.strictEqual(expanded.streak, 5, "Streak must match");
+  assert.strictEqual(expanded.mobileNavHand, "left", "Mobile nav hand mode must match");
 });
 
 // SECTION 9: SPACED REPETITION (SRS) SCHEDULE
@@ -439,6 +456,25 @@ runTest("All Standalone Components Exist and Are Valid JS", () => {
       cp.execFileSync(process.execPath, ['--check', filePath]);
     }, `Component ${file} must compile without syntax errors`);
   });
+});
+
+// SECTION 12: SYLLABUS PROGRESS & MASTERY REACTIVITY
+logHeader("Section 12: Syllabus Progress & Mastery Calculations");
+
+runTest("Syllabus Mastery Calculations & Multi-stage Weightage", () => {
+  const dashJsContent = fs.readFileSync(path.join(rootDir, 'js', 'dashboard.js'), 'utf8');
+  evalInContext(dashJsContent);
+
+  // Set up 2 mastered items
+  evalInContext(`
+    appState.syllabusProgress["q-1-1"] = { learned: true, practiced: true, mastered: true };
+    appState.syllabusProgress["q-1-2"] = { learned: true, practiced: true, mastered: true };
+  `);
+
+  const stats = evalInContext('calculateOverallStats()');
+  assert(stats.mastered >= 2, `Mastered count should be at least 2 (got ${stats.mastered})`);
+  assert(stats.prepScore > 0, `Prep score should be greater than 0 (got ${stats.prepScore})`);
+  assert(stats.subjectScores["Quantitative Aptitude"] > 0, "Quant subject score should be greater than 0");
 });
 
 // ── FINAL SUMMARY ──────────────────────────────────────────────

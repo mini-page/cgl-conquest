@@ -7,37 +7,91 @@
 (function () {
     // Compact serialization dictionary for ultra-dense QR codes
     function extractCompactPayload(state) {
+        // Compress syllabusProgress: only active topics encoded as numeric stages (1=L, 2=P, 3=M)
+        const compactSyllabus = {};
+        if (state && state.syllabusProgress) {
+            Object.entries(state.syllabusProgress).forEach(([id, f]) => {
+                if (!f) return;
+                let stage = 0;
+                if (f.mastered) stage = 3;
+                else if (f.practiced) stage = 2;
+                else if (f.learned) stage = 1;
+                if (stage > 0) {
+                    compactSyllabus[id] = stage;
+                }
+            });
+        }
+
         return {
             v: 1, // sync protocol version
             t: Date.now(),
-            sp: state.syllabusProgress || {},
-            m: state.mocks || [],
-            n: state.notes || state.customNotes || [],
+            sp: compactSyllabus,
+            m: Array.isArray(state.mocks) ? state.mocks : [],
+            n: Array.isArray(state.notes) ? state.notes : (Array.isArray(state.customNotes) ? state.customNotes : []),
+            w: state.weakAlerts || {},
             srs: state.srsRecords || {},
-            cd: state.currentDay || 1,
-            ed: state.examDate || '',
-            en: state.examName || '',
-            et: state.examTier || 1,
-            st: state.streak || 1,
-            dr: state.dailyRituals || {},
-            th: state.theme || 'dark'
+            cd: Number(state.currentDay) || 1,
+            ed: state.examDate || '2026-08-15',
+            en: state.examName || 'Conquest',
+            et: Number(state.examTier) || 1,
+            st: Number(state.streak) || 1,
+            la: state.lastActiveDate || '',
+            dr: state.dailyRituals || { drill: false, vocab: false, ca: false, computer: false },
+            th: state.theme || 'dark',
+            mh: state.mobileNavHand || 'right',
+            spk: state.speechEnabled !== false,
+            tst: state.toastEnabled !== false
         };
     }
 
     function expandCompactPayload(raw) {
-        if (raw && raw.v === 1) {
+        if (!raw || typeof raw !== 'object') return raw;
+        if (raw.v === 1) {
+            const expandedSyllabus = {};
+            // Initialize from SYLLABUS_DATA if present
+            if (typeof SYLLABUS_DATA !== 'undefined' && Array.isArray(SYLLABUS_DATA)) {
+                SYLLABUS_DATA.forEach(topic => {
+                    (topic.subtopics || []).forEach(sub => {
+                        expandedSyllabus[sub.id] = { learned: false, practiced: false, mastered: false };
+                    });
+                });
+            }
+
+            if (raw.sp && typeof raw.sp === 'object') {
+                Object.entries(raw.sp).forEach(([id, val]) => {
+                    if (typeof val === 'number') {
+                        expandedSyllabus[id] = {
+                            learned: val >= 1,
+                            practiced: val >= 2,
+                            mastered: val >= 3
+                        };
+                    } else if (typeof val === 'object' && val !== null) {
+                        expandedSyllabus[id] = {
+                            learned: Boolean(val.learned),
+                            practiced: Boolean(val.practiced),
+                            mastered: Boolean(val.mastered)
+                        };
+                    }
+                });
+            }
+
             return {
-                syllabusProgress: raw.sp || {},
-                mocks: raw.m || [],
-                notes: raw.n || [],
-                srsRecords: raw.srs || {},
-                currentDay: raw.cd || 1,
+                syllabusProgress: expandedSyllabus,
+                mocks: Array.isArray(raw.m) ? raw.m : [],
+                notes: Array.isArray(raw.n) ? raw.n : [],
+                weakAlerts: raw.w && typeof raw.w === 'object' ? raw.w : {},
+                srsRecords: raw.srs && typeof raw.srs === 'object' ? raw.srs : {},
+                currentDay: Number(raw.cd) || 1,
                 examDate: raw.ed || '2026-08-15',
                 examName: raw.en || 'Conquest',
-                examTier: raw.et || 1,
-                streak: raw.st || 1,
-                dailyRituals: raw.dr || {},
-                theme: raw.th || 'dark'
+                examTier: Number(raw.et) || 1,
+                streak: Number(raw.st) || 1,
+                lastActiveDate: raw.la || '',
+                dailyRituals: raw.dr && typeof raw.dr === 'object' ? raw.dr : { drill: false, vocab: false, ca: false, computer: false },
+                theme: raw.th || 'dark',
+                mobileNavHand: raw.mh || 'right',
+                speechEnabled: raw.spk !== false,
+                toastEnabled: raw.tst !== false
             };
         }
         return raw;
@@ -77,6 +131,11 @@
         }
 
         async _compress(str) {
+            const b64 = 'B64:' + btoa(unescape(encodeURIComponent(str)));
+            if (b64.length <= 1800) {
+                return b64;
+            }
+
             if ('CompressionStream' in window) {
                 try {
                     const stream = new Blob([str]).stream().pipeThrough(new CompressionStream('gzip'));
@@ -93,26 +152,45 @@
                     console.warn('Gzip stream failed, falling back to base64', e);
                 }
             }
-            return 'B64:' + btoa(unescape(encodeURIComponent(str)));
+            return b64;
         }
 
         async _decompress(payload) {
             if (!payload || typeof payload !== 'string') return null;
             const trimmed = payload.trim();
-            if (trimmed.startsWith('GZ:') && 'DecompressionStream' in window) {
-                const base64 = trimmed.slice(3);
-                const binary = atob(base64);
-                const bytes = new Uint8Array(binary.length);
-                for (let i = 0; i < binary.length; i++) {
-                    bytes[i] = binary.charCodeAt(i);
+            if (trimmed.startsWith('GZ:')) {
+                if ('DecompressionStream' in window) {
+                    try {
+                        const base64 = trimmed.slice(3);
+                        const binary = atob(base64);
+                        const bytes = new Uint8Array(binary.length);
+                        for (let i = 0; i < binary.length; i++) {
+                            bytes[i] = binary.charCodeAt(i);
+                        }
+                        const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+                        const response = new Response(stream);
+                        return await response.text();
+                    } catch (e) {
+                        console.error('GZ decompress error:', e);
+                        throw new Error('Could not decompress gzip sync data');
+                    }
+                } else {
+                    throw new Error('Browser lacks Gzip support for this code. Paste plain text code instead.');
                 }
-                const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-                const response = new Response(stream);
-                return await response.text();
             } else if (trimmed.startsWith('B64:')) {
-                return decodeURIComponent(escape(atob(trimmed.slice(4))));
+                try {
+                    return decodeURIComponent(escape(atob(trimmed.slice(4))));
+                } catch (e) {
+                    return atob(trimmed.slice(4));
+                }
+            } else if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+                return trimmed;
             }
-            return trimmed;
+            try {
+                return decodeURIComponent(escape(atob(trimmed)));
+            } catch (e) {
+                return trimmed;
+            }
         }
 
         _buildDOM() {
@@ -326,7 +404,7 @@
             // 1. Try qrcode-generator (supports up to version 40)
             if (typeof window.qrcode === 'function') {
                 try {
-                    const qr = window.qrcode(0, 'M');
+                    const qr = window.qrcode(0, 'L');
                     qr.addData(payload);
                     qr.make();
                     container.innerHTML = qr.createImgTag(5, 10);
@@ -510,14 +588,20 @@
             const statsContainer = this.card.querySelector('#qr-confirm-stats');
             const mocksCount = (state.mocks || []).length;
             const notesCount = (state.notes || state.customNotes || []).length;
-            const streak = state.streak || 1;
             const examName = state.examName || state.targetExamName || 'Conquest';
-            const syllabusCount = Object.keys(state.syllabusProgress || {}).length;
+            let masteredCount = 0;
+            let activeCount = 0;
+            if (state.syllabusProgress) {
+                Object.values(state.syllabusProgress).forEach(f => {
+                    if (f && f.mastered) masteredCount++;
+                    if (f && (f.learned || f.practiced || f.mastered)) activeCount++;
+                });
+            }
 
             statsContainer.innerHTML = `
                 <div class="p-2 bg-black/40 rounded-xl border border-white/5">
-                    <span class="text-[9px] text-gray-400 uppercase block">Syllabus Checked</span>
-                    <span class="font-extrabold text-teal-400">${syllabusCount} Topics</span>
+                    <span class="text-[9px] text-gray-400 uppercase block">Mastered Topics</span>
+                    <span class="font-extrabold text-amber-400">${masteredCount} (${activeCount} active)</span>
                 </div>
                 <div class="p-2 bg-black/40 rounded-xl border border-white/5">
                     <span class="text-[9px] text-gray-400 uppercase block">Tests Logged</span>
@@ -528,8 +612,8 @@
                     <span class="font-extrabold text-purple-400">${notesCount} Notes</span>
                 </div>
                 <div class="p-2 bg-black/40 rounded-xl border border-white/5">
-                    <span class="text-[9px] text-gray-400 uppercase block">Exam Target</span>
-                    <span class="font-extrabold text-rose-400">${examName}</span>
+                    <span class="text-[9px] text-gray-400 uppercase block">Plan Day / Target</span>
+                    <span class="font-extrabold text-rose-400">Day ${state.currentDay || 1} • ${examName}</span>
                 </div>
             `;
         }
@@ -563,8 +647,10 @@
 
     if (typeof window !== 'undefined') {
         window.QrSyncModal = QrSyncModal;
+        window.extractCompactPayload = extractCompactPayload;
+        window.expandCompactPayload = expandCompactPayload;
     }
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { QrSyncModal };
+        module.exports = { QrSyncModal, extractCompactPayload, expandCompactPayload };
     }
 })();

@@ -972,15 +972,49 @@ function openQrSyncModal() {
                 delete newState.constructor;
                 delete newState.prototype;
 
-                appState = { ...appState, ...newState };
+                // In-place mutation of appState to preserve all module closures
+                Object.assign(appState, newState);
+                window.appState = appState;
                 saveStateToStorage();
+
+                // 1. Tier toggler & form limits
+                if (typeof window.initTierToggler === "function") window.initTierToggler();
+                if (typeof window.updateMockFormLimits === "function") window.updateMockFormLimits();
+
+                // 2. Global application re-renders
                 if (typeof renderAll === "function") renderAll();
-                if (typeof renderMockAnalytics === "function") renderMockAnalytics();
+                if (typeof window.renderDashboardOverview === "function") window.renderDashboardOverview();
+                if (typeof window.renderSubjectProgressBars === "function") window.renderSubjectProgressBars();
+                if (typeof window.renderTodayMissions === "function") window.renderTodayMissions();
+                if (typeof window.loadRituals === "function") window.loadRituals();
+                if (typeof window.updateTodayGoalsRatio === "function") window.updateTodayGoalsRatio();
+                if (typeof window.updateStreakData === "function") window.updateStreakData();
+
+                // 3. Syllabus re-render & Deck Pills
+                if (typeof window.renderSyllabus === "function") window.renderSyllabus();
+                if (typeof window.renderRingDeck === "function") window.renderRingDeck();
+
+                // 4. Study Plan (40-Day Roadmap)
                 if (typeof renderStudyPlan === "function") renderStudyPlan();
+                if (typeof window.renderStudyPlan === "function") window.renderStudyPlan();
+
+                // 5. Mock Analytics
+                if (typeof renderMockAnalytics === "function") renderMockAnalytics();
+                if (typeof window.renderMockAnalytics === "function") window.renderMockAnalytics();
+
+                // 6. Toolkit / Notes
                 if (typeof renderToolkit === "function") renderToolkit();
-                if (typeof updateDashboardProgress === "function") updateDashboardProgress();
+                if (typeof window.renderToolkit === "function") window.renderToolkit();
+
+                // 7. Exam target countdown & banners
                 if (typeof updateCountdown === "function") updateCountdown();
+                if (typeof window.startExamCountdown === "function") window.startExamCountdown();
                 if (typeof renderSrsBanner === "function") renderSrsBanner();
+                if (typeof window.renderSrsBanner === "function") window.renderSrsBanner();
+
+                // 8. Theme and navigation ergonomics
+                if (typeof window.updateHandSettingsUI === "function") window.updateHandSettingsUI();
+                if (typeof window.initTheme === "function") window.initTheme();
             },
             onToast: (msg, type) => {
                 if (window.showToast) window.showToast(msg, type);

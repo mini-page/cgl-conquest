@@ -2215,3 +2215,4 @@ function exportMockReport() {
     }
 }
 window.exportMockReport = exportMockReport;
+window.renderMockAnalytics = renderMockAnalytics;
