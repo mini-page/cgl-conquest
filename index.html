@@ -580,10 +580,26 @@
         <!-- Separator -->
         <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
         
-        <!-- Shortcuts Help Button Part -->
-        <button id="btn-shortcuts-island-trigger" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition" title="Show Keyboard Shortcuts [Double Shift]">
-            <i class="fa-solid fa-circle-question text-accentCyan"></i>
-        </button>
+        <!-- Shortcuts / Action Center & Slide-down Sync Island -->
+        <div id="action-center-island-wrap" class="relative group/sync flex items-center justify-center">
+            <button id="btn-shortcuts-island-trigger" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition active:scale-90" title="Action Center & Shortcuts [Double Shift] | Long-press for Sync">
+                <i class="fa-solid fa-circle-question text-accentCyan"></i>
+            </button>
+
+            <!-- Slide-down Sync Island Pill (Desktop hover on Action Center, Mobile long-press) -->
+            <div id="sync-island-pill" class="absolute top-full right-0 mt-2 z-40 flex items-center gap-1.5 p-1 bg-slate-900/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 opacity-0 pointer-events-none -translate-y-2 transition-all duration-300 ease-out group-hover/sync:opacity-100 group-hover/sync:pointer-events-auto group-hover/sync:translate-y-0 [&.mobile-open]:opacity-100 [&.mobile-open]:pointer-events-auto [&.mobile-open]:translate-y-0">
+                <button type="button" id="btn-sync-island-show" onclick="window.openQrSyncModal('show')" class="px-2.5 py-1 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-gray-300 hover:text-cyan-300 border border-white/5 hover:border-cyan-500/30 flex items-center gap-1.5 text-[11px] font-bold transition cursor-pointer active:scale-95 shadow-sm whitespace-nowrap" title="Show Device QR [Q Q]">
+                    <i class="fa-solid fa-qrcode text-cyan-400 text-xs"></i>
+                    <span>QR</span>
+                    <kbd class="hidden sm:inline-block px-1 py-0.5 bg-black/40 text-[9px] font-mono text-cyan-300 rounded border border-white/10">QQ</kbd>
+                </button>
+                <button type="button" id="btn-sync-island-scan" onclick="window.openQrSyncModal('scan')" class="px-2.5 py-1 rounded-xl bg-white/5 hover:bg-teal-500/20 text-gray-300 hover:text-teal-300 border border-white/5 hover:border-teal-500/30 flex items-center gap-1.5 text-[11px] font-bold transition cursor-pointer active:scale-95 shadow-sm whitespace-nowrap" title="Scan / Pair QR [S S]">
+                    <i class="fa-solid fa-camera text-teal-400 text-xs"></i>
+                    <span>Scan</span>
+                    <kbd class="hidden sm:inline-block px-1 py-0.5 bg-black/40 text-[9px] font-mono text-teal-300 rounded border border-white/10">SS</kbd>
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- MASTER STUDY TIMER PANEL POPOVER -->
@@ -1960,6 +1976,22 @@
                     </div>
                 </div>
 
+                <div class="border-t border-white/5 mx-5 my-1"></div>
+
+                <!-- ── SECTION: Device Sync (clickable rows) ─────── -->
+                <div class="px-5 pt-2 pb-1">
+                    <p class="text-[10px] font-extrabold text-accentCyan uppercase tracking-widest mb-2">Device Sync (Instant QR)</p>
+                    <div class="space-y-0.5">
+                        <button type="button" onclick="handleShortcutAction('qr:show')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-qrcode mr-2.5 text-cyan-400 group-hover:text-cyan-300 transition"></i>Show My Device QR</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">Q</kbd><kbd class="sc-kbd">Q</kbd></span><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                        <button type="button" onclick="handleShortcutAction('qr:scan')" class="ac-row group w-full">
+                            <span class="ac-label"><i class="fa-solid fa-camera mr-2.5 text-teal-400 group-hover:text-teal-300 transition"></i>Scan / Pair Device</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">S</kbd><kbd class="sc-kbd">S</kbd></span><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="border-t border-white/5 mx-5 my-1"></div>
 
@@ -2004,11 +2036,6 @@
                         </button>
                         <input type="file" id="input-restore-file" class="hidden" accept=".json">
                     </div>
-                    <!-- Instant Peer QR Sync -->
-                    <button id="btn-open-qr-sync" type="button" onclick="window.openQrSyncModal()" class="w-full mt-2.5 px-3 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600/25 via-teal-600/25 to-emerald-600/25 hover:from-cyan-600/40 hover:to-emerald-600/40 text-cyan-300 hover:text-white text-xs font-bold border border-cyan-500/40 transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 cursor-pointer active:scale-95" title="Sync All Records Across Devices via QR Code">
-                        <i class="fa-solid fa-qrcode text-cyan-400"></i>
-                        <span>Instant QR Sync (Mobile &harr; Laptop)</span>
-                    </button>
                 </div>
 
             </div>

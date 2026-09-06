@@ -1,6 +1,8 @@
 // === NAVIGATION & THEMING MODULE ===
 let navExpanded = true;
 let lastShiftTime = 0;
+let lastQTime = 0;
+let lastSTime = 0;
 
 function openShortcutsHelpModal() {
     const modal = document.getElementById("modal-shortcuts-help");
@@ -39,6 +41,8 @@ const _SC_ALIASES = [
     { keys: ["p", "pomo", "pomodoro", "timer"],                 hint: "pomodoro timer" },
     { keys: ["c", "conquest", "challenge", "fire"],             hint: "conquest challenge" },
     { keys: ["u", "scroll", "top"],                             hint: "scroll to top" },
+    { keys: ["q", "qq", "qr", "sync"],                          hint: "show my device qr" },
+    { keys: ["s", "ss", "scan", "pair"],                        hint: "scan / pair device" },
     { keys: ["1", "dashboard", "home"],                         hint: "dashboard" },
     { keys: ["2", "syllabus", "track"],                         hint: "syllabus" },
     { keys: ["3", "study", "toolkit"],                          hint: "study / toolkit" },
@@ -135,6 +139,19 @@ function handleShortcutAction(action) {
             case 'toggle-conquest': {
                 const btn = document.getElementById('btn-conquest-capsule');
                 if (btn) btn.click();
+                break;
+            }
+            // ── Device Sync ──
+            case 'qr:show': {
+                if (typeof window.openQrSyncModal === 'function') {
+                    window.openQrSyncModal('show');
+                }
+                break;
+            }
+            case 'qr:scan': {
+                if (typeof window.openQrSyncModal === 'function') {
+                    window.openQrSyncModal('scan');
+                }
                 break;
             }
         }
@@ -502,6 +519,43 @@ function initNavigation() {
             return;
         }
 
+        // Close QR Sync modal if open on Escape or X
+        if (window._qrSyncModalInstance && window._qrSyncModalInstance.isOpen) {
+            if (e.key === "Escape" || e.key === "x" || e.key === "X") {
+                window._qrSyncModalInstance.close();
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // Rapid double-press: Q + Q -> Open "Show My QR"
+        if ((e.key === "q" || e.key === "Q") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            const now = Date.now();
+            if (now - lastQTime < 380) {
+                if (typeof window.openQrSyncModal === "function") {
+                    window.openQrSyncModal('show');
+                }
+                lastQTime = 0;
+                e.preventDefault();
+                return;
+            }
+            lastQTime = now;
+        }
+
+        // Rapid double-press: S + S -> Open "Scan / Paste"
+        if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            const now = Date.now();
+            if (now - lastSTime < 380) {
+                if (typeof window.openQrSyncModal === "function") {
+                    window.openQrSyncModal('scan');
+                }
+                lastSTime = 0;
+                e.preventDefault();
+                return;
+            }
+            lastSTime = now;
+        }
+
         // Keybinding: U/u to scroll smoothly to the top of the browser page
         if (e.key === "u" || e.key === "U") {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -792,13 +846,57 @@ function initTheme() {
         btnShortcutsClose.onclick = () => closeShortcutsHelpModal();
     }
 
-    // Bind help shortcuts island trigger button
+    // Bind help shortcuts island trigger button & mobile long-press for Sync Island
     const btnShortcutsTrigger = document.getElementById("btn-shortcuts-island-trigger");
+    const syncIslandPill = document.getElementById("sync-island-pill");
     if (btnShortcutsTrigger) {
+        let pressTimer = null;
+        let isLongPress = false;
+
+        btnShortcutsTrigger.addEventListener("touchstart", () => {
+            isLongPress = false;
+            pressTimer = setTimeout(() => {
+                isLongPress = true;
+                if (syncIslandPill) syncIslandPill.classList.toggle("mobile-open");
+                if (navigator.vibrate) {
+                    try { navigator.vibrate(45); } catch (_) {}
+                }
+            }, 450);
+        }, { passive: true });
+
+        btnShortcutsTrigger.addEventListener("touchend", (e) => {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+            if (isLongPress) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        btnShortcutsTrigger.addEventListener("touchmove", () => {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        });
+
         btnShortcutsTrigger.onclick = (e) => {
+            if (isLongPress) {
+                isLongPress = false;
+                return;
+            }
             e.stopPropagation();
             openShortcutsHelpModal();
         };
+
+        // Close sync island pill when tapping outside on mobile
+        document.addEventListener("click", (e) => {
+            if (syncIslandPill && !syncIslandPill.contains(e.target) && !btnShortcutsTrigger.contains(e.target)) {
+                syncIslandPill.classList.remove("mobile-open");
+            }
+        });
     }
     
     // Apply theme classes
@@ -958,7 +1056,7 @@ window.navigateTab = navigateToPage;
 
 // // Dual-Way QR Device Sync Handler
 let qrModalInstance = null;
-function openQrSyncModal() {
+function openQrSyncModal(initialTab = 'scan') {
     const drawer = document.getElementById("action-center-drawer");
     if (drawer && typeof window.closeActionCenter === "function") {
         window.closeActionCenter();
@@ -1024,9 +1122,11 @@ function openQrSyncModal() {
     }
 
     if (qrModalInstance) {
-        qrModalInstance.open('scan');
+        window._qrSyncModalInstance = qrModalInstance;
+        qrModalInstance.open(initialTab);
     } else {
         console.warn("QrSyncModal component not loaded yet.");
     }
 }
 window.openQrSyncModal = openQrSyncModal;
+window.closeQrSyncModal = () => { if (qrModalInstance) qrModalInstance.close(); };

@@ -295,6 +295,16 @@ runTest("HTML Markup Validation (index.html)", () => {
 
   // Verify gear icon button is removed from floating dock
   assert(!htmlContent.includes('data-tooltip="Mobile Ergonomics"'), "Gear icon button must be removed from floating dock");
+
+  // Verify Top-Right Sync Island & Floating Island
+  assert(htmlContent.includes('id="action-center-island-wrap"'), "index.html must contain #action-center-island-wrap");
+  assert(htmlContent.includes('id="sync-island-pill"'), "index.html must contain #sync-island-pill");
+  assert(htmlContent.includes('id="btn-sync-island-show"'), "index.html must contain #btn-sync-island-show");
+  assert(htmlContent.includes('id="btn-sync-island-scan"'), "index.html must contain #btn-sync-island-scan");
+
+  // Verify Action Center clickable rows
+  assert(htmlContent.includes("handleShortcutAction('qr:show')"), "Action center must have clickable row for qr:show");
+  assert(htmlContent.includes("handleShortcutAction('qr:scan')"), "Action center must have clickable row for qr:scan");
 });
 
 // SECTION 7: EXAM TARGET COUNTDOWN & DATES
@@ -375,6 +385,18 @@ runTest("QR Sync Compression, Decompression & Full Fidelity", () => {
   assert.strictEqual(expanded.examTier, 2, "Exam tier must match");
   assert.strictEqual(expanded.streak, 5, "Streak must match");
   assert.strictEqual(expanded.mobileNavHand, "left", "Mobile nav hand mode must match");
+
+  // 3. Verify Copy QR Image button in modal template & method
+  assert(qrJsContent.includes('id="btn-copy-qr-image"'), "qr-sync-modal.js must contain #btn-copy-qr-image button");
+  assert(qrJsContent.includes('_copyQrImageToClipboard'), "qr-sync-modal.js must have _copyQrImageToClipboard method");
+
+  // 4. Verify Navigation double-key shortcuts and aliases
+  const navContent = fs.readFileSync(path.join(rootDir, 'js', 'navigation.js'), 'utf8');
+  assert(navContent.includes('show my device qr'), "navigation.js aliases must include QR sync aliases");
+  assert(navContent.includes("case 'qr:show':"), "handleShortcutAction must handle qr:show");
+  assert(navContent.includes("case 'qr:scan':"), "handleShortcutAction must handle qr:scan");
+  assert(navContent.includes('Rapid double-press: Q + Q'), "navigation.js must include Q+Q double-press shortcut");
+  assert(navContent.includes('Rapid double-press: S + S'), "navigation.js must include S+S double-press shortcut");
 });
 
 // SECTION 9: SPACED REPETITION (SRS) SCHEDULE

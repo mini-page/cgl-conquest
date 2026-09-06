@@ -272,7 +272,11 @@
                     <div class="flex gap-2">
                         <button type="button" id="btn-copy-sync-code" class="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-cyan-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-copy text-cyan-400"></i>
-                            <span>Copy Sync Code</span>
+                            <span>Copy Code</span>
+                        </button>
+                        <button type="button" id="btn-copy-qr-image" class="flex-1 px-3 py-2 rounded-xl bg-gradient-to-r from-cyan-600/30 to-teal-600/30 hover:from-cyan-600/50 hover:to-teal-600/50 border border-cyan-500/40 text-xs font-bold text-cyan-200 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy clean QR image to clipboard">
+                            <i class="fa-solid fa-image text-cyan-300"></i>
+                            <span>Copy QR Image</span>
                         </button>
                     </div>
                 </div>
@@ -307,6 +311,26 @@
             this.overlay.onclick = (e) => {
                 if (e.target === this.overlay) this.close();
             };
+
+            // Keyboard navigation: Escape or X closes modal when open
+            this._keyHandler = (e) => {
+                if (!this.isOpen) return;
+                if (e.key === 'Escape') {
+                    this.close();
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+                const tag = document.activeElement ? document.activeElement.tagName : '';
+                const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
+                if ((e.key === 'x' || e.key === 'X') && !isInput) {
+                    this.close();
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+            };
+            window.addEventListener('keydown', this._keyHandler, true);
 
             const tabScan = this.card.querySelector('#tab-qr-scan');
             const tabShow = this.card.querySelector('#tab-qr-show');
@@ -347,6 +371,12 @@
                     }
                 }
             };
+
+            // Copy QR image to clipboard (or fallback download)
+            const btnCopyQrImage = this.card.querySelector('#btn-copy-qr-image');
+            if (btnCopyQrImage) {
+                btnCopyQrImage.onclick = () => this._copyQrImageToClipboard();
+            }
 
             // Confirm Sync
             this.card.querySelector('#btn-qr-apply').onclick = () => {
@@ -444,6 +474,70 @@
                 container.appendChild(img);
             } else {
                 container.innerHTML = `<textarea readonly class="w-full h-44 text-[9px] font-mono bg-slate-100 text-slate-900 p-2 rounded">${payload}</textarea>`;
+            }
+        }
+
+        async _copyQrImageToClipboard() {
+            const container = this.card.querySelector('#qr-code-canvas-container');
+            if (!container) return;
+
+            const img = container.querySelector('img');
+            const canvas = container.querySelector('canvas');
+
+            try {
+                let blob = null;
+                if (canvas) {
+                    blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                } else if (img) {
+                    const offscreen = document.createElement('canvas');
+                    const ctx = offscreen.getContext('2d');
+                    if (!img.complete) {
+                        await new Promise((res, rej) => {
+                            img.onload = res;
+                            img.onerror = rej;
+                        });
+                    }
+                    const w = img.naturalWidth || img.width || 280;
+                    const h = img.naturalHeight || img.height || 280;
+                    offscreen.width = w;
+                    offscreen.height = h;
+                    // Pure clean background
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.drawImage(img, 0, 0, w, h);
+                    blob = await new Promise(resolve => offscreen.toBlob(resolve, 'image/png'));
+                }
+
+                if (!blob) {
+                    this.onToast('Generating QR image, please try again in a moment', 'warning');
+                    return;
+                }
+
+                // 1. Try modern async Clipboard API
+                if (navigator.clipboard && window.ClipboardItem) {
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        this.onToast('QR image copied to clipboard!', 'success');
+                        return;
+                    } catch (clipErr) {
+                        console.warn('Direct clipboard.write image failed, falling back to download:', clipErr);
+                    }
+                }
+
+                // 2. Fallback: PNG file download
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'cgl-conquest-sync-qr.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                this.onToast('QR image saved to downloads!', 'success');
+            } catch (err) {
+                console.error('Failed to copy/download QR image', err);
+                this.onToast('Could not copy QR image', 'error');
             }
         }
 
