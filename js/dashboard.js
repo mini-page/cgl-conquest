@@ -852,6 +852,9 @@ function initPomoTimer() {
 
     function showPomoPopover() {
         if (!pomoDrawer) return;
+        if (typeof window.closeShortcutsHelpModal === "function") {
+            window.closeShortcutsHelpModal();
+        }
         pomoDrawer.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
         pomoDrawer.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
     }

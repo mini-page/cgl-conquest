@@ -7,8 +7,17 @@ let lastSTime = 0;
 function openShortcutsHelpModal() {
     const modal = document.getElementById("modal-shortcuts-help");
     if (modal) {
+        // Close Pomodoro drawer if open so they do not collide
+        const pomoDrawer = document.getElementById("pomo-drawer");
+        if (pomoDrawer) {
+            pomoDrawer.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+            pomoDrawer.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
+        }
+
         modal.classList.add("active");
-        modal.classList.remove("opacity-0", "pointer-events-none");
+        modal.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+        modal.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
+
         // Focus search and wire filter (once)
         const s = document.getElementById("shortcuts-search");
         if (s) {
@@ -25,13 +34,25 @@ function openShortcutsHelpModal() {
 function closeShortcutsHelpModal() {
     const modal = document.getElementById("modal-shortcuts-help");
     if (modal) {
-        modal.classList.remove("active");
-        modal.classList.add("opacity-0", "pointer-events-none");
+        modal.classList.remove("active", "opacity-100", "pointer-events-auto", "translate-y-0");
+        modal.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
         // Clear search on close
         const s = document.getElementById("shortcuts-search");
         if (s) { s.value = ""; filterShortcuts(""); }
     }
 }
+
+function toggleShortcutsHelpModal() {
+    const modal = document.getElementById("modal-shortcuts-help");
+    if (modal && modal.classList.contains("active")) {
+        closeShortcutsHelpModal();
+    } else {
+        openShortcutsHelpModal();
+    }
+}
+window.toggleShortcutsHelpModal = toggleShortcutsHelpModal;
+window.openShortcutsHelpModal = openShortcutsHelpModal;
+window.closeShortcutsHelpModal = closeShortcutsHelpModal;
 
 // Keyword aliases so single-letter/shorthand queries find the right rows
 const _SC_ALIASES = [
@@ -732,19 +753,31 @@ function initNavigation() {
 function updateThemeToggleUI(theme) {
     const btn = document.getElementById("theme-toggle");
     if (!btn) return;
-    const knob = document.getElementById("theme-toggle-knob") || btn.querySelector("span, div");
-    if (!knob) return;
+    const knob = document.getElementById("theme-toggle-knob");
+    const text = document.getElementById("theme-toggle-text");
     if (theme === "light") {
-        knob.style.transform = "translateX(20px)";
-        knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500 text-[10px]"></i>';
-        btn.classList.add("bg-amber-500/25", "border-amber-400/50");
-        btn.classList.remove("bg-white/5", "border-white/5");
+        if (text) {
+            text.textContent = "Light";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-amber-500 pointer-events-none select-none order-2 pr-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-1";
+            knob.innerHTML = '<i class="fa-solid fa-sun text-amber-500 text-[8px]"></i>';
+        }
+        btn.classList.add("bg-amber-500/20", "border-amber-400/50");
+        btn.classList.remove("bg-cyan-500/20", "border-cyan-400/40", "bg-white/5", "border-white/10");
         btn.title = "Switch to Dark Mode [T]";
     } else {
-        knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-moon text-slate-800 text-[10px]"></i>';
-        btn.classList.remove("bg-amber-500/25", "border-amber-400/50");
-        btn.classList.add("bg-white/5", "border-white/5");
+        if (text) {
+            text.textContent = "Dark";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-cyan-300 pointer-events-none select-none order-1 pl-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2";
+            knob.innerHTML = '<i class="fa-solid fa-moon text-slate-900 text-[8px]"></i>';
+        }
+        btn.classList.add("bg-cyan-500/20", "border-cyan-400/40");
+        btn.classList.remove("bg-amber-500/20", "border-amber-400/50", "bg-white/5", "border-white/10");
         btn.title = "Switch to Light Mode [T]";
     }
 }
@@ -752,19 +785,31 @@ function updateThemeToggleUI(theme) {
 function updateSpeechToggleUI() {
     const btn = document.getElementById("speech-toggle");
     if (!btn) return;
-    const knob = document.getElementById("speech-toggle-knob") || btn.querySelector("span, div");
-    if (!knob) return;
+    const knob = document.getElementById("speech-toggle-knob");
+    const text = document.getElementById("speech-toggle-text");
     if (appState.speechEnabled) {
-        knob.style.transform = "translateX(20px)";
-        knob.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-600 text-[10px]"></i>';
-        btn.classList.add("bg-emerald-500/25", "border-emerald-400/50");
-        btn.classList.remove("bg-white/5", "border-white/5");
+        if (text) {
+            text.textContent = "Voice";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-emerald-300 pointer-events-none select-none order-1 pl-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2";
+            knob.innerHTML = '<i class="fa-solid fa-volume-high text-emerald-600 text-[8px]"></i>';
+        }
+        btn.classList.add("bg-emerald-500/20", "border-emerald-400/50");
+        btn.classList.remove("bg-white/5", "border-white/10");
         btn.title = "Disable Voice Announcements [V]";
     } else {
-        knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-800 text-[10px]"></i>';
-        btn.classList.remove("bg-emerald-500/25", "border-emerald-400/50");
-        btn.classList.add("bg-white/5", "border-white/5");
+        if (text) {
+            text.textContent = "Mute";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-gray-400 pointer-events-none select-none order-2 pr-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-1";
+            knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-700 text-[8px]"></i>';
+        }
+        btn.classList.remove("bg-emerald-500/20", "border-emerald-400/50");
+        btn.classList.add("bg-white/5", "border-white/10");
         btn.title = "Enable Voice Announcements [V]";
     }
 }
@@ -772,19 +817,31 @@ function updateSpeechToggleUI() {
 function updateToastToggleUI() {
     const btn = document.getElementById("toast-toggle");
     if (!btn) return;
-    const knob = document.getElementById("toast-toggle-knob") || btn.querySelector("span, div");
-    if (!knob) return;
+    const knob = document.getElementById("toast-toggle-knob");
+    const text = document.getElementById("toast-toggle-text");
     if (appState.toastEnabled) {
-        knob.style.transform = "translateX(20px)";
-        knob.innerHTML = '<i class="fa-solid fa-bell text-cyan-600 text-[10px]"></i>';
-        btn.classList.add("bg-cyan-500/25", "border-cyan-400/50");
-        btn.classList.remove("bg-white/5", "border-white/5");
+        if (text) {
+            text.textContent = "Nudge";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-amber-300 pointer-events-none select-none order-1 pl-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2";
+            knob.innerHTML = '<i class="fa-solid fa-bell text-amber-600 text-[8px]"></i>';
+        }
+        btn.classList.add("bg-amber-500/20", "border-amber-400/50");
+        btn.classList.remove("bg-white/5", "border-white/10");
         btn.title = "Disable Toast Notifications [N]";
     } else {
-        knob.style.transform = "translateX(0px)";
-        knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-800 text-[10px]"></i>';
-        btn.classList.remove("bg-cyan-500/25", "border-cyan-400/50");
-        btn.classList.add("bg-white/5", "border-white/5");
+        if (text) {
+            text.textContent = "Silent";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-gray-400 pointer-events-none select-none order-2 pr-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-1";
+            knob.innerHTML = '<i class="fa-solid fa-bell-slash text-slate-700 text-[8px]"></i>';
+        }
+        btn.classList.remove("bg-amber-500/20", "border-amber-400/50");
+        btn.classList.add("bg-white/5", "border-white/10");
         btn.title = "Enable Toast Notifications [N]";
     }
 }
@@ -846,18 +903,55 @@ function initTheme() {
         btnShortcutsClose.onclick = () => closeShortcutsHelpModal();
     }
 
-    // Bind help shortcuts island trigger button & mobile long-press for Sync Island
+    // Bind help shortcuts island trigger button & Sync Island persistence
     const btnShortcutsTrigger = document.getElementById("btn-shortcuts-island-trigger");
     const syncIslandPill = document.getElementById("sync-island-pill");
-    if (btnShortcutsTrigger) {
+    const actionCenterWrap = document.getElementById("action-center-island-wrap");
+
+    if (btnShortcutsTrigger && syncIslandPill && actionCenterWrap) {
+        let syncIslandTimer = null;
         let pressTimer = null;
         let isLongPress = false;
 
+        function showSyncIsland() {
+            if (syncIslandTimer) {
+                clearTimeout(syncIslandTimer);
+                syncIslandTimer = null;
+            }
+            syncIslandPill.classList.add("island-visible");
+        }
+
+        function scheduleHideSyncIsland(delay = 2000) {
+            if (syncIslandTimer) clearTimeout(syncIslandTimer);
+            syncIslandTimer = setTimeout(() => {
+                syncIslandPill.classList.remove("island-visible");
+                syncIslandTimer = null;
+            }, delay);
+        }
+
+        // Desktop hover on trigger/wrapper: reveal island
+        actionCenterWrap.addEventListener("mouseenter", () => {
+            showSyncIsland();
+        });
+        actionCenterWrap.addEventListener("mouseleave", () => {
+            scheduleHideSyncIsland(2000);
+        });
+
+        // Hovering over the island itself cancels autohide!
+        syncIslandPill.addEventListener("mouseenter", () => {
+            showSyncIsland();
+        });
+        syncIslandPill.addEventListener("mouseleave", () => {
+            scheduleHideSyncIsland(2000);
+        });
+
+        // Mobile touch & long-press handling
         btnShortcutsTrigger.addEventListener("touchstart", () => {
             isLongPress = false;
             pressTimer = setTimeout(() => {
                 isLongPress = true;
-                if (syncIslandPill) syncIslandPill.classList.toggle("mobile-open");
+                showSyncIsland();
+                scheduleHideSyncIsland(3000);
                 if (navigator.vibrate) {
                     try { navigator.vibrate(45); } catch (_) {}
                 }
@@ -888,13 +982,20 @@ function initTheme() {
                 return;
             }
             e.stopPropagation();
-            openShortcutsHelpModal();
+            toggleShortcutsHelpModal();
         };
 
-        // Close sync island pill when tapping outside on mobile
+        // Close Action Center popover & Sync Island when clicking outside
         document.addEventListener("click", (e) => {
-            if (syncIslandPill && !syncIslandPill.contains(e.target) && !btnShortcutsTrigger.contains(e.target)) {
-                syncIslandPill.classList.remove("mobile-open");
+            if (!syncIslandPill.contains(e.target) && !actionCenterWrap.contains(e.target)) {
+                syncIslandPill.classList.remove("island-visible");
+                if (syncIslandTimer) clearTimeout(syncIslandTimer);
+            }
+            const modal = document.getElementById("modal-shortcuts-help");
+            if (modal && modal.classList.contains("active")) {
+                if (!modal.contains(e.target) && !btnShortcutsTrigger.contains(e.target)) {
+                    closeShortcutsHelpModal();
+                }
             }
         });
     }

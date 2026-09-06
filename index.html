@@ -580,23 +580,22 @@
         <!-- Separator -->
         <span class="w-[1px] h-4 bg-white/10 mx-1"></span>
         
-        <!-- Shortcuts / Action Center & Slide-down Sync Island -->
+        <!-- Action Center & Slide-down Sync Island -->
         <div id="action-center-island-wrap" class="relative group/sync flex items-center justify-center">
-            <button id="btn-shortcuts-island-trigger" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition active:scale-90" title="Action Center & Shortcuts [Double Shift] | Long-press for Sync">
-                <i class="fa-solid fa-circle-question text-accentCyan"></i>
+            <button id="btn-shortcuts-island-trigger" class="w-7 h-7 rounded-full text-gray-300 hover:text-white flex items-center justify-center text-xs transition active:scale-90 cursor-pointer" data-tooltip="Action Center [Double Shift]" data-tooltip-pos="bottom">
+                <i class="fa-solid fa-table-cells text-accentCyan text-[13px]"></i>
             </button>
 
-            <!-- Slide-down Sync Island Pill (Desktop hover on Action Center, Mobile long-press) -->
-            <div id="sync-island-pill" class="absolute top-full right-0 mt-2 z-40 flex items-center gap-1.5 p-1 bg-slate-900/95 backdrop-blur-xl border border-cyan-500/30 rounded-2xl shadow-2xl shadow-cyan-500/20 opacity-0 pointer-events-none -translate-y-2 transition-all duration-300 ease-out group-hover/sync:opacity-100 group-hover/sync:pointer-events-auto group-hover/sync:translate-y-0 [&.mobile-open]:opacity-100 [&.mobile-open]:pointer-events-auto [&.mobile-open]:translate-y-0">
-                <button type="button" id="btn-sync-island-show" onclick="window.openQrSyncModal('show')" class="px-2.5 py-1 rounded-xl bg-white/5 hover:bg-cyan-500/20 text-gray-300 hover:text-cyan-300 border border-white/5 hover:border-cyan-500/30 flex items-center gap-1.5 text-[11px] font-bold transition cursor-pointer active:scale-95 shadow-sm whitespace-nowrap" title="Show Device QR [Q Q]">
+            <!-- Slide-down Sync Island Pill (Matching Pomodoro Island styling & two-in-one pill separation) -->
+            <div id="sync-island-pill" class="absolute top-full right-0 mt-2 z-40 flex items-center bg-bgCard/95 backdrop-blur-md border border-white/10 hover:border-white/20 rounded-full p-0.5 shadow-2xl transition-all duration-300 ease-out select-none opacity-0 pointer-events-none -translate-y-2 group-hover/sync:opacity-100 group-hover/sync:pointer-events-auto group-hover/sync:translate-y-0 [&.island-visible]:opacity-100 [&.island-visible]:pointer-events-auto [&.island-visible]:translate-y-0">
+                <button type="button" id="btn-sync-island-show" onclick="window.openQrSyncModal('show')" class="px-2.5 py-0.5 rounded-full hover:bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 text-xs font-bold transition cursor-pointer active:scale-95 whitespace-nowrap" data-tooltip="Show My Device QR [Q Q]" data-tooltip-pos="bottom">
                     <i class="fa-solid fa-qrcode text-cyan-400 text-xs"></i>
                     <span>QR</span>
-                    <kbd class="hidden sm:inline-block px-1 py-0.5 bg-black/40 text-[9px] font-mono text-cyan-300 rounded border border-white/10">QQ</kbd>
                 </button>
-                <button type="button" id="btn-sync-island-scan" onclick="window.openQrSyncModal('scan')" class="px-2.5 py-1 rounded-xl bg-white/5 hover:bg-teal-500/20 text-gray-300 hover:text-teal-300 border border-white/5 hover:border-teal-500/30 flex items-center gap-1.5 text-[11px] font-bold transition cursor-pointer active:scale-95 shadow-sm whitespace-nowrap" title="Scan / Pair QR [S S]">
+                <span class="w-[1px] h-3.5 bg-white/15 mx-0.5"></span>
+                <button type="button" id="btn-sync-island-scan" onclick="window.openQrSyncModal('scan')" class="px-2.5 py-0.5 rounded-full hover:bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 text-xs font-bold transition cursor-pointer active:scale-95 whitespace-nowrap" data-tooltip="Scan / Pair Device [S S]" data-tooltip-pos="bottom">
                     <i class="fa-solid fa-camera text-teal-400 text-xs"></i>
                     <span>Scan</span>
-                    <kbd class="hidden sm:inline-block px-1 py-0.5 bg-black/40 text-[9px] font-mono text-teal-300 rounded border border-white/10">SS</kbd>
                 </button>
             </div>
         </div>
@@ -1853,22 +1852,20 @@
     </div>
 
 
-    <!-- MODAL: ACTION CENTER (Double-Shift) -->
-    <div id="modal-shortcuts-help" role="dialog" aria-modal="true" aria-label="Action Center Shortcuts Modal" class="modal fixed inset-0 bg-black/85 backdrop-blur-md z-[110] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
-        <div class="bg-bgCard border border-white/10 w-full max-w-lg rounded-3xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300">
+    <!-- POPOVER: ACTION CENTER (Double-Shift / Floating Popover) -->
+    <div id="modal-shortcuts-help" role="dialog" aria-modal="true" aria-label="Action Center Shortcuts Popover" class="fixed top-16 right-4 sm:right-12 w-[calc(100vw-2rem)] sm:w-96 max-w-sm max-h-[82vh] z-50 bg-slate-900/95 sm:bg-bgCard/95 border border-white/15 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col transform -translate-y-2 opacity-0 pointer-events-none transition-all duration-200 ease-out select-none">
 
-            <!-- Row 1: Title + Close -->
-            <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/5 shrink-0">
-                <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-accentAmber"></i>
-                    <span class="hidden sm:inline">Action Center</span>
-                    <span class="sm:hidden">Actions</span>
-                </h3>
-                <button id="btn-shortcuts-close" class="text-gray-400 hover:text-white transition flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl px-2 py-1.5 sm:px-3 shrink-0" title="Close (Esc)">
-                    <i class="fa-solid fa-xmark text-sm"></i>
-                    <span class="hidden sm:inline text-xs font-bold uppercase tracking-wider">Close</span>
-                </button>
-            </div>
+        <!-- Row 1: Title + Close -->
+        <div class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/5 shrink-0">
+            <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-table-cells text-accentCyan"></i>
+                <span>Action Center</span>
+            </h3>
+            <button id="btn-shortcuts-close" class="text-gray-400 hover:text-white transition flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl px-2.5 py-1 shrink-0 cursor-pointer text-xs font-bold" title="Close (Esc)">
+                <i class="fa-solid fa-xmark text-xs"></i>
+                <span class="text-[10px] uppercase tracking-wider">Close</span>
+            </button>
+        </div>
 
             <!-- Row 2: Search bar (own row, full width) -->
             <div class="px-5 py-3 border-b border-white/5 shrink-0">
@@ -1928,8 +1925,9 @@
                         <div class="ac-toggle-row cursor-pointer" onclick="if (!event.target.closest('#theme-toggle')) window.toggleThemeMode()">
                             <span class="ac-label"><i class="fa-solid fa-moon mr-2.5 text-gray-500"></i>Dark / Light Theme</span>
                             <span class="ac-right">
-                                <div id="theme-toggle" class="w-11 h-6 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0 hover:border-white/20 transition" role="button" title="Toggle theme [T]">
-                                    <span class="absolute left-0.5 top-[2px] w-5 h-5 rounded-full bg-white flex items-center justify-center text-[10px] text-zinc-950 transition-all duration-300 pointer-events-none" id="theme-toggle-knob"><i class="fa-solid fa-moon"></i></span>
+                                <div id="theme-toggle" class="w-16 h-6 rounded-full bg-cyan-500/20 border border-cyan-400/40 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle theme [T]">
+                                    <span id="theme-toggle-text" class="text-[9px] font-extrabold uppercase tracking-wider text-cyan-300 pointer-events-none select-none order-1 pl-1">Dark</span>
+                                    <span class="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2" id="theme-toggle-knob"><i class="fa-solid fa-moon text-slate-900 text-[8px]"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">T</kbd>
                             </span>
@@ -1938,8 +1936,9 @@
                         <div class="ac-toggle-row cursor-pointer" onclick="if (!event.target.closest('#speech-toggle')) window.toggleSpeechMode()">
                             <span class="ac-label"><i class="fa-solid fa-volume-high mr-2.5 text-gray-500"></i>Voice Announcements</span>
                             <span class="ac-right">
-                                <div id="speech-toggle" class="w-11 h-6 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0 hover:border-white/20 transition" role="button" title="Toggle voice [V]">
-                                    <span class="absolute left-0.5 top-[2px] w-5 h-5 rounded-full bg-white flex items-center justify-center text-[10px] text-zinc-950 transition-all duration-300 pointer-events-none" id="speech-toggle-knob"><i class="fa-solid fa-volume-high text-emerald-500"></i></span>
+                                <div id="speech-toggle" class="w-16 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle voice [V]">
+                                    <span id="speech-toggle-text" class="text-[9px] font-extrabold uppercase tracking-wider text-emerald-300 pointer-events-none select-none order-1 pl-1">Voice</span>
+                                    <span class="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2" id="speech-toggle-knob"><i class="fa-solid fa-volume-high text-emerald-600 text-[8px]"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">V</kbd>
                             </span>
@@ -1948,8 +1947,9 @@
                         <div class="ac-toggle-row cursor-pointer" onclick="if (!event.target.closest('#toast-toggle')) window.toggleToastMode()">
                             <span class="ac-label"><i class="fa-solid fa-bell mr-2.5 text-gray-500"></i>Toast Notifications</span>
                             <span class="ac-right">
-                                <div id="toast-toggle" class="w-11 h-6 rounded-full bg-white/5 border border-white/5 relative cursor-pointer shrink-0 hover:border-white/20 transition" role="button" title="Toggle notifications [N]">
-                                    <span class="absolute left-0.5 top-[2px] w-5 h-5 rounded-full bg-white flex items-center justify-center text-[10px] text-zinc-950 transition-all duration-300 pointer-events-none" id="toast-toggle-knob"><i class="fa-solid fa-bell text-amber-500"></i></span>
+                                <div id="toast-toggle" class="w-16 h-6 rounded-full bg-amber-500/20 border border-amber-400/40 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle notifications [N]">
+                                    <span id="toast-toggle-text" class="text-[9px] font-extrabold uppercase tracking-wider text-amber-300 pointer-events-none select-none order-1 pl-1">Nudge</span>
+                                    <span class="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2" id="toast-toggle-knob"><i class="fa-solid fa-bell text-amber-600 text-[8px]"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">N</kbd>
                             </span>
@@ -2060,7 +2060,6 @@
             </div>
 
         </div>
-    </div>
 
     <!-- Exam Target Edit Modal Popup -->
     <div id="exam-target-modal" class="fixed inset-0 z-[300] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">

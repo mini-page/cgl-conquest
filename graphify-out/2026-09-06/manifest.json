@@ -24,9 +24,9 @@
     "semantic_hash": "b33d000860642c6f4907a877e0387a21"
   },
   "build-tailwind.js": {
-    "mtime": 1788705443.7737308,
-    "seen": 1788706796.3914244,
-    "ast_hash": "dd6ea06e2632bd484fc13dc96adc9106",
+    "mtime": 1788517018.460842,
+    "seen": 1788593961.4134526,
+    "ast_hash": "1fd0fd95d87846c8944295ee5b746153",
     "semantic_hash": ""
   },
   "compile_data.js": {
@@ -156,45 +156,45 @@
     "semantic_hash": "f557a5a4c29215c5710f2fba97124dd4"
   },
   "js/dashboard.js": {
-    "mtime": 1788705641.466315,
-    "seen": 1788706796.3914244,
-    "ast_hash": "37588690afff223d0f3c9181e22bb1c7",
+    "mtime": 1788609028.9757092,
+    "seen": 1788609588.206825,
+    "ast_hash": "4e5e6f53f82ae4dfa7f626efdfc5af96",
     "semantic_hash": ""
   },
   "js/mocks.js": {
-    "mtime": 1788685052.6697264,
-    "seen": 1788706796.3914244,
-    "ast_hash": "ad9cc07dd65829047607403cbeba4b24",
+    "mtime": 1788608823.2712362,
+    "seen": 1788609588.206825,
+    "ast_hash": "2e87965a6f184022ed785f57153d1ad7",
     "semantic_hash": ""
   },
   "js/navigation.js": {
-    "mtime": 1788705620.666746,
-    "seen": 1788706796.3914244,
-    "ast_hash": "8402dea56de3cf00b0dbcb69373c222a",
+    "mtime": 1788610577.5176556,
+    "seen": 1788610646.803416,
+    "ast_hash": "dee656685b0d9d934442a0888ff9f77c",
     "semantic_hash": ""
   },
   "js/plan.js": {
-    "mtime": 1788685027.121758,
-    "seen": 1788706796.3914244,
-    "ast_hash": "1bc06d2374b132fb99d10809861681fe",
+    "mtime": 1788589739.884745,
+    "seen": 1788593961.4134526,
+    "ast_hash": "f877e1adc5d379b6eb63221d633ee163",
     "semantic_hash": ""
   },
   "js/speed.js": {
-    "mtime": 1788705145.4239726,
-    "seen": 1788706796.3914244,
-    "ast_hash": "c7f62812c29df1805c7f3e43b3315987",
+    "mtime": 1788609243.7352576,
+    "seen": 1788609588.206825,
+    "ast_hash": "93c10c2909ca21783ce7049d5c77d5c2",
     "semantic_hash": ""
   },
   "js/state.js": {
-    "mtime": 1788685123.3786118,
-    "seen": 1788706796.3914244,
-    "ast_hash": "f17e599ec03fea0be2735573390e0ccf",
+    "mtime": 1788608354.576561,
+    "seen": 1788609588.206825,
+    "ast_hash": "b3843d89fc733521fe17f8d3bc6d5044",
     "semantic_hash": ""
   },
   "js/syllabus.js": {
-    "mtime": 1788684987.4974656,
-    "seen": 1788706796.3914244,
-    "ast_hash": "d34dcb651f0c529a8721246a33966567",
+    "mtime": 1788610065.786467,
+    "seen": 1788610646.803416,
+    "ast_hash": "3f922327b26f8e13f00bbfceadcc87fe",
     "semantic_hash": ""
   },
   "js/toolkit.js": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "sw.js": {
-    "mtime": 1788611880.380235,
-    "seen": 1788706796.3914244,
-    "ast_hash": "499d2728301c10d90cfe52fa3685dbe7",
+    "mtime": 1788383969.4676619,
+    "seen": 1788593961.4139752,
+    "ast_hash": "95fc753088b888a9bc328d6bdc98daa5",
     "semantic_hash": ""
   },
   "tailwind.config.js": {
@@ -533,16 +533,52 @@
     "ast_hash": "a831cf3669f1e6ab85d8a80ebe655f99",
     "semantic_hash": ""
   },
+  ".claude/skills/gitnexus/gitnexus-cli/SKILL.md": {
+    "mtime": 1786093019.5724375,
+    "seen": 1788161978.595755,
+    "ast_hash": "77da703128a8f2f84ab1367f9bb60d09",
+    "semantic_hash": ""
+  },
+  ".claude/skills/gitnexus/gitnexus-debugging/SKILL.md": {
+    "mtime": 1786093019.5583918,
+    "seen": 1788161978.595755,
+    "ast_hash": "c7284b8f06cb8323f572564363df59e2",
+    "semantic_hash": ""
+  },
+  ".claude/skills/gitnexus/gitnexus-exploring/SKILL.md": {
+    "mtime": 1786093019.5550785,
+    "seen": 1788161978.595755,
+    "ast_hash": "680f3e0bef0d75b4e82b461715213126",
+    "semantic_hash": ""
+  },
+  ".claude/skills/gitnexus/gitnexus-guide/SKILL.md": {
+    "mtime": 1786093019.5680332,
+    "seen": 1788161978.595755,
+    "ast_hash": "51eee64e023b05990b57ea22eac4957d",
+    "semantic_hash": ""
+  },
+  ".claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md": {
+    "mtime": 1786093019.561666,
+    "seen": 1788161978.595755,
+    "ast_hash": "f8b8d25ad42baa867a37791ee09f106e",
+    "semantic_hash": ""
+  },
+  ".claude/skills/gitnexus/gitnexus-refactoring/SKILL.md": {
+    "mtime": 1786093019.5651305,
+    "seen": 1788161978.595755,
+    "ast_hash": "4d0bf7aa2b876bd4318add73d5e4918e",
+    "semantic_hash": ""
+  },
   "AGENTS.md": {
-    "mtime": 1788702448.4175818,
-    "seen": 1788706796.3914244,
-    "ast_hash": "3a11b8af37daf45fb83392b59f02f112",
+    "mtime": 1786093019.5485878,
+    "seen": 1788161978.595755,
+    "ast_hash": "81bdb50c3f150f6b4b237cb59df262ed",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
-    "mtime": 1788702448.4192245,
-    "seen": 1788706796.3914244,
-    "ast_hash": "905f4a69e0f849620d37ccc887cb5f84",
+    "mtime": 1786093019.5501053,
+    "seen": 1788161978.595755,
+    "ast_hash": "b804ec6d0c6db02b786aaf24f5ac654b",
     "semantic_hash": ""
   },
   "PROJECT_MEMORIFY.md": {
@@ -558,9 +594,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1788705569.7169855,
-    "seen": 1788706796.3914244,
-    "ast_hash": "17a2d9ffe6c4ae588e4a561061d9926f",
+    "mtime": 1788610455.4725509,
+    "seen": 1788610646.803416,
+    "ast_hash": "d40e90420b1d574781bc84ff7c583c33",
     "semantic_hash": ""
   },
   "icon.svg": {
@@ -630,9 +666,9 @@
     "semantic_hash": ""
   },
   "tests/suite.js": {
-    "mtime": 1788706682.0364413,
-    "seen": 1788706796.3914244,
-    "ast_hash": "1e8f24ddfda6777fdcc072a3cafb2450",
+    "mtime": 1788517228.871881,
+    "seen": 1788593961.4139752,
+    "ast_hash": "d3ca085c51ca8bff80a51af2b35dbedc",
     "semantic_hash": ""
   },
   "pages/vault.html": {
@@ -672,9 +708,9 @@
     "semantic_hash": ""
   },
   "components/qr-sync-modal.js": {
-    "mtime": 1788701559.9136252,
-    "seen": 1788706796.3914244,
-    "ast_hash": "f19e70e37b8748854e90d4d869ab9a57",
+    "mtime": 1788610391.5622284,
+    "seen": 1788610646.803416,
+    "ast_hash": "1579aacd31a98c0b81397f21d9f262c1",
     "semantic_hash": ""
   },
   "components/search-bar.js": {
@@ -699,78 +735,6 @@
     "mtime": 1788606333.154574,
     "seen": 1788609588.206825,
     "ast_hash": "7a814e3bf2fa92d13b31af65a187562b",
-    "semantic_hash": ""
-  },
-  ".agents/skills/gitnexus-cli/SKILL.md": {
-    "mtime": 1788702448.4546638,
-    "seen": 1788706796.3914244,
-    "ast_hash": "a90c0d2c3f22909780303db1f5daa178",
-    "semantic_hash": ""
-  },
-  ".agents/skills/gitnexus-debugging/SKILL.md": {
-    "mtime": 1788702448.4376285,
-    "seen": 1788706796.3914244,
-    "ast_hash": "5a6e25eee809c31a0cc7071018b62aa8",
-    "semantic_hash": ""
-  },
-  ".agents/skills/gitnexus-exploring/SKILL.md": {
-    "mtime": 1788702448.4255083,
-    "seen": 1788706796.3914244,
-    "ast_hash": "d84b30f0d425f42c7278957bfe8c2498",
-    "semantic_hash": ""
-  },
-  ".agents/skills/gitnexus-guide/SKILL.md": {
-    "mtime": 1788702448.4487786,
-    "seen": 1788706796.3914244,
-    "ast_hash": "51eee64e023b05990b57ea22eac4957d",
-    "semantic_hash": ""
-  },
-  ".agents/skills/gitnexus-impact-analysis/SKILL.md": {
-    "mtime": 1788702448.4315853,
-    "seen": 1788706796.3914244,
-    "ast_hash": "c1bbbda0d172d9743ff81f7a66f5b80a",
-    "semantic_hash": ""
-  },
-  ".agents/skills/gitnexus-refactoring/SKILL.md": {
-    "mtime": 1788702448.444034,
-    "seen": 1788706796.3914244,
-    "ast_hash": "7bd98a42fc96205ae57283575451a142",
-    "semantic_hash": ""
-  },
-  ".claude/skills/gitnexus-cli/SKILL.md": {
-    "mtime": 1788702448.4531837,
-    "seen": 1788706796.3914244,
-    "ast_hash": "a90c0d2c3f22909780303db1f5daa178",
-    "semantic_hash": ""
-  },
-  ".claude/skills/gitnexus-debugging/SKILL.md": {
-    "mtime": 1788702448.436311,
-    "seen": 1788706796.3914244,
-    "ast_hash": "5a6e25eee809c31a0cc7071018b62aa8",
-    "semantic_hash": ""
-  },
-  ".claude/skills/gitnexus-exploring/SKILL.md": {
-    "mtime": 1788702448.4239728,
-    "seen": 1788706796.3914244,
-    "ast_hash": "d84b30f0d425f42c7278957bfe8c2498",
-    "semantic_hash": ""
-  },
-  ".claude/skills/gitnexus-guide/SKILL.md": {
-    "mtime": 1788702448.447573,
-    "seen": 1788706796.3914244,
-    "ast_hash": "51eee64e023b05990b57ea22eac4957d",
-    "semantic_hash": ""
-  },
-  ".claude/skills/gitnexus-impact-analysis/SKILL.md": {
-    "mtime": 1788702448.4302657,
-    "seen": 1788706796.3914244,
-    "ast_hash": "c1bbbda0d172d9743ff81f7a66f5b80a",
-    "semantic_hash": ""
-  },
-  ".claude/skills/gitnexus-refactoring/SKILL.md": {
-    "mtime": 1788702448.44191,
-    "seen": 1788706796.3914244,
-    "ast_hash": "7bd98a42fc96205ae57283575451a142",
     "semantic_hash": ""
   }
 }

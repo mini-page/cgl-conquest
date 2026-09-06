@@ -1,16 +1,16 @@
-# Graph Report - CGL-conquest  (2026-09-06)
+# Graph Report - CGL-conquest  (2026-09-05)
 
 ## Corpus Check
-- 118 files · ~321,146 words
+- 112 files · ~311,047 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 782 nodes · 1091 edges · 106 communities (46 shown, 8 thin omitted)
+- 710 nodes · 1015 edges · 101 communities (41 shown, 8 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 18 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `06cd5037`
+- Built from commit: `c9aeb054`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,7 +32,7 @@
 - opencode.json
 - graphify.js
 - cmdpalette.js
-- Refactoring with GitNexus
+- plan.js
 - 22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)
 - suite.js
 - sw.js
@@ -40,14 +40,14 @@
 - PROJECT MEMORIFY — SSC CGL Conquest Dashboard
 - 20. QUICK REFERENCE CARD
 - 21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)
+- GitNexus Guide
 - Refactoring with GitNexus
-- GitNexus Guide
-- GitNexus Guide
 - Commands
+- Impact Analysis with GitNexus
 - 16. BLAST RADIUS MAP
 - 5. ALL FUNCTIONS BY MODULE
-- Impact Analysis with GitNexus
-- Commands
+- Debugging with GitNexus
+- Exploring Codebases with GitNexus
 - GitNexus — Code Intelligence
 - GitNexus — Code Intelligence
 - QrSyncModal
@@ -64,48 +64,43 @@
 - workflows/graphify.md
 - ModalDialog
 - ToastNotification
-- Impact Analysis with GitNexus
-- Debugging with GitNexus
-- Exploring Codebases with GitNexus
-- Debugging with GitNexus
-- Exploring Codebases with GitNexus
 
 ## God Nodes (most connected - your core abstractions)
 1. `renderAll()` - 24 edges
 2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 24 edges
 3. `renderStudyTrackerAll()` - 21 edges
-4. `QrSyncModal` - 20 edges
+4. `QrSyncModal` - 18 edges
 5. `CalendarPicker` - 14 edges
 6. `renderMockAnalytics()` - 14 edges
-7. `initTheme()` - 14 edges
-8. `20. QUICK REFERENCE CARD` - 14 edges
-9. `MockElement` - 13 edges
-10. `flags()` - 12 edges
+7. `20. QUICK REFERENCE CARD` - 14 edges
+8. `MockElement` - 13 edges
+9. `flags()` - 12 edges
+10. `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/app.js → js/state.js
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/dashboard.js → js/state.js
+- `renderStudyPlan()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
+  js/plan.js → js/state.js
 - `showQuickRefTables()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/toolkit.js → js/state.js
 - `navigateToPage()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/navigation.js → js/state.js
-- `renderStudyPlan()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
-  js/plan.js → js/state.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (106 total, 8 thin omitted)
+## Communities (101 total, 8 thin omitted)
 
 ### Community 0 - "syllabus.js"
 Cohesion: 0.10
 Nodes (55): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+47 more)
 
 ### Community 1 - "toolkit.js"
-Cohesion: 0.05
-Nodes (56): renderAll(), navigateToPage(), btnCompleteDay, completeActiveDay(), renderStudyPlan(), resetActiveDayTo(), updatePhaseTabs(), triggerMathTypesetting() (+48 more)
+Cohesion: 0.06
+Nodes (51): renderAll(), navigateToPage(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), clearStudyFilters(), closeStudyViewer() (+43 more)
 
 ### Community 3 - "compile_data.js"
 Cohesion: 0.09
@@ -120,8 +115,8 @@ Cohesion: 0.12
 Nodes (27): calculateOverallStats(), closeExamTargetModal(), formatTimeSeconds(), getSrsDueTopics(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover() (+19 more)
 
 ### Community 6 - "navigation.js"
-Cohesion: 0.18
-Nodes (21): closeShortcutsHelpModal(), expandNav(), filterShortcuts(), handleShortcutAction(), initHeaderScroll(), initNavigation(), initTheme(), openQrSyncModal() (+13 more)
+Cohesion: 0.19
+Nodes (19): closeShortcutsHelpModal(), expandNav(), filterShortcuts(), handleShortcutAction(), initHeaderScroll(), initNavigation(), initTheme(), openShortcutsHelpModal() (+11 more)
 
 ### Community 7 - "speed.js"
 Cohesion: 0.19
@@ -155,9 +150,9 @@ Nodes (3): plugin, $schema, .opencode/plugins/graphify.js
 Cohesion: 0.39
 Nodes (7): buildRegistry(), close(), execute(), filterCommands(), open(), render(), renderActiveOnly()
 
-### Community 18 - "Refactoring with GitNexus"
-Cohesion: 0.17
-Nodes (11): Bind the repository first, Checklists, Example: Rename `validateUser` to `authenticateUser`, Extract Module, Refactoring with GitNexus, Rename Symbol, Risk Rules, Split Function/Service (+3 more)
+### Community 18 - "plan.js"
+Cohesion: 0.48
+Nodes (5): btnCompleteDay, completeActiveDay(), renderStudyPlan(), resetActiveDayTo(), updatePhaseTabs()
 
 ### Community 19 - "22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)"
 Cohesion: 0.40
@@ -165,7 +160,7 @@ Nodes (5): 22.1 XSS Prevention Standards, 22.2 Focus, Shortcut & UX Safety Rules
 
 ### Community 21 - "suite.js"
 Cohesion: 0.06
-Nodes (17): assert, colors, cp, fs, localStorageMock, logTestFail(), logTestPass(), mockBody (+9 more)
+Nodes (16): assert, colors, fs, localStorageMock, logTestFail(), logTestPass(), mockBody, MockClassList (+8 more)
 
 ### Community 46 - "index.js"
 Cohesion: 0.07
@@ -183,21 +178,21 @@ Nodes (14): 20. QUICK REFERENCE CARD, Boot: `DOMContentLoaded` → loadApplicati
 Cohesion: 0.17
 Nodes (12): 21.10 Custom Modals (PWA-consistent), 21.11 Performance Impact Summary, 21.1 Script Loading, 21.2 Service Worker, 21.3 Search Debouncing, 21.4 localStorage Safety, 21.5 Render Optimization, 21.6 O(1) Subtopic Lookup (+4 more)
 
-### Community 76 - "Refactoring with GitNexus"
-Cohesion: 0.17
-Nodes (11): Bind the repository first, Checklists, Example: Rename `validateUser` to `authenticateUser`, Extract Module, Refactoring with GitNexus, Rename Symbol, Risk Rules, Split Function/Service (+3 more)
-
-### Community 77 - "GitNexus Guide"
+### Community 76 - "GitNexus Guide"
 Cohesion: 0.18
 Nodes (10): Always Start Here, Control & data dependence (`pdg_query`), GitNexus Guide, Graph Schema, Paginating `list_repos`, Resources Reference, Shortest path between two symbols (`trace`), Skills (+2 more)
 
-### Community 78 - "GitNexus Guide"
+### Community 77 - "Refactoring with GitNexus"
 Cohesion: 0.18
-Nodes (10): Always Start Here, Control & data dependence (`pdg_query`), GitNexus Guide, Graph Schema, Paginating `list_repos`, Resources Reference, Shortest path between two symbols (`trace`), Skills (+2 more)
+Nodes (10): Checklists, Example: Rename `validateUser` to `authenticateUser`, Extract Module, Refactoring with GitNexus, Rename Symbol, Risk Rules, Split Function/Service, Tools (+2 more)
 
-### Community 79 - "Commands"
+### Community 78 - "Commands"
 Cohesion: 0.20
 Nodes (9): After Indexing, analyze — Build or refresh the index, clean — Delete the index, Commands, GitNexus CLI Commands, list — Show all indexed repos, status — Check index freshness, Troubleshooting (+1 more)
+
+### Community 79 - "Impact Analysis with GitNexus"
+Cohesion: 0.22
+Nodes (8): Checklist, Example: "What breaks if I change validateUser?", Impact Analysis with GitNexus, Risk Assessment, Tools, Understanding Output, When to Use, Workflow
 
 ### Community 80 - "16. BLAST RADIUS MAP"
 Cohesion: 0.22
@@ -207,13 +202,13 @@ Nodes (9): 16.1 js/state.js (Foundation), 16.2 js/navigation.js, 16.3 js/dashboa
 Cohesion: 0.22
 Nodes (9): 5.1 js/state.js (State & Database), 5.2 js/navigation.js (Navigation & Theming) — 505 lines, 5.3 js/dashboard.js (Dashboard & Timers) — 720 lines, 5.4 js/syllabus.js (Syllabus Console) — 1073+ lines, 5.5 js/plan.js (40-Day Study Plan) — 223 lines, 5.6 js/mocks.js (Mock Analytics) — 221 lines, 5.7 js/toolkit.js (Study Toolkit) — 1144 lines, 5.8 js/speed.js (Speed Drills & Challenge) — 1236 lines (+1 more)
 
-### Community 82 - "Impact Analysis with GitNexus"
-Cohesion: 0.20
-Nodes (9): Bind the repository first, Checklist, Example: "What breaks if I change validateUser?", Impact Analysis with GitNexus, Risk Assessment, Tools, Understanding Output, When to Use (+1 more)
+### Community 82 - "Debugging with GitNexus"
+Cohesion: 0.25
+Nodes (7): Checklist, Debugging Patterns, Debugging with GitNexus, Example: "Payment endpoint returns 500 intermittently", Tools, When to Use, Workflow
 
-### Community 83 - "Commands"
-Cohesion: 0.20
-Nodes (9): After Indexing, analyze — Build or refresh the index, clean — Delete the index, Commands, GitNexus CLI Commands, list — Show all indexed repos, status — Check index freshness, Troubleshooting (+1 more)
+### Community 83 - "Exploring Codebases with GitNexus"
+Cohesion: 0.25
+Nodes (7): Checklist, Example: "How does payment processing work?", Exploring Codebases with GitNexus, Resources, Tools, When to Use, Workflow
 
 ### Community 84 - "GitNexus — Code Intelligence"
 Cohesion: 0.29
@@ -224,7 +219,7 @@ Cohesion: 0.29
 Nodes (6): Always Do, CLI, GitNexus — Code Intelligence, graphify, Never Do, Resources
 
 ### Community 86 - "QrSyncModal"
-Cohesion: 0.20
+Cohesion: 0.22
 Nodes (3): expandCompactPayload(), extractCompactPayload(), QrSyncModal
 
 ### Community 87 - "SSC CGL 40-Day Rank-Maker Dashboard 🏆"
@@ -263,45 +258,25 @@ Nodes (3): 13.1 Syllabus Console Views (6), 13.2 Study Notes Views (6), 13. STUD
 Cohesion: 0.67
 Nodes (3): 4.1 Import/Export Relationships, 4.2 Cross-Module Coupling Summary, 4. MODULE DEPENDENCY MAP
 
-### Community 101 - "Impact Analysis with GitNexus"
-Cohesion: 0.20
-Nodes (9): Bind the repository first, Checklist, Example: "What breaks if I change validateUser?", Impact Analysis with GitNexus, Risk Assessment, Tools, Understanding Output, When to Use (+1 more)
-
-### Community 102 - "Debugging with GitNexus"
-Cohesion: 0.22
-Nodes (8): Bind the repository first, Checklist, Debugging Patterns, Debugging with GitNexus, Example: "Payment endpoint returns 500 intermittently", Tools, When to Use, Workflow
-
-### Community 103 - "Exploring Codebases with GitNexus"
-Cohesion: 0.22
-Nodes (8): Bind the repository first, Checklist, Example: "How does payment processing work?", Exploring Codebases with GitNexus, Resources, Tools, When to Use, Workflow
-
-### Community 104 - "Debugging with GitNexus"
-Cohesion: 0.22
-Nodes (8): Bind the repository first, Checklist, Debugging Patterns, Debugging with GitNexus, Example: "Payment endpoint returns 500 intermittently", Tools, When to Use, Workflow
-
-### Community 105 - "Exploring Codebases with GitNexus"
-Cohesion: 0.22
-Nodes (8): Bind the repository first, Checklist, Example: "How does payment processing work?", Exploring Codebases with GitNexus, Resources, Tools, When to Use, Workflow
-
 ## Knowledge Gaps
-- **270 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+265 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 401 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **219 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+214 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 342 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `state.js`, `dashboard.js`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `plan.js`, `state.js`, `dashboard.js`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
 - **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`, `4. MODULE DEPENDENCY MAP`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Why does `renderAll()` connect `dashboard.js` to `toolkit.js`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
-  _270 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _219 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `syllabus.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.10213032581453634 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10087719298245613 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.05384615384615385 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06110102843315184 - nodes in this community are weakly interconnected._
 - **Should `compile_data.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._

@@ -202,6 +202,18 @@ body {
   transform: translateY(0) scale(1) !important;
 }
 
+#modal-shortcuts-help.active {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+#sync-island-pill.island-visible {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
 /* Command Palette Action Row Layout Classes */
 .ac-toggle-row, .ac-row, .ac-info-row {
   display: flex !important;

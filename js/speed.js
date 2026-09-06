@@ -1220,12 +1220,22 @@ function initCustomTooltips() {
         let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
         let top = rect.top - tooltipRect.height - 8;
         
+        const pos = target.getAttribute("data-tooltip-pos");
+        const isIslandElement = target.closest("#sync-island-pill, #action-center-island-wrap, #pomo-capsule");
+
+        if (pos === "bottom" || isIslandElement || top < 10) {
+            const syncPill = document.getElementById("sync-island-pill");
+            if (syncPill && syncPill.classList.contains("island-visible") && target.closest("#action-center-island-wrap") && !target.closest("#sync-island-pill")) {
+                const pillRect = syncPill.getBoundingClientRect();
+                top = pillRect.bottom + 8;
+            } else {
+                top = rect.bottom + 8;
+            }
+        }
+        
         if (left < 10) left = 10;
         if (left + tooltipRect.width > window.innerWidth - 10) {
             left = window.innerWidth - tooltipRect.width - 10;
-        }
-        if (top < 10) {
-            top = rect.bottom + 8;
         }
         
         tooltipEl.style.left = `${left}px`;

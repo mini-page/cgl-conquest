@@ -305,6 +305,15 @@ runTest("HTML Markup Validation (index.html)", () => {
   // Verify Action Center clickable rows
   assert(htmlContent.includes("handleShortcutAction('qr:show')"), "Action center must have clickable row for qr:show");
   assert(htmlContent.includes("handleShortcutAction('qr:scan')"), "Action center must have clickable row for qr:scan");
+
+  // Verify Action Center 9-dot trigger icon and Popover structure
+  assert(htmlContent.includes('fa-table-cells'), "Action center trigger must use 9-dot grid icon (fa-table-cells)");
+  const shortcutsModalMatch = htmlContent.match(/<div[^>]*id="modal-shortcuts-help"[^>]*>/);
+  assert(shortcutsModalMatch, "modal-shortcuts-help element must exist in index.html");
+  assert(!shortcutsModalMatch[0].includes('bg-black/85') && !shortcutsModalMatch[0].includes('inset-0'), "Action center must not darken page with full-screen bg-black/85 backdrop");
+  assert(htmlContent.includes('id="theme-toggle-text"'), "index.html must contain #theme-toggle-text for custom toggle style");
+  assert(htmlContent.includes('id="speech-toggle-text"'), "index.html must contain #speech-toggle-text for custom toggle style");
+  assert(htmlContent.includes('id="toast-toggle-text"'), "index.html must contain #toast-toggle-text for custom toggle style");
 });
 
 // SECTION 7: EXAM TARGET COUNTDOWN & DATES
