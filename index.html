@@ -14,9 +14,14 @@
                     colors: {
                         bgApp: 'var(--bg-app)',
                         bgCard: 'var(--bg-card)',
+                        bgSurface: 'var(--bg-surface)',
+                        bgSurfaceElevated: 'var(--bg-surface-elevated)',
                         borderMain: 'var(--border-main)',
+                        borderHover: 'var(--border-hover)',
                         textMain: 'var(--text-main)',
                         textSub: 'var(--text-sub)',
+                        textMuted: 'var(--text-muted)',
+                        accentPrimary: 'var(--accent-primary, #2563eb)',
                         accentCyan: '#06b6d4',
                         accentPurple: '#8b5cf6',
                         accentRose: '#f43f5e',
@@ -652,9 +657,9 @@
         <section id="page-dashboard" class="content-page space-y-6">
             
             <!-- Unified Dashboard Hero Header Banner (Title + Pills Grouped) -->
-            <div class="bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl backdrop-blur-2xl relative overflow-hidden space-y-3.5">
-                <div class="absolute -left-12 -top-12 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none overflow-hidden"></div>
-                <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-purple-500/15 rounded-full blur-3xl pointer-events-none overflow-hidden"></div>
+            <div class="bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl relative overflow-hidden space-y-3.5">
+                <div class="absolute -left-12 -top-12 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl pointer-events-none overflow-hidden"></div>
+                <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none overflow-hidden"></div>
                 <div class="relative z-10 space-y-3.5">
                     <!-- Header Title Row -->
                     <div class="flex items-center justify-between flex-wrap gap-3">
@@ -869,10 +874,10 @@
         <!-- 2. SYLLABUS TRACKER PAGE -->
         <section id="page-syllabus" class="content-page hidden space-y-6">
             <!-- Unified Syllabus Hero Header Banner (Title + Subject Pills Grouped) -->
-            <div class="bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl backdrop-blur-2xl relative space-y-3.5">
+            <div class="bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl relative space-y-3.5">
                 <div class="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
-                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl"></div>
-                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-purple-500/15 rounded-full blur-3xl"></div>
+                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-indigo-500/10 rounded-full blur-3xl"></div>
                 </div>
                 <div class="relative z-10 space-y-3.5">
                     <div class="flex items-center justify-between flex-wrap gap-3">
@@ -920,10 +925,10 @@
         <!-- 3. 40-DAY STUDY PLAN TIMELINE PAGE -->
         <section id="page-plan" class="content-page hidden space-y-6">
             <!-- Unified Study Plan Hero Header (Title + Progress Capsule + Phase Pills Grouped) -->
-            <div class="plan-header-group bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl backdrop-blur-2xl relative space-y-3.5 mb-6">
+            <div class="plan-header-group bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl relative space-y-3.5 mb-6">
                 <div class="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
-                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl"></div>
-                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-purple-500/15 rounded-full blur-3xl"></div>
+                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-indigo-500/10 rounded-full blur-3xl"></div>
                 </div>
                 <div class="relative z-10 space-y-3.5">
                     <!-- Row 1: Icon + Title -->
@@ -981,10 +986,10 @@
         <!-- 4. MOCK ANALYTICS PAGE (ADVANCED v2.0) -->
         <section id="page-mocks" class="content-page hidden space-y-6">
             <!-- Unified Analysis Hero Header Group -->
-            <div class="analysis-header-group bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl backdrop-blur-2xl relative space-y-3.5 mb-6">
+            <div class="analysis-header-group bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl relative space-y-3.5 mb-6">
                 <div class="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
-                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-amber-500/15 rounded-full blur-3xl"></div>
-                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl"></div>
+                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-amber-500/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl"></div>
                 </div>
                 <div class="relative z-10 space-y-3.5">
                     <!-- Row 1: Icon + Title -->
@@ -1047,14 +1052,14 @@
                         </h3>
                         <!-- Exam Tier Switcher Capsule -->
                         <div class="bg-slate-950/80 border border-white/10 p-1 rounded-xl flex items-center gap-1 shadow-inner backdrop-blur-md">
-                            <button id="btn-tier-1-toggle" type="button" class="px-2.5 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md shadow-purple-500/20 cursor-pointer">Tier 1 (200M)</button>
+                            <button id="btn-tier-1-toggle" type="button" class="px-2.5 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 cursor-pointer">Tier 1 (200M)</button>
                             <button id="btn-tier-2-toggle" type="button" class="px-2.5 py-1 rounded-lg text-xs font-bold transition duration-200 text-gray-400 hover:text-white cursor-pointer">Tier 2 (390M)</button>
                         </div>
                     </div>
 
                     <!-- Mock Entry Mode Capsule: Full vs Sectional -->
                     <div class="flex items-center gap-1.5 p-1 bg-slate-950/90 border border-white/10 rounded-2xl shadow-inner">
-                        <button type="button" id="mock-type-full-btn" onclick="window.setMockEntryType('full')" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-gradient-to-r from-cyan-600 to-teal-600 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
+                        <button type="button" id="mock-type-full-btn" onclick="window.setMockEntryType('full')" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-layer-group text-xs"></i>
                             <span>Full Mock</span>
                         </button>
@@ -1340,10 +1345,10 @@
         <!-- 5. STUDY TOOLKIT PAGE (MIGRATED DOCUMENTATION SYSTEM) -->
         <section id="page-toolkit" class="content-page hidden space-y-3.5">
             <!-- Page Heading & Hero Search Bar -->
-            <div class="bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl backdrop-blur-2xl relative space-y-3.5">
+            <div class="bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl relative space-y-3.5">
                 <div class="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
-                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl"></div>
-                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-purple-500/15 rounded-full blur-3xl"></div>
+                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-indigo-500/10 rounded-full blur-3xl"></div>
                 </div>
                 <div class="relative z-10 space-y-3.5">
                     <div class="flex items-center justify-between flex-wrap gap-3">
@@ -1554,11 +1559,11 @@
         <!-- 6. SPEED DRILLS / MAKE IT FAST PAGE -->
         <section id="page-speed" class="content-page hidden space-y-6">
             <!-- 2-Row Header Card (Dashboard Inspired, Without Thin Line) -->
-            <div class="drill-header-group bg-gradient-to-r from-cyan-950/70 via-slate-900/90 to-purple-950/70 border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl backdrop-blur-2xl relative z-30 flex flex-col gap-3.5 mb-6">
+            <div class="drill-header-group bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl relative z-30 flex flex-col gap-3.5 mb-6">
                 <!-- Inner glow layer safely clipped so popovers outside are never cut off -->
                 <div class="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
-                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl"></div>
-                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-purple-500/15 rounded-full blur-3xl"></div>
+                    <div class="absolute -left-12 -top-12 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl"></div>
+                    <div class="absolute -right-12 -bottom-12 w-56 h-56 bg-indigo-500/10 rounded-full blur-3xl"></div>
                 </div>
                 <div class="relative z-10 flex flex-col gap-3.5">
                     <!-- Row 1: Icon + Title -->

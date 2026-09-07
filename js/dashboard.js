@@ -88,11 +88,11 @@ function initTierToggler() {
     function updateTogglerUI() {
         const tier = appState.examTier || 1;
         if (tier === 1) {
-            btn1.className = "px-3 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md shadow-purple-500/20 cursor-pointer";
+            btn1.className = "px-3 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 cursor-pointer";
             btn2.className = "px-3 py-1 rounded-lg text-xs font-bold transition duration-200 text-gray-400 hover:text-white cursor-pointer";
         } else {
             btn1.className = "px-3 py-1 rounded-lg text-xs font-bold transition duration-200 text-gray-400 hover:text-white cursor-pointer";
-            btn2.className = "px-3 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md shadow-purple-500/20 cursor-pointer";
+            btn2.className = "px-3 py-1 rounded-lg text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 cursor-pointer";
         }
     }
     

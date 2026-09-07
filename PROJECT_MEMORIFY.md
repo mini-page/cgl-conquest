@@ -51,6 +51,18 @@ cgl-conquest/
 │   ├── speed.js            # SPEED DRILLS — quiz engine, conquest challenge, markdown parser, tooltips
 │   └── app.js              # DUPLICATE bootstrapper (same as root app.js)
 │
+├── components/             # STANDALONE REUSABLE UI COMPONENTS (10 files)
+│   ├── qr-sync-modal.js    # PEER QR SYNC — full-screen scanner, PNG export, Web Share API, Gzip compression
+│   ├── modal-dialog.js     # MODAL DIALOG — standardized modal with backdrop blur, focus trap, escape
+│   ├── tri-state-checkbox.js # TRI-STATE CHECKBOX — Learned, Practiced, Mastered multi-stage control
+│   ├── search-bar.js       # SEARCH BAR — debounced input with clear action and shortcut badge
+│   ├── pill-group.js       # PILL GROUP — horizontal snap-scrolling filter chips
+│   ├── toggle-switch.js    # TOGGLE SWITCH — animated theme, speech, and sound switches
+│   ├── hero-header.js      # HERO HEADER — frosted glass header card with title & badges
+│   ├── calendar-picker.js  # CALENDAR PICKER — accessible date selector with dropdown popup
+│   ├── toast-notification.js # TOAST SYSTEM — non-blocking notifications with screen-reader announcer
+│   └── index.js            # COMPONENT REGISTRY — exports all components to window
+│
 ├── data/                   # DATA SOURCES (JSON + compiled JS)
 │   ├── syllabus.json       # 1764 lines — 55+ topics with 150+ subtopics across 5 subjects
 │   ├── plan.json           # 567 lines — 40-day plan with 4 phases
@@ -983,4 +995,40 @@ index.html (all <script> tags deferred)
 
 ---
 
-*Last updated: 2026-08-18 | Audit, Security Hardening & Accessibility Polish Complete*
+## 23. UI/UX DESIGN SYSTEM, THEME HARMONIZATION & COMPONENT CONSOLIDATION (2026-09-07)
+
+### 23.1 Design System & CSS Custom Properties
+- **Semantic Tokens**: Defined in `:root` and `.light` / `.light-theme`:
+  - `--accent-primary`: `#2563eb` (centralized active accent)
+  - `--bg-primary`: `#020617` (dark) / `#f8fafc` (light)
+  - `--bg-surface`: `rgba(15, 23, 42, 0.75)` (dark) / `rgba(255, 255, 255, 0.85)` (light)
+  - `--bg-surface-elevated`: `rgba(30, 41, 59, 0.85)` (dark) / `rgba(241, 245, 249, 0.95)` (light)
+  - `--border-subtle`: `rgba(255, 255, 255, 0.10)` (dark) / `rgba(0, 0, 0, 0.10)` (light)
+  - `--border-hover`: `rgba(37, 99, 235, 0.40)`
+  - `--text-primary`: `#f8fafc` (dark) / `#0f172a` (light)
+  - `--text-secondary`: `#94a3b8` (dark) / `#475569` (light)
+  - `--text-muted`: `#64748b` (dark) / `#64748b` (light)
+- **Active Tab Styling Standard**: Active tabs in Mock UI (`#mock-type-full-btn`), QR Modal (`#tab-qr-scan`, `#tab-qr-show`), and Exam Tier Toggle (`#btn-tier-1-toggle`, `#btn-tier-2-toggle`) use unified `bg-blue-600 text-white shadow-md shadow-blue-500/20` instead of gradients.
+- **Glassmorphic Hero Banners**: Clean frosted surface `bg-slate-900/60 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl backdrop-blur-xl` replaces harsh 3-stop neon gradients.
+
+### 23.2 Complete Light & Dark Theme Parity
+- All inputs, textareas, selects, calendar pickers, action center rows (`.ac-row`), keyboard shortcuts (`.sc-kbd`), custom tooltips (`#custom-tooltip`), and table headers dynamically adapt across `.light` and `.dark` classes.
+- SVG analytics line chart (`renderMockSvgChart`) dynamically computes grid line stroke (`rgba(0,0,0,0.08)` in light mode vs `rgba(255,255,255,0.06)` in dark mode), data labels, and circle node fills.
+- Switching theme via `toggleThemeMode()` automatically triggers chart re-rendering.
+
+### 23.3 Full-Screen QR Peer Synchronization (`components/qr-sync-modal.js`)
+- Full-screen mode toggle (`#btn-qr-fullscreen`, key `F`) smoothly expands modal from 448px card to 100vw x 100vh immersive viewfinder.
+- QR Canvas Container scales to 420px for scannability across monitors and rooms.
+- Native Fullscreen API integration with reliable CSS fallback and `fullscreenchange` event synchronization.
+- Modal actions include Save PNG (`#btn-download-qr`), Web Share API (`#btn-share-qr`), Copy Image (`#btn-copy-qr-image`), and Live Refresh (`#btn-refresh-qr`).
+- Escape key cleanly collapses full-screen first before dismissing the modal.
+
+### 23.4 Micro-Interactions & Motion Accessibility
+- Reduced motion media query (`@media (prefers-reduced-motion: reduce)`) dampens transform durations to 0.01ms and substitutes page slide animations with a gentle fade.
+- Touch target ergonomics enforce minimum 44px on primary mobile touch points.
+- Confetti celebration physics (`window.triggerConfetti`) strictly preserved.
+
+---
+
+*Last updated: 2026-09-07 | Complete UI/UX Audit, Theme Harmonization & Design System Standardization Complete*
+

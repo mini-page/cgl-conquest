@@ -17,11 +17,22 @@ const cssInput = `
 @tailwind utilities;
 
 :root {
-  --bg-app: #0d0e12;
-  --bg-card: #111827;
-  --border-main: #1f2937;
-  --text-main: #f9fafb;
-  --text-sub: #9ca3af;
+  --bg-app: #090d16;
+  --bg-card: rgba(15, 23, 42, 0.75);
+  --bg-card-solid: #0f172a;
+  --bg-surface: rgba(2, 6, 23, 0.55);
+  --bg-surface-elevated: rgba(15, 23, 42, 0.94);
+  --border-main: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --border-focus: #2563eb;
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --text-muted: #64748b;
+  --accent-primary: #2563eb;
+  --accent-primary-hover: #1d4ed8;
+  --accent-primary-subtle: rgba(37, 99, 235, 0.15);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 25px 60px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -38,12 +49,207 @@ body {
 /* Light theme overrides */
 .light, .light-theme, body.light, body.light-theme, html.light, html.light-theme {
   --bg-app: #f8fafc;
-  --bg-card: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-solid: #ffffff;
+  --bg-surface: rgba(241, 245, 249, 0.85);
+  --bg-surface-elevated: rgba(255, 255, 255, 0.98);
   --border-main: #e2e8f0;
-  --text-main: #1e293b;
-  --text-sub: #64748b;
+  --border-hover: #cbd5e1;
+  --border-focus: #2563eb;
+  --text-main: #0f172a;
+  --text-sub: #475569;
+  --text-muted: #94a3b8;
+  --accent-primary: #2563eb;
+  --accent-primary-hover: #1d4ed8;
+  --accent-primary-subtle: rgba(37, 99, 235, 0.1);
+  --shadow-glass: 0 8px 30px rgba(0, 0, 0, 0.06);
+  --shadow-elevated: 0 20px 45px rgba(0, 0, 0, 0.12);
   background-color: var(--bg-app) !important;
   color: var(--text-main) !important;
+}
+
+/* Light mode elements, inputs, modals, surfaces and text */
+.light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.light-theme input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.light select, .light-theme select,
+.light textarea, .light-theme textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light input::placeholder, .light-theme input::placeholder,
+.light textarea::placeholder, .light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.light .modal > div, .light-theme .modal > div,
+.light #exam-target-modal > div, .light-theme #exam-target-modal > div,
+.light #app-custom-dialog-modal > div, .light-theme #app-custom-dialog-modal > div,
+.light #modal-mock-detail-card, .light-theme #modal-mock-detail-card,
+.light #modal-shortcuts-help, .light-theme #modal-shortcuts-help,
+.light #modal-day-detail > div, .light-theme #modal-day-detail > div,
+.light #modal-study-viewer > div, .light-theme #modal-study-viewer > div,
+.light #modal-qr-sync > div, .light-theme #modal-qr-sync > div {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15) !important;
+}
+
+.light .ac-row, .light-theme .ac-row,
+.light .ac-toggle-row, .light-theme .ac-toggle-row,
+.light .ac-info-row, .light-theme .ac-info-row {
+  color: #0f172a !important;
+}
+
+.light .ac-row:hover, .light-theme .ac-row:hover,
+.light .ac-toggle-row:hover, .light-theme .ac-toggle-row:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.light .sc-kbd, .light-theme .sc-kbd {
+  color: #334155 !important;
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.light .custom-calendar-dropdown, .light-theme .custom-calendar-dropdown {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;
+}
+
+.light .custom-calendar-header button, .light-theme .custom-calendar-header button,
+.light .cal-nav-btn, .light-theme .cal-nav-btn {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #334155 !important;
+}
+
+.light .custom-calendar-day, .light-theme .custom-calendar-day,
+.light .cal-day-cell, .light-theme .cal-day-cell {
+  color: #334155 !important;
+}
+
+.light .custom-calendar-day:hover:not(.empty), .light-theme .custom-calendar-day:hover:not(.empty),
+.light .cal-day-cell:hover:not(.empty):not(.selected), .light-theme .cal-day-cell:hover:not(.empty):not(.selected) {
+  background: rgba(37, 99, 235, 0.1) !important;
+  border-color: rgba(37, 99, 235, 0.3) !important;
+  color: #2563eb !important;
+}
+
+.light .calendar-month-select, .light-theme .calendar-month-select,
+.light .calendar-year-select, .light-theme .calendar-year-select,
+.light .cal-select, .light-theme .cal-select {
+  background: #ffffff !important;
+  color: #2563eb !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light .calendar-month-select option, .light-theme .calendar-month-select option,
+.light .calendar-year-select option, .light-theme .calendar-year-select option {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.light #custom-tooltip, .light-theme #custom-tooltip {
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.light .dropdown-panel, .light-theme .dropdown-panel,
+.light #mock-weak-dropdown-options, .light-theme #mock-weak-dropdown-options {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.light .dropdown-panel button, .light-theme .dropdown-panel button {
+  color: #334155 !important;
+}
+
+.light .dropdown-panel button:hover, .light-theme .dropdown-panel button:hover {
+  background-color: rgba(37, 99, 235, 0.08) !important;
+  color: #2563eb !important;
+}
+
+.light #mobile-floating-nav, .light-theme #mobile-floating-nav {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.light .nav-item, .light-theme .nav-item {
+  color: #64748b !important;
+}
+
+.light .nav-item:hover, .light-theme .nav-item:hover {
+  color: #0f172a !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.light #pomo-capsule, .light-theme #pomo-capsule {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.light #pomo-capsule-time, .light-theme #pomo-capsule-time {
+  color: #0f172a !important;
+}
+
+.light #pomo-drawer, .light-theme #pomo-drawer {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0f172a !important;
+}
+
+.light #pomo-drawer h3, .light-theme #pomo-drawer h3,
+.light #pomo-time-display, .light-theme #pomo-time-display {
+  color: #0f172a !important;
+}
+
+.light .bg-slate-900, .light-theme .bg-slate-900,
+.light .bg-slate-900\\/80, .light-theme .bg-slate-900\\/80,
+.light .bg-slate-900\\/90, .light-theme .bg-slate-900\\/90,
+.light .bg-slate-900\\/95, .light-theme .bg-slate-900\\/95 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.light .bg-slate-950, .light-theme .bg-slate-950,
+.light .bg-slate-950\\/80, .light-theme .bg-slate-950\\/80,
+.light .bg-slate-950\\/90, .light-theme .bg-slate-950\\/90,
+.light .bg-slate-950\\/70, .light-theme .bg-slate-950\\/70,
+.light .bg-slate-950\\/60, .light-theme .bg-slate-950\\/60 {
+  background-color: rgba(241, 245, 249, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #1e293b !important;
+}
+
+.light #mock-table-body, .light-theme #mock-table-body {
+  color: #334155 !important;
+}
+
+.light #mock-table-body tr:hover, .light-theme #mock-table-body tr:hover {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+.light thead, .light-theme thead {
+  background-color: rgba(241, 245, 249, 0.95) !important;
+  color: #475569 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Animations */

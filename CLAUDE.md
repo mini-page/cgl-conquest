@@ -53,3 +53,11 @@ Rules:
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+
+## Design System & UI Architecture
+- **Active Tab Accent:** Active tabs across Mock UI, QR Modal, and Tier Switcher MUST use application accent blue (`#2563eb` / `bg-blue-600`), NEVER multi-color gradients.
+- **Theme Support:** Both light mode (`.light`, `.light-theme`) and dark mode (`.dark`) are fully supported via CSS variables (`--bg-primary`, `--bg-surface`, `--text-primary`, `--accent-primary`).
+- **Glassmorphism:** Use semi-transparent frosted surfaces (`bg-slate-900/60`, `border-white/10`, `backdrop-blur-xl`) with subtle depth, avoiding harsh neon gradients.
+- **Components Library:** Reusable standalone UI widgets reside in `components/` (e.g. `qr-sync-modal.js`, `modal-dialog.js`, `tri-state-checkbox.js`).
+- **QR Sync Modal:** Supports two-way peer sync, responsive full-screen morphing (`#btn-qr-fullscreen`, key `F`), PNG download (`#btn-download-qr`), and Web Share API (`#btn-share-qr`).
+- **Confetti Protection:** NEVER modify or remove `window.triggerConfetti` in `js/dashboard.js` or its invocation hooks.

@@ -64,10 +64,10 @@ function setMockEntryType(type) {
 
     if (btnFull && btnSec) {
         if (type === 'full') {
-            btnFull.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-gradient-to-r from-cyan-600 to-teal-600 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 cursor-pointer";
+            btnFull.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer";
             btnSec.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer";
         } else {
-            btnSec.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-gradient-to-r from-cyan-600 to-teal-600 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 cursor-pointer";
+            btnSec.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer";
             btnFull.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer";
         }
     }
@@ -1540,13 +1540,18 @@ function renderSvgMockChart(mocksList) {
     }
 
     // 2. Y-Axis Grid Lines & Labels
+    const isLight = (typeof document !== 'undefined' && document.documentElement.classList.contains('light')) || (typeof appState !== 'undefined' && appState.theme === 'light');
+    const chartGridStroke = isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.06)";
+    const chartTextFill = isLight ? "#64748b" : "#94a3b8";
+    const chartNodeFill = isLight ? "#ffffff" : "#0f172a";
+
     let gridHtml = "";
     gridScores.forEach(val => {
         const y = yScale(val);
         const labelText = (mockMetricMode === 'percent' || mockMetricMode === 'accuracy' || mockMetricMode === 'subjects') ? `${val}%` : val;
         gridHtml += `
-            <line x1="${padL}" y1="${y}" x2="${padL + plotW}" y2="${y}" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="2,2" />
-            <text x="${padL - 8}" y="${y + 3}" fill="#94a3b8" font-size="8.5" font-family="monospace" font-weight="bold" text-anchor="end">${labelText}</text>
+            <line x1="${padL}" y1="${y}" x2="${padL + plotW}" y2="${y}" stroke="${chartGridStroke}" stroke-width="1" stroke-dasharray="2,2" />
+            <text x="${padL - 8}" y="${y + 3}" fill="${chartTextFill}" font-size="8.5" font-family="monospace" font-weight="bold" text-anchor="end">${labelText}</text>
         `;
     });
 
@@ -1555,8 +1560,8 @@ function renderSvgMockChart(mocksList) {
             ${defsHtml}
             ${gridHtml}
             <g>
-                <text x="${width/2}" y="${height/2 - 5}" fill="#94a3b8" text-anchor="middle" font-size="12" font-weight="700">No mock records to chart</text>
-                <text x="${width/2}" y="${height/2 + 15}" fill="#64748b" text-anchor="middle" font-size="9.5">Log tests using the form on the left</text>
+                <text x="${width/2}" y="${height/2 - 5}" fill="${chartTextFill}" text-anchor="middle" font-size="12" font-weight="700">No mock records to chart</text>
+                <text x="${width/2}" y="${height/2 + 15}" fill="${isLight ? '#94a3b8' : '#64748b'}" text-anchor="middle" font-size="9.5">Log tests using the form on the left</text>
             </g>
         `;
         return;
@@ -1618,7 +1623,7 @@ function renderSvgMockChart(mocksList) {
                 curvesHtml += `<path d="${pathD}" fill="none" stroke="${meta.stroke}" stroke-width="2" stroke-linecap="round" opacity="0.85" />`;
             }
             subPts.forEach(pt => {
-                nodesHtml += `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#0f172a" stroke="${meta.stroke}" stroke-width="1.5" />`;
+                nodesHtml += `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="${chartNodeFill}" stroke="${meta.stroke}" stroke-width="1.5" />`;
             });
         }
 
@@ -1668,7 +1673,7 @@ function renderSvgMockChart(mocksList) {
 
             nodesHtml += `
                 <g class="chart-point-node cursor-pointer" data-idx="${idx}" onclick="window.openMockDetailModal('${pt.mock.id}')" title="Click to inspect test telemetry, mistakes & weak topics">
-                    <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="4.5" fill="#0f172a" stroke="${pointColor}" stroke-width="2" />
+                    <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="4.5" fill="${chartNodeFill}" stroke="${pointColor}" stroke-width="2" />
                     <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="1.5" fill="${pointColor}" />
                     <text x="${pt.x.toFixed(1)}" y="${(pt.y - 8).toFixed(1)}" fill="${pointColor}" font-size="8" font-family="monospace" font-weight="bold" text-anchor="middle">${nodeLabel}</text>
                     ${isPb ? `

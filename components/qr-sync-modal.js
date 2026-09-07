@@ -103,6 +103,7 @@
             this.onApplyState = options.onApplyState || (() => {});
             this.onToast = options.onToast || ((msg) => alert(msg));
             this.isOpen = false;
+            this.isFullscreen = false;
             this.activeTab = 'scan';
             this.videoStream = null;
             this.animFrameId = null;
@@ -204,7 +205,7 @@
             this.card.innerHTML = `
                 <div class="flex items-center justify-between border-b border-white/10 pb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xs shadow-inner">
+                        <div class="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xs shadow-inner">
                             <i class="fa-solid fa-qrcode"></i>
                         </div>
                         <div>
@@ -212,14 +213,19 @@
                             <p class="text-[10px] text-gray-400">Sync all data between phone & laptop instantly</p>
                         </div>
                     </div>
-                    <button type="button" id="btn-qr-close" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" id="btn-qr-fullscreen" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer" title="Toggle Fullscreen (F)">
+                            <i class="fa-solid fa-expand"></i>
+                        </button>
+                        <button type="button" id="btn-qr-close" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer" title="Close (Esc)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Tab Switcher -->
                 <div class="flex items-center gap-1 p-1 bg-slate-950/80 border border-white/10 rounded-2xl shadow-inner">
-                    <button type="button" id="tab-qr-scan" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-gradient-to-r from-cyan-600 to-teal-600 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
+                    <button type="button" id="tab-qr-scan" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
                         <i class="fa-solid fa-camera text-xs"></i>
                         <span>Scan / Paste</span>
                     </button>
@@ -231,21 +237,21 @@
 
                 <!-- TAB 1: SCAN QR PANEL -->
                 <div id="panel-qr-scan" class="space-y-3">
-                    <div class="relative bg-black rounded-2xl overflow-hidden aspect-square max-w-[260px] mx-auto border border-cyan-500/30 shadow-inner flex items-center justify-center">
+                    <div class="relative bg-black rounded-2xl overflow-hidden aspect-square max-w-[260px] mx-auto border border-blue-500/30 shadow-inner flex items-center justify-center transition-all duration-300">
                         <video id="qr-scanner-video" playsinline class="w-full h-full object-cover"></video>
                         <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
-                            <div class="w-44 h-44 border-2 border-dashed border-cyan-400/80 rounded-2xl shadow-[0_0_25px_rgba(6,182,212,0.3)] animate-pulse"></div>
+                            <div class="w-44 h-44 border-2 border-dashed border-blue-400/80 rounded-2xl shadow-[0_0_25px_rgba(37,99,235,0.3)] animate-pulse"></div>
                         </div>
                         <div id="qr-camera-prompt" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center gap-2 p-4 text-center">
-                            <i class="fa-solid fa-video text-2xl text-cyan-400"></i>
+                            <i class="fa-solid fa-video text-2xl text-blue-400"></i>
                             <span id="qr-camera-status" class="text-xs font-bold text-gray-300">Click to activate camera scanner</span>
-                            <button type="button" id="btn-start-camera" class="px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-extrabold shadow-md transition cursor-pointer">Start Camera</button>
+                            <button type="button" id="btn-start-camera" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md transition cursor-pointer">Start Camera</button>
                         </div>
                     </div>
 
                     <div class="flex items-center justify-between gap-2">
-                        <label class="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-cyan-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                            <i class="fa-solid fa-file-image text-cyan-400"></i>
+                        <label class="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                            <i class="fa-solid fa-file-image text-blue-400"></i>
                             <span>Upload QR Image</span>
                             <input type="file" id="input-qr-file" accept="image/*" class="hidden">
                         </label>
@@ -255,8 +261,8 @@
                     <div class="pt-2 border-t border-white/10 space-y-1.5">
                         <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Or Paste Sync Code Manually</label>
                         <div class="flex gap-2">
-                            <input type="text" id="input-manual-code" placeholder="Paste GZ: or B64: code here..." class="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 font-mono">
-                            <button type="button" id="btn-apply-manual-code" class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-extrabold rounded-xl transition shadow cursor-pointer">
+                            <input type="text" id="input-manual-code" placeholder="Paste GZ: or B64: code here..." class="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 font-mono">
+                            <button type="button" id="btn-apply-manual-code" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold rounded-xl transition shadow cursor-pointer">
                                 Load
                             </button>
                         </div>
@@ -265,18 +271,32 @@
 
                 <!-- TAB 2: SHOW QR PANEL -->
                 <div id="panel-qr-show" class="hidden space-y-3">
-                    <div class="bg-white p-3 rounded-2xl max-w-[260px] mx-auto shadow-2xl flex items-center justify-center aspect-square" id="qr-code-canvas-container">
+                    <div class="bg-white p-3 rounded-2xl max-w-[260px] mx-auto shadow-2xl flex items-center justify-center aspect-square transition-all duration-300" id="qr-code-canvas-container">
                         <span class="text-xs text-gray-500 font-mono">Generating QR...</span>
                     </div>
-                    <p class="text-center text-[10px] text-gray-400">Scan this code with another device or copy the sync code below.</p>
-                    <div class="flex gap-2">
-                        <button type="button" id="btn-copy-sync-code" class="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-cyan-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-copy text-cyan-400"></i>
+                    <p class="text-center text-[10px] text-gray-400">Scan this code with another device or use the sync tools below.</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <button type="button" id="btn-copy-sync-code" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy raw sync code string">
+                            <i class="fa-solid fa-copy text-blue-400"></i>
                             <span>Copy Code</span>
                         </button>
-                        <button type="button" id="btn-copy-qr-image" class="flex-1 px-3 py-2 rounded-xl bg-gradient-to-r from-cyan-600/30 to-teal-600/30 hover:from-cyan-600/50 hover:to-teal-600/50 border border-cyan-500/40 text-xs font-bold text-cyan-200 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy clean QR image to clipboard">
+                        <button type="button" id="btn-copy-qr-image" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy clean QR image to clipboard">
                             <i class="fa-solid fa-image text-cyan-300"></i>
-                            <span>Copy QR Image</span>
+                            <span>Copy Image</span>
+                        </button>
+                        <button type="button" id="btn-download-qr" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Download QR as PNG image file">
+                            <i class="fa-solid fa-download text-emerald-400"></i>
+                            <span>Save PNG</span>
+                        </button>
+                        <button type="button" id="btn-share-qr" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Share via System Share API">
+                            <i class="fa-solid fa-share-nodes text-indigo-400"></i>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                    <div class="pt-1 flex justify-center">
+                        <button type="button" id="btn-refresh-qr" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Regenerate QR with latest application state">
+                            <i class="fa-solid fa-rotate text-blue-400"></i>
+                            <span>Refresh QR Data</span>
                         </button>
                     </div>
                 </div>
@@ -308,22 +328,40 @@
 
         _bindEvents() {
             this.card.querySelector('#btn-qr-close').onclick = () => this.close();
+            const btnFs = this.card.querySelector('#btn-qr-fullscreen');
+            if (btnFs) {
+                btnFs.onclick = () => this.toggleFullscreen();
+            }
+
             this.overlay.onclick = (e) => {
                 if (e.target === this.overlay) this.close();
             };
 
-            // Keyboard navigation: Escape or X closes modal when open
+            // Keyboard navigation: Escape exits fullscreen then closes, F toggles fullscreen, X closes
             this._keyHandler = (e) => {
                 if (!this.isOpen) return;
+                const tag = document.activeElement ? document.activeElement.tagName : '';
+                const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
+
                 if (e.key === 'Escape') {
-                    this.close();
+                    if (this.isFullscreen) {
+                        this.toggleFullscreen(false);
+                    } else {
+                        this.close();
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     return;
                 }
-                const tag = document.activeElement ? document.activeElement.tagName : '';
-                const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
-                if ((e.key === 'x' || e.key === 'X') && !isInput) {
+
+                if (!isInput && (e.key === 'f' || e.key === 'F')) {
+                    this.toggleFullscreen();
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+
+                if (!isInput && (e.key === 'x' || e.key === 'X')) {
                     this.close();
                     e.preventDefault();
                     e.stopPropagation();
@@ -331,6 +369,12 @@
                 }
             };
             window.addEventListener('keydown', this._keyHandler, true);
+
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement && this.isFullscreen) {
+                    this.toggleFullscreen(false);
+                }
+            });
 
             const tabScan = this.card.querySelector('#tab-qr-scan');
             const tabShow = this.card.querySelector('#tab-qr-show');
@@ -378,6 +422,24 @@
                 btnCopyQrImage.onclick = () => this._copyQrImageToClipboard();
             }
 
+            // Download QR as PNG
+            const btnDownloadQr = this.card.querySelector('#btn-download-qr');
+            if (btnDownloadQr) {
+                btnDownloadQr.onclick = () => this._downloadQrImage();
+            }
+
+            // Share QR code
+            const btnShareQr = this.card.querySelector('#btn-share-qr');
+            if (btnShareQr) {
+                btnShareQr.onclick = () => this._shareQr();
+            }
+
+            // Refresh QR payload
+            const btnRefreshQr = this.card.querySelector('#btn-refresh-qr');
+            if (btnRefreshQr) {
+                btnRefreshQr.onclick = () => this._refreshQr();
+            }
+
             // Confirm Sync
             this.card.querySelector('#btn-qr-apply').onclick = () => {
                 if (this.scannedState) {
@@ -396,6 +458,55 @@
             };
         }
 
+        toggleFullscreen(force) {
+            this.isFullscreen = typeof force === 'boolean' ? force : !this.isFullscreen;
+            const fsBtn = this.card.querySelector('#btn-qr-fullscreen');
+            const qrContainer = this.card.querySelector('#qr-code-canvas-container');
+            const scanContainer = this.card.querySelector('#panel-qr-scan > div:first-child');
+
+            if (this.isFullscreen) {
+                this.overlay.classList.add('!p-0');
+                this.card.classList.add('!max-w-none', '!w-screen', '!h-screen', '!max-h-none', '!rounded-none', '!border-0', 'sm:!p-8', 'flex', 'flex-col', 'justify-between');
+                if (fsBtn) {
+                    fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+                    fsBtn.title = 'Exit Fullscreen (F / Esc)';
+                }
+                if (qrContainer) {
+                    qrContainer.classList.remove('max-w-[260px]');
+                    qrContainer.classList.add('max-w-[420px]', 'w-full');
+                }
+                if (scanContainer) {
+                    scanContainer.classList.remove('max-w-[260px]');
+                    scanContainer.classList.add('max-w-[420px]', 'w-full');
+                }
+                try {
+                    if (document.fullscreenEnabled && !document.fullscreenElement && this.overlay.requestFullscreen) {
+                        this.overlay.requestFullscreen().catch(() => {});
+                    }
+                } catch (e) {}
+            } else {
+                this.overlay.classList.remove('!p-0');
+                this.card.classList.remove('!max-w-none', '!w-screen', '!h-screen', '!max-h-none', '!rounded-none', '!border-0', 'sm:!p-8', 'flex', 'flex-col', 'justify-between');
+                if (fsBtn) {
+                    fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+                    fsBtn.title = 'Toggle Fullscreen (F)';
+                }
+                if (qrContainer) {
+                    qrContainer.classList.remove('max-w-[420px]', 'w-full');
+                    qrContainer.classList.add('max-w-[260px]');
+                }
+                if (scanContainer) {
+                    scanContainer.classList.remove('max-w-[420px]', 'w-full');
+                    scanContainer.classList.add('max-w-[260px]');
+                }
+                try {
+                    if (document.fullscreenElement && document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => {});
+                    }
+                } catch (e) {}
+            }
+        }
+
         setTab(tab) {
             this.activeTab = tab;
             const tabScan = this.card.querySelector('#tab-qr-scan');
@@ -403,15 +514,18 @@
             const panelScan = this.card.querySelector('#panel-qr-scan');
             const panelShow = this.card.querySelector('#panel-qr-show');
 
+            const activeClass = 'flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer';
+            const inactiveClass = 'flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer';
+
             if (tab === 'scan') {
-                tabScan.className = 'flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-gradient-to-r from-cyan-600 to-teal-600 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 cursor-pointer';
-                tabShow.className = 'flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer';
+                tabScan.className = activeClass;
+                tabShow.className = inactiveClass;
                 panelScan.classList.remove('hidden');
                 panelShow.classList.add('hidden');
                 this._startCamera();
             } else {
-                tabShow.className = 'flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-gradient-to-r from-cyan-600 to-teal-600 shadow-md shadow-cyan-500/20 flex items-center justify-center gap-1.5 cursor-pointer';
-                tabScan.className = 'flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer';
+                tabShow.className = activeClass;
+                tabScan.className = inactiveClass;
                 panelShow.classList.remove('hidden');
                 panelScan.classList.add('hidden');
                 this._stopCamera();
@@ -539,6 +653,84 @@
                 console.error('Failed to copy/download QR image', err);
                 this.onToast('Could not copy QR image', 'error');
             }
+        }
+
+        async _downloadQrImage() {
+            const container = this.card.querySelector('#qr-code-canvas-container');
+            if (!container) return;
+            const img = container.querySelector('img');
+            const canvas = container.querySelector('canvas');
+            try {
+                let blob = null;
+                if (canvas) {
+                    blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                } else if (img) {
+                    const offscreen = document.createElement('canvas');
+                    const ctx = offscreen.getContext('2d');
+                    if (!img.complete) {
+                        await new Promise((res, rej) => {
+                            img.onload = res;
+                            img.onerror = rej;
+                        });
+                    }
+                    const w = img.naturalWidth || img.width || 320;
+                    const h = img.naturalHeight || img.height || 320;
+                    offscreen.width = w;
+                    offscreen.height = h;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.drawImage(img, 0, 0, w, h);
+                    blob = await new Promise(resolve => offscreen.toBlob(resolve, 'image/png'));
+                }
+                if (!blob) {
+                    this.onToast('Generating QR image, please wait...', 'warning');
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `cgl-conquest-sync-qr-${new Date().toISOString().slice(0, 10)}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                this.onToast('QR image saved to downloads!', 'success');
+            } catch (err) {
+                console.error('Download QR failed', err);
+                this.onToast('Failed to download QR image', 'error');
+            }
+        }
+
+        async _shareQr() {
+            if (!this.currentPayload) {
+                this.onToast('Generating sync payload...', 'warning');
+                return;
+            }
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'CGL Conquest Sync Data',
+                        text: this.currentPayload
+                    });
+                    this.onToast('Sync payload shared!', 'success');
+                    return;
+                } catch (e) {
+                    if (e.name === 'AbortError') return;
+                }
+            }
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(this.currentPayload);
+                this.onToast('Share unavailable. Sync code copied to clipboard!', 'info');
+            } catch (e) {
+                this.onToast('Please copy code manually', 'warning');
+            }
+        }
+
+        async _refreshQr() {
+            this.onToast('Refreshing QR sync payload...', 'info');
+            await this._renderQR();
+            this.onToast('QR code updated with latest state!', 'success');
         }
 
         async _startCamera() {
@@ -724,6 +916,9 @@
         }
 
         close() {
+            if (this.isFullscreen) {
+                this.toggleFullscreen(false);
+            }
             this.isOpen = false;
             this._stopCamera();
             this.overlay.classList.add('opacity-0', 'pointer-events-none');

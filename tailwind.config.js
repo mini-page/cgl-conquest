@@ -5,15 +5,22 @@ module.exports = {
     './index.html',
     './js/**/*.js',
     './study/**/*.js',
+    './components/**/*.js',
+    './pages/**/*.html',
   ],
   theme: {
     extend: {
       colors: {
         bgApp: 'var(--bg-app)',
         bgCard: 'var(--bg-card)',
+        bgSurface: 'var(--bg-surface)',
+        bgSurfaceElevated: 'var(--bg-surface-elevated)',
         borderMain: 'var(--border-main)',
+        borderHover: 'var(--border-hover)',
         textMain: 'var(--text-main)',
         textSub: 'var(--text-sub)',
+        textMuted: 'var(--text-muted)',
+        accentPrimary: 'var(--accent-primary, #2563eb)',
         accentCyan: '#06b6d4',
         accentPurple: '#8b5cf6',
         accentRose: '#f43f5e',

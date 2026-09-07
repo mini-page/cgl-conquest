@@ -380,7 +380,12 @@ function navigateToPage(target, updateHash = true) {
     if (targetPage) {
         targetPage.classList.remove("hidden");
         if (window.gsap) {
-            gsap.fromTo(targetPage, { opacity: 0, y: 16, scale: 0.99 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) {
+                gsap.fromTo(targetPage, { opacity: 0 }, { opacity: 1, duration: 0.15 });
+            } else {
+                gsap.fromTo(targetPage, { opacity: 0, y: 12, scale: 0.995 }, { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "power2.out" });
+            }
         }
     }
     
@@ -419,7 +424,9 @@ function navigateToPage(target, updateHash = true) {
     }
     
     // Trigger specific page renders
-    if (target === "page-syllabus") {
+    if (target === "page-dashboard") {
+        if (typeof renderAll === "function") renderAll();
+    } else if (target === "page-syllabus") {
         renderSyllabus();
     } else if (target === "page-plan") {
         renderStudyPlan();
@@ -864,10 +871,13 @@ function toggleThemeMode() {
         window.showToast(appState.theme === "light" ? "Light theme enabled" : "Dark theme enabled", "info");
     }
     
-    // Re-render SVG Mindmap if visible to adjust colors
+    // Re-render SVG Mindmap and Mock Analytics if visible to adjust colors
     const mindmap = document.getElementById("view-mindmap");
     if (mindmap && !mindmap.classList.contains("hidden") && typeof renderMindMap === "function") {
         renderMindMap();
+    }
+    if (typeof renderMockAnalytics === "function") {
+        renderMockAnalytics();
     }
 }
 
