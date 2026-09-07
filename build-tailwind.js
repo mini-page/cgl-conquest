@@ -485,10 +485,15 @@ body {
   transform: translateY(0) scale(1) !important;
 }
 
+#modal-shortcuts-help {
+  z-index: 99999 !important;
+}
+
 #modal-shortcuts-help.active {
   opacity: 1 !important;
   pointer-events: auto !important;
   transform: translateY(0) !important;
+  display: flex !important;
 }
 
 #sync-island-pill.island-visible {

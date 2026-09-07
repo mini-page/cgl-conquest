@@ -533,4 +533,6 @@ if (typeof window !== 'undefined') {
     };
 }
 
-export { RewardsSystem, REWARDS_CATALOG };
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { RewardsSystem, REWARDS_CATALOG };
+}

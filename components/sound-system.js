@@ -15,7 +15,7 @@ class SoundManager {
         this._hasInteracted = false;
 
         // Auto-unlock AudioContext on first user interaction
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
             const unlockAudio = () => {
                 this.initContext();
                 if (this.ctx && this.ctx.state === 'suspended') {
@@ -82,7 +82,6 @@ class SoundManager {
         }
 
         const now = ctx.currentTime;
-        const soundKey = (soundName || '').toLowerCase().trim();
 
         try {
             switch (soundKey) {
@@ -467,4 +466,6 @@ if (typeof window !== 'undefined') {
     };
 }
 
-export { SoundManager };
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { SoundManager };
+}

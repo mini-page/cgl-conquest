@@ -21,10 +21,13 @@ function openShortcutsHelpModal() {
         modal.classList.add("active");
         modal.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
         modal.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
+        modal.style.display = "flex";
 
         if (typeof updateSoundToggleUI === 'function') updateSoundToggleUI();
         if (typeof updateFocusModeUI === 'function') updateFocusModeUI();
-        if (window.nudgeSystem) window.nudgeSystem.refreshNudges();
+        if (window.nudgeSystem && typeof window.nudgeSystem.refreshNudges === 'function') {
+            window.nudgeSystem.refreshNudges();
+        }
 
         // If rewards tab or nudge tab is active, re-render
         const tabRewards = document.getElementById('ac-tab-rewards');
@@ -54,6 +57,7 @@ function closeShortcutsHelpModal() {
     if (modal) {
         modal.classList.remove("active", "opacity-100", "pointer-events-auto", "translate-y-0");
         modal.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
+        modal.style.display = "";
         // Clear search on close
         const s = document.getElementById("shortcuts-search");
         if (s) { s.value = ""; filterShortcuts(""); }
@@ -541,22 +545,27 @@ function initNavigation() {
         // typingtest.js handles its own keydown in capture phase.
         if (window.typingTestActive) return;
 
-        // Double shift key press listener
-        if (e.key === "Shift") {
+        // Double shift key press listener (450ms detection window with debounce)
+        if (e.key === "Shift" || e.code === "ShiftLeft" || e.code === "ShiftRight") {
             if (e.repeat) return;
+            const tag = document.activeElement ? document.activeElement.tagName : "";
+            // Do not hijack shift if actively typing in normal content inputs (allow if shortcuts search is focused)
+            if ((tag === "INPUT" || tag === "TEXTAREA" || (document.activeElement && document.activeElement.isContentEditable)) && document.activeElement.id !== "shortcuts-search") {
+                return;
+            }
             const now = Date.now();
-            if (now - lastShiftTime < 300) {
-                // Toggle: open if closed, close if open
-                const modal = document.getElementById("modal-shortcuts-help");
-                if (modal && modal.classList.contains("active")) {
-                    closeShortcutsHelpModal();
-                } else {
-                    openShortcutsHelpModal();
-                }
+            if (now - lastShiftTime < 450 && now - lastShiftTime > 40) {
+                // Double Shift confirmed!
+                lastShiftTime = 0;
+                toggleShortcutsHelpModal();
                 e.preventDefault();
+                return;
             }
             lastShiftTime = now;
             return;
+        } else {
+            // Any other intervening key press clears the double-shift sequence
+            lastShiftTime = 0;
         }
 
         // Skip shortcuts if user is typing in form inputs/textarea/select

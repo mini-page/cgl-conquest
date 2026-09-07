@@ -207,4 +207,6 @@ if (typeof window !== 'undefined') {
     }
 }
 
-export { NudgeSystem };
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { NudgeSystem };
+}
