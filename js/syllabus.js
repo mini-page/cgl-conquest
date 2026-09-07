@@ -154,6 +154,11 @@ try {
     } else {
       delete appState.srsRecords[id];
     }
+    if (typeof window.playSound === 'function') {
+      if (stage === 'mastered') window.playSound('success.normal');
+      else if (stage === 'practiced') window.playSound('success.soft');
+      else window.playSound('checkbox');
+    }
     save();
     renderAll();
   }
@@ -178,6 +183,17 @@ try {
     }
 
     save();
+
+    // Trigger acoustic audio feedback
+    if (typeof window.playSound === 'function') {
+      if (key === 'mastered' && f.mastered) {
+        window.playSound('success.normal');
+      } else if (f[key]) {
+        window.playSound('checkbox');
+      } else {
+        window.playSound('checkbox', { pitch: 0.8 });
+      }
+    }
 
     // Trigger ranked confetti celebration feedback matching dashboard
     if (f[key] && window.triggerConfetti) {

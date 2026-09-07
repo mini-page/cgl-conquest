@@ -631,11 +631,22 @@
             </div>
             
             <!-- Mode Selection pills (Stopwatch, 25m Pomo, 50m Pomo, 5m Break) -->
-            <div class="flex flex-wrap justify-center gap-1.5 mb-4">
+            <div class="flex flex-wrap justify-center gap-1.5 mb-3">
                 <button type="button" class="btn-pomo-mode px-3 py-1 rounded-full border border-white/10 text-[9px] font-extrabold text-white bg-cyan-600 active-pomo-mode cursor-pointer" data-time="0" data-mode="stopwatch"><i class="fa-solid fa-stopwatch mr-1"></i> Stopwatch</button>
                 <button type="button" class="btn-pomo-mode px-3 py-1 rounded-full border border-white/10 text-[9px] font-extrabold text-gray-400 bg-white/5 hover:text-white transition cursor-pointer" data-time="1500" data-mode="study">🍅 25m Pomo</button>
                 <button type="button" class="btn-pomo-mode px-3 py-1 rounded-full border border-white/10 text-[9px] font-extrabold text-gray-400 bg-white/5 hover:text-white transition cursor-pointer" data-time="3000" data-mode="deep">🎯 50m Pomo</button>
                 <button type="button" class="btn-pomo-mode px-3 py-1 rounded-full border border-white/10 text-[9px] font-extrabold text-gray-400 bg-white/5 hover:text-white transition cursor-pointer" data-time="300" data-mode="short-break">☕ 5m Break</button>
+            </div>
+
+            <!-- Focus Mode Quick Pill inside Pomodoro Drawer -->
+            <div class="flex items-center justify-between px-3 py-1.5 mb-3 rounded-xl bg-white/5 border border-white/10">
+                <span class="text-[10px] font-bold text-gray-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-crosshairs text-emerald-400"></i>
+                    <span>Focus Shield (Mute Alerts)</span>
+                </span>
+                <button type="button" onclick="window.toggleFocusMode()" id="btn-pomo-focus-shield" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-extrabold transition cursor-pointer">
+                    Toggle
+                </button>
             </div>
         </div>
         
@@ -743,7 +754,7 @@
             <!-- Two Column Dashboard Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Today's Missions List (Core Focus) -->
-                <div class="bg-bgCard/50 border border-white/10 rounded-2xl shadow-lg lg:col-span-2 overflow-hidden flex flex-col backdrop-blur-xl">
+                <div id="card-today-missions" class="bg-bgCard/50 border border-white/10 rounded-2xl shadow-lg lg:col-span-2 overflow-hidden flex flex-col backdrop-blur-xl">
                     <div class="bg-white/5 px-5 py-4 border-b border-white/5 flex items-center justify-between">
                         <div class="flex items-center gap-2 relative">
                             <h2 class="font-heading font-bold text-sm tracking-wide text-white uppercase flex items-center gap-2">
@@ -780,7 +791,7 @@
                 <div class="space-y-6">
                     
                     <!-- Core Daily Rituals Card -->
-                    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl space-y-4">
+                    <div id="card-daily-rituals" class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl space-y-4">
                         <!-- Header -->
                         <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-white/10">
                             <div class="flex items-center gap-2">
@@ -860,7 +871,7 @@
                     </div>
 
                     <!-- Subject Progress Breakdown -->
-                    <div class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl">
+                    <div id="card-prep-readiness" class="bg-bgCard/50 border border-white/10 rounded-2xl p-5 shadow-lg backdrop-blur-xl">
                         <h3 class="font-heading font-bold text-xs text-white uppercase tracking-wider mb-4"><i class="fa-solid fa-chart-pie mr-1 text-accentPurple"></i> Preparation Readiness</h3>
                         <div id="subject-progress-dashboard-container" class="space-y-3.5">
                             <!-- JS Inject -->
@@ -1853,15 +1864,11 @@
                     <span class="hidden sm:inline">Next Topic</span> <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
-        </div>
-    </div>
-
-
-    <!-- POPOVER: ACTION CENTER (Double-Shift / Floating Popover) -->
-    <div id="modal-shortcuts-help" role="dialog" aria-modal="true" aria-label="Action Center Shortcuts Popover" class="fixed top-16 right-4 sm:right-12 w-[calc(100vw-2rem)] sm:w-96 max-w-sm max-h-[82vh] z-50 bg-slate-900/95 sm:bg-bgCard/95 border border-white/15 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col transform -translate-y-2 opacity-0 pointer-events-none transition-all duration-200 ease-out select-none">
+<!-- POPOVER: ACTION CENTER (Double-Shift / Floating Popover) -->
+    <div id="modal-shortcuts-help" role="dialog" aria-modal="true" aria-label="Action Center Shortcuts Popover" class="fixed top-16 right-4 sm:right-12 w-[calc(100vw-2rem)] sm:w-[440px] max-w-md max-h-[85vh] z-50 bg-slate-900/95 sm:bg-bgCard/95 border border-white/15 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col transform -translate-y-2 opacity-0 pointer-events-none transition-all duration-200 ease-out select-none">
 
         <!-- Row 1: Title + Close -->
-        <div class="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/5 shrink-0">
+        <div class="flex items-center justify-between px-5 pt-4 pb-2.5 border-b border-white/5 shrink-0">
             <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-table-cells text-accentCyan"></i>
                 <span>Action Center</span>
@@ -1872,8 +1879,31 @@
             </button>
         </div>
 
-            <!-- Row 2: Search bar (own row, full width) -->
-            <div class="px-5 py-3 border-b border-white/5 shrink-0">
+        <!-- Row 2: 3-Hub Navigation Switcher Tabs (Accent Blue #2563eb Active Tab) -->
+        <div class="px-5 py-2.5 border-b border-white/5 shrink-0">
+            <div class="flex items-center gap-1 p-1 bg-slate-950/80 border border-white/10 rounded-2xl shadow-inner">
+                <button type="button" id="ac-tab-hub" onclick="switchActionCenterHub('hub')" class="flex-1 py-1.5 px-2 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-sliders text-[11px]"></i>
+                    <span>Hub</span>
+                </button>
+                <button type="button" id="ac-tab-rewards" onclick="switchActionCenterHub('rewards')" class="flex-1 py-1.5 px-2 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-trophy text-[11px] text-amber-400"></i>
+                    <span>Rewards</span>
+                </button>
+                <button type="button" id="ac-tab-nudge" onclick="switchActionCenterHub('nudge')" class="flex-1 py-1.5 px-2 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer relative">
+                    <i class="fa-solid fa-bell text-[11px] text-cyan-400"></i>
+                    <span>Nudge</span>
+                    <span id="action-center-nudge-badge" class="hidden ml-1 px-1.5 py-0.2 rounded-full bg-rose-500 text-[9px] font-black text-white">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PANEL 1: HUB (Quick Actions, Controls, Shortcuts)             -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div id="ac-panel-hub" class="flex flex-col flex-1 min-h-0">
+            <!-- Search bar (own row, full width) -->
+            <div class="px-5 py-2.5 border-b border-white/5 shrink-0">
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
                     <input id="shortcuts-search" type="text" placeholder="Filter actions and shortcuts…"
@@ -1883,7 +1913,7 @@
             </div>
 
             <!-- Scrollable body -->
-            <div class="overflow-y-auto scrollbar-thin" style="max-height:55vh;">
+            <div class="overflow-y-auto scrollbar-thin flex-1" style="max-height:55vh;">
 
                 <!-- ── SECTION: Global Navigation ─────────────────── -->
                 <div class="px-5 pt-3 pb-1">
@@ -1957,6 +1987,28 @@
                                     <span class="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2" id="toast-toggle-knob"><i class="fa-solid fa-bell text-amber-600 text-[8px]"></i></span>
                                 </div>
                                 <kbd class="sc-kbd">N</kbd>
+                            </span>
+                        </div>
+                        <!-- Synthesized Audio: full row clickable -->
+                        <div class="ac-toggle-row cursor-pointer" onclick="if (!event.target.closest('#sound-toggle')) window.toggleSoundMode()">
+                            <span class="ac-label"><i class="fa-solid fa-music mr-2.5 text-gray-500"></i>Synthesized Audio</span>
+                            <span class="ac-right">
+                                <div id="sound-toggle" class="w-16 h-6 rounded-full bg-blue-500/20 border border-blue-400/40 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle audio [M]">
+                                    <span id="sound-toggle-text" class="text-[9px] font-extrabold uppercase tracking-wider text-blue-300 pointer-events-none select-none order-1 pl-1">Audio</span>
+                                    <span class="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2" id="sound-toggle-knob"><i class="fa-solid fa-volume-high text-blue-600 text-[8px]"></i></span>
+                                </div>
+                                <kbd class="sc-kbd">M</kbd>
+                            </span>
+                        </div>
+                        <!-- Focus Mode: full row clickable -->
+                        <div class="ac-toggle-row cursor-pointer" onclick="if (!event.target.closest('#focus-toggle')) window.toggleFocusMode()">
+                            <span class="ac-label"><i class="fa-solid fa-crosshairs mr-2.5 text-gray-500"></i>Pomodoro Focus Mode</span>
+                            <span class="ac-right">
+                                <div id="focus-toggle" class="w-16 h-6 rounded-full bg-white/5 border border-white/10 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle focus mode [F]">
+                                    <span id="focus-toggle-text" class="text-[9px] font-extrabold uppercase tracking-wider text-gray-400 pointer-events-none select-none order-2 pr-1">Focus</span>
+                                    <span class="w-4 h-4 rounded-full bg-gray-500 flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-1" id="focus-toggle-knob"><i class="fa-solid fa-moon text-white text-[8px]"></i></span>
+                                </div>
+                                <kbd class="sc-kbd">F</kbd>
                             </span>
                         </div>
                         <!-- Mobile Ergonomics Nav Hand Toggle (Only on Mobile screens) -->
@@ -2044,6 +2096,110 @@
                 </div>
 
             </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PANEL 2: REWARDS & GAMIFICATION HUB                           -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div id="ac-panel-rewards" class="hidden flex-1 overflow-y-auto scrollbar-thin p-4 space-y-4" style="max-height:62vh;">
+            <!-- Profile & Balances Summary -->
+            <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/40 to-slate-900/40 border border-blue-500/20 rounded-2xl p-3.5 flex items-center justify-between shadow-inner">
+                <div>
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-blue-300 block">Equipped Rank</span>
+                    <h4 id="ac-rewards-title" class="text-sm font-black text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
+                        <span>Aspirant</span>
+                    </h4>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="px-2.5 py-1 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-black flex items-center gap-1">
+                        <span>🪙</span>
+                        <span id="ac-rewards-coins">0</span>
+                    </div>
+                    <div class="px-2.5 py-1 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-black flex items-center gap-1">
+                        <span>⭐</span>
+                        <span id="ac-rewards-points">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trophies (9-dot style 3-column launcher grid) -->
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-[10px] font-extrabold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-trophy text-xs"></i>
+                        <span>Trophies &amp; Achievements</span>
+                    </p>
+                    <span class="text-[10px] text-gray-400">Bronze to Legendary</span>
+                </div>
+                <div id="ac-trophies-grid" class="grid grid-cols-3 gap-2">
+                    <!-- Dynamic Trophies rendered by renderRewardsHub() -->
+                </div>
+            </div>
+
+            <!-- Collectible Badges & Stickers -->
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-[10px] font-extrabold text-cyan-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-certificate text-xs"></i>
+                        <span>Collector Stickers</span>
+                    </p>
+                </div>
+                <div id="ac-stickers-grid" class="grid grid-cols-3 gap-2">
+                    <!-- Dynamic Stickers rendered by renderRewardsHub() -->
+                </div>
+            </div>
+
+            <!-- Cosmetic Titles & Themes Shop -->
+            <div class="pb-2">
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-[10px] font-extrabold text-purple-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-store text-xs"></i>
+                        <span>Cosmetic Unlock Vault</span>
+                    </p>
+                </div>
+                <div id="ac-cosmetics-grid" class="space-y-1.5">
+                    <!-- Dynamic Cosmetics rendered by renderRewardsHub() -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PANEL 3: NUDGE & FOCUS HUB                                    -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div id="ac-panel-nudge" class="hidden flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3" style="max-height:62vh;">
+            <!-- Focus Mode Quick Card -->
+            <div id="ac-nudge-focus-card" class="bg-gradient-to-r from-emerald-900/30 to-teal-900/30 border border-emerald-500/30 rounded-2xl p-3.5 flex items-center justify-between">
+                <div class="space-y-0.5">
+                    <span class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-crosshairs"></i>
+                        <span>Deep Focus Sprint</span>
+                    </span>
+                    <p class="text-xs text-gray-300">Silence sound &amp; notifications for distraction-free study.</p>
+                </div>
+                <button type="button" onclick="window.toggleFocusMode()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black shadow-md transition cursor-pointer shrink-0">
+                    <span id="ac-nudge-focus-btn-text">Toggle Focus</span>
+                </button>
+            </div>
+
+            <!-- Active Nudges Feed -->
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                        <i class="fa-solid fa-bell text-xs text-amber-400"></i>
+                        <span>Contextual Nudges</span>
+                    </p>
+                    <button type="button" onclick="if (window.nudgeSystem) { window.nudgeSystem.refreshNudges(); renderNudgeHub(); }" class="text-[10px] text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-rotate text-[9px]"></i>
+                        <span>Refresh</span>
+                    </button>
+                </div>
+
+                <div id="ac-nudge-feed" class="space-y-2.5">
+                    <!-- Dynamic Nudges rendered by renderNudgeHub() -->
+                </div>
+            </div>
+        </div>
 
             <!-- ── Social links (always at bottom, outside scroll) ── -->
             <div class="border-t border-white/5 px-5 py-3 flex items-center justify-between shrink-0">
@@ -2150,6 +2306,9 @@
     <script src="js/components/tooltip.js?v=11"></script>
     <script src="js/components/dropdown.js?v=12"></script>
     <script src="js/state.js?v=12"></script>
+    <script src="components/sound-system.js?v=1"></script>
+    <script src="components/rewards-system.js?v=1"></script>
+    <script src="components/nudge-system.js?v=1"></script>
     <script src="js/study_content.js?v=11"></script>
     <script src="js/navigation.js?v=17"></script>
     <script src="js/dashboard.js?v=22"></script>

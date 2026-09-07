@@ -14,3 +14,6 @@ export { HeroHeader } from './hero-header.js';
 export { CalendarPicker } from './calendar-picker.js';
 export { ToastNotification, toast } from './toast-notification.js';
 export { QrSyncModal } from './qr-sync-modal.js';
+export { SoundManager } from './sound-system.js';
+export { RewardsSystem, REWARDS_CATALOG } from './rewards-system.js';
+export { NudgeSystem } from './nudge-system.js';

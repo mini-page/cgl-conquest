@@ -40,7 +40,15 @@
             th: state.theme || 'dark',
             mh: state.mobileNavHand || 'right',
             spk: state.speechEnabled !== false,
-            tst: state.toastEnabled !== false
+            tst: state.toastEnabled !== false,
+            snd: state.soundEnabled !== false,
+            rew: state.rewards ? {
+                c: Number(state.rewards.coins) || 0,
+                p: Number(state.rewards.points) || 0,
+                u: Array.isArray(state.rewards.unlocked) ? state.rewards.unlocked : [],
+                ct: Array.isArray(state.rewards.claimedTrophies) ? state.rewards.claimedTrophies : [],
+                eq: state.rewards.equipped || { title: 'Aspirant', themeAccent: 'accent_blue' }
+            } : undefined
         };
     }
 
@@ -91,7 +99,21 @@
                 theme: raw.th || 'dark',
                 mobileNavHand: raw.mh || 'right',
                 speechEnabled: raw.spk !== false,
-                toastEnabled: raw.tst !== false
+                toastEnabled: raw.tst !== false,
+                soundEnabled: raw.snd !== undefined ? (raw.snd !== false) : true,
+                rewards: raw.rew ? {
+                    coins: Number(raw.rew.c) || 0,
+                    points: Number(raw.rew.p) || 0,
+                    unlocked: Array.isArray(raw.rew.u) ? raw.rew.u : ['title_aspirant', 'accent_blue'],
+                    claimedTrophies: Array.isArray(raw.rew.ct) ? raw.rew.ct : [],
+                    equipped: raw.rew.eq || { title: 'Aspirant', themeAccent: 'accent_blue' }
+                } : {
+                    coins: 0,
+                    points: 0,
+                    unlocked: ['title_aspirant', 'accent_blue'],
+                    claimedTrophies: [],
+                    equipped: { title: 'Aspirant', themeAccent: 'accent_blue' }
+                }
             };
         }
         return raw;
@@ -200,31 +222,34 @@
             this.overlay.className = 'fixed inset-0 z-[999999] bg-black/80 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-all duration-200 hidden select-none';
 
             this.card = document.createElement('div');
-            this.card.className = 'bg-slate-900 text-gray-100 border border-cyan-500/30 rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto scrollbar-none transform scale-95 transition-all duration-200';
+            this.card.className = 'bg-slate-900 text-gray-100 border border-blue-500/30 rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto scrollbar-none transform scale-95 transition-all duration-300';
 
             this.card.innerHTML = `
-                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                <!-- Modal Top Header -->
+                <div id="qr-modal-header" class="flex items-center justify-between border-b border-white/10 pb-3 transition-all duration-200">
                     <div class="flex items-center gap-2.5">
                         <div class="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xs shadow-inner">
                             <i class="fa-solid fa-qrcode"></i>
                         </div>
                         <div>
-                            <h3 class="font-heading font-black text-sm text-white uppercase tracking-wider">Instant QR Device Sync</h3>
-                            <p class="text-[10px] text-gray-400">Sync all data between phone & laptop instantly</p>
+                            <h3 class="font-heading font-black text-sm text-white uppercase tracking-wider">Conquest Sync</h3>
+                            <p class="text-[10px] text-gray-400">P2P Encrypted Data Transfer</p>
                         </div>
                     </div>
+
+                    <!-- Top Action Controls -->
                     <div class="flex items-center gap-1.5">
-                        <button type="button" id="btn-qr-fullscreen" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer" title="Toggle Fullscreen (F)">
+                        <button type="button" id="btn-qr-fullscreen" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer" title="Toggle Fullscreen (F)">
                             <i class="fa-solid fa-expand"></i>
                         </button>
-                        <button type="button" id="btn-qr-close" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer" title="Close (Esc)">
+                        <button type="button" id="btn-qr-close" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 flex items-center justify-center text-xs transition cursor-pointer" title="Close (Esc)">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Tab Switcher -->
-                <div class="flex items-center gap-1 p-1 bg-slate-950/80 border border-white/10 rounded-2xl shadow-inner">
+                <!-- Tab Switcher Pill (Always accent blue bg-blue-600) -->
+                <div id="qr-tab-switcher-wrap" class="flex items-center gap-1 p-1 bg-slate-950/80 border border-white/10 rounded-2xl shadow-inner max-w-xs mx-auto w-full transition-all duration-200">
                     <button type="button" id="tab-qr-scan" class="flex-1 py-1.5 px-3 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer">
                         <i class="fa-solid fa-camera text-xs"></i>
                         <span>Scan / Paste</span>
@@ -235,71 +260,79 @@
                     </button>
                 </div>
 
-                <!-- TAB 1: SCAN QR PANEL -->
-                <div id="panel-qr-scan" class="space-y-3">
-                    <div class="relative bg-black rounded-2xl overflow-hidden aspect-square max-w-[260px] mx-auto border border-blue-500/30 shadow-inner flex items-center justify-center transition-all duration-300">
-                        <video id="qr-scanner-video" playsinline class="w-full h-full object-cover"></video>
-                        <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
-                            <div class="w-44 h-44 border-2 border-dashed border-blue-400/80 rounded-2xl shadow-[0_0_25px_rgba(37,99,235,0.3)] animate-pulse"></div>
+                <!-- Main Center Stage Viewport (Occupies 70-80% in Fullscreen) -->
+                <div id="qr-main-viewport" class="flex-1 flex flex-col items-center justify-center min-h-0 w-full transition-all duration-300">
+                    <!-- TAB 1: SCAN QR PANEL -->
+                    <div id="panel-qr-scan" class="space-y-3 w-full flex flex-col items-center justify-center">
+                        <div class="relative bg-black rounded-2xl overflow-hidden aspect-square max-w-[260px] w-full mx-auto border border-blue-500/30 shadow-2xl flex items-center justify-center transition-all duration-300">
+                            <video id="qr-scanner-video" playsinline class="w-full h-full object-cover"></video>
+                            <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                                <div class="w-48 h-48 sm:w-56 sm:h-56 border-2 border-dashed border-blue-400/80 rounded-3xl shadow-[0_0_35px_rgba(37,99,235,0.4)] animate-pulse"></div>
+                            </div>
+                            <div id="qr-camera-prompt" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center gap-2 p-4 text-center">
+                                <i class="fa-solid fa-video text-2xl text-blue-400"></i>
+                                <span id="qr-camera-status" class="text-xs font-bold text-gray-300">Point camera at QR code</span>
+                                <button type="button" id="btn-start-camera" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-lg shadow-blue-500/25 transition cursor-pointer">Start Camera</button>
+                            </div>
                         </div>
-                        <div id="qr-camera-prompt" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center gap-2 p-4 text-center">
-                            <i class="fa-solid fa-video text-2xl text-blue-400"></i>
-                            <span id="qr-camera-status" class="text-xs font-bold text-gray-300">Click to activate camera scanner</span>
-                            <button type="button" id="btn-start-camera" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md transition cursor-pointer">Start Camera</button>
+
+                        <div class="w-full max-w-[280px] flex items-center justify-between gap-2">
+                            <label class="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                <i class="fa-solid fa-file-image text-blue-400"></i>
+                                <span>Upload QR Image</span>
+                                <input type="file" id="input-qr-file" accept="image/*" class="hidden">
+                            </label>
+                        </div>
+
+                        <!-- Direct Code Paste Fallback -->
+                        <div class="w-full max-w-[320px] pt-2 border-t border-white/10 space-y-1.5">
+                            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block text-center">Or Paste Sync Code Manually</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="input-manual-code" placeholder="Paste GZ: or B64: code here..." class="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 font-mono">
+                                <button type="button" id="btn-apply-manual-code" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold rounded-xl transition shadow cursor-pointer">
+                                    Load
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between gap-2">
-                        <label class="flex-1 px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                            <i class="fa-solid fa-file-image text-blue-400"></i>
-                            <span>Upload QR Image</span>
-                            <input type="file" id="input-qr-file" accept="image/*" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- Direct Code Paste Fallback -->
-                    <div class="pt-2 border-t border-white/10 space-y-1.5">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Or Paste Sync Code Manually</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="input-manual-code" placeholder="Paste GZ: or B64: code here..." class="flex-1 bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 font-mono">
-                            <button type="button" id="btn-apply-manual-code" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold rounded-xl transition shadow cursor-pointer">
-                                Load
+                    <!-- TAB 2: SHOW QR PANEL -->
+                    <div id="panel-qr-show" class="hidden space-y-3 w-full flex flex-col items-center justify-center">
+                        <div class="bg-white p-3 rounded-2xl max-w-[260px] w-full mx-auto shadow-2xl flex items-center justify-center aspect-square transition-all duration-300" id="qr-code-canvas-container">
+                            <span class="text-xs text-gray-500 font-mono">Generating QR...</span>
+                        </div>
+                        <p class="text-center text-[10px] text-gray-400 font-medium max-w-xs">Scan with any mobile device to replicate entire progress instantly.</p>
+                        
+                        <!-- Floating Action Toolbar Dock (Responsive Pill) -->
+                        <div id="qr-actions-toolbar" class="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-2 max-w-full transition-all duration-300">
+                            <button type="button" id="btn-copy-sync-code" class="px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy raw sync code string">
+                                <i class="fa-solid fa-copy text-blue-400"></i>
+                                <span>Copy Code</span>
+                            </button>
+                            <button type="button" id="btn-copy-qr-image" class="px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy clean QR image to clipboard">
+                                <i class="fa-solid fa-image text-cyan-300"></i>
+                                <span>Copy Image</span>
+                            </button>
+                            <button type="button" id="btn-download-qr" class="px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Download QR as PNG image file">
+                                <i class="fa-solid fa-download text-emerald-400"></i>
+                                <span>Save PNG</span>
+                            </button>
+                            <button type="button" id="btn-share-qr" class="px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Share via System Share API">
+                                <i class="fa-solid fa-share-nodes text-indigo-400"></i>
+                                <span>Share</span>
+                            </button>
+                            <button type="button" id="btn-refresh-qr" class="px-3 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Regenerate QR with latest application state">
+                                <i class="fa-solid fa-rotate text-amber-400"></i>
+                                <span>Refresh</span>
+                            </button>
+                            <button type="button" id="btn-qr-exit-dock" class="hidden px-3 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-xs font-bold text-rose-300 hover:text-rose-200 transition items-center justify-center gap-1.5 cursor-pointer" title="Exit QR Workspace">
+                                <i class="fa-solid fa-door-open text-rose-400"></i>
+                                <span>Exit</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 2: SHOW QR PANEL -->
-                <div id="panel-qr-show" class="hidden space-y-3">
-                    <div class="bg-white p-3 rounded-2xl max-w-[260px] mx-auto shadow-2xl flex items-center justify-center aspect-square transition-all duration-300" id="qr-code-canvas-container">
-                        <span class="text-xs text-gray-500 font-mono">Generating QR...</span>
-                    </div>
-                    <p class="text-center text-[10px] text-gray-400">Scan this code with another device or use the sync tools below.</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <button type="button" id="btn-copy-sync-code" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy raw sync code string">
-                            <i class="fa-solid fa-copy text-blue-400"></i>
-                            <span>Copy Code</span>
-                        </button>
-                        <button type="button" id="btn-copy-qr-image" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Copy clean QR image to clipboard">
-                            <i class="fa-solid fa-image text-cyan-300"></i>
-                            <span>Copy Image</span>
-                        </button>
-                        <button type="button" id="btn-download-qr" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Download QR as PNG image file">
-                            <i class="fa-solid fa-download text-emerald-400"></i>
-                            <span>Save PNG</span>
-                        </button>
-                        <button type="button" id="btn-share-qr" class="px-2.5 py-2 rounded-xl bg-slate-950/80 hover:bg-slate-900 border border-white/10 hover:border-blue-500/30 text-xs font-bold text-gray-300 hover:text-white shadow-inner transition flex items-center justify-center gap-1.5 cursor-pointer" title="Share via System Share API">
-                            <i class="fa-solid fa-share-nodes text-indigo-400"></i>
-                            <span>Share</span>
-                        </button>
-                    </div>
-                    <div class="pt-1 flex justify-center">
-                        <button type="button" id="btn-refresh-qr" class="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-gray-400 hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Regenerate QR with latest application state">
-                            <i class="fa-solid fa-rotate text-blue-400"></i>
-                            <span>Refresh QR Data</span>
-                        </button>
-                    </div>
-                </div>
 
                 <!-- CONFIRMATION SUMMARY CARD -->
                 <div id="panel-qr-confirm" class="hidden bg-slate-950/90 border border-emerald-500/30 rounded-2xl p-4 space-y-3">
@@ -401,6 +434,7 @@
             // Copy sync code
             this.card.querySelector('#btn-copy-sync-code').onclick = async () => {
                 if (this.currentPayload) {
+                    if (typeof window.playSound === 'function') window.playSound('success.soft');
                     try {
                         await navigator.clipboard.writeText(this.currentPayload);
                         this.onToast('Sync code copied to clipboard!', 'success');
@@ -419,30 +453,43 @@
             // Copy QR image to clipboard (or fallback download)
             const btnCopyQrImage = this.card.querySelector('#btn-copy-qr-image');
             if (btnCopyQrImage) {
-                btnCopyQrImage.onclick = () => this._copyQrImageToClipboard();
+                btnCopyQrImage.onclick = () => {
+                    if (typeof window.playSound === 'function') window.playSound('success.soft');
+                    this._copyQrImageToClipboard();
+                };
             }
 
             // Download QR as PNG
             const btnDownloadQr = this.card.querySelector('#btn-download-qr');
             if (btnDownloadQr) {
-                btnDownloadQr.onclick = () => this._downloadQrImage();
+                btnDownloadQr.onclick = () => {
+                    if (typeof window.playSound === 'function') window.playSound('reward');
+                    this._downloadQrImage();
+                };
             }
 
             // Share QR code
             const btnShareQr = this.card.querySelector('#btn-share-qr');
             if (btnShareQr) {
-                btnShareQr.onclick = () => this._shareQr();
+                btnShareQr.onclick = () => {
+                    if (typeof window.playSound === 'function') window.playSound('checkbox');
+                    this._shareQr();
+                };
             }
 
             // Refresh QR payload
             const btnRefreshQr = this.card.querySelector('#btn-refresh-qr');
             if (btnRefreshQr) {
-                btnRefreshQr.onclick = () => this._refreshQr();
+                btnRefreshQr.onclick = () => {
+                    if (typeof window.playSound === 'function') window.playSound('checkbox');
+                    this._refreshQr();
+                };
             }
 
             // Confirm Sync
             this.card.querySelector('#btn-qr-apply').onclick = () => {
                 if (this.scannedState) {
+                    if (typeof window.playSound === 'function') window.playSound('success.strong');
                     this.onApplyState(this.scannedState);
                     this.onToast('Device synchronization complete!', 'success');
                     this.close();
@@ -456,6 +503,15 @@
                 this.card.querySelector('#panel-qr-scan').classList.remove('hidden');
                 this._startCamera();
             };
+
+            // Exit dock button in fullscreen
+            const exitDockBtn = this.card.querySelector('#btn-qr-exit-dock');
+            if (exitDockBtn) {
+                exitDockBtn.onclick = () => {
+                    if (typeof window.playSound === 'function') window.playSound('checkbox');
+                    this.close();
+                };
+            }
         }
 
         toggleFullscreen(force) {
@@ -463,21 +519,30 @@
             const fsBtn = this.card.querySelector('#btn-qr-fullscreen');
             const qrContainer = this.card.querySelector('#qr-code-canvas-container');
             const scanContainer = this.card.querySelector('#panel-qr-scan > div:first-child');
+            const exitDockBtn = this.card.querySelector('#btn-qr-exit-dock');
+            const actionsToolbar = this.card.querySelector('#qr-actions-toolbar');
 
             if (this.isFullscreen) {
                 this.overlay.classList.add('!p-0');
-                this.card.classList.add('!max-w-none', '!w-screen', '!h-screen', '!max-h-none', '!rounded-none', '!border-0', 'sm:!p-8', 'flex', 'flex-col', 'justify-between');
+                this.card.classList.add('!max-w-none', '!w-screen', '!h-screen', '!max-h-none', '!rounded-none', '!border-0', 'sm:!p-6', '!p-4', 'flex', 'flex-col', 'justify-between');
                 if (fsBtn) {
                     fsBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
                     fsBtn.title = 'Exit Fullscreen (F / Esc)';
                 }
                 if (qrContainer) {
                     qrContainer.classList.remove('max-w-[260px]');
-                    qrContainer.classList.add('max-w-[420px]', 'w-full');
+                    qrContainer.classList.add('!max-w-none', '!w-[min(68vh,82vw,520px)]', '!h-[min(68vh,82vw,520px)]', '!p-4', 'sm:!p-6', 'shadow-[0_0_60px_rgba(37,99,235,0.3)]');
                 }
                 if (scanContainer) {
                     scanContainer.classList.remove('max-w-[260px]');
-                    scanContainer.classList.add('max-w-[420px]', 'w-full');
+                    scanContainer.classList.add('!max-w-none', '!w-[min(66vh,82vw,480px)]', '!h-[min(66vh,82vw,480px)]', 'shadow-[0_0_60px_rgba(37,99,235,0.3)]');
+                }
+                if (exitDockBtn) {
+                    exitDockBtn.classList.remove('hidden');
+                    exitDockBtn.classList.add('flex');
+                }
+                if (actionsToolbar) {
+                    actionsToolbar.classList.add('bg-slate-950/90', 'backdrop-blur-xl', 'border', 'border-white/10', 'rounded-full', 'px-3', 'py-1.5', 'shadow-2xl', 'max-w-fit', 'mx-auto');
                 }
                 try {
                     if (document.fullscreenEnabled && !document.fullscreenElement && this.overlay.requestFullscreen) {
@@ -486,18 +551,25 @@
                 } catch (e) {}
             } else {
                 this.overlay.classList.remove('!p-0');
-                this.card.classList.remove('!max-w-none', '!w-screen', '!h-screen', '!max-h-none', '!rounded-none', '!border-0', 'sm:!p-8', 'flex', 'flex-col', 'justify-between');
+                this.card.classList.remove('!max-w-none', '!w-screen', '!h-screen', '!max-h-none', '!rounded-none', '!border-0', 'sm:!p-6', '!p-4', 'flex', 'flex-col', 'justify-between');
                 if (fsBtn) {
                     fsBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
                     fsBtn.title = 'Toggle Fullscreen (F)';
                 }
                 if (qrContainer) {
-                    qrContainer.classList.remove('max-w-[420px]', 'w-full');
+                    qrContainer.classList.remove('!max-w-none', '!w-[min(68vh,82vw,520px)]', '!h-[min(68vh,82vw,520px)]', '!p-4', 'sm:!p-6', 'shadow-[0_0_60px_rgba(37,99,235,0.3)]');
                     qrContainer.classList.add('max-w-[260px]');
                 }
                 if (scanContainer) {
-                    scanContainer.classList.remove('max-w-[420px]', 'w-full');
+                    scanContainer.classList.remove('!max-w-none', '!w-[min(66vh,82vw,480px)]', '!h-[min(66vh,82vw,480px)]', 'shadow-[0_0_60px_rgba(37,99,235,0.3)]');
                     scanContainer.classList.add('max-w-[260px]');
+                }
+                if (exitDockBtn) {
+                    exitDockBtn.classList.add('hidden');
+                    exitDockBtn.classList.remove('flex');
+                }
+                if (actionsToolbar) {
+                    actionsToolbar.classList.remove('bg-slate-950/90', 'backdrop-blur-xl', 'border', 'border-white/10', 'rounded-full', 'px-3', 'py-1.5', 'shadow-2xl', 'max-w-fit', 'mx-auto');
                 }
                 try {
                     if (document.fullscreenElement && document.exitFullscreen) {
@@ -509,6 +581,7 @@
 
         setTab(tab) {
             this.activeTab = tab;
+            if (typeof window.playSound === 'function') window.playSound('checkbox');
             const tabScan = this.card.querySelector('#tab-qr-scan');
             const tabShow = this.card.querySelector('#tab-qr-show');
             const panelScan = this.card.querySelector('#panel-qr-scan');

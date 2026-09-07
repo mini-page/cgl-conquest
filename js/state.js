@@ -3298,8 +3298,17 @@ let appState = {
     dailyRituals: { drill: false, vocab: false, ca: false, computer: false },
     speechEnabled: true,  // Default speech enabled
     toastEnabled: true,   // Default toasts enabled
+    soundEnabled: true,   // Default semantic UI audio enabled
+    focusModeActive: false, // Suppresses sounds & speech when active
     examTier: 1,          // Default exam tier target (1 = Tier 1, 2 = Tier 2)
-    mobileNavHand: "right" // Default mobile nav thumb hand ("right" | "left")
+    mobileNavHand: "right", // Default mobile nav thumb hand ("right" | "left")
+    rewards: {
+        coins: 0,
+        points: 0,
+        unlocked: ['title_aspirant', 'accent_blue'],
+        claimedTrophies: [],
+        equipped: { title: 'Aspirant', themeAccent: 'accent_blue' }
+    }
 };
 window.appState = appState;
 
@@ -3327,7 +3336,7 @@ function triggerMathTypesetting() {
 
 // Global Text-to-Speech announcer with queue clearing and toggle check
 function speakText(txt) {
-    if ('speechSynthesis' in window && appState.speechEnabled !== false) {
+    if ('speechSynthesis' in window && appState.speechEnabled !== false && !appState.focusModeActive) {
         try {
             window.speechSynthesis.cancel(); // Stop current speech to be responsive
             const utterance = new SpeechSynthesisUtterance(txt);
@@ -3356,6 +3365,8 @@ function loadStateFromStorage() {
             if (!appState.examDate) appState.examDate = "2026-08-15";
             if (appState.speechEnabled === undefined) appState.speechEnabled = true;
             if (appState.toastEnabled === undefined) appState.toastEnabled = true;
+            if (appState.soundEnabled === undefined) appState.soundEnabled = true;
+            if (appState.focusModeActive === undefined) appState.focusModeActive = false;
             if (appState.examTier === undefined) appState.examTier = 1;
             if (!appState.mobileNavHand) appState.mobileNavHand = "right";
             if (appState.streak === undefined) appState.streak = 1;
@@ -3365,6 +3376,16 @@ function loadStateFromStorage() {
             if (!appState.srsRecords) appState.srsRecords = {};
             if (!appState.dailyRituals) appState.dailyRituals = { drill: false, vocab: false, ca: false, computer: false };
             if (!appState.syllabusProgress) appState.syllabusProgress = {};
+            if (!appState.rewards) {
+                appState.rewards = {
+                    coins: 0,
+                    points: 0,
+                    unlocked: ['title_aspirant', 'accent_blue'],
+                    claimedTrophies: [],
+                    equipped: { title: 'Aspirant', themeAccent: 'accent_blue' }
+                };
+            }
+
             // Hydrate any new syllabus entries not yet in saved state
             SYLLABUS_DATA.forEach(topic => {
                 topic.subtopics.forEach(sub => {

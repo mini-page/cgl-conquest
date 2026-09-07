@@ -243,6 +243,83 @@ body {
   color: #475569 !important;
 }
 
+/* Light theme dashboard cards & grouped surfaces */
+.light #card-daily-rituals, .light-theme #card-daily-rituals,
+.light #card-prep-readiness, .light-theme #card-prep-readiness,
+.light #card-today-missions, .light-theme #card-today-missions {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06) !important;
+}
+
+.light #card-daily-rituals .ritual-checkbox span,
+.light-theme #card-daily-rituals .ritual-checkbox span {
+  color: #334155 !important;
+}
+
+.light #card-daily-rituals .ritual-checkbox:hover span,
+.light-theme #card-daily-rituals .ritual-checkbox:hover span {
+  color: #0f172a !important;
+}
+
+.light #card-daily-rituals .bg-white\\/5,
+.light-theme #card-daily-rituals .bg-white\\/5 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light #card-daily-rituals .bg-white\\/5:hover,
+.light-theme #card-daily-rituals .bg-white\\/5:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.light #card-prep-readiness h3,
+.light-theme #card-prep-readiness h3,
+.light #card-today-missions h2,
+.light-theme #card-today-missions h2 {
+  color: #0f172a !important;
+}
+
+.light #card-today-missions .bg-white\\/5,
+.light-theme #card-today-missions .bg-white\\/5 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light #subject-progress-dashboard-container .bg-white\\/5,
+.light-theme #subject-progress-dashboard-container .bg-white\\/5 {
+  background-color: #e2e8f0 !important;
+}
+
+.light #subject-progress-dashboard-container .text-gray-400,
+.light-theme #subject-progress-dashboard-container .text-gray-400 {
+  color: #475569 !important;
+}
+
+/* Light theme Action Center Hubs (Rewards & Nudge) */
+.light #modal-shortcuts-help, .light-theme #modal-shortcuts-help {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  color: #0f172a !important;
+}
+
+.light #modal-shortcuts-help h3, .light-theme #modal-shortcuts-help h3,
+.light #modal-shortcuts-help h4, .light-theme #modal-shortcuts-help h4 {
+  color: #0f172a !important;
+}
+
+.light #modal-shortcuts-help #shortcuts-search,
+.light-theme #modal-shortcuts-help #shortcuts-search {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light #modal-shortcuts-help #shortcuts-search::placeholder,
+.light-theme #modal-shortcuts-help #shortcuts-search::placeholder {
+  color: #94a3b8 !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

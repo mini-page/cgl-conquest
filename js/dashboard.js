@@ -517,6 +517,16 @@ function loadRituals() {
             saveStateToStorage();
             updateTodayGoalsRatio();
             updateRitualProgress();
+            if (typeof window.playSound === 'function') {
+                const total = Object.values(appState.dailyRituals).filter(Boolean).length;
+                if (checked && total === 4) {
+                    window.playSound('success.strong');
+                } else if (checked) {
+                    window.playSound('checkbox');
+                } else {
+                    window.playSound('checkbox', { pitch: 0.85 });
+                }
+            }
         };
     });
 
@@ -756,6 +766,9 @@ function startMasterTimer() {
             } else {
                 pauseMasterTimer();
                 const msg = "Focus session completed! Great job soldier, take a short rest.";
+                if (typeof window.playSound === "function") {
+                    window.playSound('timer.complete');
+                }
                 if (typeof speakText === "function") speakText(msg);
                 if (window.showToast) window.showToast(msg, "success");
                 appState.pomoTime = appState.pomoInitialTime || 1500;

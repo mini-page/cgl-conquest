@@ -7,6 +7,10 @@ let lastSTime = 0;
 function openShortcutsHelpModal() {
     const modal = document.getElementById("modal-shortcuts-help");
     if (modal) {
+        if (typeof window.playSound === 'function') {
+            window.playSound('checkbox');
+        }
+
         // Close Pomodoro drawer if open so they do not collide
         const pomoDrawer = document.getElementById("pomo-drawer");
         if (pomoDrawer) {
@@ -17,6 +21,20 @@ function openShortcutsHelpModal() {
         modal.classList.add("active");
         modal.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
         modal.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
+
+        if (typeof updateSoundToggleUI === 'function') updateSoundToggleUI();
+        if (typeof updateFocusModeUI === 'function') updateFocusModeUI();
+        if (window.nudgeSystem) window.nudgeSystem.refreshNudges();
+
+        // If rewards tab or nudge tab is active, re-render
+        const tabRewards = document.getElementById('ac-tab-rewards');
+        if (tabRewards && tabRewards.classList.contains('bg-blue-600') && typeof renderRewardsHub === 'function') {
+            renderRewardsHub();
+        }
+        const tabNudge = document.getElementById('ac-tab-nudge');
+        if (tabNudge && tabNudge.classList.contains('bg-blue-600') && typeof renderNudgeHub === 'function') {
+            renderNudgeHub();
+        }
 
         // Focus search and wire filter (once)
         const s = document.getElementById("shortcuts-search");
@@ -902,10 +920,329 @@ function toggleToastMode() {
     }
 }
 
+function toggleSoundMode() {
+    appState.soundEnabled = appState.soundEnabled === false ? true : false;
+    saveStateToStorage();
+    updateSoundToggleUI();
+    if (appState.soundEnabled && typeof window.playSound === 'function') {
+        window.playSound('success.soft');
+    }
+    if (typeof window.showToast === 'function') {
+        window.showToast(appState.soundEnabled ? "Synthesized UI Audio Enabled 🔊" : "Synthesized UI Audio Muted 🔇", "info");
+    }
+}
+
+function updateSoundToggleUI() {
+    const btn = document.getElementById("sound-toggle");
+    if (!btn) return;
+    const knob = document.getElementById("sound-toggle-knob");
+    const text = document.getElementById("sound-toggle-text");
+    if (appState.soundEnabled !== false) {
+        if (text) {
+            text.textContent = "Audio";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-blue-300 pointer-events-none select-none order-1 pl-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2";
+            knob.innerHTML = '<i class="fa-solid fa-volume-high text-blue-600 text-[8px]"></i>';
+        }
+        btn.classList.add("bg-blue-500/20", "border-blue-400/50");
+        btn.classList.remove("bg-white/5", "border-white/10");
+        btn.title = "Disable UI Audio [M]";
+    } else {
+        if (text) {
+            text.textContent = "Mute";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-gray-400 pointer-events-none select-none order-2 pr-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-1";
+            knob.innerHTML = '<i class="fa-solid fa-volume-xmark text-slate-700 text-[8px]"></i>';
+        }
+        btn.classList.remove("bg-blue-500/20", "border-blue-400/50");
+        btn.classList.add("bg-white/5", "border-white/10");
+        btn.title = "Enable UI Audio [M]";
+    }
+}
+
+function toggleFocusMode() {
+    appState.focusModeActive = !appState.focusModeActive;
+    saveStateToStorage();
+    updateFocusModeUI();
+    const focusBtnText = document.getElementById('ac-nudge-focus-btn-text');
+    if (focusBtnText) {
+        focusBtnText.textContent = appState.focusModeActive ? 'Deactivate Focus' : 'Start Focus Sprint';
+    }
+    if (appState.focusModeActive) {
+        if (typeof window.showToast === 'function') {
+            window.showToast("🎯 Deep Focus Mode Active — sounds and distractions silenced", "info");
+        }
+    } else {
+        if (typeof window.showToast === 'function') {
+            window.showToast("Focus Mode Deactivated", "info");
+        }
+        if (typeof window.playSound === 'function') {
+            window.playSound('checkbox');
+        }
+    }
+}
+
+function updateFocusModeUI() {
+    const btn = document.getElementById("focus-toggle");
+    if (!btn) return;
+    const knob = document.getElementById("focus-toggle-knob");
+    const text = document.getElementById("focus-toggle-text");
+    if (appState.focusModeActive) {
+        if (text) {
+            text.textContent = "Active";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-emerald-300 pointer-events-none select-none order-1 pl-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2";
+            knob.innerHTML = '<i class="fa-solid fa-crosshairs text-emerald-600 text-[8px]"></i>';
+        }
+        btn.classList.add("bg-emerald-500/20", "border-emerald-400/50");
+        btn.classList.remove("bg-white/5", "border-white/10");
+        btn.title = "Deactivate Focus Mode [F]";
+    } else {
+        if (text) {
+            text.textContent = "Focus";
+            text.className = "text-[9px] font-extrabold uppercase tracking-wider text-gray-400 pointer-events-none select-none order-2 pr-1";
+        }
+        if (knob) {
+            knob.className = "w-4 h-4 rounded-full bg-white flex items-center justify-center text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-1";
+            knob.innerHTML = '<i class="fa-solid fa-moon text-slate-700 text-[8px]"></i>';
+        }
+        btn.classList.remove("bg-emerald-500/20", "border-emerald-400/50");
+        btn.classList.add("bg-white/5", "border-white/10");
+        btn.title = "Activate Focus Mode [F]";
+    }
+}
+
+function switchActionCenterHub(tab) {
+    const tabHub = document.getElementById('ac-tab-hub');
+    const tabRewards = document.getElementById('ac-tab-rewards');
+    const tabNudge = document.getElementById('ac-tab-nudge');
+    const panelHub = document.getElementById('ac-panel-hub');
+    const panelRewards = document.getElementById('ac-panel-rewards');
+    const panelNudge = document.getElementById('ac-panel-nudge');
+
+    const activeCls = 'flex-1 py-1.5 px-2 rounded-xl text-xs font-black transition duration-200 text-white bg-blue-600 shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer';
+    const inactiveCls = 'flex-1 py-1.5 px-2 rounded-xl text-xs font-bold transition duration-200 text-gray-400 hover:text-white bg-transparent flex items-center justify-center gap-1.5 cursor-pointer';
+
+    if (tab === 'rewards') {
+        if (tabRewards) tabRewards.className = activeCls;
+        if (tabHub) tabHub.className = inactiveCls;
+        if (tabNudge) tabNudge.className = inactiveCls;
+        if (panelRewards) panelRewards.classList.remove('hidden');
+        if (panelHub) panelHub.classList.add('hidden');
+        if (panelNudge) panelNudge.classList.add('hidden');
+        renderRewardsHub();
+    } else if (tab === 'nudge') {
+        if (tabNudge) tabNudge.className = activeCls;
+        if (tabHub) tabHub.className = inactiveCls;
+        if (tabRewards) tabRewards.className = inactiveCls;
+        if (panelNudge) panelNudge.classList.remove('hidden');
+        if (panelHub) panelHub.classList.add('hidden');
+        if (panelRewards) panelRewards.classList.add('hidden');
+        renderNudgeHub();
+    } else {
+        if (tabHub) tabHub.className = activeCls;
+        if (tabRewards) tabRewards.className = inactiveCls;
+        if (tabNudge) tabNudge.className = inactiveCls;
+        if (panelHub) panelHub.classList.remove('hidden');
+        if (panelRewards) panelRewards.classList.add('hidden');
+        if (panelNudge) panelNudge.classList.add('hidden');
+    }
+
+    if (typeof window.playSound === 'function') {
+        window.playSound('checkbox');
+    }
+}
+
+function renderRewardsHub() {
+    const rewards = (window.appState && window.appState.rewards) ? window.appState.rewards : { coins: 0, points: 0, unlocked: [], equipped: { title: 'Aspirant' } };
+    
+    // Update header summary
+    const titleEl = document.getElementById('ac-rewards-title');
+    const coinsEl = document.getElementById('ac-rewards-coins');
+    const pointsEl = document.getElementById('ac-rewards-points');
+    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-crown text-amber-400 text-xs"></i><span>${window.escapeHTML ? window.escapeHTML(rewards.equipped?.title || 'Aspirant') : (rewards.equipped?.title || 'Aspirant')}</span>`;
+    if (coinsEl) coinsEl.textContent = rewards.coins || 0;
+    if (pointsEl) pointsEl.textContent = rewards.points || 0;
+
+    // Render Trophies in 9-dot launcher style (3-col grid)
+    const trophiesContainer = document.getElementById('ac-trophies-grid');
+    if (trophiesContainer && window.rewardsSystem) {
+        const list = window.rewardsSystem.evaluateTrophies();
+        trophiesContainer.innerHTML = list.map(t => {
+            const isClaimed = t.isClaimed;
+            const canClaim = t.canClaim;
+            const cardBg = isClaimed 
+                ? 'bg-slate-950/70 border-emerald-500/30' 
+                : (canClaim ? 'bg-blue-950/40 border-amber-400/60 ring-1 ring-amber-400/40' : 'bg-slate-950/50 border-white/10 opacity-70');
+
+            return `
+                <div class="relative group p-2.5 rounded-2xl border ${cardBg} transition-all duration-200 hover:scale-[1.02] flex flex-col items-center text-center justify-between min-h-[110px]" title="${window.escapeHTML ? window.escapeHTML(t.desc) : t.desc}">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br ${t.tierColor} flex items-center justify-center text-white text-xs shadow-md mb-1.5">
+                        <i class="fa-solid ${t.icon}"></i>
+                    </div>
+                    <div class="space-y-0.5 w-full">
+                        <span class="text-[9px] font-black uppercase tracking-wider ${t.tierText} block">${t.tier}</span>
+                        <h5 class="text-[11px] font-bold text-white truncate w-full" title="${window.escapeHTML ? window.escapeHTML(t.title) : t.title}">${window.escapeHTML ? window.escapeHTML(t.title) : t.title}</h5>
+                    </div>
+                    <div class="mt-2 w-full">
+                        ${isClaimed 
+                            ? `<span class="text-[9px] font-bold text-emerald-400 flex items-center justify-center gap-1"><i class="fa-solid fa-check text-[8px]"></i> Claimed</span>`
+                            : (canClaim 
+                                ? `<button type="button" onclick="claimTrophyReward('${t.id}')" class="w-full py-1 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[9px] font-black uppercase shadow-md transition cursor-pointer animate-pulse">Claim +${t.coins}🪙</button>`
+                                : `<span class="text-[9px] text-gray-500 font-semibold"><i class="fa-solid fa-lock text-[8px] mr-0.5"></i> Locked</span>`
+                              )
+                        }
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Render Collectible Stickers
+    const stickersContainer = document.getElementById('ac-stickers-grid');
+    if (stickersContainer && window.rewardsSystem) {
+        const stickers = window.rewardsSystem.catalog.stickers || [];
+        stickersContainer.innerHTML = stickers.map(s => `
+            <div class="p-2 rounded-2xl bg-slate-950/60 border border-white/10 flex flex-col items-center text-center gap-1 hover:border-cyan-400/40 transition group" title="${window.escapeHTML ? window.escapeHTML(s.desc) : s.desc}">
+                <span class="text-xl group-hover:scale-110 transition transform">${s.emoji}</span>
+                <span class="text-[10px] font-bold text-gray-300 truncate w-full">${window.escapeHTML ? window.escapeHTML(s.name) : s.name}</span>
+            </div>
+        `).join('');
+    }
+
+    // Render Cosmetic Shop
+    const cosmeticsContainer = document.getElementById('ac-cosmetics-grid');
+    if (cosmeticsContainer && window.rewardsSystem) {
+        const cosmetics = window.rewardsSystem.catalog.cosmetics || [];
+        const unlockedList = rewards.unlocked || [];
+        const equippedTitle = rewards.equipped?.title || 'Aspirant';
+        const equippedAccent = rewards.equipped?.themeAccent || 'accent_blue';
+
+        cosmeticsContainer.innerHTML = cosmetics.map(c => {
+            const isUnlocked = unlockedList.includes(c.id) || c.unlockedByDefault;
+            const isEquipped = (c.type === 'title' && equippedTitle === c.name) || (c.type === 'accent' && equippedAccent === c.id);
+
+            return `
+                <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/10 flex items-center justify-between gap-2">
+                    <div class="space-y-0.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded ${c.type === 'title' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300'}">${c.type}</span>
+                            <span class="text-xs font-bold text-white">${window.escapeHTML ? window.escapeHTML(c.name) : c.name}</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400">${window.escapeHTML ? window.escapeHTML(c.desc) : c.desc}</p>
+                    </div>
+                    <div class="shrink-0">
+                        ${isEquipped
+                            ? `<span class="px-2 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">Equipped</span>`
+                            : (isUnlocked
+                                ? `<button type="button" onclick="equipCosmeticItem('${c.id}')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold uppercase transition cursor-pointer">Equip</button>`
+                                : `<button type="button" onclick="unlockCosmeticItem('${c.id}')" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[10px] font-black uppercase shadow transition cursor-pointer flex items-center gap-1"><span>${c.cost}</span><span>🪙</span></button>`
+                              )
+                        }
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+function claimTrophyReward(id) {
+    if (window.rewardsSystem) {
+        window.rewardsSystem.claimTrophy(id);
+        renderRewardsHub();
+    }
+}
+
+function equipCosmeticItem(id) {
+    if (window.rewardsSystem) {
+        window.rewardsSystem.equipCosmetic(id);
+        renderRewardsHub();
+    }
+}
+
+function unlockCosmeticItem(id) {
+    if (window.rewardsSystem) {
+        window.rewardsSystem.unlockCosmetic(id);
+        renderRewardsHub();
+    }
+}
+
+function renderNudgeHub() {
+    const feed = document.getElementById('ac-nudge-feed');
+    const focusBtnText = document.getElementById('ac-nudge-focus-btn-text');
+    if (focusBtnText) {
+        focusBtnText.textContent = appState.focusModeActive ? 'Deactivate Focus' : 'Start Focus Sprint';
+    }
+
+    if (!feed) return;
+    if (!window.nudgeSystem) {
+        feed.innerHTML = '<p class="text-xs text-gray-500 text-center py-4">Nudge engine loading...</p>';
+        return;
+    }
+
+    const nudges = window.nudgeSystem.refreshNudges();
+    if (nudges.length === 0) {
+        feed.innerHTML = `
+            <div class="p-6 text-center space-y-2 bg-slate-950/40 rounded-2xl border border-white/5">
+                <i class="fa-solid fa-circle-check text-2xl text-emerald-400"></i>
+                <h5 class="text-xs font-bold text-white">All Clear!</h5>
+                <p class="text-[10px] text-gray-400">No overdue reviews, pending rituals, or alerts. You are operating at peak efficiency.</p>
+            </div>
+        `;
+        return;
+    }
+
+    feed.innerHTML = nudges.map(n => {
+        const priorityColors = {
+            critical: 'border-rose-500/40 bg-rose-950/20 text-rose-400',
+            important: 'border-amber-500/40 bg-amber-950/20 text-amber-400',
+            normal: 'border-blue-500/40 bg-blue-950/20 text-blue-400',
+            low: 'border-white/10 bg-slate-950/40 text-gray-400'
+        };
+        const badgeColor = priorityColors[n.priority] || priorityColors.normal;
+
+        return `
+            <div class="p-3 rounded-2xl border ${badgeColor} space-y-2 transition-all duration-200">
+                <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg ${n.iconColor || 'bg-white/10 text-white'} flex items-center justify-center text-xs shrink-0">
+                            <i class="fa-solid ${n.icon}"></i>
+                        </div>
+                        <div>
+                            <span class="text-[8px] font-black uppercase tracking-widest block opacity-75">${n.priority}</span>
+                            <h5 class="text-xs font-bold text-white">${window.escapeHTML ? window.escapeHTML(n.title) : n.title}</h5>
+                        </div>
+                    </div>
+                    <button type="button" onclick="window.nudgeSystem.snooze('${n.id}'); renderNudgeHub();" class="text-gray-400 hover:text-gray-200 text-[10px] p-1 transition cursor-pointer" title="Snooze for 1 hour">
+                        <i class="fa-solid fa-clock text-xs"></i>
+                    </button>
+                </div>
+                <p class="text-[11px] text-gray-300 pl-9">${window.escapeHTML ? window.escapeHTML(n.message) : n.message}</p>
+                <div class="pl-9 pt-1 flex items-center gap-2">
+                    <button type="button" onclick="window.nudgeSystem.executeAction('${n.id}')" class="px-3 py-1 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-[10px] font-black uppercase shadow-md transition cursor-pointer">
+                        ${window.escapeHTML ? window.escapeHTML(n.actionLabel) : n.actionLabel}
+                    </button>
+                    <button type="button" onclick="window.nudgeSystem.dismiss('${n.id}'); renderNudgeHub();" class="px-2.5 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-[10px] font-bold uppercase transition cursor-pointer">
+                        Dismiss
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
 function initTheme() {
     const themeBtn = document.getElementById("theme-toggle");
     const speechBtn = document.getElementById("speech-toggle");
     const toastBtn = document.getElementById("toast-toggle");
+    const soundBtn = document.getElementById("sound-toggle");
+    const focusBtn = document.getElementById("focus-toggle");
     
     // Bind help shortcuts close button
     const btnShortcutsClose = document.getElementById("btn-shortcuts-close");
@@ -1024,6 +1361,8 @@ function initTheme() {
     updateThemeToggleUI(appState.theme);
     updateSpeechToggleUI();
     updateToastToggleUI();
+    updateSoundToggleUI();
+    updateFocusModeUI();
     if (typeof updateHandSettingsUI === "function") updateHandSettingsUI();
     
     const bindToggleEvents = (btn, handler) => {
@@ -1042,13 +1381,15 @@ function initTheme() {
     bindToggleEvents(themeBtn, toggleThemeMode);
     bindToggleEvents(speechBtn, toggleSpeechMode);
     bindToggleEvents(toastBtn, toggleToastMode);
+    bindToggleEvents(soundBtn, toggleSoundMode);
+    bindToggleEvents(focusBtn, toggleFocusMode);
 
     // Bind touch events on toggle rows for mobile devices
     document.querySelectorAll(".ac-toggle-row").forEach(row => {
         row.style.cursor = "pointer";
         row.addEventListener("touchend", (e) => {
             if (e.target.closest("button")) return;
-            const innerToggle = row.querySelector("#theme-toggle, #speech-toggle, #toast-toggle");
+            const innerToggle = row.querySelector("#theme-toggle, #speech-toggle, #toast-toggle, #sound-toggle, #focus-toggle");
             if (innerToggle) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1163,6 +1504,13 @@ window.toggleToastMode = toggleToastMode;
 window.updateThemeToggleUI = updateThemeToggleUI;
 window.updateSpeechToggleUI = updateSpeechToggleUI;
 window.updateToastToggleUI = updateToastToggleUI;
+window.updateSoundToggleUI = updateSoundToggleUI;
+window.updateFocusModeUI = updateFocusModeUI;
+window.toggleSoundMode = toggleSoundMode;
+window.toggleFocusMode = toggleFocusMode;
+window.switchActionCenterHub = switchActionCenterHub;
+window.renderRewardsHub = renderRewardsHub;
+window.renderNudgeHub = renderNudgeHub;
 window.navigateTab = navigateToPage;
 
 // // Dual-Way QR Device Sync Handler
