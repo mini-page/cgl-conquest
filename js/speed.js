@@ -445,6 +445,10 @@ function generateDrillQuestion() {
             drillStreak = 0;
             consecutiveTimeoutsCount++;
             
+            if (typeof window.playSound === 'function') {
+                window.playSound('warning');
+            }
+
             const scoreEl = document.getElementById("drill-score");
 
             if (feedback) {
@@ -513,12 +517,18 @@ function checkDrillAnswer(chosenVal) {
             feedback.innerText = `Correct! Streak: ${drillStreak} 🔥`;
             feedback.className = "text-xs font-semibold text-accentGreen";
         }
+        if (typeof window.playSound === 'function') {
+            window.playSound(drillStreak > 0 && drillStreak % 5 === 0 ? 'achievement' : 'correct');
+        }
         speakText("Correct");
     } else {
         drillStreak = 0;
         if (feedback) {
             feedback.innerText = `Incorrect! Answer was ${drillAnswerVal} ❌`;
             feedback.className = "text-xs font-semibold text-accentRose";
+        }
+        if (typeof window.playSound === 'function') {
+            window.playSound('wrong');
         }
         speakText("Wrong answer");
     }
@@ -866,6 +876,17 @@ function endChallengeRun(completed = false, aborted = false) {
         if (pass) {
             speakText("Conquest cleared");
             if (window.triggerConfetti) window.triggerConfetti();
+            if (window.rewardsSystem && typeof window.rewardsSystem.recordActivity === 'function') {
+                window.rewardsSystem.recordActivity({
+                    type: 'speed',
+                    dedupKey: `speed_run_${Date.now()}`,
+                    minCooldown: 10000,
+                    title: `Conquest Run (${challengeScore}/25 - Cleared)`,
+                    xp: 120,
+                    coins: 50,
+                    stars: 2
+                });
+            }
             if (window.showCustomAlert) {
                 window.showCustomAlert({
                     title: "🔥 CONQUEST RUN CLEARED!",
@@ -893,6 +914,17 @@ function endChallengeRun(completed = false, aborted = false) {
             }
         } else {
             speakText("Cutoff not cleared");
+            if (window.rewardsSystem && typeof window.rewardsSystem.recordActivity === 'function') {
+                window.rewardsSystem.recordActivity({
+                    type: 'speed',
+                    dedupKey: `speed_run_${Date.now()}`,
+                    minCooldown: 10000,
+                    title: `Conquest Run (${challengeScore}/25)`,
+                    xp: 50,
+                    coins: 20,
+                    stars: 0
+                });
+            }
             if (window.showCustomAlert) {
                 window.showCustomAlert({
                     title: "❌ Conquest Run Finished",
@@ -988,6 +1020,7 @@ function initSpeedDrillsPage() {
     if (pauseBtn) {
         pauseBtn.onclick = () => {
             if (isChallengeActive) return;
+            if (typeof window.playSound === 'function') window.playSound('click');
             if (drillIsPlaying) {
                 drillIsPlaying = false;
                 pauseBtn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Resume</span>`;
@@ -1042,6 +1075,7 @@ function initSpeedDrillsPage() {
     const inlineStopBtn = document.getElementById("btn-drill-stop");
     if (inlineStopBtn) {
         inlineStopBtn.onclick = () => {
+            if (typeof window.playSound === 'function') window.playSound('warning');
             if (isChallengeActive) {
                 endChallengeRun(false, true); // Abort challenge
             } else {
@@ -1055,6 +1089,7 @@ function initSpeedDrillsPage() {
     const inlineResumeBtn = document.getElementById("btn-drill-resume");
     if (inlineResumeBtn) {
         inlineResumeBtn.onclick = () => {
+            if (typeof window.playSound === 'function') window.playSound('click');
             const pauseBtn = document.getElementById("btn-drill-pause");
             if (pauseBtn) pauseBtn.click();
         };
@@ -1206,9 +1241,28 @@ function initCustomTooltips() {
         }
     }
 
+    function updateActiveCustomTooltip(target, newText) {
+        if (!tooltipEl || !tooltipEl.classList.contains("active")) return;
+        if (activeTarget && (activeTarget === target || target.contains(activeTarget) || activeTarget.contains(target))) {
+            tooltipEl.innerText = newText;
+        }
+    }
+    window.updateActiveCustomTooltip = updateActiveCustomTooltip;
+
     function showTooltip(target) {
-        if (isScrolling) return;
-        const tipText = target.getAttribute("data-tooltip") || target.getAttribute("data-title-backup");
+        if (isScrolling || !target) return;
+        let tipText = target.getAttribute("data-tooltip") || target.getAttribute("data-title-backup");
+        
+        // Dynamically compute live countdown string for target pill / button
+        if (typeof window.getExamCountdownData === 'function' && (target.id === 'btn-edit-exam-target' || target.closest('#btn-edit-exam-target') || target.id === 'countdown-timer')) {
+            const cd = window.getExamCountdownData();
+            const formattedDate = (typeof formatDateReadable === 'function' && typeof appState !== 'undefined' && appState.examDate)
+                ? formatDateReadable(appState.examDate)
+                : (cd.examDate || "Target Date");
+            const statusText = cd.reached ? "Target Reached!" : `Remaining: ${cd.formattedFull}`;
+            tipText = `🎯 ${cd.examName} (${formattedDate})\n⏱️ ${statusText}\n✏️ Click to change date`;
+        }
+
         if (!tipText) return;
         
         tooltipEl.innerText = tipText;
@@ -1361,5 +1415,47 @@ function initCustomTooltips() {
 
 
 // Expose functions globally
+function cycleDrillMode(dir) {
+    if (isChallengeActive) return false;
+    const modeTabs = Array.from(document.querySelectorAll(".speed-tab-btn"));
+    if (!modeTabs.length) return false;
+    let currIdx = modeTabs.findIndex(t => t.classList.contains("active-nav-tab"));
+    if (currIdx === -1) currIdx = 0;
+    let nextIdx = currIdx + dir;
+    if (nextIdx < 0) nextIdx = modeTabs.length - 1;
+    if (nextIdx >= modeTabs.length) nextIdx = 0;
+    modeTabs[nextIdx].click();
+    modeTabs[nextIdx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    if (typeof window.playSound === 'function') window.playSound('click');
+    return true;
+}
+window.cycleDrillMode = cycleDrillMode;
+
+function selectDrillCategory(modeKey) {
+    const targetTab = document.querySelector(`.speed-tab-btn[data-mode="${modeKey}"]`);
+    if (targetTab) {
+        targetTab.click();
+        targetTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        const unifiedCard = document.getElementById("unified-drill-card");
+        if (unifiedCard) {
+            unifiedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+}
+window.selectDrillCategory = selectDrillCategory;
+
+function setDrillDifficulty(level) {
+    const selectLevel = document.getElementById("select-maths-level");
+    if (selectLevel && selectLevel.value !== level) {
+        selectLevel.value = level;
+        resetDrillSession();
+        generateDrillQuestion();
+        if (typeof window.showToastNotification === 'function') {
+            window.showToastNotification(`Difficulty set to ${level.toUpperCase()}`);
+        }
+    }
+}
+window.setDrillDifficulty = setDrillDifficulty;
+
 window.initCustomTooltips = initCustomTooltips;
 window.initSpeedDrillsPage = initSpeedDrillsPage;

@@ -31,6 +31,7 @@
             w: state.weakAlerts || {},
             srs: state.srsRecords || {},
             cd: Number(state.currentDay) || 1,
+            dc: Number(state.dayCounter) || 1,
             ed: state.examDate || '2026-08-15',
             en: state.examName || 'Conquest',
             et: Number(state.examTier) || 1,
@@ -38,22 +39,71 @@
             la: state.lastActiveDate || '',
             dr: state.dailyRituals || { drill: false, vocab: false, ca: false, computer: false },
             th: state.theme || 'dark',
-            mh: state.mobileNavHand || 'right',
+            mh: state.mobileNavHand || 'center',
             spk: state.speechEnabled !== false,
             tst: state.toastEnabled !== false,
             snd: state.soundEnabled !== false,
+            foc: Boolean(state.focusModeActive),
             rew: state.rewards ? {
                 c: Number(state.rewards.coins) || 0,
                 p: Number(state.rewards.points) || 0,
-                u: Array.isArray(state.rewards.unlocked) ? state.rewards.unlocked : [],
+                s: Number(state.rewards.stars) || 0,
+                u: Array.isArray(state.rewards.unlockedCosmics) ? state.rewards.unlockedCosmics : (Array.isArray(state.rewards.unlocked) ? state.rewards.unlocked : ['title_aspirant', 'accent_blue']),
                 ct: Array.isArray(state.rewards.claimedTrophies) ? state.rewards.claimedTrophies : [],
-                eq: state.rewards.equipped || { title: 'Aspirant', themeAccent: 'accent_blue' }
+                stk: Array.isArray(state.rewards.unlockedStickers) ? state.rewards.unlockedStickers : [],
+                eqs: state.rewards.equippedSticker || '',
+                eq: state.rewards.equipped || { title: 'Aspirant', themeAccent: 'accent_blue' },
+                pw: state.rewards.powers || {},
+                act: Array.isArray(state.rewards.todayActivity) ? state.rewards.todayActivity.slice(0, 10) : [],
+                pen: Array.isArray(state.rewards.penalties) ? state.rewards.penalties.slice(0, 5) : []
             } : undefined
+        };
+    }
+
+    function extractRewardsOnlyPayload(state) {
+        return {
+            v: 2,
+            type: 'rewards_only',
+            t: Date.now(),
+            st: Number(state.streak) || 0,
+            c: Number(state.rewards?.coins) || 0,
+            p: Number(state.rewards?.points) || 0,
+            s: Number(state.rewards?.stars) || 0,
+            u: Array.isArray(state.rewards?.unlockedCosmics) ? state.rewards.unlockedCosmics : (Array.isArray(state.rewards?.unlocked) ? state.rewards.unlocked : ['title_aspirant', 'accent_blue']),
+            ct: Array.isArray(state.rewards?.claimedTrophies) ? state.rewards.claimedTrophies : [],
+            stk: Array.isArray(state.rewards?.unlockedStickers) ? state.rewards.unlockedStickers : [],
+            eqs: state.rewards?.equippedSticker || '',
+            eq: state.rewards?.equipped || { title: 'Aspirant', themeAccent: 'accent_blue' },
+            pw: state.rewards?.powers || {},
+            act: Array.isArray(state.rewards?.todayActivity) ? state.rewards.todayActivity.slice(0, 10) : [],
+            pen: Array.isArray(state.rewards?.penalties) ? state.rewards.penalties.slice(0, 5) : []
         };
     }
 
     function expandCompactPayload(raw) {
         if (!raw || typeof raw !== 'object') return raw;
+
+        if (raw.v === 2 && raw.type === 'rewards_only') {
+            return {
+                _isRewardsOnlySync: true,
+                streak: Number(raw.st) || 0,
+                rewards: {
+                    coins: Number(raw.c) || 0,
+                    points: Number(raw.p) || 0,
+                    stars: Number(raw.s) || 0,
+                    unlockedCosmics: Array.isArray(raw.u) ? raw.u : ['title_aspirant', 'accent_blue'],
+                    unlocked: Array.isArray(raw.u) ? raw.u : ['title_aspirant', 'accent_blue'],
+                    claimedTrophies: Array.isArray(raw.ct) ? raw.ct : [],
+                    unlockedStickers: Array.isArray(raw.stk) ? raw.stk : [],
+                    equippedSticker: raw.eqs || '',
+                    equipped: raw.eq || { title: 'Aspirant', themeAccent: 'accent_blue' },
+                    powers: raw.pw || {},
+                    todayActivity: Array.isArray(raw.act) ? raw.act : [],
+                    penalties: Array.isArray(raw.pen) ? raw.pen : []
+                }
+            };
+        }
+
         if (raw.v === 1) {
             const expandedSyllabus = {};
             // Initialize from SYLLABUS_DATA if present
@@ -90,6 +140,7 @@
                 weakAlerts: raw.w && typeof raw.w === 'object' ? raw.w : {},
                 srsRecords: raw.srs && typeof raw.srs === 'object' ? raw.srs : {},
                 currentDay: Number(raw.cd) || 1,
+                dayCounter: Number(raw.dc) || Number(raw.cd) || 1,
                 examDate: raw.ed || '2026-08-15',
                 examName: raw.en || 'Conquest',
                 examTier: Number(raw.et) || 1,
@@ -97,22 +148,37 @@
                 lastActiveDate: raw.la || '',
                 dailyRituals: raw.dr && typeof raw.dr === 'object' ? raw.dr : { drill: false, vocab: false, ca: false, computer: false },
                 theme: raw.th || 'dark',
-                mobileNavHand: raw.mh || 'right',
+                mobileNavHand: raw.mh || 'center',
                 speechEnabled: raw.spk !== false,
                 toastEnabled: raw.tst !== false,
                 soundEnabled: raw.snd !== undefined ? (raw.snd !== false) : true,
+                focusModeActive: Boolean(raw.foc),
                 rewards: raw.rew ? {
                     coins: Number(raw.rew.c) || 0,
                     points: Number(raw.rew.p) || 0,
+                    stars: Number(raw.rew.s) || 0,
+                    unlockedCosmics: Array.isArray(raw.rew.u) ? raw.rew.u : ['title_aspirant', 'accent_blue'],
                     unlocked: Array.isArray(raw.rew.u) ? raw.rew.u : ['title_aspirant', 'accent_blue'],
                     claimedTrophies: Array.isArray(raw.rew.ct) ? raw.rew.ct : [],
-                    equipped: raw.rew.eq || { title: 'Aspirant', themeAccent: 'accent_blue' }
+                    unlockedStickers: Array.isArray(raw.rew.stk) ? raw.rew.stk : [],
+                    equippedSticker: raw.rew.eqs || '',
+                    equipped: raw.rew.eq || { title: 'Aspirant', themeAccent: 'accent_blue' },
+                    powers: raw.rew.pw || {},
+                    todayActivity: Array.isArray(raw.rew.act) ? raw.rew.act : [],
+                    penalties: Array.isArray(raw.rew.pen) ? raw.rew.pen : []
                 } : {
                     coins: 0,
                     points: 0,
+                    stars: 0,
+                    unlockedCosmics: ['title_aspirant', 'accent_blue'],
                     unlocked: ['title_aspirant', 'accent_blue'],
                     claimedTrophies: [],
-                    equipped: { title: 'Aspirant', themeAccent: 'accent_blue' }
+                    unlockedStickers: [],
+                    equippedSticker: '',
+                    equipped: { title: 'Aspirant', themeAccent: 'accent_blue' },
+                    powers: {},
+                    todayActivity: [],
+                    penalties: []
                 }
             };
         }
@@ -131,6 +197,7 @@
             this.animFrameId = null;
             this.currentPayload = '';
             this.scannedState = null;
+            this.syncMode = 'full'; // 'full' or 'rewards'
 
             this._ensureDependencies();
             this._buildDOM();
@@ -233,7 +300,7 @@
                         </div>
                         <div>
                             <h3 class="font-heading font-black text-sm text-white uppercase tracking-wider">Conquest Sync</h3>
-                            <p class="text-[10px] text-gray-400">P2P Encrypted Data Transfer</p>
+                            <p class="text-[10px] text-gray-400">P2P Encrypted Full System Sync</p>
                         </div>
                     </div>
 
@@ -301,7 +368,7 @@
                         <div class="bg-white p-3 rounded-2xl max-w-[260px] w-full mx-auto shadow-2xl flex items-center justify-center aspect-square transition-all duration-300" id="qr-code-canvas-container">
                             <span class="text-xs text-gray-500 font-mono">Generating QR...</span>
                         </div>
-                        <p class="text-center text-[10px] text-gray-400 font-medium max-w-xs">Scan with any mobile device to replicate entire progress instantly.</p>
+                        <p id="qr-sync-mode-desc" class="text-center text-[10px] text-gray-400 font-medium max-w-xs">Scan with any mobile device to replicate entire progress and rewards instantly.</p>
                         
                         <!-- Floating Action Toolbar Dock (Responsive Pill) -->
                         <div id="qr-actions-toolbar" class="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-2 max-w-full transition-all duration-300">
@@ -945,6 +1012,38 @@
             confirmPanel.classList.remove('hidden');
 
             const statsContainer = this.card.querySelector('#qr-confirm-stats');
+            const warnText = confirmPanel.querySelector('p.text-amber-300');
+
+            if (state._isRewardsOnlySync) {
+                const rew = state.rewards || {};
+                statsContainer.innerHTML = `
+                    <div class="p-2 bg-black/40 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block">Mode</span>
+                        <span class="font-extrabold text-blue-400">Rewards Modular Sync</span>
+                    </div>
+                    <div class="p-2 bg-black/40 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block">Coins & Stars</span>
+                        <span class="font-extrabold text-amber-400">🪙 ${rew.coins || 0} • ⭐ ${rew.stars || 0}</span>
+                    </div>
+                    <div class="p-2 bg-black/40 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block">Trophies Claimed</span>
+                        <span class="font-extrabold text-purple-400">${(rew.claimedTrophies || []).length} Trophies</span>
+                    </div>
+                    <div class="p-2 bg-black/40 rounded-xl border border-white/5">
+                        <span class="text-[9px] text-gray-400 uppercase block">Current Streak</span>
+                        <span class="font-extrabold text-rose-400">🔥 ${state.streak || 0} Days</span>
+                    </div>
+                `;
+                if (warnText) {
+                    warnText.textContent = '✨ Merging will update your Coins, Trophies, Powers & Streak while preserving your syllabus progress.';
+                }
+                return;
+            }
+
+            if (warnText) {
+                warnText.textContent = '⚠️ Merging will synchronize all data with the incoming payload.';
+            }
+
             const mocksCount = (state.mocks || []).length;
             const notesCount = (state.notes || state.customNotes || []).length;
             const examName = state.examName || state.targetExamName || 'Conquest';
@@ -1010,9 +1109,10 @@
     if (typeof window !== 'undefined') {
         window.QrSyncModal = QrSyncModal;
         window.extractCompactPayload = extractCompactPayload;
+        window.extractRewardsOnlyPayload = extractRewardsOnlyPayload;
         window.expandCompactPayload = expandCompactPayload;
     }
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = { QrSyncModal, extractCompactPayload, expandCompactPayload };
+        module.exports = { QrSyncModal, extractCompactPayload, extractRewardsOnlyPayload, expandCompactPayload };
     }
 })();

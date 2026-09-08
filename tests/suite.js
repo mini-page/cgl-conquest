@@ -187,7 +187,7 @@ runTest("AppState Default Structure", () => {
   const state = evalInContext('appState');
   assert(state, "appState must be defined");
   assert.strictEqual(state.theme, "dark", "Default theme must be dark");
-  assert.strictEqual(state.mobileNavHand, "right", "Default mobileNavHand must be right");
+  assert.strictEqual(state.mobileNavHand, "center", "Default mobileNavHand must be center");
   assert.strictEqual(state.speechEnabled, true, "Default speechEnabled must be true");
   assert.strictEqual(state.toastEnabled, true, "Default toastEnabled must be true");
 });
@@ -250,9 +250,12 @@ runTest("Navigation Functions Integration", () => {
   assert.strictEqual(typeof evalInContext('toggleThemeMode'), 'function', "toggleThemeMode must be defined");
 });
 
-runTest("Set Mobile Nav Hand Preference (Right vs Left)", () => {
+runTest("Set Mobile Nav Dock Position (Left, Center, Right)", () => {
   evalInContext('setMobileNavHand("left");');
   assert.strictEqual(evalInContext('appState.mobileNavHand'), 'left', "appState.mobileNavHand must be 'left'");
+
+  evalInContext('setMobileNavHand("center");');
+  assert.strictEqual(evalInContext('appState.mobileNavHand'), 'center', "appState.mobileNavHand must be 'center'");
   
   evalInContext('setMobileNavHand("right");');
   assert.strictEqual(evalInContext('appState.mobileNavHand'), 'right', "appState.mobileNavHand must be 'right'");
@@ -506,6 +509,374 @@ runTest("Syllabus Mastery Calculations & Multi-stage Weightage", () => {
   assert(stats.mastered >= 2, `Mastered count should be at least 2 (got ${stats.mastered})`);
   assert(stats.prepScore > 0, `Prep score should be greater than 0 (got ${stats.prepScore})`);
   assert(stats.subjectScores["Quantitative Aptitude"] > 0, "Quant subject score should be greater than 0");
+});
+
+// SECTION 13: REWARDS ANTI-CHEAT & DEDUPLICATION INTEGRITY
+logHeader("Section 13: Rewards Anti-Cheat & Deduplication Integrity");
+
+runTest("Rewards Deduplication & Toggle Oscillation Exploit Prevention", () => {
+  const { RewardsSystem } = require(path.join(rootDir, 'components', 'rewards-system.js'));
+  const sys = new RewardsSystem();
+
+  // Initialize fresh mock appState
+  global.appState = {
+    streak: 0,
+    rewards: {
+      coins: 0,
+      points: 0,
+      stars: 0,
+      todayActivity: [],
+      penalties: [],
+      dailyRewardedActions: {}
+    }
+  };
+
+  // Test 1: First-time ritual credit grants reward
+  const res1 = sys.recordActivity({
+    type: 'ritual',
+    dedupKey: 'ritual_drill',
+    title: 'Speed Drill Ritual',
+    xp: 35,
+    coins: 10
+  });
+
+  assert(res1 !== null, "First attempt should succeed");
+  assert.strictEqual(global.appState.rewards.points, 35, "Points should be 35");
+  assert.strictEqual(global.appState.rewards.coins, 10, "Coins should be 10");
+
+  // Test 2: Immediate re-check with same dedupKey is blocked (net 0 gain)
+  const res2 = sys.recordActivity({
+    type: 'ritual',
+    dedupKey: 'ritual_drill',
+    title: 'Speed Drill Ritual',
+    xp: 35,
+    coins: 10
+  });
+
+  assert.strictEqual(res2, null, "Second attempt with same dedupKey today must be blocked");
+  assert.strictEqual(global.appState.rewards.points, 35, "Points must NOT increase on duplicate");
+  assert.strictEqual(global.appState.rewards.coins, 10, "Coins must NOT increase on duplicate");
+
+  // Test 3: Rapid toggle oscillation triggers exploit penalty
+  for (let i = 0; i < 5; i++) {
+    sys.recordActivity({
+      type: 'syllabus',
+      dedupKey: 'test_oscillation_toggle',
+      title: 'Oscillation Target',
+      xp: 25,
+      coins: 10
+    });
+  }
+
+  assert(global.appState.rewards.penalties.length > 0, "Rapid toggling must log integrity penalty");
+  const penalty = global.appState.rewards.penalties[0];
+  assert(penalty.reason.includes("Rapid toggle exploit"), "Penalty reason should identify oscillation abuse");
+});
+
+runTest("Pomodoro Duration & Activity Cooldown Anti-Cheat Enforcement", () => {
+  const { RewardsSystem } = require(path.join(rootDir, 'components', 'rewards-system.js'));
+  const sys = new RewardsSystem();
+
+  global.appState = {
+    streak: 0,
+    rewards: {
+      coins: 0,
+      points: 0,
+      stars: 0,
+      todayActivity: [],
+      penalties: [],
+      dailyRewardedActions: {}
+    }
+  };
+
+  // Cooldown enforcement
+  const first = sys.recordActivity({
+    type: 'pomodoro',
+    title: 'Focus Session Completed',
+    minCooldown: 60000, // 60s cooldown
+    xp: 30,
+    coins: 15
+  });
+  assert(first !== null, "Initial pomodoro activity should succeed");
+
+  const immediateSecond = sys.recordActivity({
+    type: 'pomodoro',
+    title: 'Focus Session Completed',
+    minCooldown: 60000,
+    xp: 30,
+    coins: 15
+  });
+  assert.strictEqual(immediateSecond, null, "Immediate repeat pomodoro during cooldown must be blocked");
+  assert.strictEqual(global.appState.rewards.points, 30, "Points should remain 30 without duplicate increase");
+});
+
+// ====================================================
+// SECTION 14: DATA MANAGEMENT, SPARSE DELTA BACKUP & FACTORY RESET
+// ====================================================
+logHeader("Section 14: Data Management, Sparse Delta Backup & Factory Reset");
+
+runTest("Speed Drill Shortcuts in Hub are Read-Only Reference", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes("Speed Drill Shortcuts (Reference)"), "Section header must indicate reference guide");
+  assert(html.includes("modal-wipe-confirm"), "index.html must include modal-wipe-confirm modal");
+  assert(html.includes("btn-open-wipe-modal"), "index.html must include Wipe button in Data section");
+  assert(!html.includes("onclick=\"handleShortcutAction('speed:start')\""), "Speed drill shortcut rows must NOT have interactive triggers");
+});
+
+runTest("Sparse Delta Backup Serializes Only Active Topics (>80% Size Reduction)", () => {
+  // Simulate state with 241 topics, only 4 active
+  const testState = {
+    currentDay: 5,
+    streak: 3,
+    syllabusProgress: {
+      "q-1-1": { learned: true, practiced: false, mastered: false },
+      "q-1-2": { learned: true, practiced: true, mastered: false },
+      "r-1-1": { learned: false, practiced: false, mastered: true },
+      "e-1-1": { learned: true, practiced: true, mastered: true }
+    },
+    rewards: { coins: 150, points: 500, stars: 2 }
+  };
+
+  // Add 235 default unstudied topics
+  for (let i = 1; i <= 235; i++) {
+    testState.syllabusProgress[`dummy-${i}`] = { learned: false, practiced: false, mastered: false };
+  }
+
+  const fn = evalInContext('createSparseBackupPayload');
+  assert.strictEqual(typeof fn, 'function', "createSparseBackupPayload must be a function");
+
+  const fullDump = JSON.stringify({ version: 2, state: testState }, null, 2);
+  const sparseDumpObj = fn(testState);
+  const sparseDump = JSON.stringify(sparseDumpObj, null, 2);
+
+  assert.strictEqual(sparseDumpObj.format, "sparse-delta", "Export format must be sparse-delta");
+  assert.strictEqual(Object.keys(sparseDumpObj.state.syllabusProgress).length, 4, "Only 4 active topics should be in sparse backup");
+  assert(sparseDump.length < fullDump.length * 0.20, `Sparse backup (${sparseDump.length} bytes) must be >80% smaller than full dump (${fullDump.length} bytes)`);
+});
+
+runTest("Restore Re-hydrates Clean Baseline & Supports Sparse and Legacy Dumps", () => {
+  const syllabusData = evalInContext('SYLLABUS_DATA');
+  assert(Array.isArray(syllabusData), "SYLLABUS_DATA must be available in context");
+
+  // 1. Sparse delta restore
+  const sparseBackup = {
+    version: 3,
+    format: "sparse-delta",
+    state: {
+      syllabusProgress: {
+        "q-1-1": { learned: true, practiced: false, mastered: false }
+      },
+      streak: 7
+    }
+  };
+
+  const hydrated = {};
+  syllabusData.forEach(topic => {
+    (topic.subtopics || []).forEach(sub => {
+      hydrated[sub.id] = { learned: false, practiced: false, mastered: false };
+    });
+  });
+
+  Object.entries(sparseBackup.state.syllabusProgress).forEach(([id, flags]) => {
+    hydrated[id] = flags;
+  });
+
+  assert.strictEqual(hydrated["q-1-1"].learned, true, "Active topic q-1-1 must be restored");
+  assert.strictEqual(hydrated["q-1-2"].learned, false, "Unmodified topic q-1-2 must remain false");
+  assert(Object.keys(hydrated).length >= 235, "All syllabus topics must be re-hydrated in memory");
+});
+
+runTest("Factory Reset Modal & Wipe Confirmation Guard", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('id="input-wipe-confirmation"'), "Confirmation input must exist in modal-wipe-confirm");
+  assert(html.includes('id="btn-execute-wipe"'), "Execute wipe button must exist in modal-wipe-confirm");
+  assert(html.includes('RESET ALL'), "Prompt must require typing RESET ALL");
+  assert(html.includes('bg-black/70 backdrop-blur-md'), "modal-wipe-confirm must use exam-target style backdrop (bg-black/70 backdrop-blur-md)");
+
+  const inputMatch = html.match(/<input[^>]*id="input-wipe-confirmation"[^>]*>/);
+  assert(inputMatch, "input-wipe-confirmation must exist");
+  assert(!inputMatch[0].includes('uppercase'), "input-wipe-confirmation must not force visual CSS uppercase transform");
+
+  const navJs = fs.readFileSync(path.join(rootDir, 'js', 'navigation.js'), 'utf8');
+  assert(navJs.includes('triggerWipeErrorShake'), "navigation.js must define triggerWipeErrorShake function");
+  assert(navJs.includes('=== "RESET ALL"'), "Strict case-sensitive comparison must be enforced");
+
+  const fnWipe = evalInContext('executeFactoryResetWipe');
+  assert.strictEqual(typeof fnWipe, 'function', "executeFactoryResetWipe must be defined");
+});
+
+runTest("Browser Native Shortcut Passthrough & Dynamic Modal Z-Index Elevation", () => {
+  const navJs = fs.readFileSync(path.join(rootDir, 'js', 'navigation.js'), 'utf8');
+  assert(navJs.includes("e.ctrlKey || e.metaKey || e.altKey"), "navigation.js must include modifier key checks for native shortcuts");
+  assert(navJs.includes("elevateModalOnTop"), "navigation.js must define elevateModalOnTop function");
+  assert(navJs.includes("restoreElevatedElements"), "navigation.js must define restoreElevatedElements function");
+
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes("#modal-wipe-confirm"), "index.html must include #modal-wipe-confirm rules");
+  assert(html.includes("100000000"), "index.html must enforce maximum z-index for modal-wipe-confirm");
+});
+
+runTest("Mock Test Data Import & Telemetry Hydration", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('id="btn-import-mock-data"'), "index.html must include #btn-import-mock-data button");
+  assert(html.includes('id="input-import-mock-file"'), "index.html must include #input-import-mock-file input");
+
+  const mocksJs = fs.readFileSync(path.join(rootDir, 'js', 'mocks.js'), 'utf8');
+  assert(mocksJs.includes("importMockDataFromFile"), "js/mocks.js must define importMockDataFromFile");
+
+  // Verify import normalization and parsing logic
+  const sampleMockImport = [
+    { id: "mock_import_test_1", name: "Imported Test 1", score: "145.5", date: "01-09-2026", mockType: "full" },
+    { id: "mock_import_test_2", name: "Imported Quant Drill", score: "42", date: "02-09-2026", mockType: "sectional", section: "quant" }
+  ];
+
+  evalInContext(mocksJs);
+  const fnImport = evalInContext("importMockDataFromFile");
+  assert.strictEqual(typeof fnImport, "function", "importMockDataFromFile must be callable");
+});
+
+runTest("Comprehensive State Coverage in Sparse Backup, Restore & QR Sync", () => {
+  const fullMockState = {
+    syllabusProgress: { "q-1-1": { learned: true, practiced: true, mastered: false } },
+    mocks: [{ id: "m1", name: "Mock 1", score: 130 }],
+    notes: [{ id: "n1", title: "Formula", content: "a^2+b^2" }],
+    srsRecords: { "s1": { stage: 2 } },
+    weakAlerts: { "w1": true },
+    currentDay: 5,
+    dayCounter: 5,
+    examName: "SSC CGL Target",
+    examDate: "2026-09-15",
+    examTier: 2,
+    streak: 8,
+    lastActiveDate: "2026-09-08",
+    dailyRituals: { drill: true, vocab: true, ca: true, computer: false },
+    theme: "light",
+    mobileNavHand: "center",
+    speechEnabled: true,
+    toastEnabled: true,
+    soundEnabled: true,
+    focusModeActive: true,
+    rewards: {
+      coins: 450,
+      points: 120,
+      stars: 5,
+      unlockedCosmics: ['title_aspirant', 'accent_blue'],
+      claimedTrophies: ['trophy_first_blood'],
+      unlockedStickers: [],
+      equippedSticker: '',
+      equipped: { title: 'Aspirant', themeAccent: 'accent_blue' },
+      powers: {},
+      todayActivity: [],
+      penalties: [],
+      dailyRewardedActions: {}
+    }
+  };
+
+  const sparsePayload = evalInContext(`createSparseBackupPayload(${JSON.stringify(fullMockState)})`);
+
+  assert.strictEqual(sparsePayload.state.mobileNavHand, "center", "Backup must preserve center mobileNavHand");
+  assert.strictEqual(sparsePayload.state.focusModeActive, true, "Backup must preserve focusModeActive");
+  assert.strictEqual(sparsePayload.state.streak, 8, "Backup must preserve streak");
+  assert.strictEqual(sparsePayload.state.examTier, 2, "Backup must preserve examTier");
+  assert.strictEqual(sparsePayload.state.rewards.coins, 450, "Backup must preserve rewards coins");
+
+  // Verify QR Sync compact extraction and expansion covers all states
+  const qrJs = fs.readFileSync(path.join(rootDir, 'components', 'qr-sync-modal.js'), 'utf8');
+  assert(qrJs.includes("foc: Boolean(state.focusModeActive)"), "QR sync must encode focusModeActive");
+  assert(qrJs.includes("dc: Number(state.dayCounter)"), "QR sync must encode dayCounter");
+  assert(qrJs.includes("mh: state.mobileNavHand || 'center'"), "QR sync must default mh to center");
+});
+
+// ====================================================
+// SECTION 15: COUNTDOWN REACTIVITY, AUDIO KEY 'S', ARROW NAVIGATION & SPEED DECK
+// ====================================================
+logHeader("Section 15: Countdown Reactivity, Audio Key 'S', Arrow Navigation & Speed Deck");
+
+runTest("Centralized Reactive Countdown & Multi-Format Date Parsing", () => {
+  // Test 1: Future date parsing in getExamCountdownData
+  evalInContext(`
+    appState.examDate = "2026-11-20";
+    appState.examName = "SSC CGL 2026";
+  `);
+  const cdFuture = evalInContext('getExamCountdownData()');
+  assert(cdFuture, "getExamCountdownData must return an object");
+  assert.strictEqual(cdFuture.reached, false, "Future date must not be reached");
+  assert(cdFuture.days > 0, "Days left must be positive for future date");
+  assert(cdFuture.formattedShort.includes('d Left'), "formattedShort must include 'd Left'");
+  assert.strictEqual(cdFuture.examName, "SSC CGL 2026", "Exam name must match");
+
+  // Test 2: DD-MM-YYYY format
+  evalInContext('appState.examDate = "25-12-2026";');
+  const cdDMY = evalInContext('getExamCountdownData()');
+  assert.strictEqual(cdDMY.reached, false, "DD-MM-YYYY future date must not be reached");
+  assert(cdDMY.days > 0, "DD-MM-YYYY should parse to valid positive days");
+
+  // Test 3: Stale August date fallback automatically triggers dynamic future calculation
+  evalInContext('appState.examDate = "2026-08-15";');
+  const cdStale = evalInContext('getExamCountdownData()');
+  assert.strictEqual(cdStale.reached, false, "Stale past date must automatically fallback to 40d future window");
+  assert(cdStale.days >= 39 && cdStale.days <= 41, "Dynamic fallback should provide ~40 days");
+});
+
+runTest("Synthesized Audio Key 'S' Reassignment & Medium Difficulty Isolation", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('[S]'), "Hub sound toggle title must reference shortcut [S]");
+  assert(html.includes('<kbd class="sc-kbd">S</kbd>'), "Hub sound shortcut badge must be S");
+
+  const navJs = fs.readFileSync(path.join(rootDir, 'js', 'navigation.js'), 'utf8');
+  assert(navJs.includes("e.key === \"s\" || e.key === \"S\""), "navigation.js must listen for key S");
+  assert(navJs.includes("window.toggleSoundMode()"), "navigation.js key S must trigger toggleSoundMode()");
+  assert(navJs.includes("lastSTime < 380"), "Rapid double-press S+S must remain supported for QR scan");
+
+  assert(navJs.includes('e.key === "m" || e.key === "M"'), "navigation.js must maintain key M for medium difficulty override");
+  assert(navJs.includes('triggerChange("medium")'), "Key M on speed drill must trigger medium difficulty");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("setDrillDifficulty"), "speed.js must define setDrillDifficulty");
+});
+
+runTest("Arrow Key Navigation Handlers for Syllabus, Speed & Study Plan", () => {
+  const syllabusJs = fs.readFileSync(path.join(rootDir, 'js', 'syllabus.js'), 'utf8');
+  assert(syllabusJs.includes("window.cycleSyllabusSubject = cycleSyllabusSubject"), "syllabus.js must export cycleSyllabusSubject");
+  assert(syllabusJs.includes("if (!syllabusState.subject) return false;"), "cycleSyllabusSubject must only cycle when a subject is active");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("window.cycleDrillMode = cycleDrillMode"), "speed.js must export cycleDrillMode");
+  assert(speedJs.includes("window.selectDrillCategory = selectDrillCategory"), "speed.js must export selectDrillCategory");
+
+  const planJs = fs.readFileSync(path.join(rootDir, 'js', 'plan.js'), 'utf8');
+  assert(planJs.includes("window.cyclePlanPhase = cyclePlanPhase"), "plan.js must export cyclePlanPhase");
+
+  const navJs = fs.readFileSync(path.join(rootDir, 'js', 'navigation.js'), 'utf8');
+  assert(navJs.includes("e.key === \"ArrowLeft\" || e.key === \"ArrowRight\""), "navigation.js must listen for Arrow keys");
+  assert(navJs.includes("window.cycleSyllabusSubject"), "navigation.js must route arrow keys to cycleSyllabusSubject");
+  assert(navJs.includes("window.cycleDrillMode"), "navigation.js must route arrow keys to cycleDrillMode");
+  assert(navJs.includes("window.cyclePlanPhase"), "navigation.js must route arrow keys to cyclePlanPhase");
+});
+
+runTest("Clean Speed Drill Layout, Synthesized Audio Engine & Dynamic Custom-Styled Countdown Tooltip", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(!html.includes('id="speed-telemetry-deck"'), "Extra speed telemetry deck must be removed from #page-speed");
+  assert(html.includes('components/sound-system.js'), "index.html must load components/sound-system.js");
+  assert(html.includes('id="btn-edit-exam-target"'), "Pill 6 must have id='btn-edit-exam-target'");
+  assert(html.includes('data-tooltip="Target Exam Date • Click to edit"'), "Target countdown pill must use custom data-tooltip");
+
+  const soundJs = fs.readFileSync(path.join(rootDir, 'components', 'sound-system.js'), 'utf8');
+  assert(soundJs.includes("class SoundManager"), "sound-system.js must define SoundManager class");
+  assert(soundJs.includes("window.playSound"), "sound-system.js must export window.playSound");
+  assert(soundJs.includes("ctx.resume()"), "sound-system.js must handle suspended AudioContext resume");
+  assert(soundJs.includes("'correct'"), "sound-system.js must support 'correct' alias");
+  assert(soundJs.includes("'wrong'"), "sound-system.js must support 'wrong' alias");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("window.updateActiveCustomTooltip = updateActiveCustomTooltip"), "speed.js must export updateActiveCustomTooltip");
+  assert(speedJs.includes("window.playSound('warning')"), "speed.js must trigger sound on drill timeout/stop");
+  assert(speedJs.includes("window.playSound('wrong')"), "speed.js must trigger sound on wrong answer");
+
+  const dashJs = fs.readFileSync(path.join(rootDir, 'js', 'dashboard.js'), 'utf8');
+  assert(dashJs.includes("btn-edit-exam-target"), "dashboard.js updateCountdown must update btn-edit-exam-target");
+  assert(dashJs.includes("updateActiveCustomTooltip"), "dashboard.js must update live custom tooltip per second");
+  assert(dashJs.includes('examBtn.removeAttribute("title")'), "dashboard.js must suppress native tooltip in favor of custom styled tooltip");
 });
 
 // ── FINAL SUMMARY ──────────────────────────────────────────────

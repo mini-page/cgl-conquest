@@ -1427,6 +1427,9 @@ document.addEventListener("keydown", (e) => {
     const targetTag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : "";
     if (targetTag === "INPUT" || targetTag === "TEXTAREA" || targetTag === "SELECT") return;
 
+    // Allow browser native shortcuts (Ctrl+A, Ctrl+D, etc.)
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
     if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         e.preventDefault();
         navigateMockModal(-1);
@@ -2221,3 +2224,143 @@ function exportMockReport() {
 }
 window.exportMockReport = exportMockReport;
 window.renderMockAnalytics = renderMockAnalytics;
+
+// --- Import Mock Test Data Engine ---
+function importMockDataFromFile(event) {
+    const file = event?.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            let importedMocks = [];
+
+            if (Array.isArray(parsed)) {
+                importedMocks = parsed;
+            } else if (parsed && typeof parsed === 'object') {
+                if (Array.isArray(parsed.mocks)) {
+                    importedMocks = parsed.mocks;
+                } else if (parsed.state && Array.isArray(parsed.state.mocks)) {
+                    importedMocks = parsed.state.mocks;
+                } else if (parsed.name && (parsed.score !== undefined || parsed.breakdown)) {
+                    importedMocks = [parsed];
+                }
+            }
+
+            if (!importedMocks || importedMocks.length === 0) {
+                if (window.showToast) window.showToast("No valid mock test records found in file", "warning");
+                else alert("No valid mock test records found in file.");
+                return;
+            }
+
+            if (!Array.isArray(appState.mocks)) {
+                appState.mocks = [];
+            }
+
+            let addedCount = 0;
+            let updatedCount = 0;
+
+            importedMocks.forEach((m, idx) => {
+                if (!m || typeof m !== 'object') return;
+                const mockId = m.id || ('mock_import_' + Date.now() + '_' + idx);
+                const normalized = {
+                    id: String(mockId),
+                    name: String(m.name || 'Imported Mock'),
+                    date: m.date ? (typeof m.date === 'string' ? m.date : formatDateDMY(m.date)) : formatDateDMY(new Date()),
+                    tier: Number(m.tier) || 1,
+                    mockType: m.mockType === 'sectional' ? 'sectional' : 'full',
+                    section: m.section || null,
+                    score: parseFloat(m.score) || 0,
+                    sectionMax: parseFloat(m.sectionMax) || 50,
+                    breakdown: m.breakdown && typeof m.breakdown === 'object' ? m.breakdown : null,
+                    accuracy: parseFloat(m.accuracy) || 0,
+                    notes: String(m.notes || ''),
+                    weakTopicIds: Array.isArray(m.weakTopicIds) ? m.weakTopicIds : (m.weakTopicId ? [m.weakTopicId] : []),
+                    weakTopicId: m.weakTopicId || (Array.isArray(m.weakTopicIds) ? m.weakTopicIds[0] || '' : '')
+                };
+
+                const existingIdx = appState.mocks.findIndex(item => String(item.id) === String(normalized.id));
+                if (existingIdx !== -1) {
+                    appState.mocks[existingIdx] = normalized;
+                    updatedCount++;
+                } else {
+                    appState.mocks.push(normalized);
+                    addedCount++;
+                }
+            });
+
+            // Re-sort chronologically
+            appState.mocks.sort((a, b) => parseDateSafe(a.date) - parseDateSafe(b.date));
+
+            // Re-sync weak alerts
+            if (!appState.weakAlerts || typeof appState.weakAlerts !== 'object') {
+                appState.weakAlerts = {};
+            }
+            appState.mocks.forEach(m => {
+                const ids = m.weakTopicIds || (m.weakTopicId ? [m.weakTopicId] : []);
+                ids.forEach(id => {
+                    if (id) appState.weakAlerts[id] = true;
+                });
+            });
+
+            // Save state
+            if (typeof saveStateToStorage === 'function') saveStateToStorage();
+
+            // Re-render
+            if (typeof renderMockAnalytics === 'function') renderMockAnalytics();
+            if (typeof renderAll === 'function') renderAll();
+
+            if (typeof window.playSound === 'function') {
+                window.playSound('milestone');
+            }
+
+            const totalImported = addedCount + updatedCount;
+            if (window.showToast) {
+                window.showToast(`Imported ${totalImported} mock records (${addedCount} new, ${updatedCount} updated)!`, "success");
+            }
+
+            if (window.showCustomAlert) {
+                window.showCustomAlert({
+                    title: "Mock Data Imported",
+                    message: `Successfully loaded ${totalImported} mock test records into analytics.`,
+                    detailsHtml: `
+                        <div class="space-y-1 font-mono text-[11px] text-gray-300">
+                            <div><strong class="text-teal-400">Total Records:</strong> ${appState.mocks.length}</div>
+                            <div><strong class="text-cyan-400">New Added:</strong> ${addedCount}</div>
+                            <div><strong class="text-indigo-400">Updated:</strong> ${updatedCount}</div>
+                        </div>
+                    `,
+                    type: "success",
+                    icon: "fa-solid fa-file-import"
+                });
+            }
+        } catch (err) {
+            console.error("Failed to parse mock JSON import:", err);
+            if (window.showToast) window.showToast("Failed to parse JSON file. Invalid mock data format.", "error");
+            else alert("Failed to parse JSON file.");
+        } finally {
+            if (event && event.target) {
+                event.target.value = '';
+            }
+        }
+    };
+    reader.readAsText(file);
+}
+
+// Bind Mock Import input change
+function initMockImportListener() {
+    const inputImportMock = document.getElementById("input-import-mock-file");
+    if (inputImportMock) {
+        inputImportMock.removeEventListener("change", importMockDataFromFile);
+        inputImportMock.addEventListener("change", importMockDataFromFile);
+    }
+}
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMockImportListener);
+} else {
+    initMockImportListener();
+}
+
+window.importMockDataFromFile = importMockDataFromFile;
+window.initMockImportListener = initMockImportListener;

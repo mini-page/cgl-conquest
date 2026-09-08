@@ -255,6 +255,11 @@ function renderDashboardOverview() {
     updateStreakData();
     const streakEl = document.getElementById("streak-count-display");
     if (streakEl) streakEl.innerText = `${appState.streak || 1}d Streak`;
+    const streakMiniBadge = document.getElementById("streak-badge-mini");
+    if (streakMiniBadge) {
+        const mult = (window.rewardsSystem ? window.rewardsSystem.getStreakMultiplier(appState.streak || 1).mult : 1.0).toFixed(1);
+        streakMiniBadge.textContent = `${mult}x`;
+    }
     
     // Day progress card
     document.getElementById("day-progress").innerText = `Day ${appState.currentDay} of 40`;
@@ -292,6 +297,14 @@ function renderDashboardOverview() {
 
     // Render Spaced Repetition Review (SRS) Due Banner
     renderSrsBanner();
+
+    // Synchronize Hero Bar Nudge Status & Badge
+    if (typeof window.renderNudgeHub === 'function') {
+        window.renderNudgeHub();
+    }
+    if (typeof window.setupHeroNudgePopover === 'function') {
+        window.setupHeroNudgePopover();
+    }
 }
 
 function getSrsDueTopics() {
@@ -488,6 +501,28 @@ function renderTodayMissions() {
                 else if (flagKey === 'learned') window.triggerConfetti('low');
             }
 
+            // Gamification reward activity dispatch with dedupKey anti-cheat
+            if (f[flagKey] && window.rewardsSystem && typeof window.rewardsSystem.recordActivity === 'function') {
+                let subName = 'Topic Target';
+                if (typeof SYLLABUS_DATA !== 'undefined' && Array.isArray(SYLLABUS_DATA)) {
+                    for (const t of SYLLABUS_DATA) {
+                        const s = (t.subtopics || []).find(sub => sub.id === subId);
+                        if (s) { subName = s.name; break; }
+                    }
+                }
+                const rewardCfg = flagKey === 'mastered'
+                    ? { xp: 60, coins: 25, stars: 1 }
+                    : (flagKey === 'practiced' ? { xp: 40, coins: 15, stars: 0 } : { xp: 25, coins: 10, stars: 0 });
+                window.rewardsSystem.recordActivity({
+                    type: 'syllabus',
+                    dedupKey: `syllabus_${subId}_${flagKey}`,
+                    title: `${subName} (${flagKey})`,
+                    xp: rewardCfg.xp,
+                    coins: rewardCfg.coins,
+                    stars: rewardCfg.stars
+                });
+            }
+
             saveStateToStorage();
             renderAll();
         };
@@ -526,6 +561,24 @@ function loadRituals() {
                 } else {
                     window.playSound('checkbox', { pitch: 0.85 });
                 }
+            }
+
+            // Gamification reward recording with daily dedupKey anti-cheat
+            if (checked && window.rewardsSystem && typeof window.rewardsSystem.recordActivity === 'function') {
+                const titles = {
+                    drill: 'Speed Drill Ritual',
+                    vocab: 'English Vocab Daily Drill',
+                    ca: 'Current Affairs Daily Digest',
+                    computer: 'Computer Awareness Practice'
+                };
+                window.rewardsSystem.recordActivity({
+                    type: 'ritual',
+                    dedupKey: `ritual_${key}`,
+                    title: titles[key] || 'Daily Ritual Completed',
+                    xp: 35,
+                    coins: 10,
+                    stars: 0
+                });
             }
         };
     });
@@ -611,55 +664,58 @@ function renderSubjectProgressBars() {
     container.innerHTML = html;
 }
 
-// 40-day countdown timer (Count from July 6, 2026 midnight - target August 15, 2026)
+function updateCountdown() {
+    const cd = (typeof window.getExamCountdownData === 'function') 
+        ? window.getExamCountdownData()
+        : { formattedFull: "40d : 00h : 00m : 00s", formattedShort: "40d Left", days: 40, reached: false, examName: (typeof appState !== 'undefined' && appState.examName) || "Conquest" };
+    
+    const labelEl = document.getElementById("countdown-label");
+    if (labelEl) {
+        labelEl.innerText = `${cd.examName}:`;
+    }
+
+    const timerEl = document.getElementById("countdown-timer");
+    if (timerEl) {
+        timerEl.innerText = cd.reached ? "Target Reached!" : (cd.formattedShort || `${cd.days}d Left`);
+        timerEl.removeAttribute("title");
+    }
+    
+    const mobTimer = document.getElementById("countdown-timer-mobile");
+    if (mobTimer) {
+        mobTimer.innerText = cd.reached ? "Target Reached!" : (cd.formattedShort || `${cd.days}d Left`);
+        mobTimer.removeAttribute("title");
+    }
+
+    const nameDisplay = document.getElementById("display-exam-name");
+    if (nameDisplay) nameDisplay.innerText = cd.examName;
+
+    const examBtn = document.getElementById("btn-edit-exam-target");
+    const formattedDate = (typeof formatDateReadable === 'function' && typeof appState !== 'undefined' && appState.examDate)
+        ? formatDateReadable(appState.examDate)
+        : (cd.examDate || "Target Date");
+    const statusText = cd.reached ? "Target Reached!" : `Remaining: ${cd.formattedFull}`;
+    const liveTooltipText = `🎯 Target Exam: ${cd.examName} (${formattedDate})\n⏱️ ${statusText}\n✏️ Click to change date`;
+
+    if (examBtn) {
+        examBtn.setAttribute("data-tooltip", liveTooltipText);
+        examBtn.removeAttribute("title");
+        if (typeof window.updateActiveCustomTooltip === 'function') {
+            window.updateActiveCustomTooltip(examBtn, liveTooltipText);
+        }
+    }
+    if (timerEl) {
+        timerEl.setAttribute("data-tooltip", liveTooltipText);
+    }
+}
+
+// 40-day countdown timer (Centralized Reactive Engine)
 function startExamCountdown() {
-    function getTargetTime() {
-        const dateStr = String(appState.examDate || "2026-08-15").split("T")[0].trim();
-        const parts = dateStr.split(/[-/.]/);
-        if (parts.length === 3) {
-            let year, month, day;
-            if (parts[0].length === 4) {
-                year = parseInt(parts[0], 10);
-                month = parseInt(parts[1], 10) - 1;
-                day = parseInt(parts[2], 10);
-            } else {
-                day = parseInt(parts[0], 10);
-                month = parseInt(parts[1], 10) - 1;
-                year = parseInt(parts[2], 10);
-            }
-            const dt = new Date(year, month, day);
-            if (!isNaN(dt.getTime())) return dt.getTime();
-        }
-        const fallback = new Date(dateStr);
-        return isNaN(fallback.getTime()) ? new Date(2026, 7, 15).getTime() : fallback.getTime();
-    }
-    
-    function updateCountdown() {
-        const cd = (typeof window.getExamCountdownData === 'function') 
-            ? window.getExamCountdownData()
-            : { formattedFull: "40d : 00h : 00m : 00s", formattedShort: "40d Left", examName: appState.examName || "Conquest" };
-        
-        const labelEl = document.getElementById("countdown-label");
-        if (labelEl) {
-            labelEl.innerText = `${cd.examName}:`;
-        }
-
-        const timerEl = document.getElementById("countdown-timer");
-        if (timerEl) timerEl.innerText = cd.formattedFull;
-        
-        const mobTimer = document.getElementById("countdown-timer-mobile");
-        if (mobTimer) {
-            mobTimer.innerText = cd.formattedFull;
-        }
-
-        const nameDisplay = document.getElementById("display-exam-name");
-        if (nameDisplay) nameDisplay.innerText = cd.examName;
-    }
-    
     updateCountdown();
     if (window.countdownInterval) clearInterval(window.countdownInterval);
     window.countdownInterval = setInterval(updateCountdown, 1000);
 }
+window.startExamCountdown = startExamCountdown;
+window.updateCountdown = updateCountdown;
 
 
 // // 11. UNIFIED MASTER STUDY & POMODORO TIMER ENGINE
@@ -807,6 +863,10 @@ function startMasterTimer() {
     appState.timerActive = true;
     appState.sessionActive = true;
     appState.pomoActive = true;
+    if (!appState.pomoSessionStartedAt && appState.timerMode !== "short-break" && appState.timerMode !== "long-break") {
+        appState.pomoSessionStartedAt = Date.now();
+        appState.pomoSessionDurationTarget = appState.pomoInitialTime || 1500;
+    }
     updateMasterTimerUI();
 
     if (masterTimerInterval) clearInterval(masterTimerInterval);
@@ -822,26 +882,64 @@ function startMasterTimer() {
                 pauseMasterTimer();
                 const isBreak = appState.timerMode === "short-break" || appState.timerMode === "long-break";
                 if (!isBreak) {
-                    // Award Pomodoro completion reward (+15 Coins, +30 Points)
-                    appState.pomoSessionsToday = (appState.pomoSessionsToday || 0) + 1;
-                    if (!appState.rewards) {
-                        appState.rewards = { coins: 0, points: 0, unlocked: [], claimedTrophies: [] };
-                    }
-                    appState.rewards.coins = (appState.rewards.coins || 0) + 15;
-                    appState.rewards.points = (appState.rewards.points || 0) + 30;
-                    saveStateToStorage();
+                    const startedAt = appState.pomoSessionStartedAt;
+                    const elapsedRealSec = startedAt ? Math.round((Date.now() - startedAt) / 1000) : 0;
+                    const targetSec = appState.pomoSessionDurationTarget || appState.pomoInitialTime || 1500;
+                    // Anti-cheat: Require at least 50% of nominal session or 300s (whichever is smaller)
+                    const minAllowedSec = Math.min(300, Math.floor(targetSec * 0.5));
 
-                    if (typeof window.triggerConfetti === "function") {
-                        try { window.triggerConfetti('medium'); } catch (e) {}
+                    appState.pomoSessionStartedAt = null;
+
+                    if (startedAt && elapsedRealSec < minAllowedSec) {
+                        const warnMsg = `⚠️ Focus session voided: elapsed duration (${elapsedRealSec}s) was too short for full session credit.`;
+                        if (window.showToast) window.showToast(warnMsg, "warning");
+                        if (window.rewardsSystem && typeof window.rewardsSystem._ensureState === 'function') {
+                            const r = window.rewardsSystem._ensureState();
+                            if (r) {
+                                r.penalties.unshift({
+                                    id: `pen_${Date.now()}`,
+                                    reason: `Timer speedrun exploit attempt: Finished in ${elapsedRealSec}s (< ${minAllowedSec}s target)`,
+                                    action: 'Voided Pomodoro reward payout',
+                                    time: new Date().toLocaleTimeString()
+                                });
+                                if (r.penalties.length > 15) r.penalties.pop();
+                            }
+                        }
+                    } else {
+                        // Legitimate Pomodoro completion
+                        appState.pomoSessionsToday = (appState.pomoSessionsToday || 0) + 1;
+                        if (window.rewardsSystem && typeof window.rewardsSystem.recordActivity === 'function') {
+                            const taskLabel = appState.pomoCurrentTask ? ` on "${appState.pomoCurrentTask}"` : '';
+                            window.rewardsSystem.recordActivity({
+                                type: 'pomodoro',
+                                dedupKey: `pomodoro_session_${Date.now()}`,
+                                minCooldown: 5 * 60 * 1000,
+                                title: `Focus Session Completed${taskLabel}`,
+                                xp: 30,
+                                coins: 15,
+                                stars: 0
+                            });
+                        } else {
+                            if (!appState.rewards) {
+                                appState.rewards = { coins: 0, points: 0, unlocked: [], claimedTrophies: [] };
+                            }
+                            appState.rewards.coins = (appState.rewards.coins || 0) + 15;
+                            appState.rewards.points = (appState.rewards.points || 0) + 30;
+                            saveStateToStorage();
+                        }
+
+                        if (typeof window.triggerConfetti === "function") {
+                            try { window.triggerConfetti('medium'); } catch (e) {}
+                        }
+                        if (typeof window.playSound === "function") {
+                            window.playSound('achievement');
+                            setTimeout(() => window.playSound('reward'), 250);
+                        }
+                        const taskLabel = appState.pomoCurrentTask ? ` on "${appState.pomoCurrentTask}"` : '';
+                        const msg = `🎉 Focus session completed${taskLabel}! +15 Coins & +30 XP awarded.`;
+                        if (typeof speakText === "function") speakText("Focus session completed. Excellent discipline soldier!");
+                        if (window.showToast) window.showToast(msg, "success");
                     }
-                    if (typeof window.playSound === "function") {
-                        window.playSound('achievement');
-                        setTimeout(() => window.playSound('reward'), 250);
-                    }
-                    const taskLabel = appState.pomoCurrentTask ? ` on "${appState.pomoCurrentTask}"` : '';
-                    const msg = `🎉 Focus session completed${taskLabel}! +15 Coins & +30 XP awarded.`;
-                    if (typeof speakText === "function") speakText("Focus session completed. Excellent discipline soldier!");
-                    if (window.showToast) window.showToast(msg, "success");
                 } else {
                     if (typeof window.playSound === "function") window.playSound('bell');
                     const msg = "Rest break completed! Ready for the next sprint soldier?";
@@ -866,6 +964,7 @@ function pauseMasterTimer() {
 
 function resetMasterTimer() {
     pauseMasterTimer();
+    appState.pomoSessionStartedAt = null;
     const isStopwatch = (appState.timerMode || "stopwatch") === "stopwatch";
     if (isStopwatch) {
         appState.sessionTime = 0;
@@ -1040,10 +1139,27 @@ function openExamTargetModal() {
     const inputName = document.getElementById("input-exam-name");
     const inputDate = document.getElementById("input-exam-date");
     if (inputName) inputName.value = appState.examName || "Conquest";
-    if (inputDate) inputDate.value = appState.examDate ? appState.examDate.split("T")[0] : "2026-08-15";
+    if (inputDate) {
+        let curDate = appState.examDate;
+        if (!curDate || curDate === "2026-08-15") {
+            const defaultFuture = new Date(Date.now() + 40 * 24 * 60 * 60 * 1000);
+            const dfY = defaultFuture.getFullYear();
+            const dfM = String(defaultFuture.getMonth() + 1).padStart(2, '0');
+            const dfD = String(defaultFuture.getDate()).padStart(2, '0');
+            curDate = `${dfD}-${dfM}-${dfY}`;
+        }
+        if (typeof window.parseDateInputSafe === "function" && typeof window.formatDateToDMY === "function") {
+            inputDate.value = window.formatDateToDMY(window.parseDateInputSafe(curDate));
+        } else {
+            inputDate.value = String(curDate).split("T")[0];
+        }
+    }
+
+    modal.classList.remove("hidden");
+    void modal.offsetWidth;
 
     modal.classList.remove("opacity-0", "pointer-events-none");
-    modal.classList.add("opacity-100", "pointer-events-auto");
+    modal.classList.add("opacity-100", "pointer-events-auto", "active");
     const card = modal.firstElementChild;
     if (card) {
         card.classList.remove("scale-95");
@@ -1059,8 +1175,11 @@ function closeExamTargetModal() {
         card.classList.remove("scale-100");
         card.classList.add("scale-95");
     }
-    modal.classList.remove("opacity-100", "pointer-events-auto");
+    modal.classList.remove("opacity-100", "pointer-events-auto", "active");
     modal.classList.add("opacity-0", "pointer-events-none");
+    setTimeout(() => {
+        modal.classList.add("hidden");
+    }, 200);
 }
 
 // Attach backdrop click for exam target modal on load

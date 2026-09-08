@@ -211,13 +211,16 @@ window.showCustomAlert = (options) => {
             }
 
             const closeModal = () => {
-                modal.classList.remove("opacity-100", "pointer-events-auto");
+                modal.classList.remove("opacity-100", "pointer-events-auto", "active");
                 modal.classList.add("opacity-0", "pointer-events-none");
                 const card = modal.firstElementChild;
                 if (card) {
                     card.classList.remove("scale-100");
                     card.classList.add("scale-95");
                 }
+                setTimeout(() => {
+                    modal.classList.add("hidden");
+                }, 200);
                 document.removeEventListener("keydown", handleKeydown);
                 if (onConfirm) onConfirm();
                 resolve();
@@ -237,7 +240,8 @@ window.showCustomAlert = (options) => {
             };
 
             modal.classList.remove("hidden", "opacity-0", "pointer-events-none");
-            modal.classList.add("opacity-100", "pointer-events-auto");
+            void modal.offsetWidth;
+            modal.classList.add("opacity-100", "pointer-events-auto", "active");
             const card = modal.firstElementChild;
             if (card) {
                 card.classList.remove("scale-95");

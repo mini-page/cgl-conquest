@@ -1425,6 +1425,27 @@ try {
     }, 200);
   };
 
+  function cycleSyllabusSubject(dir) {
+    if (!syllabusState.subject) return false; // Starts cycling only when one subject is already selected
+    const subjectIds = SUBJECTS.map(s => s.id);
+    const currIdx = subjectIds.indexOf(syllabusState.subject);
+    if (currIdx === -1) return false;
+    let nextIdx = currIdx + dir;
+    if (nextIdx < 0) nextIdx = subjectIds.length - 1;
+    if (nextIdx >= subjectIds.length) nextIdx = 0;
+    syllabusState.subject = subjectIds[nextIdx];
+    syllabusState.chapter = '';
+    resetPaths();
+    renderAll();
+    const activeBtn = document.querySelector(`.subj-ring[data-subj="${syllabusState.subject}"]`);
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+    if (typeof window.playSound === 'function') window.playSound('click');
+    return true;
+  }
+  window.cycleSyllabusSubject = cycleSyllabusSubject;
+
   // Initial triggers
   document.addEventListener("DOMContentLoaded", () => {
     try {

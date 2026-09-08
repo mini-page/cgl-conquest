@@ -10,25 +10,22 @@ class SoundManager {
     constructor() {
         this.ctx = null;
         this.masterGain = null;
-        this.volume = 0.35; // Default master volume
+        this.volume = 0.65; // Master volume
         this.isMuted = false;
         this._hasInteracted = false;
 
         // Auto-unlock AudioContext on first user interaction
         if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
             const unlockAudio = () => {
-                this.initContext();
-                if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
+                const ctx = this.initContext();
+                if (ctx && ctx.state === 'suspended') {
+                    ctx.resume().catch(() => {});
                 }
                 this._hasInteracted = true;
-                window.removeEventListener('click', unlockAudio);
-                window.removeEventListener('keydown', unlockAudio);
-                window.removeEventListener('touchstart', unlockAudio);
             };
-            window.addEventListener('click', unlockAudio, { once: true, passive: true });
-            window.addEventListener('keydown', unlockAudio, { once: true, passive: true });
-            window.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+            window.addEventListener('click', unlockAudio, { passive: true });
+            window.addEventListener('keydown', unlockAudio, { passive: true });
+            window.addEventListener('touchstart', unlockAudio, { passive: true });
         }
     }
 
@@ -57,13 +54,14 @@ class SoundManager {
 
     shouldPlay(soundName) {
         if (typeof window === 'undefined') return false;
+        if (this.isMuted) return false;
         // Check global appState preferences
         if (window.appState) {
             if (window.appState.soundEnabled === false) return false;
             const isTimer = soundName === 'timer.complete' || soundName === 'timer' || soundName === 'bell';
             if (window.appState.focusModeActive && !isTimer) return false; // Focus mode suppresses sounds except timer completion bell
         }
-        return !this.isMuted;
+        return true;
     }
 
     /**
@@ -78,16 +76,25 @@ class SoundManager {
         if (!ctx) return;
 
         if (ctx.state === 'suspended') {
-            ctx.resume().catch(() => {});
+            ctx.resume().then(() => {
+                this._dispatchSound(soundKey, options);
+            }).catch(() => {});
+            return;
         }
 
-        const now = ctx.currentTime;
+        this._dispatchSound(soundKey, options);
+    }
+
+    _dispatchSound(soundKey, options = {}) {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
 
         try {
             switch (soundKey) {
                 case 'checkbox':
                 case 'tick':
                 case 'click':
+                case 'pop':
                     this._playCheckbox(now, options);
                     break;
 
@@ -97,6 +104,7 @@ class SoundManager {
 
                 case 'success':
                 case 'success.normal':
+                case 'correct':
                     this._playSuccessNormal(now, options);
                     break;
 
@@ -136,6 +144,9 @@ class SoundManager {
                     break;
 
                 case 'error':
+                case 'wrong':
+                case 'fail':
+                case 'penalty':
                     this._playError(now, options);
                     break;
 
@@ -151,30 +162,30 @@ class SoundManager {
                     break;
             }
         } catch (err) {
-            console.warn(`[SoundSystem] Error generating sound '${soundName}':`, err);
+            console.warn(`[SoundSystem] Error generating sound '${soundKey}':`, err);
         }
     }
 
     /* ─── SYNTHESIZERS ────────────────────────────────────── */
 
-    // 1. Crisp, tactile UI checkbox pop (35ms)
+    // 1. Crisp, tactile UI checkbox pop (50ms)
     _playCheckbox(startTime, opt = {}) {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         const pitch = opt.pitch || 1.0;
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(1400 * pitch, startTime);
-        osc.frequency.exponentialRampToValueAtTime(450 * pitch, startTime + 0.035);
+        osc.frequency.setValueAtTime(1300 * pitch, startTime);
+        osc.frequency.exponentialRampToValueAtTime(450 * pitch, startTime + 0.045);
 
-        gain.gain.setValueAtTime(0.3, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.035);
+        gain.gain.setValueAtTime(0.45, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.045);
 
         osc.connect(gain);
         gain.connect(this.masterGain);
 
         osc.start(startTime);
-        osc.stop(startTime + 0.04);
+        osc.stop(startTime + 0.05);
     }
 
     // 2. Soft, pleasant chord (180ms)

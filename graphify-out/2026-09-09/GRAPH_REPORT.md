@@ -1,11 +1,11 @@
-# Graph Report - CGL-conquest  (2026-09-08)
+# Graph Report - CGL-conquest  (2026-09-09)
 
 ## Corpus Check
-- 133 files · ~345,667 words
+- 133 files · ~347,208 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 936 nodes · 1344 edges · 127 communities (56 shown, 19 thin omitted)
+- 941 nodes · 1356 edges · 127 communities (56 shown, 19 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -92,12 +92,12 @@
 - Web Performance Audit & Optimization Guide
 
 ## God Nodes (most connected - your core abstractions)
-1. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
-2. `QrSyncModal` - 24 edges
-3. `initTheme()` - 24 edges
-4. `renderAll()` - 24 edges
-5. `renderStudyTrackerAll()` - 21 edges
-6. `SoundManager` - 20 edges
+1. `renderAll()` - 25 edges
+2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
+3. `QrSyncModal` - 24 edges
+4. `initTheme()` - 24 edges
+5. `SoundManager` - 21 edges
+6. `renderStudyTrackerAll()` - 21 edges
 7. `RewardsSystem` - 18 edges
 8. `renderMockAnalytics()` - 15 edges
 9. `CalendarPicker` - 14 edges
@@ -122,7 +122,7 @@
 
 ### Community 0 - "syllabus.js"
 Cohesion: 0.10
-Nodes (55): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+47 more)
+Nodes (56): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+48 more)
 
 ### Community 1 - "toolkit.js"
 Cohesion: 0.06
@@ -138,15 +138,15 @@ Nodes (12): appState, COMPUTER_TARGET_MAP, EMBEDDED_QUIZZES, escapeHTML(), FLASH
 
 ### Community 5 - "dashboard.js"
 Cohesion: 0.12
-Nodes (27): calculateOverallStats(), closeExamTargetModal(), formatTimeSeconds(), getSrsDueTopics(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover() (+19 more)
+Nodes (28): calculateOverallStats(), closeExamTargetModal(), formatTimeSeconds(), getSrsDueTopics(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover() (+20 more)
 
 ### Community 6 - "navigation.js"
 Cohesion: 0.09
 Nodes (47): claimMissionReward(), claimTrophyReward(), closeShortcutsHelpModal(), closeWipeConfirmModal(), createSparseBackupPayload(), elevatedElementsMap, elevateModalOnTop(), executeFactoryResetWipe() (+39 more)
 
 ### Community 7 - "speed.js"
-Cohesion: 0.19
-Nodes (18): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), DRILL_MODE_LABELS, endChallengeRun(), generateChallengeQuestion(), generateDrillQuestion(), generateMathOptions() (+10 more)
+Cohesion: 0.17
+Nodes (19): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), DRILL_MODE_LABELS, endChallengeRun(), generateChallengeQuestion(), generateDrillQuestion(), generateMathOptions() (+11 more)
 
 ### Community 8 - "mocks.js"
 Cohesion: 0.12
@@ -321,7 +321,7 @@ Cohesion: 0.67
 Nodes (3): 4.1 Import/Export Relationships, 4.2 Cross-Module Coupling Summary, 4. MODULE DEPENDENCY MAP
 
 ### Community 118 - "plan.js"
-Cohesion: 0.48
+Cohesion: 0.39
 Nodes (5): btnCompleteDay, completeActiveDay(), renderStudyPlan(), resetActiveDayTo(), updatePhaseTabs()
 
 ### Community 119 - "Browser-Use — Autonomous Agent Web Automation"
@@ -346,7 +346,7 @@ Nodes (3): Breakpoint Matrix, Mobile Ergonomics Checklist, Responsive Design & M
 
 ## Knowledge Gaps
 - **315 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+310 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 463 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 464 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -363,6 +363,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
   _315 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `syllabus.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.10213032581453634 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10042347247428918 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**
   _Cohesion score 0.06265664160401002 - nodes in this community are weakly interconnected._

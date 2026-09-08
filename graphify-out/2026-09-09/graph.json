@@ -3294,7 +3294,7 @@
       "file_type": "code",
       "norm_label": "animate()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1250"
+      "source_location": "L1241"
     },
     {
       "id": "js_dashboard_calculateoverallstats",
@@ -3318,7 +3318,7 @@
       "file_type": "code",
       "norm_label": "closeexamtargetmodal()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1170"
+      "source_location": "L1161"
     },
     {
       "id": "js_dashboard_formattimeseconds",
@@ -3330,7 +3330,7 @@
       "file_type": "code",
       "norm_label": "formattimeseconds()",
       "source_file": "js/dashboard.js",
-      "source_location": "L991"
+      "source_location": "L982"
     },
     {
       "id": "js_dashboard_getsrsduetopics",
@@ -3378,7 +3378,7 @@
       "file_type": "code",
       "norm_label": "initpomotimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L998"
+      "source_location": "L989"
     },
     {
       "id": "js_dashboard_initpomotimer_hidepomopopover",
@@ -3390,7 +3390,7 @@
       "file_type": "code",
       "norm_label": "hidepomopopover()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1051"
+      "source_location": "L1042"
     },
     {
       "id": "js_dashboard_initpomotimer_showpomopopover",
@@ -3402,7 +3402,7 @@
       "file_type": "code",
       "norm_label": "showpomopopover()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1042"
+      "source_location": "L1033"
     },
     {
       "id": "js_dashboard_initpomotimer_togglepomopopover",
@@ -3414,7 +3414,7 @@
       "file_type": "code",
       "norm_label": "togglepomopopover()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1057"
+      "source_location": "L1048"
     },
     {
       "id": "js_dashboard_initsessiontimer",
@@ -3426,7 +3426,7 @@
       "file_type": "code",
       "norm_label": "initsessiontimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L978"
+      "source_location": "L969"
     },
     {
       "id": "js_dashboard_inittiertoggler",
@@ -3486,7 +3486,7 @@
       "file_type": "code",
       "norm_label": "openexamtargetmodal()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1136"
+      "source_location": "L1127"
     },
     {
       "id": "js_dashboard_pausemastertimer",
@@ -3498,7 +3498,7 @@
       "file_type": "code",
       "norm_label": "pausemastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L956"
+      "source_location": "L947"
     },
     {
       "id": "js_dashboard_renderall",
@@ -3570,7 +3570,7 @@
       "file_type": "code",
       "norm_label": "resetmastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L965"
+      "source_location": "L956"
     },
     {
       "id": "js_dashboard_startexamcountdown",
@@ -3582,7 +3582,7 @@
       "file_type": "code",
       "norm_label": "startexamcountdown()",
       "source_file": "js/dashboard.js",
-      "source_location": "L712"
+      "source_location": "L703"
     },
     {
       "id": "js_dashboard_startmastertimer",
@@ -3594,7 +3594,7 @@
       "file_type": "code",
       "norm_label": "startmastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L862"
+      "source_location": "L853"
     },
     {
       "id": "js_dashboard_syncritualvisual",
@@ -3618,7 +3618,7 @@
       "file_type": "code",
       "norm_label": "togglemastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L854"
+      "source_location": "L845"
     },
     {
       "id": "js_dashboard_updatecountdown",
@@ -3642,7 +3642,7 @@
       "file_type": "code",
       "norm_label": "updatemastertimerui()",
       "source_file": "js/dashboard.js",
-      "source_location": "L724"
+      "source_location": "L715"
     },
     {
       "id": "js_dashboard_updateritualprogress",
@@ -3666,7 +3666,7 @@
       "file_type": "code",
       "norm_label": "updatestreakdata()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1108"
+      "source_location": "L1099"
     },
     {
       "id": "js_dashboard_updatetodaygoalsratio",
@@ -4314,7 +4314,7 @@
       "file_type": "code",
       "norm_label": "cycledrillmode()",
       "source_file": "js/speed.js",
-      "source_location": "L1418"
+      "source_location": "L1399"
     },
     {
       "id": "js_speed_endchallengerun",
@@ -4410,7 +4410,7 @@
       "file_type": "code",
       "norm_label": "handletitleattributes()",
       "source_file": "js/speed.js",
-      "source_location": "L1304"
+      "source_location": "L1285"
     },
     {
       "id": "js_speed_initcustomtooltips_hidetooltip",
@@ -4433,18 +4433,6 @@
       "community_name": "speed.js",
       "file_type": "code",
       "norm_label": "showtooltip()",
-      "source_file": "js/speed.js",
-      "source_location": "L1252"
-    },
-    {
-      "id": "js_speed_initcustomtooltips_updateactivecustomtooltip",
-      "label": "updateActiveCustomTooltip()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updateactivecustomtooltip()",
       "source_file": "js/speed.js",
       "source_location": "L1244"
     },
@@ -4494,7 +4482,7 @@
       "file_type": "code",
       "norm_label": "selectdrillcategory()",
       "source_file": "js/speed.js",
-      "source_location": "L1434"
+      "source_location": "L1415"
     },
     {
       "id": "js_speed_setdrilldifficulty",
@@ -4506,7 +4494,7 @@
       "file_type": "code",
       "norm_label": "setdrilldifficulty()",
       "source_file": "js/speed.js",
-      "source_location": "L1447"
+      "source_location": "L1428"
     },
     {
       "id": "js_speed_startchallengerun",
@@ -13076,7 +13064,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1009",
+      "source_location": "L1000",
       "weight": 1.0
     },
     {
@@ -13088,7 +13076,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1010",
+      "source_location": "L1001",
       "weight": 1.0
     },
     {
@@ -13100,7 +13088,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1011",
+      "source_location": "L1002",
       "weight": 1.0
     },
     {
@@ -13112,7 +13100,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1067",
+      "source_location": "L1058",
       "weight": 1.0
     },
     {
@@ -13124,7 +13112,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1099",
+      "source_location": "L1090",
       "weight": 1.0
     },
     {
@@ -13136,7 +13124,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1060",
+      "source_location": "L1051",
       "weight": 1.0
     },
     {
@@ -13148,7 +13136,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1061",
+      "source_location": "L1052",
       "weight": 1.0
     },
     {
@@ -13160,7 +13148,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L982",
+      "source_location": "L973",
       "weight": 1.0
     },
     {
@@ -13172,7 +13160,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L985",
+      "source_location": "L976",
       "weight": 1.0
     },
     {
@@ -13184,7 +13172,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L988",
+      "source_location": "L979",
       "weight": 1.0
     },
     {
@@ -13244,7 +13232,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L962",
+      "source_location": "L953",
       "weight": 1.0
     },
     {
@@ -13388,7 +13376,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L966",
+      "source_location": "L957",
       "weight": 1.0
     },
     {
@@ -13400,7 +13388,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L975",
+      "source_location": "L966",
       "weight": 1.0
     },
     {
@@ -13412,7 +13400,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L713",
+      "source_location": "L704",
       "weight": 1.0
     },
     {
@@ -13424,7 +13412,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L870",
+      "source_location": "L861",
       "weight": 1.0
     },
     {
@@ -13436,7 +13424,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L882",
+      "source_location": "L873",
       "weight": 1.0
     },
     {
@@ -13448,7 +13436,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L856",
+      "source_location": "L847",
       "weight": 1.0
     },
     {
@@ -13460,7 +13448,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L858",
+      "source_location": "L849",
       "weight": 1.0
     },
     {
@@ -13472,7 +13460,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L731",
+      "source_location": "L722",
       "weight": 1.0
     },
     {
@@ -15128,7 +15116,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1451",
+      "source_location": "L1432",
       "weight": 1.0
     },
     {
@@ -15140,7 +15128,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1452",
+      "source_location": "L1433",
       "weight": 1.0
     },
     {
@@ -17096,7 +17084,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1051",
+      "source_location": "L1042",
       "weight": 1.0
     },
     {
@@ -17108,7 +17096,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1057",
+      "source_location": "L1048",
       "weight": 1.0
     },
     {
@@ -17168,7 +17156,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1252",
+      "source_location": "L1244",
       "weight": 1.0
     },
     {
@@ -17180,7 +17168,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1304",
+      "source_location": "L1285",
       "weight": 1.0
     },
     {
@@ -20157,7 +20145,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1108",
+      "source_location": "L1099",
       "weight": 1.0
     },
     {
@@ -20168,7 +20156,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1136",
+      "source_location": "L1127",
       "weight": 1.0
     },
     {
@@ -20179,7 +20167,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1170",
+      "source_location": "L1161",
       "weight": 1.0
     },
     {
@@ -20190,7 +20178,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1250",
+      "source_location": "L1241",
       "weight": 1.0
     },
     {
@@ -20355,7 +20343,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L712",
+      "source_location": "L703",
       "weight": 1.0
     },
     {
@@ -20366,7 +20354,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L724",
+      "source_location": "L715",
       "weight": 1.0
     },
     {
@@ -20388,7 +20376,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L854",
+      "source_location": "L845",
       "weight": 1.0
     },
     {
@@ -20399,7 +20387,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L862",
+      "source_location": "L853",
       "weight": 1.0
     },
     {
@@ -20410,7 +20398,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L956",
+      "source_location": "L947",
       "weight": 1.0
     },
     {
@@ -20421,7 +20409,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L965",
+      "source_location": "L956",
       "weight": 1.0
     },
     {
@@ -20432,7 +20420,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L978",
+      "source_location": "L969",
       "weight": 1.0
     },
     {
@@ -20443,7 +20431,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L991",
+      "source_location": "L982",
       "weight": 1.0
     },
     {
@@ -20454,7 +20442,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L998",
+      "source_location": "L989",
       "weight": 1.0
     },
     {
@@ -20465,7 +20453,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1042",
+      "source_location": "L1033",
       "weight": 1.0
     },
     {
@@ -21499,7 +21487,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1418",
+      "source_location": "L1399",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_selectdrillcategory",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L1415",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_setdrilldifficulty",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L1428",
       "weight": 1.0
     },
     {
@@ -21511,28 +21521,6 @@
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
       "source_location": "L143",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_selectdrillcategory",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1434",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_setdrilldifficulty",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1447",
       "weight": 1.0
     },
     {
@@ -21709,17 +21697,6 @@
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
       "source_location": "L981",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_initcustomtooltips",
-      "target": "js_speed_initcustomtooltips_updateactivecustomtooltip",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1244",
       "weight": 1.0
     },
     {

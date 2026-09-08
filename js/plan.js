@@ -368,6 +368,21 @@ if (btnCompleteDay) {
     };
 }
 
+function cyclePlanPhase(dir) {
+    const tabBtns = Array.from(document.querySelectorAll(".phase-tab-btn"));
+    if (!tabBtns.length) return false;
+    let currIdx = tabBtns.findIndex(b => b.classList.contains("active"));
+    if (currIdx === -1) currIdx = 0;
+    let nextIdx = currIdx + dir;
+    if (nextIdx < 0) nextIdx = tabBtns.length - 1;
+    if (nextIdx >= tabBtns.length) nextIdx = 0;
+    tabBtns[nextIdx].click();
+    tabBtns[nextIdx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    if (typeof window.playSound === 'function') window.playSound('click');
+    return true;
+}
+window.cyclePlanPhase = cyclePlanPhase;
+
 window.renderStudyPlan = renderStudyPlan;
 window.completeActiveDay = completeActiveDay;
 window.resetActiveDayTo = resetActiveDayTo;

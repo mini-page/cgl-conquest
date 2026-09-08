@@ -3301,7 +3301,7 @@ let appState = {
     soundEnabled: true,   // Default semantic UI audio enabled
     focusModeActive: false, // Suppresses sounds & speech when active
     examTier: 1,          // Default exam tier target (1 = Tier 1, 2 = Tier 2)
-    mobileNavHand: "right", // Default mobile nav thumb hand ("right" | "left")
+    mobileNavHand: "center", // Default mobile nav position ("center" | "left" | "right")
     rewards: {
         coins: 0,
         points: 0,
@@ -3368,7 +3368,7 @@ function loadStateFromStorage() {
             if (appState.soundEnabled === undefined) appState.soundEnabled = true;
             if (appState.focusModeActive === undefined) appState.focusModeActive = false;
             if (appState.examTier === undefined) appState.examTier = 1;
-            if (!appState.mobileNavHand) appState.mobileNavHand = "right";
+            if (!appState.mobileNavHand) appState.mobileNavHand = "center";
             if (appState.streak === undefined) appState.streak = 1;
             if (!appState.lastActiveDate) appState.lastActiveDate = new Date().toISOString().split('T')[0];
             if (!appState.mocks) appState.mocks = [];
@@ -3397,6 +3397,14 @@ function loadStateFromStorage() {
         } catch (e) {
             console.error("Error loading localStorage state:", e);
         }
+        if (appState.examDate === "2026-08-15" || !appState.examDate) {
+            const defaultFuture = new Date(Date.now() + 40 * 24 * 60 * 60 * 1000);
+            const dfY = defaultFuture.getFullYear();
+            const dfM = String(defaultFuture.getMonth() + 1).padStart(2, '0');
+            const dfD = String(defaultFuture.getDate()).padStart(2, '0');
+            appState.examDate = `${dfY}-${dfM}-${dfD}`;
+            saveStateToStorage();
+        }
     } else {
         // Build initial empty state for syllabus
         SYLLABUS_DATA.forEach(topic => {
@@ -3407,23 +3415,47 @@ function loadStateFromStorage() {
         appState.weakAlerts = {};
         appState.srsRecords = {};
         appState.examName = "Conquest";
-        appState.examDate = "2026-08-15";
+        const defaultFuture = new Date(Date.now() + 40 * 24 * 60 * 60 * 1000);
+        const dfY = defaultFuture.getFullYear();
+        const dfM = String(defaultFuture.getMonth() + 1).padStart(2, '0');
+        const dfD = String(defaultFuture.getDate()).padStart(2, '0');
+        appState.examDate = `${dfY}-${dfM}-${dfD}`;
         saveStateToStorage();
     }
 }
 
 // Centralized Reactive Exam Countdown Calculator
 function getExamCountdownData() {
-    const examDateStr = appState.examDate || "2026-08-15";
-    let targetTime;
-    if (typeof examDateStr === 'string' && /^\d{2}-\d{2}-\d{4}$/.test(examDateStr.trim())) {
-        const [d, m, y] = examDateStr.trim().split('-').map(Number);
-        targetTime = new Date(y, m - 1, d, 9, 0, 0).getTime();
-    } else {
-        targetTime = new Date(examDateStr).getTime();
+    let examDateStr = appState.examDate;
+    if (!examDateStr || examDateStr === "2026-08-15") {
+        const defaultFuture = new Date(Date.now() + 40 * 24 * 60 * 60 * 1000);
+        const dfY = defaultFuture.getFullYear();
+        const dfM = String(defaultFuture.getMonth() + 1).padStart(2, '0');
+        const dfD = String(defaultFuture.getDate()).padStart(2, '0');
+        examDateStr = `${dfY}-${dfM}-${dfD}`;
     }
+
+    let targetTime = NaN;
+    if (typeof examDateStr === 'string') {
+        const clean = examDateStr.trim();
+        // 1. Check DD-MM-YYYY or D-M-YYYY (e.g. from calendar component or user input)
+        const dmy = clean.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);
+        if (dmy) {
+            const d = parseInt(dmy[1], 10);
+            const m = parseInt(dmy[2], 10) - 1;
+            const y = parseInt(dmy[3], 10);
+            targetTime = new Date(y, m, d, 9, 0, 0).getTime();
+        } else {
+            // 2. Standard ISO / YYYY-MM-DD
+            targetTime = new Date(clean).getTime();
+        }
+    } else if (examDateStr instanceof Date) {
+        targetTime = examDateStr.getTime();
+    }
+
     if (isNaN(targetTime)) {
-        targetTime = new Date(2026, 7, 15, 9, 0, 0).getTime();
+        const fallback = new Date(Date.now() + 40 * 24 * 60 * 60 * 1000);
+        targetTime = fallback.getTime();
     }
 
     const now = Date.now();

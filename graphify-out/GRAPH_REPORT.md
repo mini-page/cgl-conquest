@@ -1,16 +1,16 @@
-# Graph Report - CGL-conquest  (2026-09-08)
+# Graph Report - CGL-conquest  (2026-09-09)
 
 ## Corpus Check
-- 133 files · ~335,679 words
+- 133 files · ~347,320 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 910 nodes · 1267 edges · 127 communities (56 shown, 19 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 21 edges (avg confidence: 0.85)
+- 942 nodes · 1357 edges · 127 communities (56 shown, 19 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `17bed10e`
+- Built from commit: `624ef1ca`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,7 +36,7 @@
 - 22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)
 - suite.js
 - sw.js
-- CalendarPicker
+- RewardsSystem
 - PROJECT MEMORIFY — SSC CGL Conquest Dashboard
 - 20. QUICK REFERENCE CARD
 - 21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)
@@ -59,7 +59,7 @@
 - 10. SYLLABUS DATA STRUCTURE
 - 15. COUPLING & COHESION ANALYSIS
 - 13. STUDY TOOLKIT VIEWS
-- 4. MODULE DEPENDENCY MAP
+- index.js
 - rules/graphify.md
 - workflows/graphify.md
 - ModalDialog
@@ -70,17 +70,17 @@
 - Debugging with GitNexus
 - Exploring Codebases with GitNexus
 - SoundManager
-- index.js
+- CalendarPicker
 - Core Tenets
-- RewardsSystem
+- NudgeSystem
 - Headroom Rules for Agents
 - The 5-Pillar Vibe Audit
-- NudgeSystem
 - ToggleSwitch
+- TriStateCheckbox
 - Quick Usage
 - PillGroup
 - SearchBar
-- TriStateCheckbox
+- 4. MODULE DEPENDENCY MAP
 - plan.js
 - Browser-Use — Autonomous Agent Web Automation
 - Crawl4AI — Asynchronous Web Crawler for LLMs
@@ -92,28 +92,28 @@
 - Web Performance Audit & Optimization Guide
 
 ## God Nodes (most connected - your core abstractions)
-1. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
-2. `QrSyncModal` - 24 edges
-3. `renderAll()` - 24 edges
-4. `renderStudyTrackerAll()` - 21 edges
-5. `SoundManager` - 20 edges
-6. `initTheme()` - 18 edges
-7. `CalendarPicker` - 14 edges
-8. `renderMockAnalytics()` - 14 edges
-9. `20. QUICK REFERENCE CARD` - 14 edges
-10. `MockElement` - 13 edges
+1. `renderAll()` - 25 edges
+2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
+3. `QrSyncModal` - 24 edges
+4. `initTheme()` - 24 edges
+5. `SoundManager` - 21 edges
+6. `renderStudyTrackerAll()` - 21 edges
+7. `RewardsSystem` - 18 edges
+8. `renderMockAnalytics()` - 15 edges
+9. `CalendarPicker` - 14 edges
+10. `20. QUICK REFERENCE CARD` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/app.js → js/state.js
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/dashboard.js → js/state.js
+- `navigateToPage()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
+  js/navigation.js → js/state.js
 - `renderStudyPlan()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/plan.js → js/state.js
 - `showQuickRefTables()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
   js/toolkit.js → js/state.js
-- `navigateToPage()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
-  js/navigation.js → js/state.js
 
 ## Import Cycles
 - None detected.
@@ -122,11 +122,11 @@
 
 ### Community 0 - "syllabus.js"
 Cohesion: 0.10
-Nodes (55): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+47 more)
+Nodes (56): anyFilterActive(), applyFilterSelection(), bindCompact(), bindExplorer(), bindFilterRow(), bindGrid(), bindKanban(), bindTable() (+48 more)
 
 ### Community 1 - "toolkit.js"
 Cohesion: 0.06
-Nodes (51): renderAll(), navigateToPage(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), clearStudyFilters(), closeStudyViewer() (+43 more)
+Nodes (50): renderAll(), triggerMathTypesetting(), backToSubjects(), buildSearchIndex(), buildStudyFilterRow(), clearStudyFilters(), closeStudyViewer(), deleteNote() (+42 more)
 
 ### Community 3 - "compile_data.js"
 Cohesion: 0.09
@@ -138,23 +138,23 @@ Nodes (12): appState, COMPUTER_TARGET_MAP, EMBEDDED_QUIZZES, escapeHTML(), FLASH
 
 ### Community 5 - "dashboard.js"
 Cohesion: 0.12
-Nodes (27): calculateOverallStats(), closeExamTargetModal(), formatTimeSeconds(), getSrsDueTopics(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover() (+19 more)
+Nodes (28): calculateOverallStats(), closeExamTargetModal(), formatTimeSeconds(), getSrsDueTopics(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover() (+20 more)
 
 ### Community 6 - "navigation.js"
-Cohesion: 0.12
-Nodes (32): claimTrophyReward(), closeShortcutsHelpModal(), equipCosmeticItem(), expandNav(), filterRewardsTrophies(), filterShortcuts(), handleShortcutAction(), initHeaderScroll() (+24 more)
+Cohesion: 0.09
+Nodes (47): claimMissionReward(), claimTrophyReward(), closeShortcutsHelpModal(), closeWipeConfirmModal(), createSparseBackupPayload(), elevatedElementsMap, elevateModalOnTop(), executeFactoryResetWipe() (+39 more)
 
 ### Community 7 - "speed.js"
-Cohesion: 0.19
-Nodes (18): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), DRILL_MODE_LABELS, endChallengeRun(), generateChallengeQuestion(), generateDrillQuestion(), generateMathOptions() (+10 more)
+Cohesion: 0.16
+Nodes (19): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), DRILL_MODE_LABELS, endChallengeRun(), generateChallengeQuestion(), generateDrillQuestion(), generateMathOptions() (+11 more)
 
 ### Community 8 - "mocks.js"
 Cohesion: 0.12
-Nodes (33): cancelMockEdit(), closeMockDetailModal(), deleteMock(), editMock(), exportMockReport(), formatDateDMY(), getSectionalAggregates(), getSmoothSvgPath() (+25 more)
+Nodes (35): cancelMockEdit(), closeMockDetailModal(), deleteMock(), editMock(), exportMockReport(), formatDateDMY(), getSectionalAggregates(), getSmoothSvgPath() (+27 more)
 
 ### Community 9 - "package.json"
-Cohesion: 0.17
-Nodes (11): description, devDependencies, tailwindcss, tailwindcss, name, scripts, build, build:css (+3 more)
+Cohesion: 0.14
+Nodes (13): description, devDependencies, repomix, tailwindcss, tailwindcss, name, scripts, build (+5 more)
 
 ### Community 11 - "manifest.json"
 Cohesion: 0.22
@@ -241,7 +241,7 @@ Cohesion: 0.25
 Nodes (7): Always Do, CLI, Design System & UI Architecture, GitNexus — Code Intelligence, graphify, Never Do, Resources
 
 ### Community 86 - "QrSyncModal"
-Cohesion: 0.18
+Cohesion: 0.17
 Nodes (3): expandCompactPayload(), extractCompactPayload(), QrSyncModal
 
 ### Community 87 - "SSC CGL 40-Day Rank-Maker Dashboard 🏆"
@@ -276,9 +276,9 @@ Nodes (4): 15.1 Cohesion Scores (from GitNexus Clusters), 15.2 Highest Blast Rad
 Cohesion: 0.67
 Nodes (3): 13.1 Syllabus Console Views (6), 13.2 Study Notes Views (6), 13. STUDY TOOLKIT VIEWS
 
-### Community 95 - "4. MODULE DEPENDENCY MAP"
-Cohesion: 0.67
-Nodes (3): 4.1 Import/Export Relationships, 4.2 Cross-Module Coupling Summary, 4. MODULE DEPENDENCY MAP
+### Community 95 - "index.js"
+Cohesion: 0.23
+Nodes (3): HeroHeader, REWARDS_CATALOG, toast
 
 ### Community 101 - "Impact Analysis with GitNexus"
 Cohesion: 0.20
@@ -300,10 +300,6 @@ Nodes (8): Bind the repository first, Checklist, Debugging Patterns, Debugging w
 Cohesion: 0.22
 Nodes (8): Bind the repository first, Checklist, Example: "How does payment processing work?", Exploring Codebases with GitNexus, Resources, Tools, When to Use, Workflow
 
-### Community 107 - "index.js"
-Cohesion: 0.21
-Nodes (3): HeroHeader, REWARDS_CATALOG, toast
-
 ### Community 108 - "Core Tenets"
 Cohesion: 0.18
 Nodes (10): 1. The Simplest Cut That Heals, 2. Standard Library First, 3. YAGNI (You Aren't Gonna Need It), 4. Delete More Than You Add, Core Tenets, Example Contrasts, Over-engineered (Anti-Pattern), Ponytail — The Minimalist Senior Engineer Doctrine (+2 more)
@@ -320,8 +316,12 @@ Nodes (8): 1. Intent Alignment, 2. Cognitive Load & Simplicity, 3. Blast Radius 
 Cohesion: 0.29
 Nodes (6): Best Practices, Exclude Large Or Generated Assets, Full Repository Pack, Quick Usage, Repomix — Codebase Context Packager, Target Specific Directories
 
+### Community 117 - "4. MODULE DEPENDENCY MAP"
+Cohesion: 0.67
+Nodes (3): 4.1 Import/Export Relationships, 4.2 Cross-Module Coupling Summary, 4. MODULE DEPENDENCY MAP
+
 ### Community 118 - "plan.js"
-Cohesion: 0.48
+Cohesion: 0.39
 Nodes (5): btnCompleteDay, completeActiveDay(), renderStudyPlan(), resetActiveDayTo(), updatePhaseTabs()
 
 ### Community 119 - "Browser-Use — Autonomous Agent Web Automation"
@@ -345,24 +345,24 @@ Cohesion: 0.50
 Nodes (3): Breakpoint Matrix, Mobile Ergonomics Checklist, Responsive Design & Mobile Ergonomics Audit Guide
 
 ## Knowledge Gaps
-- **313 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+308 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 461 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **315 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+310 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 465 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `state.js`, `dashboard.js`, `plan.js`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
-- **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `23. UI/UX DESIGN SYSTEM, THEME HARMONIZATION & COMPONENT CONSOLIDATION (2026-09-07)`, `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`, `4. MODULE DEPENDENCY MAP`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `navigateToPage()` connect `toolkit.js` to `navigation.js`?**
+- **Why does `triggerMathTypesetting()` connect `toolkit.js` to `plan.js`, `state.js`, `dashboard.js`, `navigation.js`?**
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `navigateToPage()` connect `navigation.js` to `toolkit.js`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `23. UI/UX DESIGN SYSTEM, THEME HARMONIZATION & COMPONENT CONSOLIDATION (2026-09-07)`, `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)`, `4. MODULE DEPENDENCY MAP`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Are the 5 inferred relationships involving `initTheme()` (e.g. with `toggleFocusMode()` and `toggleSoundMode()`) actually correct?**
+  _`initTheme()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
-  _313 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _315 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `syllabus.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.10213032581453634 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10042347247428918 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.06110102843315184 - nodes in this community are weakly interconnected._
-- **Should `compile_data.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06265664160401002 - nodes in this community are weakly interconnected._

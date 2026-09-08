@@ -18,10 +18,15 @@ function openShortcutsHelpModal() {
             pomoDrawer.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
         }
 
+        modal._openedAt = Date.now();
         modal.classList.add("active");
-        modal.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2");
+        modal.classList.remove("opacity-0", "pointer-events-none", "-translate-y-2", "hidden");
         modal.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
         modal.style.display = "flex";
+        modal.style.opacity = "1";
+        modal.style.pointerEvents = "auto";
+        modal.style.visibility = "visible";
+        modal.style.transform = "translateY(0)";
 
         if (typeof updateSoundToggleUI === 'function') updateSoundToggleUI();
         if (typeof updateFocusModeUI === 'function') updateFocusModeUI();
@@ -39,7 +44,7 @@ function openShortcutsHelpModal() {
             renderNudgeHub();
         }
 
-        // Focus search and wire filter (once)
+        // Wire search filter (once) without aggressive autofocus so normal commands work
         const s = document.getElementById("shortcuts-search");
         if (s) {
             if (!s.dataset.wired) {
@@ -47,8 +52,35 @@ function openShortcutsHelpModal() {
                 s.addEventListener("input", () => filterShortcuts(s.value));
                 s.addEventListener("keydown", e => { if (e.key === "Escape") { closeShortcutsHelpModal(); } });
             }
-            setTimeout(() => s.focus(), 80);
         }
+    }
+}
+
+function openActionCenterWithTab(tab = 'hub', event = null) {
+    if (event && event.stopPropagation) {
+        event.stopPropagation();
+    } else if (window.event && window.event.stopPropagation) {
+        window.event.stopPropagation();
+    }
+    openShortcutsHelpModal();
+    if (typeof switchActionCenterHub === 'function') {
+        switchActionCenterHub(tab);
+    }
+}
+
+function focusActionCenterSearch(event = null) {
+    if (event && event.stopPropagation) {
+        event.stopPropagation();
+    } else if (window.event && window.event.stopPropagation) {
+        window.event.stopPropagation();
+    }
+    openActionCenterWithTab("hub", event);
+    const s = document.getElementById("shortcuts-search");
+    if (s) {
+        setTimeout(() => {
+            s.focus();
+            s.select();
+        }, 50);
     }
 }
 
@@ -60,7 +92,11 @@ function closeShortcutsHelpModal() {
         }
         modal.classList.remove("active", "opacity-100", "pointer-events-auto", "translate-y-0");
         modal.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
-        modal.style.display = "";
+        modal.style.display = "none";
+        modal.style.opacity = "0";
+        modal.style.pointerEvents = "none";
+        modal.style.visibility = "hidden";
+        modal.style.transform = "translateY(-8px)";
         // Clear search on close
         const s = document.getElementById("shortcuts-search");
         if (s) { s.value = ""; filterShortcuts(""); }
@@ -77,7 +113,362 @@ function toggleShortcutsHelpModal() {
 }
 window.toggleShortcutsHelpModal = toggleShortcutsHelpModal;
 window.openShortcutsHelpModal = openShortcutsHelpModal;
+window.openActionCenterWithTab = openActionCenterWithTab;
+window.focusActionCenterSearch = focusActionCenterSearch;
 window.closeShortcutsHelpModal = closeShortcutsHelpModal;
+
+// ── DYNAMIC MODAL ELEVATION & Z-INDEX MANAGEMENT SYSTEM ───────
+// Dynamically drops z-index of other high-z elements when a critical modal opens,
+// and restores their original z-index when closed, avoiding interaction blocking or stacking leaks.
+const elevatedElementsMap = new Map();
+
+function elevateModalOnTop(modalEl, targetZ = 100000000) {
+    if (!modalEl) return;
+
+    const selectorsToDemote = [
+        "#modal-shortcuts-help",
+        "#hero-nudge-popover",
+        "#mobile-floating-nav",
+        "#pomo-drawer",
+        "#sync-island-pill",
+        "#exam-target-modal",
+        "#app-custom-dialog-modal",
+        "#modal-mock-detail",
+        "#modal-day-detail",
+        "#modal-study-viewer"
+    ];
+
+    selectorsToDemote.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el && el !== modalEl && !modalEl.contains(el)) {
+            if (!elevatedElementsMap.has(el)) {
+                elevatedElementsMap.set(el, {
+                    zIndex: el.style.zIndex || "",
+                    pointerEvents: el.style.pointerEvents || ""
+                });
+            }
+            el.style.zIndex = "10";
+            el.style.pointerEvents = "none";
+        }
+    });
+
+    modalEl.style.setProperty("z-index", String(targetZ), "important");
+    modalEl.style.pointerEvents = "auto";
+}
+
+function restoreElevatedElements() {
+    elevatedElementsMap.forEach((orig, el) => {
+        if (el && el.isConnected) {
+            if (orig.zIndex) {
+                el.style.zIndex = orig.zIndex;
+            } else {
+                el.style.removeProperty("z-index");
+            }
+            if (orig.pointerEvents) {
+                el.style.pointerEvents = orig.pointerEvents;
+            } else {
+                el.style.removeProperty("pointer-events");
+            }
+        }
+    });
+    elevatedElementsMap.clear();
+}
+
+window.elevateModalOnTop = elevateModalOnTop;
+window.restoreElevatedElements = restoreElevatedElements;
+
+function openWipeConfirmModal() {
+    const modal = document.getElementById("modal-wipe-confirm");
+    const card = document.getElementById("modal-wipe-card");
+    const input = document.getElementById("input-wipe-confirmation");
+    const btnExecute = document.getElementById("btn-execute-wipe");
+    const errorMsg = document.getElementById("wipe-input-error-msg");
+    if (!modal) return;
+
+    if (input) {
+        input.value = "";
+        input.classList.remove("border-rose-500", "ring-2", "ring-rose-500/60");
+    }
+    if (errorMsg) {
+        errorMsg.classList.add("hidden");
+    }
+    if (btnExecute) {
+        btnExecute.disabled = true;
+        btnExecute.className = "flex-1 py-2.5 px-3 rounded-xl bg-gray-700/50 text-gray-500 text-xs font-black uppercase tracking-wider border border-white/5 transition cursor-not-allowed";
+    }
+
+    // 1. Dynamically drop z-index of all competing elements so Wipe modal sits on top
+    elevateModalOnTop(modal, 100000000);
+
+    // 2. Unhide and enforce inline visibility overrides
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    modal.style.opacity = "1";
+    modal.style.pointerEvents = "auto";
+    modal.style.visibility = "visible";
+
+    // 3. Ensure card is fully visible and rendered
+    if (card) {
+        card.style.opacity = "1";
+        card.style.transform = "scale(1) translateY(0)";
+        card.style.visibility = "visible";
+        card.style.display = "block";
+    }
+
+    // Force DOM reflow to trigger CSS transitions
+    void modal.offsetWidth;
+
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    modal.classList.add("opacity-100", "pointer-events-auto", "active");
+    if (card) {
+        card.classList.remove("scale-95");
+        card.classList.add("scale-100");
+    }
+    if (input) {
+        setTimeout(() => input.focus(), 60);
+    }
+}
+
+function closeWipeConfirmModal() {
+    const modal = document.getElementById("modal-wipe-confirm");
+    const card = document.getElementById("modal-wipe-card");
+    const input = document.getElementById("input-wipe-confirmation");
+    if (!modal) return;
+
+    if (input) {
+        input.blur();
+    }
+    modal.classList.remove("opacity-100", "pointer-events-auto", "active");
+    modal.classList.add("opacity-0", "pointer-events-none");
+    modal.style.opacity = "0";
+    modal.style.pointerEvents = "none";
+
+    if (card) {
+        card.classList.remove("scale-100");
+        card.classList.add("scale-95");
+        card.style.opacity = "0";
+        card.style.transform = "scale(0.95) translateY(10px)";
+    }
+
+    // Restore z-indices and pointer events of all other elements
+    restoreElevatedElements();
+
+    setTimeout(() => {
+        modal.classList.add("hidden");
+        modal.style.display = "none";
+        modal.style.removeProperty("z-index");
+        if (card) {
+            card.style.removeProperty("opacity");
+            card.style.removeProperty("transform");
+            card.style.removeProperty("visibility");
+            card.style.removeProperty("display");
+        }
+    }, 200);
+}
+
+function triggerWipeErrorShake() {
+    const card = document.getElementById("modal-wipe-card");
+    const input = document.getElementById("input-wipe-confirmation");
+    const errorMsg = document.getElementById("wipe-input-error-msg");
+    const btnExecute = document.getElementById("btn-execute-wipe");
+
+    if (errorMsg) errorMsg.classList.remove("hidden");
+
+    if (input) {
+        input.classList.add("border-rose-500", "ring-2", "ring-rose-500/60");
+    }
+
+    if (typeof window.playSound === 'function') {
+        window.playSound('penalty', { pitch: 0.75 });
+    }
+
+    // Shake animation
+    if (card) {
+        if (window.gsap) {
+            gsap.fromTo(card, { x: -14 }, { x: 0, duration: 0.45, ease: "elastic.out(1.2, 0.25)" });
+        } else {
+            card.classList.remove("modal-shake");
+            void card.offsetWidth;
+            card.classList.add("modal-shake");
+            setTimeout(() => card.classList.remove("modal-shake"), 450);
+        }
+    }
+
+    // Fruit-drop letters clearing: as the tree is shaken, the letters drop and vanish
+    setTimeout(() => {
+        if (input) {
+            input.value = "";
+            input.focus();
+        }
+        if (btnExecute) {
+            btnExecute.disabled = true;
+            btnExecute.className = "flex-1 py-2.5 px-3 rounded-xl bg-gray-700/50 text-gray-500 text-xs font-black uppercase tracking-wider border border-white/5 transition cursor-not-allowed";
+        }
+    }, 280);
+
+    setTimeout(() => {
+        if (input) {
+            input.classList.remove("border-rose-500", "ring-2", "ring-rose-500/60");
+        }
+    }, 1200);
+}
+
+function executeFactoryResetWipe() {
+    const input = document.getElementById("input-wipe-confirmation");
+    // Strict Case-Sensitive Verification: MUST exactly match "RESET ALL"
+    if (!input || input.value.trim() !== "RESET ALL") {
+        triggerWipeErrorShake();
+        return;
+    }
+
+    try {
+        if (typeof window.playSound === 'function') {
+            window.playSound('penalty', { pitch: 0.7 });
+        }
+        // Wipe local storage
+        if (typeof localStorage !== 'undefined' && localStorage.clear) {
+            localStorage.clear();
+        }
+
+        // Pristine default state
+        const freshSyllabus = {};
+        if (typeof SYLLABUS_DATA !== "undefined" && Array.isArray(SYLLABUS_DATA)) {
+            SYLLABUS_DATA.forEach(topic => {
+                (topic.subtopics || []).forEach(sub => {
+                    freshSyllabus[sub.id] = { learned: false, practiced: false, mastered: false };
+                });
+            });
+        }
+
+        const defaultFuture = new Date(Date.now() + 40 * 24 * 60 * 60 * 1000);
+        const dfY = defaultFuture.getFullYear();
+        const dfM = String(defaultFuture.getMonth() + 1).padStart(2, '0');
+        const dfD = String(defaultFuture.getDate()).padStart(2, '0');
+        const freshTargetDate = `${dfY}-${dfM}-${dfD}`;
+
+        const freshState = {
+            theme: "dark",
+            currentDay: 1,
+            dayCounter: 1,
+            examName: "Conquest",
+            examDate: freshTargetDate,
+            examTier: 1,
+            streak: 1,
+            lastActiveDate: new Date().toISOString().split('T')[0],
+            syllabusProgress: freshSyllabus,
+            mocks: [],
+            notes: [],
+            srsRecords: {},
+            weakAlerts: {},
+            dailyRituals: { drill: false, vocab: false, ca: false, computer: false },
+            speechEnabled: true,
+            toastEnabled: true,
+            soundEnabled: true,
+            focusModeActive: false,
+            mobileNavHand: "center",
+            rewards: {
+                coins: 0,
+                points: 0,
+                stars: 0,
+                unlockedCosmics: ['title_aspirant', 'accent_blue'],
+                claimedTrophies: [],
+                unlockedStickers: [],
+                equippedSticker: '',
+                equipped: { title: 'Aspirant', themeAccent: 'accent_blue' },
+                powers: {},
+                todayActivity: [],
+                penalties: [],
+                dailyRewardedActions: {}
+            }
+        };
+
+        if (typeof appState !== 'undefined') {
+            Object.assign(appState, freshState);
+        }
+        if (typeof saveStateToStorage === 'function') {
+            saveStateToStorage();
+        }
+
+        closeWipeConfirmModal();
+        closeShortcutsHelpModal();
+
+        if (window.showToast) {
+            window.showToast("All data wiped! Application reset to pristine factory state.", "info");
+        }
+
+        setTimeout(() => {
+            if (typeof window !== 'undefined' && window.location && window.location.reload) {
+                window.location.reload();
+            }
+        }, 600);
+    } catch (e) {
+        console.error("Factory reset failed:", e);
+        if (window.showToast) window.showToast("Failed to complete factory reset", "error");
+    }
+}
+
+function createSparseBackupPayload(state) {
+    const sparseSyllabus = {};
+    if (state && state.syllabusProgress) {
+        Object.entries(state.syllabusProgress).forEach(([id, flags]) => {
+            if (flags && (flags.learned || flags.practiced || flags.mastered)) {
+                sparseSyllabus[id] = {
+                    learned: Boolean(flags.learned),
+                    practiced: Boolean(flags.practiced),
+                    mastered: Boolean(flags.mastered)
+                };
+            }
+        });
+    }
+
+    return {
+        version: 3,
+        format: "sparse-delta",
+        appName: "CGL-Conquest",
+        exportedAt: new Date().toISOString(),
+        state: {
+            syllabusProgress: sparseSyllabus,
+            mocks: Array.isArray(state?.mocks) ? state.mocks : [],
+            notes: Array.isArray(state?.notes) ? state.notes : [],
+            srsRecords: state?.srsRecords || {},
+            weakAlerts: state?.weakAlerts || {},
+            currentDay: Number(state?.currentDay) || 1,
+            dayCounter: Number(state?.dayCounter) || 1,
+            examName: state?.examName || "Conquest",
+            examDate: state?.examDate || "2026-08-15",
+            examTier: Number(state?.examTier) || 1,
+            streak: Number(state?.streak) || 1,
+            lastActiveDate: state?.lastActiveDate || "",
+            dailyRituals: state?.dailyRituals || { drill: false, vocab: false, ca: false, computer: false },
+            theme: state?.theme || "dark",
+            mobileNavHand: state?.mobileNavHand || "center",
+            speechEnabled: state?.speechEnabled !== false,
+            toastEnabled: state?.toastEnabled !== false,
+            soundEnabled: state?.soundEnabled !== false,
+            focusModeActive: Boolean(state?.focusModeActive),
+            rewards: state?.rewards || {
+                coins: 0,
+                points: 0,
+                stars: 0,
+                unlockedCosmics: ['title_aspirant', 'accent_blue'],
+                claimedTrophies: [],
+                unlockedStickers: [],
+                equippedSticker: '',
+                equipped: { title: 'Aspirant', themeAccent: 'accent_blue' },
+                powers: {},
+                todayActivity: [],
+                penalties: [],
+                dailyRewardedActions: {}
+            }
+        }
+    };
+}
+
+window.openWipeConfirmModal = openWipeConfirmModal;
+window.closeWipeConfirmModal = closeWipeConfirmModal;
+window.triggerWipeErrorShake = triggerWipeErrorShake;
+window.executeFactoryResetWipe = executeFactoryResetWipe;
+window.createSparseBackupPayload = createSparseBackupPayload;
 
 // Keyword aliases so single-letter/shorthand queries find the right rows
 const _SC_ALIASES = [
@@ -196,9 +587,35 @@ function handleShortcutAction(action) {
         }
 
         // ── Quick Command Triggers ──
-        case 'cmd-palette': {
-            if (typeof window.openCommandPalette === 'function') {
-                window.openCommandPalette();
+        case 'cmd-palette':
+        case 'focus-search': {
+            focusActionCenterSearch();
+            break;
+        }
+        case 'speed:start': {
+            closeShortcutsHelpModal();
+            navigateToPage('page-speed');
+            setTimeout(() => {
+                const btn = document.getElementById('btn-drill-pause');
+                if (btn) btn.click();
+            }, 100);
+            break;
+        }
+        case 'speed:stop': {
+            closeShortcutsHelpModal();
+            const btn = document.getElementById('btn-drill-stop');
+            if (btn) btn.click();
+            break;
+        }
+        case 'speed:diff-cycle': {
+            closeShortcutsHelpModal();
+            navigateToPage('page-speed');
+            const select = document.getElementById('select-maths-level');
+            if (select) {
+                const current = select.value || 'medium';
+                const nextMap = { easy: 'medium', medium: 'advance', advance: 'easy' };
+                select.value = nextMap[current] || 'medium';
+                select.dispatchEvent(new Event('change'));
             }
             break;
         }
@@ -282,6 +699,10 @@ function shrinkNav() {
     const triggerBtn = document.getElementById("floating-nav-trigger");
 
     if (mobileFloatingNav) {
+        const hand = (window.appState && window.appState.mobileNavHand) ? window.appState.mobileNavHand : "center";
+        mobileFloatingNav.classList.remove("nav-hand-left", "nav-hand-center", "nav-hand-right");
+        mobileFloatingNav.classList.add("nav-hand-" + hand);
+
         if (window.gsap) {
             gsap.killTweensOf([mobileFloatingNav, triggerBtn, "#floating-nav-items .nav-item"]);
 
@@ -302,7 +723,7 @@ function shrinkNav() {
 }
 
 function setMobileNavHand(hand) {
-    if (hand !== "left" && hand !== "right") return;
+    if (hand !== "left" && hand !== "center" && hand !== "right") return;
     if (typeof appState !== "undefined") {
         appState.mobileNavHand = hand;
     }
@@ -313,39 +734,46 @@ function setMobileNavHand(hand) {
     if (typeof window.playSound === "function") window.playSound("click");
     
     const nav = document.getElementById("mobile-floating-nav");
-    if (nav && nav.classList.contains("nav-shrunk")) {
-        nav.classList.remove("nav-hand-right", "nav-hand-left");
-        if (window.innerWidth < 768) {
-            nav.classList.add(hand === "left" ? "nav-hand-left" : "nav-hand-right");
-        }
+    if (nav) {
+        nav.classList.remove("nav-hand-right", "nav-hand-left", "nav-hand-center");
+        nav.classList.add("nav-hand-" + hand);
         
         if (window.gsap) {
-            gsap.fromTo(nav, { scale: 0.75, rotation: hand === "left" ? -15 : 15 }, { scale: 1, rotation: 0, duration: 0.45, ease: "back.out(1.8)" });
+            const rot = hand === "left" ? -8 : (hand === "right" ? 8 : 0);
+            gsap.fromTo(nav, { scale: 0.85, rotation: rot }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(1.8)" });
         }
     }
     
     updateHandSettingsUI();
     if (window.showToast) {
-        window.showToast(`Mobile navigation set to ${hand === "left" ? "Left Hand" : "Right Hand"} mode`, "info");
+        const sideLabel = hand === "left" ? "Left" : (hand === "right" ? "Right" : "Center");
+        window.showToast(`Nav dock position aligned to ${sideLabel}`, "info");
     }
 }
 
 function updateHandSettingsUI() {
     if (!window.appState) return;
-    const isLeft = window.appState.mobileNavHand === "left";
+    const hand = window.appState.mobileNavHand || "center";
+
+    const btnLeftCmd = document.getElementById("btn-hand-left-cmd");
+    const btnCenterCmd = document.getElementById("btn-hand-center-cmd");
+    const btnRightCmd = document.getElementById("btn-hand-right-cmd");
+
+    if (btnLeftCmd) {
+        btnLeftCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${hand === 'left' ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30' : 'text-gray-400 hover:text-white'}`;
+    }
+    if (btnCenterCmd) {
+        btnCenterCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${hand === 'center' ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30' : 'text-gray-400 hover:text-white'}`;
+    }
+    if (btnRightCmd) {
+        btnRightCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${hand === 'right' ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30' : 'text-gray-400 hover:text-white'}`;
+    }
 
     const btnRight = document.getElementById("btn-hand-right");
     const btnLeft = document.getElementById("btn-hand-left");
     if (btnRight && btnLeft) {
-        btnRight.className = `hand-btn px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${!isLeft ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-400/40' : 'bg-transparent text-gray-400 hover:text-white'}`;
-        btnLeft.className = `hand-btn px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${isLeft ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-400/40' : 'bg-transparent text-gray-400 hover:text-white'}`;
-    }
-
-    const btnRightCmd = document.getElementById("btn-hand-right-cmd");
-    const btnLeftCmd = document.getElementById("btn-hand-left-cmd");
-    if (btnRightCmd && btnLeftCmd) {
-        btnRightCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${!isLeft ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`;
-        btnLeftCmd.className = `px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer ${isLeft ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`;
+        btnRight.className = `hand-btn px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${hand === 'right' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-400/40' : 'bg-transparent text-gray-400 hover:text-white'}`;
+        btnLeft.className = `hand-btn px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${hand === 'left' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-400/40' : 'bg-transparent text-gray-400 hover:text-white'}`;
     }
 }
 window.setMobileNavHand = setMobileNavHand;
@@ -361,6 +789,10 @@ function initHeaderScroll() {
     if (mobileFloatingNav) {
         mobileFloatingNav.classList.remove("translate-y-28", "opacity-0");
         mobileFloatingNav.classList.add("translate-y-0", "opacity-100");
+
+        const initHand = (window.appState && window.appState.mobileNavHand) ? window.appState.mobileNavHand : "center";
+        mobileFloatingNav.classList.remove("nav-hand-left", "nav-hand-center", "nav-hand-right");
+        mobileFloatingNav.classList.add("nav-hand-" + initHand);
 
         // Double tap or double click to scroll to top when shrunk
         mobileFloatingNav.addEventListener("dblclick", () => {
@@ -562,6 +994,8 @@ function initNavigation() {
         modalObserver.observe(modal, { attributes: true, attributeFilter: ['class'] });
     });
 
+    setupHeroNudgePopover();
+
     window.addEventListener("keydown", (e) => {
         // Intercept navigation keys if study content viewer is active (inline)
         const contentViewer = document.getElementById("study-content-viewer");
@@ -590,6 +1024,11 @@ function initNavigation() {
 
         // Double shift key press listener (450ms detection window with debounce)
         if (e.key === "Shift" || e.code === "ShiftLeft" || e.code === "ShiftRight") {
+            // NEVER trigger or record if modifier keys Ctrl, Meta, or Alt are held
+            if (e.ctrlKey || e.metaKey || e.altKey) {
+                lastShiftTime = 0;
+                return;
+            }
             if (e.repeat) return;
             const tag = document.activeElement ? document.activeElement.tagName : "";
             // Do not hijack shift if actively typing in normal content inputs (allow if shortcuts search is focused)
@@ -598,9 +1037,14 @@ function initNavigation() {
             }
             const now = Date.now();
             if (now - lastShiftTime < 500 && now - lastShiftTime > 40) {
-                // Double Shift confirmed!
+                // Double Shift confirmed! Dedicated directly to Hub tab
                 lastShiftTime = 0;
-                toggleShortcutsHelpModal();
+                const modal = document.getElementById("modal-shortcuts-help");
+                if (modal && modal.classList.contains("active")) {
+                    closeShortcutsHelpModal();
+                } else {
+                    openActionCenterWithTab('hub');
+                }
                 e.preventDefault();
                 return;
             }
@@ -614,6 +1058,13 @@ function initNavigation() {
         // ── UNIVERSAL MODAL / DIALOG ESCAPE KEY DISMISSAL ─────────
         if (e.key === "Escape" || e.key === "Esc") {
             let dismissed = false;
+
+            // 0. Factory Reset Wipe Modal
+            const wipeModal = document.getElementById("modal-wipe-confirm");
+            if (!dismissed && wipeModal && !wipeModal.classList.contains("hidden") && !wipeModal.classList.contains("opacity-0")) {
+                if (typeof window.closeWipeConfirmModal === "function") window.closeWipeConfirmModal();
+                dismissed = true;
+            }
 
             // 1. App Custom Alert Dialog
             const alertModal = document.getElementById("app-custom-dialog-modal");
@@ -703,6 +1154,15 @@ function initNavigation() {
             }
         }
 
+        // ── BROWSER NATIVE SHORTCUT PASSTHROUGH ───────────────────
+        // If user is holding Ctrl, Meta (Cmd on macOS), or Alt:
+        // NEVER intercept or preventDefault. Allow browser native shortcuts
+        // (e.g. Ctrl+Shift+R hard reload, Ctrl+R reload, Ctrl+F find, Ctrl+P print,
+        // Ctrl+Shift+I DevTools, Ctrl+Shift+N Incognito, Ctrl+T new tab, etc.) to run natively.
+        if (e.ctrlKey || e.metaKey || e.altKey) {
+            return;
+        }
+
         // Skip shortcuts if user is typing in form inputs/textarea/select
         const tag = document.activeElement ? document.activeElement.tagName : "";
         if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (document.activeElement && document.activeElement.isContentEditable)) {
@@ -755,18 +1215,80 @@ function initNavigation() {
             lastQTime = now;
         }
 
-        // Rapid double-press: S + S -> Open "Scan / Paste"
+        // Rapid double-press: S + S -> Open "Scan / Paste" | Single press S -> Toggle Synthesized UI Audio
         if ((e.key === "s" || e.key === "S") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            const tag = document.activeElement ? document.activeElement.tagName : "";
+            if (tag === "INPUT" || tag === "TEXTAREA" || (document.activeElement && document.activeElement.isContentEditable)) {
+                return;
+            }
             const now = Date.now();
             if (now - lastSTime < 380) {
                 if (typeof window.openQrSyncModal === "function") {
                     window.openQrSyncModal('scan');
+                }
+                if (typeof window.toggleSoundMode === "function") {
+                    window.toggleSoundMode(); // Revert audio toggle on second tap
                 }
                 lastSTime = 0;
                 e.preventDefault();
                 return;
             }
             lastSTime = now;
+
+            if (typeof window.toggleSoundMode === "function") {
+                window.toggleSoundMode();
+            }
+            e.preventDefault();
+            return;
+        }
+
+        // ── ARROW KEYS TAB CYCLING (Left / Right) ─────────────
+        if ((e.key === "ArrowLeft" || e.key === "ArrowRight") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            const tag = document.activeElement ? document.activeElement.tagName : "";
+            if (tag === "INPUT" || tag === "TEXTAREA" || (document.activeElement && document.activeElement.isContentEditable)) {
+                return;
+            }
+            // Do not steal keys if custom calendar, wipe modal, or target date modal is open
+            const anyModalOpen = document.querySelector(".modal.active, #modal-shortcuts-help.active, #modal-wipe-confirm:not(.hidden):not(.opacity-0), #exam-target-modal:not(.hidden):not(.opacity-0), .custom-calendar-dropdown");
+            if (anyModalOpen) return;
+
+            const dir = e.key === "ArrowRight" ? 1 : -1;
+
+            // 1. Syllabus Page: Cycle between 5 subject tabs (ONLY when one is already active/selected)
+            const syllabusPage = document.getElementById("page-syllabus");
+            if (syllabusPage && !syllabusPage.classList.contains("hidden")) {
+                if (typeof window.cycleSyllabusSubject === "function") {
+                    const cycled = window.cycleSyllabusSubject(dir);
+                    if (cycled) {
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            }
+
+            // 2. Speed Drills Page: Cycle between drill category tabs (always works since one is always active)
+            const speedPage = document.getElementById("page-speed");
+            if (speedPage && !speedPage.classList.contains("hidden") && !window.drillIsPlaying && !window.isChallengeActive) {
+                if (typeof window.cycleDrillMode === "function") {
+                    const cycled = window.cycleDrillMode(dir);
+                    if (cycled) {
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            }
+
+            // 3. Study Plan Page: Cycle between 4 phase tabs
+            const planPage = document.getElementById("page-plan");
+            if (planPage && !planPage.classList.contains("hidden")) {
+                if (typeof window.cyclePlanPhase === "function") {
+                    const cycled = window.cyclePlanPhase(dir);
+                    if (cycled) {
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            }
         }
 
         // Keybinding: U/u to scroll smoothly to the top of the browser page
@@ -907,6 +1429,51 @@ function initNavigation() {
         else if (e.key === "4") targetPage = "page-speed";
         else if (e.key === "5") targetPage = "page-plan";
         else if (e.key === "6") targetPage = "page-mocks";
+        // Dedicated Action Center Direct Tabs
+        if (e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey && (e.key === "R" || e.key === "r")) {
+            openActionCenterWithTab('rewards', e);
+            e.preventDefault();
+            return;
+        }
+        if (e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey && (e.key === "N" || e.key === "n")) {
+            openActionCenterWithTab('nudge', e);
+            e.preventDefault();
+            return;
+        }
+
+        // Quick Search trigger: / key opens Hub and focuses search bar
+        if (e.key === "/" || e.key === "?") {
+            const tag = document.activeElement ? document.activeElement.tagName : "";
+            if (tag !== "INPUT" && tag !== "TEXTAREA" && !(document.activeElement && document.activeElement.isContentEditable)) {
+                focusActionCenterSearch(e);
+                e.preventDefault();
+                return;
+            }
+        }
+
+        // F key contextual logic: Fullscreen in modal, or Focus Mode
+        if (e.key === "f" || e.key === "F") {
+            if (e.shiftKey) {
+                if (!document.fullscreenElement) {
+                    if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+                } else if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+                e.preventDefault();
+                return;
+            }
+            if (window._qrSyncModalInstance && window._qrSyncModalInstance.isOpen) {
+                window._qrSyncModalInstance.toggleFullscreen();
+                e.preventDefault();
+                return;
+            }
+            if (typeof window.toggleFocusMode === "function") {
+                window.toggleFocusMode();
+                e.preventDefault();
+                return;
+            }
+        }
+
         else if (e.key === "t" || e.key === "T") {
             const themeBtn = document.getElementById("theme-toggle");
             if (themeBtn) {
@@ -1124,7 +1691,7 @@ function updateSoundToggleUI() {
         }
         btn.classList.add("bg-blue-500/20", "border-blue-400/50");
         btn.classList.remove("bg-white/5", "border-white/10");
-        btn.title = "Disable UI Audio [M]";
+        btn.title = "Disable UI Audio [S]";
     } else {
         if (text) {
             text.textContent = "Mute";
@@ -1136,7 +1703,7 @@ function updateSoundToggleUI() {
         }
         btn.classList.remove("bg-blue-500/20", "border-blue-400/50");
         btn.classList.add("bg-white/5", "border-white/10");
-        btn.title = "Enable UI Audio [M]";
+        btn.title = "Enable UI Audio [S]";
     }
 }
 
@@ -1240,14 +1807,42 @@ function switchActionCenterHub(tab) {
 
 let currentTrophyFilter = 'all';
 
+function toggleRewardsCollapsible(section) {
+    let container = null;
+    let btn = null;
+
+    if (section === 'missions') {
+        container = document.getElementById('ac-missions-container');
+        btn = document.getElementById('ac-btn-toggle-missions');
+    } else if (section === 'cosmics') {
+        container = document.getElementById('ac-cosmics-container');
+        btn = document.getElementById('ac-btn-toggle-cosmics');
+    } else if (section === 'powers') {
+        container = document.getElementById('ac-powers-container');
+        btn = document.getElementById('ac-btn-toggle-powers');
+    }
+
+    if (container) {
+        const isHidden = container.classList.contains('hidden');
+        if (isHidden) {
+            container.classList.remove('hidden');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
+        } else {
+            container.classList.add('hidden');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
+        }
+    }
+}
+window.toggleRewardsCollapsible = toggleRewardsCollapsible;
+
 function filterRewardsTrophies(filter) {
     currentTrophyFilter = filter || 'all';
     const filterButtons = document.querySelectorAll('.ac-trophy-filter-btn');
     filterButtons.forEach(btn => {
         if (btn.getAttribute('data-filter') === currentTrophyFilter) {
-            btn.className = 'ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-blue-600 text-white cursor-pointer';
+            btn.className = 'ac-trophy-filter-btn px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-blue-600 text-white cursor-pointer';
         } else {
-            btn.className = 'ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1';
+            btn.className = 'ac-trophy-filter-btn px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1';
         }
     });
     renderRewardsHub();
@@ -1255,33 +1850,120 @@ function filterRewardsTrophies(filter) {
 window.filterRewardsTrophies = filterRewardsTrophies;
 
 function renderRewardsHub() {
-    const rewards = (window.appState && window.appState.rewards) ? window.appState.rewards : { coins: 0, points: 0, unlocked: [], equipped: { title: 'Aspirant' } };
+    const rewards = (window.appState && window.appState.rewards) ? window.appState.rewards : { coins: 0, points: 0, stars: 0, unlockedCosmics: [], todayActivity: [], penalties: [] };
+    const streak = (window.appState && window.appState.streak) ? Number(window.appState.streak) : 0;
     
-    // Update header summary
+    // ── 1. Top Progression Summary ──────────────────────────────────────────
     const titleEl = document.getElementById('ac-rewards-title');
     const coinsEl = document.getElementById('ac-rewards-coins');
-    const pointsEl = document.getElementById('ac-rewards-points');
-    if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-crown text-amber-400 text-xs"></i><span>${window.escapeHTML ? window.escapeHTML(rewards.equipped?.title || 'Aspirant') : (rewards.equipped?.title || 'Aspirant')}</span>`;
-    if (coinsEl) coinsEl.textContent = rewards.coins || 0;
-    if (pointsEl) pointsEl.textContent = rewards.points || 0;
+    const starsEl = document.getElementById('ac-rewards-stars');
+    const streakEl = document.getElementById('ac-rewards-streak');
+    const multEl = document.getElementById('ac-rewards-multiplier');
 
-    // Update player level and XP progression
-    if (window.rewardsSystem && typeof window.rewardsSystem.getLevelData === 'function') {
+    if (coinsEl) coinsEl.textContent = rewards.coins || 0;
+    if (starsEl) starsEl.textContent = rewards.stars || 0;
+    if (streakEl) streakEl.textContent = `${streak}d`;
+
+    if (window.rewardsSystem) {
+        const multData = window.rewardsSystem.getStreakMultiplier(streak);
+        if (multEl) multEl.textContent = `${multData.mult}x`;
+        const miniStreak = document.getElementById('streak-badge-mini');
+        if (miniStreak) miniStreak.textContent = `${multData.mult.toFixed(1)}x`;
+
         const lvlData = window.rewardsSystem.getLevelData(rewards.points || 0);
+        if (titleEl) {
+            titleEl.innerHTML = `<i class="fa-solid ${lvlData.icon} text-amber-400 text-[11px]"></i><span>${lvlData.rankTitle}</span>`;
+        }
+
         const levelTextEl = document.getElementById('ac-rewards-level-text');
         const xpTextEl = document.getElementById('ac-rewards-xp-text');
         const xpBarEl = document.getElementById('ac-rewards-xp-bar');
-        if (levelTextEl) levelTextEl.innerHTML = `<i class="fa-solid ${lvlData.icon} text-[8px] mr-1"></i> Level ${lvlData.level} • ${lvlData.rankTitle}`;
+        if (levelTextEl) levelTextEl.innerHTML = `<i class="fa-solid ${lvlData.icon} text-[8px]"></i> Level ${lvlData.level} • ${lvlData.rankTitle}`;
         if (xpTextEl) xpTextEl.textContent = `${lvlData.currentPoints} / ${lvlData.nextLevelMax} XP`;
         if (xpBarEl) xpBarEl.style.width = `${lvlData.progressPct}%`;
+
+        // Next Unlock Indicator
+        const nextUnlock = window.rewardsSystem.getNextUnlock();
+        const nextNameEl = document.getElementById('ac-next-unlock-name');
+        const nextPctEl = document.getElementById('ac-next-unlock-pct');
+        if (nextNameEl && nextUnlock) {
+            nextNameEl.textContent = `${nextUnlock.title} (${nextUnlock.desc})`;
+            if (nextPctEl) nextPctEl.textContent = `${nextUnlock.pct}%`;
+        }
     }
 
-    // Render Trophies in 9-dot launcher style (3-col grid)
-    const trophiesContainer = document.getElementById('ac-trophies-grid');
+    // ── 2. Today's Reward Activity (History, NOT Checklist) ──────────────────
+    const actContainer = document.getElementById('ac-rewards-activity-list');
+    const actCountEl = document.getElementById('ac-activity-count');
+    const activities = Array.isArray(rewards.todayActivity) ? rewards.todayActivity : [];
+    if (actCountEl) actCountEl.textContent = `${activities.length} events today`;
+
+    if (actContainer) {
+        if (activities.length === 0) {
+            actContainer.innerHTML = `
+                <div class="py-3 text-center text-gray-500 text-[9px]">
+                    <i class="fa-solid fa-clock-rotate-left text-xs mb-1 block text-gray-600"></i>
+                    No rewards logged yet today. Complete dashboard targets, drills, or pomodoros!
+                </div>
+            `;
+        } else {
+            actContainer.innerHTML = activities.slice(0, 10).map(act => `
+                <div class="p-2 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 truncate">
+                        <span class="w-5 h-5 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-[9px] shrink-0">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <div class="truncate">
+                            <h6 class="text-[10px] font-bold text-white truncate">${window.escapeHTML ? window.escapeHTML(act.title) : act.title}</h6>
+                            <span class="text-[8px] text-gray-400">${act.time || ''} ${act.multiplier > 1.0 ? '• ' + act.multiplier + 'x streak boost' : ''}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0 text-[9px] font-mono font-bold">
+                        <span class="text-cyan-300">+${act.xp} XP</span>
+                        <span class="text-amber-300">+${act.coins} 🪙</span>
+                        ${act.stars ? `<span class="text-yellow-300">+${act.stars} ⭐</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // ── 3. Daily Missions (3 Contextual Side Quests) ─────────────────────────
+    const missionsContainer = document.getElementById('ac-missions-container');
+    if (missionsContainer && window.rewardsSystem) {
+        const missions = window.rewardsSystem.getDailyMissions();
+        missionsContainer.innerHTML = missions.map(m => `
+            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between gap-2 hover:border-white/10 transition">
+                <div class="space-y-0.5 truncate pointer-events-none">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fa-solid ${m.icon} text-blue-400 text-[10px]"></i>
+                        <h6 class="text-[10px] font-bold text-white truncate">${window.escapeHTML ? window.escapeHTML(m.title) : m.title}</h6>
+                    </div>
+                    <p class="text-[9px] text-gray-400 truncate">${window.escapeHTML ? window.escapeHTML(m.desc) : m.desc}</p>
+                    <div class="flex items-center gap-1 text-[8px] font-mono text-gray-300 pt-0.5">
+                        <span class="px-1 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-bold">+${m.xp} XP</span>
+                        <span class="px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-bold">+${m.coins} 🪙</span>
+                        ${m.stars ? `<span class="px-1 py-0.2 rounded bg-yellow-500/20 text-yellow-300 font-bold">+${m.stars} ⭐</span>` : ''}
+                    </div>
+                </div>
+                <div class="shrink-0">
+                    ${m.isClaimed ? `
+                        <span class="px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-[8px] font-bold flex items-center gap-1"><i class="fa-solid fa-check text-[7px]"></i> Claimed</span>
+                    ` : (m.canClaim ? `
+                        <button type="button" onclick="claimMissionReward('${m.id}')" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[8px] font-black uppercase shadow transition cursor-pointer animate-pulse">Claim +${m.coins}🪙</button>
+                    ` : `
+                        <span class="px-2 py-0.5 rounded-lg bg-white/5 text-gray-500 text-[8px] font-semibold">In Progress</span>
+                    `)}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ── 4. Trophies Progression (Horizontal Scrollable Row) ─────────────────
+    const trophiesContainer = document.getElementById('ac-trophies-row');
     if (trophiesContainer && window.rewardsSystem) {
         const list = window.rewardsSystem.evaluateTrophies();
 
-        // Compute counts
         const claimableCount = list.filter(t => t.canClaim).length;
         const claimedCount = list.filter(t => t.isClaimed).length;
         const totalCount = list.length;
@@ -1311,8 +1993,7 @@ function renderRewardsHub() {
 
         if (filteredList.length === 0) {
             trophiesContainer.innerHTML = `
-                <div class="col-span-3 py-6 text-center text-gray-500 text-[10px]">
-                    <i class="fa-solid fa-filter text-base mb-1 block text-gray-600"></i>
+                <div class="w-full py-4 text-center text-gray-500 text-[9px]">
                     No trophies matching "${currentTrophyFilter}".
                 </div>
             `;
@@ -1320,41 +2001,38 @@ function renderRewardsHub() {
             trophiesContainer.innerHTML = filteredList.map(t => {
                 const isClaimed = t.isClaimed;
                 const canClaim = t.canClaim;
-                const progress = t.progress || { current: isClaimed ? 1 : 0, target: 1, pct: isClaimed ? 100 : 0 };
+                const progress = t.progress;
                 const cardBg = isClaimed 
                     ? 'bg-slate-950/70 border-emerald-500/30' 
-                    : (canClaim ? 'bg-blue-950/40 border-amber-400/60 ring-1 ring-amber-400/40' : 'bg-slate-950/50 border-white/10 opacity-75');
+                    : (canClaim ? 'bg-blue-950/50 border-amber-400/60 ring-1 ring-amber-400/40' : 'bg-slate-950/60 border-white/10 opacity-80');
 
-                const tooltipContent = `${t.title} [${t.tier}] — ${t.desc} (Goal: ${progress.current}/${progress.target} ${progress.label || ''} • Reward: +${t.coins}🪙, +${t.points}⭐)`;
+                const tooltipContent = `${t.title} [${t.tier} ${t.subTier}] — ${t.desc} (Goal: ${progress.current}/${progress.target} ${progress.unit} • Reward: +${t.coins}🪙, +${t.points} XP)`;
 
                 return `
-                    <div class="relative group p-2.5 rounded-2xl border ${cardBg} transition-all duration-200 hover:scale-[1.02] flex flex-col items-center text-center justify-between min-h-[118px] cursor-pointer" data-tooltip="${window.escapeHTML ? window.escapeHTML(tooltipContent) : tooltipContent}" data-tooltip-pos="top">
-                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br ${t.tierColor} flex items-center justify-center text-white text-xs shadow-md mb-1">
-                            <i class="fa-solid ${t.icon}"></i>
-                        </div>
-                        <div class="space-y-0.5 w-full pointer-events-none">
-                            <span class="text-[9px] font-black uppercase tracking-wider ${t.tierText} block">${t.tier}</span>
-                            <h5 class="text-[11px] font-bold text-white truncate w-full">${window.escapeHTML ? window.escapeHTML(t.title) : t.title}</h5>
-                        </div>
-
-                        <!-- Visual Progress Bar for Locked / In Progress -->
-                        ${(!isClaimed && !canClaim) ? `
-                            <div class="w-full pt-1 pointer-events-none">
-                                <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-                                    <div class="bg-cyan-400 h-full rounded-full transition-all duration-300" style="width: ${progress.pct}%;"></div>
-                                </div>
-                                <span class="text-[8px] text-gray-400 font-bold block mt-0.5">${progress.current}/${progress.target}</span>
+                    <div class="w-[125px] shrink-0 snap-start p-2 rounded-xl border ${cardBg} flex flex-col justify-between text-center min-h-[120px] cursor-pointer hover:scale-[1.02] transition" data-tooltip="${window.escapeHTML ? window.escapeHTML(tooltipContent) : tooltipContent}" data-tooltip-pos="top">
+                        <div>
+                            <div class="w-7 h-7 mx-auto rounded-lg flex items-center justify-center text-xs shadow-md mb-1" style="background: radial-gradient(circle, ${t.tierHex}22 0%, ${t.tierHex}44 100%); border: 1px solid ${t.tierHex}66">
+                                <i class="fa-solid ${t.icon}" style="color: ${t.tierHex}"></i>
                             </div>
-                        ` : ''}
-
-                        <div class="mt-1.5 w-full">
-                            ${isClaimed 
-                                ? `<span class="text-[9px] font-bold text-emerald-400 flex items-center justify-center gap-1"><i class="fa-solid fa-check text-[8px]"></i> Claimed</span>`
-                                : (canClaim 
-                                    ? `<button type="button" onclick="claimTrophyReward('${t.id}')" class="w-full py-1 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[9px] font-black uppercase shadow-md transition cursor-pointer animate-pulse">Claim +${t.coins}🪙</button>`
-                                    : `<span class="text-[8px] text-gray-500 font-semibold"><i class="fa-solid fa-lock text-[8px] mr-0.5"></i> Locked</span>`
-                                  )
-                            }
+                            <span class="text-[7px] font-black uppercase tracking-wider block" style="color: ${t.tierHex}">${t.tier} ${t.subTier}</span>
+                            <h5 class="text-[9px] font-bold text-white truncate w-full mt-0.5">${window.escapeHTML ? window.escapeHTML(t.title) : t.title}</h5>
+                        </div>
+                        <div class="w-full pt-1">
+                            ${(!isClaimed && !canClaim) ? `
+                                <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                    <div class="h-full rounded-full transition-all duration-300" style="width: ${progress.pct}%; background-color: ${t.tierHex}"></div>
+                                </div>
+                                <span class="text-[7px] text-gray-400 font-bold block mt-0.5">${progress.current}/${progress.target} ${progress.unit}</span>
+                            ` : ''}
+                            <div class="mt-1">
+                                ${isClaimed 
+                                    ? `<span class="text-[7px] font-bold text-emerald-400 flex items-center justify-center gap-0.5"><i class="fa-solid fa-check text-[6px]"></i> Claimed</span>`
+                                    : (canClaim 
+                                        ? `<button type="button" onclick="claimTrophyReward('${t.id}')" class="w-full py-0.5 px-1 rounded bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[8px] font-black uppercase shadow transition cursor-pointer animate-pulse">Claim +${t.coins}🪙</button>`
+                                        : `<span class="text-[7px] text-gray-500 font-semibold"><i class="fa-solid fa-lock text-[6px] mr-0.5"></i> Locked</span>`
+                                      )
+                                }
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1362,59 +2040,156 @@ function renderRewardsHub() {
         }
     }
 
-    // Render Collectible Stickers with dynamic unlock state
-    const stickersContainer = document.getElementById('ac-stickers-grid');
+    // ── 5. Collector Stickers (Die-cut Horizontal Row with Outline & Tilt) ───
+    const stickersContainer = document.getElementById('ac-stickers-row');
+    const equippedStickerTag = document.getElementById('ac-equipped-sticker-tag');
     if (stickersContainer && window.rewardsSystem) {
-        const stickers = typeof window.rewardsSystem.evaluateStickers === 'function' 
-            ? window.rewardsSystem.evaluateStickers() 
-            : (window.rewardsSystem.catalog.stickers || []);
+        const stickers = window.rewardsSystem.evaluateStickers();
+        const equippedSticker = rewards.equippedSticker;
+        if (equippedStickerTag) {
+            const eqItem = stickers.find(s => s.id === equippedSticker);
+            equippedStickerTag.textContent = eqItem ? `Equipped: ${eqItem.name}` : 'Tap to equip';
+        }
+
         stickersContainer.innerHTML = stickers.map(s => {
             const isUnlocked = Boolean(s.isUnlocked);
-            const stickerTip = `${s.name} Sticker — ${s.desc} [${isUnlocked ? 'Unlocked ✨' : (s.conditionHint || 'Locked')}]`;
+            const isEquipped = s.isEquipped;
+            const stickerTip = `${s.name} Sticker — ${s.desc} [${isUnlocked ? (isEquipped ? 'Equipped ✨' : 'Click to Equip') : 'Locked'}]`;
+
             return `
-                <div class="p-2 rounded-2xl ${isUnlocked ? 'bg-cyan-950/30 border-cyan-500/30 shadow-inner' : 'bg-slate-950/60 border-white/5 opacity-55 grayscale'} flex flex-col items-center text-center gap-1 hover:border-cyan-400/40 transition group cursor-pointer" data-tooltip="${window.escapeHTML ? window.escapeHTML(stickerTip) : stickerTip}" data-tooltip-pos="top">
-                    <span class="text-xl group-hover:scale-110 transition transform pointer-events-none">${s.emoji}</span>
-                    <span class="text-[9px] font-bold ${isUnlocked ? 'text-cyan-300' : 'text-gray-400'} truncate w-full pointer-events-none">${window.escapeHTML ? window.escapeHTML(s.name) : s.name}</span>
-                    <span class="text-[7px] font-black uppercase tracking-wider ${isUnlocked ? 'text-emerald-400' : 'text-gray-500'} pointer-events-none">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
+                <div onclick="toggleStickerEquip('${s.id}')" class="shrink-0 snap-start flex flex-col items-center text-center gap-1 group cursor-pointer" data-tooltip="${window.escapeHTML ? window.escapeHTML(stickerTip) : stickerTip}" data-tooltip-pos="top">
+                    <!-- Die-cut sticker element with thick white outline & dynamic tilt -->
+                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center sticker-die-cut ${isUnlocked ? '' : 'opacity-40 grayscale'}" style="transform: rotate(${s.tilt || '0deg'});">
+                        <span class="text-2xl select-none pointer-events-none">${s.emoji}</span>
+                    </div>
+                    <span class="text-[8px] font-bold ${isEquipped ? 'text-cyan-300' : 'text-gray-400'} truncate w-16 pointer-events-none">${window.escapeHTML ? window.escapeHTML(s.name) : s.name}</span>
+                    <span class="text-[7px] font-extrabold uppercase ${isEquipped ? 'text-emerald-400' : (isUnlocked ? 'text-gray-500' : 'text-gray-600')} pointer-events-none">${isEquipped ? 'Active' : (isUnlocked ? 'Equip' : 'Locked')}</span>
                 </div>
             `;
         }).join('');
     }
 
-    // Render Cosmetic Shop
-    const cosmeticsContainer = document.getElementById('ac-cosmetics-grid');
-    if (cosmeticsContainer && window.rewardsSystem) {
-        const cosmetics = window.rewardsSystem.catalog.cosmetics || [];
-        const unlockedList = rewards.unlocked || [];
-        const equippedTitle = rewards.equipped?.title || 'Aspirant';
-        const equippedAccent = rewards.equipped?.themeAccent || 'accent_blue';
+    // ── 6. COSMICS Marketplace (Requires Coins + Progression Requirements) ───
+    const cosmicsContainer = document.getElementById('ac-cosmics-container');
+    if (cosmicsContainer && window.rewardsSystem) {
+        const cosmics = window.rewardsSystem.catalog.cosmics || [];
+        const unlockedCosmics = rewards.unlockedCosmics || ['title_aspirant', 'accent_blue'];
+        const lvlData = window.rewardsSystem.getLevelData(rewards.points || 0);
+        const currentStreak = streak;
+        const currentStars = rewards.stars || 0;
+        const currentCoins = rewards.coins || 0;
 
-        cosmeticsContainer.innerHTML = cosmetics.map(c => {
-            const isUnlocked = unlockedList.includes(c.id) || c.unlockedByDefault;
-            const isEquipped = (c.type === 'title' && equippedTitle === c.name) || (c.type === 'accent' && equippedAccent === c.id);
-            const cosmeticTip = `${c.name} [${c.type.toUpperCase()}] — ${c.desc} (${c.cost > 0 ? c.cost + '🪙' : 'Default'})`;
+        cosmicsContainer.innerHTML = cosmics.map(c => {
+            const isUnlocked = unlockedCosmics.includes(c.id);
+            
+            // Check progression requirements
+            let reqMet = true;
+            if (c.req) {
+                if (c.req.level && lvlData.level < c.req.level) reqMet = false;
+                if (c.req.streak && currentStreak < c.req.streak) reqMet = false;
+                if (c.req.stars && currentStars < c.req.stars) reqMet = false;
+            }
+            const hasCoins = currentCoins >= c.cost;
+            const canPurchase = !isUnlocked && reqMet && hasCoins;
+            const cosmeticTip = `${c.name} — ${c.desc} [${c.reqLabel || ''} • Cost: ${c.cost}🪙]`;
 
             return `
-                <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/10 flex items-center justify-between gap-2 cursor-pointer hover:border-white/20 transition" data-tooltip="${window.escapeHTML ? window.escapeHTML(cosmeticTip) : cosmeticTip}" data-tooltip-pos="top">
-                    <div class="space-y-0.5 pointer-events-none">
+                <div class="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between gap-2 hover:border-white/10 transition" data-tooltip="${window.escapeHTML ? window.escapeHTML(cosmeticTip) : cosmeticTip}" data-tooltip-pos="top">
+                    <div class="space-y-0.5 truncate pointer-events-none">
                         <div class="flex items-center gap-1.5">
-                            <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded ${c.type === 'title' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300'}">${c.type}</span>
-                            <span class="text-xs font-bold text-white">${window.escapeHTML ? window.escapeHTML(c.name) : c.name}</span>
+                            <i class="fa-solid ${c.icon} ${c.accentColor || 'text-purple-400'} text-[10px]"></i>
+                            <h6 class="text-[10px] font-bold text-white truncate">${window.escapeHTML ? window.escapeHTML(c.name) : c.name}</h6>
                         </div>
-                        <p class="text-[10px] text-gray-400">${window.escapeHTML ? window.escapeHTML(c.desc) : c.desc}</p>
+                        <p class="text-[8px] text-gray-400 truncate">${window.escapeHTML ? window.escapeHTML(c.desc) : c.desc}</p>
+                        <span class="text-[7px] font-mono font-bold text-purple-300 block">${c.reqLabel || ''}</span>
                     </div>
                     <div class="shrink-0">
-                        ${isEquipped
-                            ? `<span class="px-2 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] font-black uppercase">Equipped</span>`
-                            : (isUnlocked
-                                ? `<button type="button" onclick="equipCosmeticItem('${c.id}')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold uppercase transition cursor-pointer">Equip</button>`
-                                : `<button type="button" onclick="unlockCosmeticItem('${c.id}')" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[10px] font-black uppercase shadow transition cursor-pointer flex items-center gap-1"><span>${c.cost}</span><span>🪙</span></button>`
-                              )
-                        }
+                        ${isUnlocked ? `
+                            <span class="px-2 py-0.5 rounded bg-purple-500/15 border border-purple-500/30 text-purple-300 text-[8px] font-black uppercase">Owned</span>
+                        ` : (canPurchase ? `
+                            <button type="button" onclick="purchaseCosmicReward('${c.id}')" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[8px] font-black uppercase shadow transition cursor-pointer flex items-center gap-1">
+                                <span>${c.cost}</span><span>🪙</span>
+                            </button>
+                        ` : `
+                            <button type="button" disabled class="px-2 py-1 rounded bg-white/5 text-gray-500 text-[8px] font-bold cursor-not-allowed flex items-center gap-1">
+                                <i class="fa-solid fa-lock text-[7px]"></i>
+                                <span>${c.cost}🪙</span>
+                            </button>
+                        `)}
                     </div>
                 </div>
             `;
         }).join('');
+    }
+
+    // ── 7. POWERS (Strategic Assistance with Restrictions & Cooldowns) ───────
+    const powersContainer = document.getElementById('ac-powers-container');
+    if (powersContainer && window.rewardsSystem) {
+        const powers = window.rewardsSystem.catalog.powers || [];
+        const ownedPowers = rewards.powers || {};
+        const lvlData = window.rewardsSystem.getLevelData(rewards.points || 0);
+        const currentCoins = rewards.coins || 0;
+
+        powersContainer.innerHTML = powers.map(p => {
+            const count = ownedPowers[p.id] ? (ownedPowers[p.id].count || 0) : 0;
+            let reqMet = true;
+            if (p.req) {
+                if (p.req.level && lvlData.level < p.req.level) reqMet = false;
+                if (p.req.streak && streak < p.req.streak) reqMet = false;
+                if (p.req.stars && (rewards.stars || 0) < p.req.stars) reqMet = false;
+            }
+            const isCapped = p.maxOwned && count >= p.maxOwned;
+            const canBuy = reqMet && !isCapped && currentCoins >= p.cost;
+            const powerTip = `${p.name} — ${p.desc} [${p.reqLabel} • Cost: ${p.cost}🪙]`;
+
+            return `
+                <div class="p-2.5 rounded-xl bg-slate-900/60 border border-white/5 flex items-center justify-between gap-2 hover:border-white/10 transition" data-tooltip="${window.escapeHTML ? window.escapeHTML(powerTip) : powerTip}" data-tooltip-pos="top">
+                    <div class="space-y-0.5 truncate pointer-events-none">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fa-solid ${p.icon} ${p.color || 'text-amber-400'} text-[10px]"></i>
+                            <h6 class="text-[10px] font-bold text-white truncate">${window.escapeHTML ? window.escapeHTML(p.name) : p.name}</h6>
+                        </div>
+                        <p class="text-[8px] text-gray-400 truncate">${window.escapeHTML ? window.escapeHTML(p.desc) : p.desc}</p>
+                        <div class="flex items-center gap-2 text-[7px] font-mono text-gray-400">
+                            <span class="text-amber-300 font-bold">${p.reqLabel}</span>
+                            ${count > 0 ? `<span class="text-emerald-400 font-bold">Stored: ${count}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="shrink-0">
+                        ${canBuy ? `
+                            <button type="button" onclick="purchasePowerReward('${p.id}')" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[8px] font-black uppercase shadow transition cursor-pointer flex items-center gap-1">
+                                <span>${p.cost}</span><span>🪙</span>
+                            </button>
+                        ` : `
+                            <button type="button" disabled class="px-2 py-1 rounded bg-white/5 text-gray-500 text-[8px] font-bold cursor-not-allowed">
+                                ${isCapped ? 'Max Held' : p.cost + '🪙'}
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ── 8. System Integrity & Penalties (Discreet Audit) ─────────────────────
+    const penaltySection = document.getElementById('ac-penalties-section');
+    const penaltyList = document.getElementById('ac-penalties-list');
+    const penaltyCount = document.getElementById('ac-penalties-count');
+    const penalties = Array.isArray(rewards.penalties) ? rewards.penalties : [];
+
+    if (penaltySection && penaltyList) {
+        if (penalties.length > 0) {
+            penaltySection.classList.remove('hidden');
+            if (penaltyCount) penaltyCount.textContent = `${penalties.length} Notice(s)`;
+            penaltyList.innerHTML = penalties.map(pen => `
+                <div class="flex items-center justify-between gap-1 text-[8px]">
+                    <span class="text-rose-300 font-bold">${window.escapeHTML ? window.escapeHTML(pen.reason) : pen.reason}</span>
+                    <span class="text-gray-500 font-mono">${pen.time || ''}</span>
+                </div>
+            `).join('');
+        } else {
+            penaltySection.classList.add('hidden');
+        }
     }
 }
 
@@ -1425,16 +2200,30 @@ function claimTrophyReward(id) {
     }
 }
 
-function equipCosmeticItem(id) {
+function claimMissionReward(id) {
     if (window.rewardsSystem) {
-        window.rewardsSystem.equipCosmetic(id);
+        window.rewardsSystem.claimMission(id);
         renderRewardsHub();
     }
 }
 
-function unlockCosmeticItem(id) {
+function purchaseCosmicReward(id) {
     if (window.rewardsSystem) {
-        window.rewardsSystem.unlockCosmetic(id);
+        window.rewardsSystem.purchaseCosmic(id);
+        renderRewardsHub();
+    }
+}
+
+function purchasePowerReward(id) {
+    if (window.rewardsSystem) {
+        window.rewardsSystem.purchasePower(id);
+        renderRewardsHub();
+    }
+}
+
+function toggleStickerEquip(id) {
+    if (window.rewardsSystem) {
+        window.rewardsSystem.toggleEquipSticker(id);
         renderRewardsHub();
     }
 }
@@ -1462,6 +2251,46 @@ function renderNudgeHub() {
             </div>
         `;
         return;
+    }
+
+    // Update Hero Bar Nudge Pill & Popover Preview
+    const heroNudgeBadge = document.getElementById('hero-nudge-badge');
+    const heroPreviewList = document.getElementById('hero-nudge-preview-list');
+    const tabBadge = document.getElementById('action-center-nudge-badge');
+
+    if (tabBadge) {
+        if (nudges.length > 0) {
+            tabBadge.textContent = nudges.length;
+            tabBadge.classList.remove('hidden');
+        } else {
+            tabBadge.classList.add('hidden');
+        }
+    }
+
+    if (heroNudgeBadge) {
+        if (nudges.length > 0) {
+            heroNudgeBadge.textContent = `${nudges.length} Active`;
+            heroNudgeBadge.className = 'px-1.5 py-0.2 rounded-full bg-rose-500/20 border border-rose-400/50 text-rose-300 font-extrabold text-[10px] animate-pulse';
+        } else {
+            heroNudgeBadge.textContent = 'All Clear';
+            heroNudgeBadge.className = 'px-1.5 py-0.2 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-extrabold text-[10px]';
+        }
+    }
+
+    if (heroPreviewList) {
+        if (nudges.length === 0) {
+            heroPreviewList.innerHTML = '<div class="text-center py-2 text-emerald-400/90 text-[10px]"><i class="fa-solid fa-check mr-1"></i> All reviews & rituals clear!</div>';
+        } else {
+            heroPreviewList.innerHTML = nudges.slice(0, 3).map(n => `
+                <div class="p-1.5 rounded-lg bg-white/5 border border-white/5 flex items-center justify-between gap-1.5">
+                    <div class="truncate">
+                        <span class="text-[9px] font-bold text-white block truncate">${window.escapeHTML ? window.escapeHTML(n.title) : n.title}</span>
+                        <span class="text-[8px] text-gray-400 block truncate">${window.escapeHTML ? window.escapeHTML(n.message) : n.message}</span>
+                    </div>
+                    <span class="text-[8px] font-extrabold uppercase shrink-0 px-1 py-0.2 rounded bg-blue-500/20 text-blue-300">${n.priority}</span>
+                </div>
+            `).join('');
+        }
     }
 
     feed.innerHTML = nudges.map(n => {
@@ -1502,6 +2331,51 @@ function renderNudgeHub() {
         `;
     }).join('');
 }
+
+let nudgePopoverTimer = null;
+function setupHeroNudgePopover() {
+    const pill = document.getElementById('hero-nudge-pill-btn');
+    const pop = document.getElementById('hero-nudge-popover');
+    if (!pill || !pop || pill._nudgeWired) return;
+    pill._nudgeWired = true;
+
+    const show = () => {
+        if (nudgePopoverTimer) {
+            clearTimeout(nudgePopoverTimer);
+            nudgePopoverTimer = null;
+        }
+        const rect = pill.getBoundingClientRect();
+        let left = rect.left;
+        if (left + 290 > window.innerWidth - 12) {
+            left = window.innerWidth - 300;
+        }
+        if (left < 12) left = 12;
+        pop.style.top = `${rect.bottom + 8}px`;
+        pop.style.left = `${left}px`;
+        pop.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-2');
+        pop.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+    };
+
+    const hide = (delay = 180) => {
+        if (nudgePopoverTimer) clearTimeout(nudgePopoverTimer);
+        nudgePopoverTimer = setTimeout(() => {
+            pop.classList.add('opacity-0', 'pointer-events-none', '-translate-y-2');
+            pop.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            nudgePopoverTimer = null;
+        }, delay);
+    };
+
+    pill.addEventListener('mouseenter', show);
+    pill.addEventListener('mouseleave', () => hide(180));
+    pop.addEventListener('mouseenter', () => {
+        if (nudgePopoverTimer) {
+            clearTimeout(nudgePopoverTimer);
+            nudgePopoverTimer = null;
+        }
+    });
+    pop.addEventListener('mouseleave', () => hide(180));
+}
+window.setupHeroNudgePopover = setupHeroNudgePopover;
 
 function initTheme() {
     const themeBtn = document.getElementById("theme-toggle");
@@ -1611,8 +2485,12 @@ function initTheme() {
 
             const modal = document.getElementById("modal-shortcuts-help");
             if (modal && modal.classList.contains("active")) {
+                if (modal._openedAt && Date.now() - modal._openedAt < 250) {
+                    return;
+                }
                 const clickedInsideModal = modal.contains(e.target) || path.includes(modal);
-                const clickedTrigger = btnShortcutsTrigger.contains(e.target) || path.includes(btnShortcutsTrigger);
+                const clickedTrigger = (btnShortcutsTrigger && (btnShortcutsTrigger.contains(e.target) || path.includes(btnShortcutsTrigger))) ||
+                    Boolean(e.target.closest && e.target.closest('#hero-streak-pill-btn, #hero-nudge-pill-btn, [onclick*="openActionCenterWithTab"], [onclick*="focusActionCenterSearch"]'));
                 if (!clickedInsideModal && !clickedTrigger) {
                     closeShortcutsHelpModal();
                 }
@@ -1679,18 +2557,21 @@ function initTheme() {
     if (btnExport) {
         btnExport.onclick = () => {
             try {
-                const backupData = JSON.stringify(appState, null, 2);
+                const backupPayload = (typeof createSparseBackupPayload === "function") 
+                    ? createSparseBackupPayload(appState) 
+                    : { version: 3, format: "sparse-delta", state: appState };
+                const backupData = JSON.stringify(backupPayload, null, 2);
                 const blob = new Blob([backupData], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
                 const dateStr = new Date().toISOString().substring(0, 10);
-                a.download = `cgl_conquest_backup_${dateStr}.json`;
+                a.download = `cgl_conquest_system_backup_${dateStr}.json`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                if (window.showToast) window.showToast("Backup exported successfully!", "success");
+                if (window.showToast) window.showToast("Sparse delta backup exported successfully! Lean & fast.", "success");
             } catch (e) {
                 console.error("Export backup error:", e);
                 if (window.showToast) window.showToast("Failed to export backup JSON", "error");
@@ -1708,8 +2589,9 @@ function initTheme() {
             const reader = new FileReader();
             reader.onload = (evt) => {
                 try {
-                    const data = JSON.parse(evt.target.result);
-                    if (typeof data !== "object" || data === null || Array.isArray(data) || !data.syllabusProgress) {
+                    const parsed = JSON.parse(evt.target.result);
+                    const data = (parsed && parsed.state && typeof parsed.state === "object") ? parsed.state : parsed;
+                    if (typeof data !== "object" || data === null || Array.isArray(data) || (!data.syllabusProgress && !data.rewards)) {
                         throw new Error("Invalid backup JSON structure.");
                     }
 
@@ -1718,10 +2600,30 @@ function initTheme() {
                     delete data.constructor;
                     delete data.prototype;
 
-                    // Safely merge allowed appState fields
-                    if (data.syllabusProgress && typeof data.syllabusProgress === "object") {
-                        appState.syllabusProgress = data.syllabusProgress;
+                    // Hydrate clean syllabus baseline (all 241 topics initialized false)
+                    const hydratedSyllabus = {};
+                    if (typeof SYLLABUS_DATA !== "undefined" && Array.isArray(SYLLABUS_DATA)) {
+                        SYLLABUS_DATA.forEach(topic => {
+                            (topic.subtopics || []).forEach(sub => {
+                                hydratedSyllabus[sub.id] = { learned: false, practiced: false, mastered: false };
+                            });
+                        });
                     }
+
+                    // Safely overlay syllabusProgress (works seamlessly for both sparse delta and legacy 1646-line backups)
+                    if (data.syllabusProgress && typeof data.syllabusProgress === "object") {
+                        Object.entries(data.syllabusProgress).forEach(([id, flags]) => {
+                            if (flags && typeof flags === "object") {
+                                hydratedSyllabus[id] = {
+                                    learned: Boolean(flags.learned),
+                                    practiced: Boolean(flags.practiced),
+                                    mastered: Boolean(flags.mastered)
+                                };
+                            }
+                        });
+                    }
+                    appState.syllabusProgress = hydratedSyllabus;
+
                     if (Array.isArray(data.mocks)) {
                         appState.mocks = data.mocks.map(m => ({
                             ...m,
@@ -1736,17 +2638,50 @@ function initTheme() {
                             content: String(n.content || "")
                         }));
                     }
+                    if (data.srsRecords && typeof data.srsRecords === "object") {
+                        appState.srsRecords = data.srsRecords;
+                    }
+                    if (data.weakAlerts && typeof data.weakAlerts === "object") {
+                        appState.weakAlerts = data.weakAlerts;
+                    }
                     if (data.examName) appState.examName = String(data.examName);
                     if (data.examDate) appState.examDate = String(data.examDate);
                     if (data.examTier) appState.examTier = Number(data.examTier) || 1;
                     if (data.dayCounter) appState.dayCounter = Number(data.dayCounter) || 1;
+                    if (data.currentDay) appState.currentDay = Number(data.currentDay) || 1;
+                    if (typeof data.streak === "number") appState.streak = data.streak;
+                    if (data.lastActiveDate) appState.lastActiveDate = String(data.lastActiveDate);
+                    if (data.dailyRituals && typeof data.dailyRituals === "object") {
+                        appState.dailyRituals = data.dailyRituals;
+                    }
+                    if (data.theme) appState.theme = data.theme;
+                    if (data.mobileNavHand) appState.mobileNavHand = data.mobileNavHand;
+                    if (typeof data.soundEnabled === "boolean") appState.soundEnabled = data.soundEnabled;
+                    if (typeof data.speechEnabled === "boolean") appState.speechEnabled = data.speechEnabled;
+                    if (typeof data.toastEnabled === "boolean") appState.toastEnabled = data.toastEnabled;
+                    if (typeof data.focusModeActive === "boolean") {
+                        appState.focusModeActive = data.focusModeActive;
+                        if (window.updateFocusModeUI) window.updateFocusModeUI();
+                    }
+
+                    // Rewards System State Restoration
+                    if (data.rewards && typeof data.rewards === "object") {
+                        if (!appState.rewards) appState.rewards = {};
+                        Object.assign(appState.rewards, data.rewards);
+                    }
 
                     saveStateToStorage();
                     if (window.initTierToggler) window.initTierToggler();
                     if (window.updateMockFormLimits) window.updateMockFormLimits();
+                    if (window.initTheme) window.initTheme();
+                    if (window.updateHandSettingsUI) window.updateHandSettingsUI();
+                    if (window.updateStreakData) window.updateStreakData();
                     renderAll();
+                    if (typeof renderRewardsHub === "function") renderRewardsHub();
+                    if (typeof renderNudgeHub === "function") renderNudgeHub();
                     if (typeof renderMockAnalytics === "function") renderMockAnalytics();
-                    if (window.showToast) window.showToast("Backup restored successfully!", "success");
+                    if (typeof renderStudyPlan === "function") renderStudyPlan();
+                    if (window.showToast) window.showToast("System backup restored successfully! Progress & rewards synced.", "success");
                     closeShortcutsHelpModal();
                 } catch (err) {
                     console.error("Backup restore error:", err);
@@ -1756,6 +2691,44 @@ function initTheme() {
             };
             reader.readAsText(file);
         };
+    }
+
+    // Bind Factory Reset Wipe Confirmation Modal Controls
+    const wipeInput = document.getElementById("input-wipe-confirmation");
+    const btnExecWipe = document.getElementById("btn-execute-wipe");
+    const modalWipe = document.getElementById("modal-wipe-confirm");
+
+    if (wipeInput && btnExecWipe) {
+        wipeInput.addEventListener("input", () => {
+            // Strict case-sensitive match required: exactly "RESET ALL"
+            const isMatch = (wipeInput.value.trim() === "RESET ALL");
+            btnExecWipe.disabled = !isMatch;
+            const errorMsg = document.getElementById("wipe-input-error-msg");
+            if (isMatch) {
+                if (errorMsg) errorMsg.classList.add("hidden");
+                btnExecWipe.className = "flex-1 py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black uppercase tracking-wider border border-rose-500/50 shadow-lg shadow-rose-600/30 transition cursor-pointer";
+            } else {
+                btnExecWipe.className = "flex-1 py-2.5 px-3 rounded-xl bg-gray-700/50 text-gray-500 text-xs font-black uppercase tracking-wider border border-white/5 transition cursor-not-allowed";
+            }
+        });
+        wipeInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                if (wipeInput.value.trim() === "RESET ALL") {
+                    executeFactoryResetWipe();
+                } else {
+                    triggerWipeErrorShake();
+                }
+            }
+        });
+    }
+
+    if (modalWipe) {
+        modalWipe.addEventListener("click", (e) => {
+            if (e.target === modalWipe) {
+                closeWipeConfirmModal();
+            }
+        });
     }
 }
 
@@ -1783,6 +2756,11 @@ window.toggleSoundMode = toggleSoundMode;
 window.toggleFocusMode = toggleFocusMode;
 window.switchActionCenterHub = switchActionCenterHub;
 window.renderRewardsHub = renderRewardsHub;
+window.claimTrophyReward = claimTrophyReward;
+window.claimMissionReward = claimMissionReward;
+window.purchaseCosmicReward = purchaseCosmicReward;
+window.purchasePowerReward = purchasePowerReward;
+window.toggleStickerEquip = toggleStickerEquip;
 window.renderNudgeHub = renderNudgeHub;
 window.navigateTab = navigateToPage;
 
@@ -1802,6 +2780,22 @@ function openQrSyncModal(initialTab = 'scan') {
                 delete newState.constructor;
                 delete newState.prototype;
 
+                // Dedicated handling for Modular Rewards Only sync
+                if (newState._isRewardsOnlySync) {
+                    if (!appState.rewards) appState.rewards = {};
+                    Object.assign(appState.rewards, newState.rewards || {});
+                    if (typeof newState.streak === 'number') {
+                        appState.streak = newState.streak;
+                    }
+                    window.appState = appState;
+                    saveStateToStorage();
+
+                    if (typeof window.renderRewardsHub === "function") window.renderRewardsHub();
+                    if (typeof window.updateStreakData === "function") window.updateStreakData();
+                    if (typeof window.renderDashboardOverview === "function") window.renderDashboardOverview();
+                    return;
+                }
+
                 // In-place mutation of appState to preserve all module closures
                 Object.assign(appState, newState);
                 window.appState = appState;
@@ -1819,6 +2813,7 @@ function openQrSyncModal(initialTab = 'scan') {
                 if (typeof window.loadRituals === "function") window.loadRituals();
                 if (typeof window.updateTodayGoalsRatio === "function") window.updateTodayGoalsRatio();
                 if (typeof window.updateStreakData === "function") window.updateStreakData();
+                if (typeof window.renderRewardsHub === "function") window.renderRewardsHub();
 
                 // 3. Syllabus re-render & Deck Pills
                 if (typeof window.renderSyllabus === "function") window.renderSyllabus();
@@ -1842,9 +2837,10 @@ function openQrSyncModal(initialTab = 'scan') {
                 if (typeof renderSrsBanner === "function") renderSrsBanner();
                 if (typeof window.renderSrsBanner === "function") window.renderSrsBanner();
 
-                // 8. Theme and navigation ergonomics
+                // 8. Theme, focus mode, and navigation ergonomics
                 if (typeof window.updateHandSettingsUI === "function") window.updateHandSettingsUI();
                 if (typeof window.initTheme === "function") window.initTheme();
+                if (typeof window.updateFocusModeUI === "function") window.updateFocusModeUI();
             },
             onToast: (msg, type) => {
                 if (window.showToast) window.showToast(msg, type);
@@ -1867,15 +2863,20 @@ window.closeQrSyncModal = () => { if (qrModalInstance) qrModalInstance.close(); 
 function initUniversalModalDismissal() {
     document.addEventListener("click", (e) => {
         // 1. Any close button with .modal-close-btn, [data-modal-close], or #btn-fullscreen-close
-        const closeBtn = e.target.closest(".modal-close-btn, [data-modal-close], #btn-fullscreen-close");
+        const closeBtn = e.target.closest(".modal-close-btn, [data-modal-close], #btn-fullscreen-close, #btn-close-wipe-modal, #btn-cancel-wipe");
         if (closeBtn) {
             const modal = closeBtn.closest(".modal, [role='dialog'], .fixed.inset-0, #fullscreen-page");
             if (modal) {
+                if (modal.id === "modal-wipe-confirm") {
+                    if (typeof window.closeWipeConfirmModal === "function") window.closeWipeConfirmModal();
+                    return;
+                }
                 modal.classList.add("opacity-0", "pointer-events-none");
                 modal.classList.remove("opacity-100", "pointer-events-auto", "active");
-                if (modal.id === "fullscreen-page" || modal.id === "modal-mock-detail") {
+                if (modal.id === "fullscreen-page" || modal.id === "modal-mock-detail" || modal.id === "exam-target-modal" || modal.id === "app-custom-dialog-modal") {
                     modal.classList.add("hidden");
                 }
+                if (typeof restoreElevatedElements === "function") restoreElevatedElements();
                 const card = modal.querySelector(".scale-100");
                 if (card) {
                     card.classList.remove("scale-100");
@@ -1890,6 +2891,8 @@ function initUniversalModalDismissal() {
         if (targetModal && targetModal.classList && targetModal.classList.contains("fixed") && targetModal.classList.contains("inset-0")) {
             if (targetModal.id === "exam-target-modal") {
                 if (typeof window.closeExamTargetModal === "function") window.closeExamTargetModal();
+            } else if (targetModal.id === "modal-wipe-confirm") {
+                if (typeof window.closeWipeConfirmModal === "function") window.closeWipeConfirmModal();
             } else if (targetModal.id === "modal-day-detail") {
                 targetModal.classList.add("opacity-0", "pointer-events-none");
                 targetModal.classList.remove("active", "opacity-100", "pointer-events-auto");

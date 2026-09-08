@@ -260,8 +260,12 @@
             return;
         }
 
-        // Double-Shift detection (only when not typing in editable fields)
+        // Double-Shift detection (only when not typing in editable fields and NO modifier keys)
         if (e.key === 'Shift') {
+            if (e.ctrlKey || e.metaKey || e.altKey) {
+                lastShiftTime = 0;
+                return;
+            }
             const tag = document.activeElement ? document.activeElement.tagName : '';
             if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (document.activeElement && document.activeElement.isContentEditable)) {
                 return;

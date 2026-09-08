@@ -407,7 +407,7 @@
       #exam-target-modal > div,
       #app-custom-dialog-modal > div,
       #modal-study-viewer > div,
-      [role="dialog"]:not(#modal-shortcuts-help) > div {
+      [role="dialog"]:not(#modal-shortcuts-help):not(#modal-wipe-confirm) > div {
         transform: scale(0.92) translateY(14px);
         opacity: 0;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease !important;
@@ -416,28 +416,75 @@
 
       /* Active / Visible State of Modal Dialog Cards */
       .modal.active > div,
+      .modal.opacity-100 > div,
       .modal:not(.opacity-0):not(.pointer-events-none) > div,
+      #exam-target-modal.active > div,
       #exam-target-modal.opacity-100 > div,
       #exam-target-modal:not(.opacity-0):not(.pointer-events-none) > div,
+      #app-custom-dialog-modal.active > div,
       #app-custom-dialog-modal.opacity-100 > div,
       #app-custom-dialog-modal:not(.opacity-0):not(.pointer-events-none) > div,
       #modal-study-viewer.active > div,
+      #modal-study-viewer.opacity-100 > div,
       #modal-study-viewer:not(.opacity-0):not(.pointer-events-none) > div,
-      [role="dialog"]:not(#modal-shortcuts-help).active > div {
+      #modal-wipe-confirm.active > div,
+      #modal-wipe-confirm.opacity-100 > div,
+      #modal-wipe-confirm:not(.opacity-0):not(.pointer-events-none) > div,
+      [role="dialog"]:not(#modal-shortcuts-help).active > div,
+      [role="dialog"]:not(#modal-shortcuts-help).opacity-100 > div,
+      [role="dialog"]:not(#modal-shortcuts-help):not(.opacity-0):not(.pointer-events-none) > div {
         transform: scale(1) translateY(0) !important;
         opacity: 1 !important;
         box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(6, 182, 212, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.14) !important;
       }
 
-      /* Action Center Popover Card Specific Animation & Absolute Highest Stacking Context */
+      /* Factory Reset & Wipe Confirmation Modal Dedicated Elevation & Visibility */
+      #modal-wipe-confirm {
+        z-index: 100000000 !important;
+      }
+      #modal-wipe-confirm.active,
+      #modal-wipe-confirm:not(.hidden):not(.opacity-0) {
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      #modal-wipe-confirm.active > div,
+      #modal-wipe-confirm:not(.hidden):not(.opacity-0) > div,
+      #modal-wipe-card {
+        transform: scale(1) translateY(0) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+      }
+
+      /* Action Center Popover Card Specific Animation & Stacking Context */
       #modal-shortcuts-help {
         z-index: 9999999 !important;
         transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+      #modal-shortcuts-help.active {
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
+      }
+      #modal-shortcuts-help:not(.active) {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+        transform: translateY(-8px) !important;
       }
       #modal-shortcuts-help > div {
         transform: none !important;
         opacity: 1 !important;
         box-shadow: none !important;
+      }
+
+      /* Hero Nudge Popover Absolute Surface Stacking Context */
+      #hero-nudge-popover {
+        z-index: 9999990 !important;
       }
 
       /* Master Pomodoro Drawer Popover Animation */
@@ -734,11 +781,21 @@
                             <span id="daily-goals-ratio" class="text-gray-300 text-[11px]">0/3 Done</span>
                         </div>
 
-                        <!-- Pill 4: Study Streak -->
-                        <div class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-amber-500/30 text-xs font-bold text-amber-300 shadow-inner backdrop-blur-md">
-                            <i class="fa-solid fa-fire-flame-curved text-amber-400 text-xs"></i>
+                        <!-- Pill 4: Study Streak (Click to open Rewards tab) -->
+                        <button type="button" id="hero-streak-pill-btn" onclick="openActionCenterWithTab('rewards', event)" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-amber-950/40 border border-amber-500/30 hover:border-amber-400 text-xs font-bold text-amber-300 shadow-inner backdrop-blur-md transition duration-200 cursor-pointer group" title="Click to open Rewards &amp; Gamification Tab (Shift+R)">
+                            <i class="fa-solid fa-fire-flame-curved text-amber-400 text-xs group-hover:scale-110 transition"></i>
                             <span id="streak-count-display" class="font-extrabold text-amber-400">1d Streak</span>
-                        </div>
+                            <span id="streak-badge-mini" class="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black">1.0x</span>
+                            <i class="fa-solid fa-arrow-right text-[10px] text-gray-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition ml-0.5"></i>
+                        </button>
+
+                        <!-- Pill 4b: Nudge Action Pill (Click to open Nudge Tab, Hover for Preview) -->
+                        <button type="button" id="hero-nudge-pill-btn" onclick="openActionCenterWithTab('nudge', event)" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-cyan-950/40 border border-cyan-500/30 hover:border-cyan-400 text-xs font-bold text-cyan-300 shadow-inner backdrop-blur-md transition duration-200 cursor-pointer group" title="Click to view Active Nudges &amp; Alerts (Shift+N)">
+                            <i class="fa-solid fa-bell text-cyan-400 text-xs group-hover:scale-110 transition"></i>
+                            <span class="text-gray-300">Nudges:</span>
+                            <span id="hero-nudge-badge" class="px-1.5 py-0.2 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-extrabold text-[10px]">All Clear</span>
+                            <i class="fa-solid fa-arrow-right text-[10px] text-gray-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition ml-0.5"></i>
+                        </button>
 
                         <!-- Pill 5: Mocks Taken (Click to jump to Mock Analysis) -->
                         <button type="button" onclick="navigateToPage('page-mocks')" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/30 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to open Mock & Sectional Analytics">
@@ -749,13 +806,13 @@
                         </button>
 
                         <!-- Pill 6: Exam Target Countdown Pill (Clicking opens Edit Popup Modal!) -->
-                        <button type="button" onclick="openExamTargetModal()" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/40 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" title="Click to edit target exam date">
-                            <i class="fa-solid fa-bullseye text-rose-400 text-xs group-hover:scale-110 transition"></i>
-                            <span id="display-exam-name" class="font-extrabold text-rose-300 uppercase">Conquest</span>
-                            <span class="text-gray-500">•</span>
+                        <button type="button" id="btn-edit-exam-target" onclick="openExamTargetModal()" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-rose-950/40 border border-rose-500/40 hover:border-rose-400 text-xs font-bold text-white shadow-inner transition duration-200 cursor-pointer group backdrop-blur-md" data-tooltip="Target Exam Date • Click to edit">
+                            <i class="fa-solid fa-bullseye text-rose-400 text-xs group-hover:scale-110 transition pointer-events-none"></i>
+                            <span id="display-exam-name" class="font-extrabold text-rose-300 uppercase pointer-events-none">Conquest</span>
+                            <span class="text-gray-500 pointer-events-none">•</span>
                             <span id="display-exam-date" class="hidden">August 15, 2026</span>
-                            <span id="countdown-timer" class="font-mono text-rose-400 font-bold">40d Left</span>
-                            <i class="fa-solid fa-pen-to-square text-[10px] text-gray-400 group-hover:text-rose-300 ml-1"></i>
+                            <span id="countdown-timer" class="font-mono text-rose-400 font-bold pointer-events-none">40d Left</span>
+                            <i class="fa-solid fa-pen-to-square text-[10px] text-gray-400 group-hover:text-rose-300 ml-1 pointer-events-none"></i>
                         </button>
                     </div>
                 </div>
@@ -1070,6 +1127,13 @@
                             <i class="fa-solid fa-arrow-up-from-bracket text-cyan-400 text-xs group-hover:scale-110 transition"></i>
                             <span class="group-hover:text-cyan-300 transition">Export</span>
                         </button>
+
+                        <!-- Pill 8: Import Mock Data Action Pill -->
+                        <button type="button" id="btn-import-mock-data" onclick="document.getElementById('input-import-mock-file').click()" class="shrink-0 snap-start flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 hover:bg-teal-950/50 border border-teal-500/30 hover:border-teal-400 text-xs font-bold text-gray-200 hover:text-white shadow-inner backdrop-blur-md transition duration-200 cursor-pointer group active:scale-95" title="Import mock test records from JSON file">
+                            <i class="fa-solid fa-file-import text-teal-400 text-xs group-hover:scale-110 transition"></i>
+                            <span class="group-hover:text-teal-300 transition">Import Mocks</span>
+                        </button>
+                        <input type="file" id="input-import-mock-file" class="hidden" accept=".json">
                     </div>
                 </div>
             </div>
@@ -1756,7 +1820,7 @@
     </main>
 
     <!-- MODAL: STUDY DAY DETAIL POPUP -->
-    <div id="modal-day-detail" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+    <div id="modal-day-detail" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hidden">
         <div class="bg-bgCard border border-white/5 w-full max-w-2xl rounded-xl shadow-2xl m-4 overflow-hidden flex flex-col transform scale-95 transition-all duration-300">
             <div class="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-white/2px">
                 <h2 class="font-heading font-bold text-white text-sm uppercase tracking-wide">Day <span id="md-day-num">1</span> Study Overview</h2>
@@ -1833,7 +1897,7 @@
 
 
     <!-- MODAL: STUDY LEARNING VIEWER -->
-    <div id="modal-study-viewer" class="modal fixed inset-0 bg-black/90 backdrop-blur-md z-[120] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300">
+    <div id="modal-study-viewer" class="modal fixed inset-0 bg-black/90 backdrop-blur-md z-[120] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hidden">
         <div class="bg-bgCard border border-white/10 w-[95vw] h-[95vh] md:w-[90vw] md:h-[90vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col transform scale-95 transition-all duration-300 relative">
             <!-- Modal Header -->
             <div class="flex justify-between items-center border-b border-white/5 px-4 sm:px-6 py-3.5 flex-shrink-0">
@@ -1890,6 +1954,17 @@
         </div>
     </div>
 
+    <!-- FLOATING POPOVER: HERO NUDGE PREVIEW (Surface Level Overlay, High Z-Index) -->
+    <div id="hero-nudge-popover" class="fixed z-[9999990] w-72 bg-slate-900/95 sm:bg-bgCard/95 backdrop-blur-2xl border border-white/15 rounded-2xl p-3 shadow-2xl transition-all duration-200 opacity-0 pointer-events-none -translate-y-2 select-none" style="top: 0; left: 0;">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
+            <span class="text-[9px] font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5"><i class="fa-solid fa-bolt text-[8px]"></i> Priority Alerts</span>
+            <span class="text-[8px] text-gray-400 font-mono">Shift+N</span>
+        </div>
+        <div id="hero-nudge-preview-list" class="space-y-1.5">
+            <div class="text-center py-2 text-emerald-400/90 text-[10px]"><i class="fa-solid fa-check mr-1"></i> All reviews &amp; rituals clear!</div>
+        </div>
+    </div>
+
     <!-- POPOVER: ACTION CENTER (Double-Shift / Floating Popover) -->
     <div id="modal-shortcuts-help" role="dialog" aria-modal="true" aria-label="Action Center Shortcuts Popover" class="fixed top-16 right-4 sm:right-12 w-[calc(100vw-2rem)] sm:w-[440px] max-w-md max-h-[85vh] z-[9999999] bg-slate-900/95 sm:bg-bgCard/95 border border-white/15 backdrop-blur-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col transform -translate-y-2 opacity-0 pointer-events-none transition-all duration-200 ease-out select-none">
 
@@ -1932,7 +2007,7 @@
             <div class="px-5 py-2.5 border-b border-white/5 shrink-0">
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
-                    <input id="shortcuts-search" type="text" placeholder="Filter actions and shortcuts…"
+                    <input id="shortcuts-search" type="text" placeholder="Filter actions and shortcuts… (Press / to search)"
                         class="w-full bg-white/5 border border-white/8 rounded-xl pl-8 pr-4 py-2 text-xs text-white placeholder-gray-500 outline-none focus:border-accentCyan/60 transition"
                         autocomplete="off">
                 </div>
@@ -1973,6 +2048,10 @@
                             <span class="ac-label"><i class="fa-solid fa-arrow-up mr-2 text-gray-500 group-hover:text-accentCyan transition"></i>Scroll to Top</span>
                             <span class="ac-right"><kbd class="sc-kbd">U</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
                         </button>
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02]">
+                            <span class="ac-label"><i class="fa-solid fa-arrows-left-right mr-2 text-cyan-400"></i>Cycle Tabs (Syllabus/Drills/Plan)</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">←</kbd><kbd class="sc-kbd">→</kbd></span></span>
+                        </div>
                     </div>
                 </div>
 
@@ -2016,14 +2095,14 @@
                             </span>
                         </div>
                         <!-- Synthesized Audio: full row clickable -->
-                        <div class="ac-toggle-row cursor-pointer" onclick="if (!event.target.closest('#sound-toggle')) window.toggleSoundMode()">
+                        <div class="ac-toggle-row cursor-pointer" onclick="window.toggleSoundMode()">
                             <span class="ac-label"><i class="fa-solid fa-music mr-2.5 text-gray-500"></i>Synthesized Audio</span>
                             <span class="ac-right">
-                                <div id="sound-toggle" class="w-16 h-6 rounded-full bg-blue-500/20 border border-blue-400/40 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle audio [M]">
+                                <div id="sound-toggle" class="w-16 h-6 rounded-full bg-blue-500/20 border border-blue-400/40 relative cursor-pointer shrink-0 hover:border-white/30 transition flex items-center justify-between px-1" role="button" title="Toggle audio [S]">
                                     <span id="sound-toggle-text" class="text-[9px] font-extrabold uppercase tracking-wider text-blue-300 pointer-events-none select-none order-1 pl-1">Audio</span>
                                     <span class="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[9px] text-zinc-950 transition-all duration-300 pointer-events-none shadow-md order-2" id="sound-toggle-knob"><i class="fa-solid fa-volume-high text-blue-600 text-[8px]"></i></span>
                                 </div>
-                                <kbd class="sc-kbd">M</kbd>
+                                <kbd class="sc-kbd">S</kbd>
                             </span>
                         </div>
                         <!-- Focus Mode: full row clickable -->
@@ -2037,12 +2116,13 @@
                                 <kbd class="sc-kbd">F</kbd>
                             </span>
                         </div>
-                        <!-- Mobile Ergonomics Nav Hand Toggle (Only on Mobile screens) -->
-                        <div class="ac-toggle-row md:hidden">
-                            <span class="ac-label"><i class="fa-solid fa-mobile-screen-button mr-2.5 text-gray-500"></i>Mobile Nav Dock Hand</span>
+                        <!-- Ergonomics Nav Dock Position Toggle (Left | Center | Right) -->
+                        <div class="ac-toggle-row">
+                            <span class="ac-label"><i class="fa-solid fa-mobile-screen-button mr-2.5 text-gray-500"></i>Nav Dock Position</span>
                             <span class="ac-right">
                                 <div class="flex items-center gap-1 bg-white/5 p-0.5 rounded-lg border border-white/10">
                                     <button type="button" id="btn-hand-left-cmd" onclick="setMobileNavHand('left')" class="px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer">Left</button>
+                                    <button type="button" id="btn-hand-center-cmd" onclick="setMobileNavHand('center')" class="px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer">Center</button>
                                     <button type="button" id="btn-hand-right-cmd" onclick="setMobileNavHand('right')" class="px-2 py-0.5 rounded text-[10px] font-bold transition cursor-pointer">Right</button>
                                 </div>
                             </span>
@@ -2096,9 +2176,9 @@
                 <div class="px-5 pt-2 pb-1">
                     <p class="text-[10px] font-extrabold text-accentAmber uppercase tracking-widest mb-2">Quick Helpers</p>
                     <div class="space-y-0.5">
-                        <button type="button" onclick="handleShortcutAction('cmd-palette')" class="ac-row group w-full" data-tooltip="Open Command Palette Search [Ctrl+K]" data-tooltip-pos="top">
-                            <span class="ac-label"><i class="fa-solid fa-terminal mr-2.5 text-cyan-400 group-hover:text-cyan-300 transition"></i>Command Palette</span>
-                            <span class="ac-right"><kbd class="sc-kbd">Ctrl+K</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
+                        <button type="button" onclick="focusActionCenterSearch(event)" class="ac-row group w-full" data-tooltip="Search and filter Hub actions [/]" data-tooltip-pos="top">
+                            <span class="ac-label"><i class="fa-solid fa-magnifying-glass mr-2.5 text-cyan-400 group-hover:text-cyan-300 transition"></i>Search &amp; Filter Actions</span>
+                            <span class="ac-right"><kbd class="sc-kbd">/</kbd><i class="fa-solid fa-arrow-right ac-arrow"></i></span>
                         </button>
                         <button type="button" onclick="handleShortcutAction('exam-target')" class="ac-row group w-full" data-tooltip="Edit Target Exam Date & Countdown" data-tooltip-pos="top">
                             <span class="ac-label"><i class="fa-solid fa-bullseye mr-2.5 text-rose-400 group-hover:text-rose-300 transition"></i>Edit Exam Target</span>
@@ -2126,29 +2206,33 @@
 
                 <div class="border-t border-white/5 mx-5 my-1"></div>
 
-                <!-- ── SECTION: Speed Drill Keys (info only) ──────── -->
+                <!-- ── SECTION: Speed Drill Shortcuts Reference (Read-Only) ──────── -->
                 <div class="px-5 pt-2 pb-1">
-                    <p class="text-[9px] font-extrabold text-accentPurple uppercase tracking-widest mb-2">Speed Drills (keyboard only)</p>
-                    <div class="space-y-1.5 text-xs text-gray-400">
-                        <div class="ac-info-row">
-                            <span>Start / Pause / Resume</span>
-                            <span><kbd class="sc-kbd">Space</kbd></span>
+                    <p class="text-[9px] font-extrabold text-accentPurple uppercase tracking-widest mb-2">Speed Drill Shortcuts (Reference)</p>
+                    <div class="space-y-0.5">
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02] opacity-85">
+                            <span class="ac-label"><i class="fa-solid fa-play mr-2 text-purple-400"></i>Start / Pause / Resume</span>
+                            <span class="ac-right"><kbd class="sc-kbd">Space</kbd></span>
                         </div>
-                        <div class="ac-info-row">
-                            <span>Stop &amp; Exit</span>
-                            <span class="flex gap-1"><kbd class="sc-kbd">X</kbd> <span class="text-gray-600">or</span> <kbd class="sc-kbd">Esc</kbd></span>
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02] opacity-85">
+                            <span class="ac-label"><i class="fa-solid fa-stop mr-2 text-rose-400"></i>Stop &amp; Exit Drill</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">X</kbd> <span class="text-gray-600">/</span> <kbd class="sc-kbd">Esc</kbd></span></span>
                         </div>
-                        <div class="ac-info-row">
-                            <span>Select MCQ Option</span>
-                            <span class="flex gap-1"><kbd class="sc-kbd">1</kbd><kbd class="sc-kbd">2</kbd><kbd class="sc-kbd">3</kbd><kbd class="sc-kbd">4</kbd></span>
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02] opacity-85">
+                            <span class="ac-label"><i class="fa-solid fa-list-ol mr-2 text-gray-400"></i>Select MCQ Option</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">1</kbd><kbd class="sc-kbd">2</kbd><kbd class="sc-kbd">3</kbd><kbd class="sc-kbd">4</kbd></span></span>
                         </div>
-                        <div class="ac-info-row">
-                            <span>Difficulty Easy / Med / Adv</span>
-                            <span class="flex gap-1"><kbd class="sc-kbd">E</kbd><kbd class="sc-kbd">M</kbd><kbd class="sc-kbd">A</kbd></span>
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02] opacity-85">
+                            <span class="ac-label"><i class="fa-solid fa-sliders mr-2 text-amber-400"></i>Difficulty (Easy / Med / Adv)</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">E</kbd><kbd class="sc-kbd">M</kbd><kbd class="sc-kbd">A</kbd></span></span>
                         </div>
-                        <div class="ac-info-row">
-                            <span>Cycle Difficulty</span>
-                            <span><kbd class="sc-kbd">D</kbd></span>
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02] opacity-85">
+                            <span class="ac-label"><i class="fa-solid fa-arrows-rotate mr-2 text-cyan-400"></i>Cycle Difficulty</span>
+                            <span class="ac-right"><kbd class="sc-kbd">D</kbd></span>
+                        </div>
+                        <div class="ac-row cursor-default pointer-events-none select-none w-full bg-white/[0.02] opacity-85">
+                            <span class="ac-label"><i class="fa-solid fa-arrows-left-right mr-2 text-blue-400"></i>Cycle Drill Modes</span>
+                            <span class="ac-right"><span class="flex gap-1"><kbd class="sc-kbd">←</kbd><kbd class="sc-kbd">→</kbd></span></span>
                         </div>
                     </div>
                 </div>
@@ -2156,14 +2240,23 @@
                 <div class="border-t border-white/5 mx-5 my-1"></div>
 
                 <!-- ── SECTION: Data Management ───────────────────── -->
-                <div class="px-5 pt-2 pb-4">
-                    <p class="text-[9px] font-extrabold text-gray-500 uppercase tracking-widest mb-2">Data</p>
+                <div class="px-5 pt-2 pb-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <p class="text-[9px] font-extrabold text-gray-500 uppercase tracking-widest">Data Management</p>
+                        <span class="text-[8px] font-bold text-gray-400">Sparse Delta &amp; Reset</span>
+                    </div>
                     <div class="flex items-center gap-2">
-                        <button id="btn-export-backup" class="flex-1 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition flex items-center justify-center gap-2" title="Export Backup">
-                            <i class="fa-solid fa-download text-accentCyan"></i> Backup
+                        <button id="btn-export-backup" type="button" class="flex-1 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition flex items-center justify-center gap-1.5 cursor-pointer" title="Export Sparse Delta Backup">
+                            <i class="fa-solid fa-download text-accentCyan"></i>
+                            <span>Backup</span>
                         </button>
-                        <button id="btn-restore-backup" class="flex-1 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition flex items-center justify-center gap-2" title="Restore Backup">
-                            <i class="fa-solid fa-upload text-accentAmber"></i> Restore
+                        <button id="btn-restore-backup" type="button" class="flex-1 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-semibold border border-white/10 transition flex items-center justify-center gap-1.5 cursor-pointer" title="Restore Backup JSON">
+                            <i class="fa-solid fa-upload text-accentAmber"></i>
+                            <span>Restore</span>
+                        </button>
+                        <button id="btn-open-wipe-modal" type="button" onclick="openWipeConfirmModal()" class="px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 hover:text-rose-200 text-xs font-bold border border-rose-500/30 transition flex items-center justify-center gap-1.5 cursor-pointer" title="Factory Reset &amp; Wipe All Data">
+                            <i class="fa-solid fa-trash-can text-rose-400"></i>
+                            <span>Wipe</span>
                         </button>
                         <input type="file" id="input-restore-file" class="hidden" accept=".json">
                     </div>
@@ -2175,87 +2268,183 @@
         <!-- ═══════════════════════════════════════════════════════════════ -->
         <!-- PANEL 2: REWARDS & GAMIFICATION HUB                           -->
         <!-- ═══════════════════════════════════════════════════════════════ -->
-        <div id="ac-panel-rewards" class="hidden flex-1 overflow-y-auto scrollbar-thin p-4 space-y-4" style="max-height:62vh;">
-            <!-- Profile & Balances Summary with Level Progress Bar -->
-            <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/40 to-slate-900/40 border border-blue-500/20 rounded-2xl p-3.5 space-y-2 shadow-inner">
+        <div id="ac-panel-rewards" class="hidden flex-1 overflow-y-auto scrollbar-thin p-4 space-y-3.5" style="max-height:62vh;">
+            <!-- ── 1. TOP PROGRESSION & BALANCES BAR ────────────────────────── -->
+            <div class="bg-gradient-to-r from-blue-950/60 via-indigo-950/50 to-slate-900/60 border border-blue-500/25 rounded-2xl p-3 space-y-2 shadow-inner">
                 <div class="flex items-center justify-between">
                     <div>
-                        <span class="text-[9px] font-extrabold uppercase tracking-wider text-blue-300 block">Current Rank</span>
-                        <h4 id="ac-rewards-title" class="text-sm font-black text-white flex items-center gap-1.5">
-                            <i class="fa-solid fa-crown text-amber-400 text-xs"></i>
+                        <span class="text-[8px] font-black uppercase tracking-widest text-blue-300/80 block">Candidate Rank</span>
+                        <h4 id="ac-rewards-title" class="text-xs font-black text-white flex items-center gap-1.5">
+                            <i class="fa-solid fa-crown text-amber-400 text-[11px]"></i>
                             <span>Aspirant</span>
                         </h4>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="px-2.5 py-1 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-black flex items-center gap-1" data-tooltip="Conquest Coins: Earn by mastering syllabus & achieving goals" data-tooltip-pos="top">
+                    <!-- Balances: Coins (Only Currency), Stars (Performance), Streak (Multiplier) -->
+                    <div class="flex items-center gap-1.5">
+                        <div class="px-2 py-0.5 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-black flex items-center gap-1" data-tooltip="Conquest Coins: Spendable currency for Cosmics & Powers" data-tooltip-pos="top">
                             <span>🪙</span>
                             <span id="ac-rewards-coins">0</span>
                         </div>
-                        <div class="px-2.5 py-1 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-black flex items-center gap-1" data-tooltip="Experience Points: Level up your candidate tier" data-tooltip-pos="top">
+                        <div class="px-2 py-0.5 rounded-lg bg-yellow-500/15 border border-yellow-500/30 text-yellow-300 text-[11px] font-black flex items-center gap-1" data-tooltip="Stars: Achievement indicator earned via high accuracy & drills" data-tooltip-pos="top">
                             <span>⭐</span>
-                            <span id="ac-rewards-points">0</span>
+                            <span id="ac-rewards-stars">0</span>
+                        </div>
+                        <div class="px-2 py-0.5 rounded-lg bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[11px] font-black flex items-center gap-1" data-tooltip="Streak: Consistency days & reward multiplier" data-tooltip-pos="top">
+                            <span>🔥</span>
+                            <span id="ac-rewards-streak">0d</span>
+                            <span id="ac-rewards-multiplier" class="text-[8px] px-1 py-0.2 rounded bg-rose-500/30 font-black text-rose-200">1.0x</span>
                         </div>
                     </div>
                 </div>
-                <!-- XP Progress toward Next Level -->
+
+                <!-- Level XP Progress Bar -->
                 <div class="pt-0.5">
                     <div class="flex justify-between items-center text-[9px] font-bold text-gray-400 mb-1">
                         <span id="ac-rewards-level-text" class="text-cyan-300 flex items-center gap-1">
                             <i class="fa-solid fa-seedling text-[8px]"></i> Level 1 • Novice
                         </span>
-                        <span id="ac-rewards-xp-text" class="font-mono text-gray-300">0 / 100 XP</span>
+                        <span id="ac-rewards-xp-text" class="font-mono text-gray-300 text-[9px]">0 / 100 XP</span>
                     </div>
-                    <div class="w-full bg-black/40 h-1.5 rounded-full overflow-hidden border border-white/5">
+                    <div class="w-full bg-black/50 h-1.5 rounded-full overflow-hidden border border-white/5">
                         <div id="ac-rewards-xp-bar" class="bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
                     </div>
                 </div>
+
+                <!-- Compact "Next Unlock" Prompt -->
+                <div id="ac-rewards-next-unlock" class="pt-1.5 border-t border-white/5 flex items-center justify-between text-[9px] text-gray-400">
+                    <div class="flex items-center gap-1.5 truncate">
+                        <i class="fa-solid fa-bullseye text-cyan-400 text-[9px]"></i>
+                        <span class="text-gray-400">Next Unlock:</span>
+                        <span id="ac-next-unlock-name" class="font-bold text-gray-200 truncate">Bronze I — First Step</span>
+                    </div>
+                    <span id="ac-next-unlock-pct" class="font-mono text-cyan-400 text-[9px] shrink-0 font-bold ml-2">0%</span>
+                </div>
             </div>
 
-            <!-- Trophies (9-dot style 3-column launcher grid) with Filter Pills -->
-            <div>
-                <div class="flex items-center justify-between mb-1.5">
-                    <p class="text-[10px] font-extrabold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <i class="fa-solid fa-trophy text-xs"></i>
-                        <span>Trophies &amp; Goals</span>
+            <!-- ── 2. TODAY'S REWARD ACTIVITY (HISTORY, NOT A CHECKLIST) ──────── -->
+            <div class="bg-slate-950/50 border border-white/5 rounded-2xl p-3 space-y-2">
+                <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock-rotate-left text-[10px]"></i>
+                        <span>Today's Reward Activity</span>
                     </p>
-                    <span id="ac-trophy-ratio" class="text-[9px] text-gray-400 font-bold">0 / 14 Unlocked</span>
+                    <span id="ac-activity-count" class="text-[8px] font-extrabold text-gray-400">0 events</span>
                 </div>
-                
-                <!-- Filter Pills -->
-                <div class="flex items-center gap-1 mb-2 overflow-x-auto scrollbar-none py-0.5" id="ac-trophy-filter-bar">
-                    <button type="button" onclick="filterRewardsTrophies('all')" class="ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-blue-600 text-white cursor-pointer" data-filter="all">All</button>
-                    <button type="button" onclick="filterRewardsTrophies('claimable')" class="ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1" data-filter="claimable">Ready <span id="ac-claimable-badge" class="hidden px-1 rounded-full bg-amber-400 text-zinc-950 text-[8px] font-black">0</span></button>
-                    <button type="button" onclick="filterRewardsTrophies('in-progress')" class="ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer" data-filter="in-progress">In Progress</button>
-                    <button type="button" onclick="filterRewardsTrophies('claimed')" class="ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer" data-filter="claimed">Claimed</button>
-                </div>
-                <div id="ac-trophies-grid" class="grid grid-cols-3 gap-2">
-                    <!-- Dynamic Trophies rendered by renderRewardsHub() -->
+                <div id="ac-rewards-activity-list" class="space-y-1.5 max-h-[120px] overflow-y-auto scrollbar-thin">
+                    <!-- Dynamic activity items rendered by renderRewardsHub() -->
                 </div>
             </div>
 
-            <!-- Collectible Badges & Stickers -->
-            <div>
-                <div class="flex items-center justify-between mb-2">
-                    <p class="text-[10px] font-extrabold text-cyan-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <i class="fa-solid fa-certificate text-xs"></i>
+            <!-- ── 3. DAILY MISSIONS (3 CONTEXTUAL SIDE QUESTS) ───────────────── -->
+            <div class="bg-slate-950/50 border border-white/5 rounded-2xl p-3 space-y-2">
+                <div class="flex items-center justify-between cursor-pointer" onclick="toggleRewardsCollapsible('missions')">
+                    <div class="flex items-center gap-1.5">
+                        <p class="text-[9px] font-black uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-compass text-[10px]"></i>
+                            <span>Daily Side Quests</span>
+                        </p>
+                        <span class="text-[8px] font-black px-1.5 py-0.2 rounded-full bg-blue-500/20 text-blue-300">3 Active</span>
+                    </div>
+                    <button type="button" id="ac-btn-toggle-missions" class="text-[9px] text-gray-400 hover:text-white transition">
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                </div>
+                <div id="ac-missions-container" class="space-y-1.5 transition-all duration-200">
+                    <!-- 3 Dynamic Missions rendered by renderRewardsHub() -->
+                </div>
+            </div>
+
+            <!-- ── 4. TROPHIES & MASTERY (HORIZONTAL SCROLLABLE ROW) ─────────── -->
+            <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-trophy text-[10px]"></i>
+                        <span>Trophies &amp; Mastery</span>
+                    </p>
+                    <span id="ac-trophy-ratio" class="text-[8px] text-gray-400 font-bold">0 / 21 Claimed</span>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="flex items-center gap-1 overflow-x-auto scrollbar-none py-0.5" id="ac-trophy-filter-bar">
+                    <button type="button" onclick="filterRewardsTrophies('all')" class="ac-trophy-filter-btn px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-blue-600 text-white cursor-pointer" data-filter="all">All</button>
+                    <button type="button" onclick="filterRewardsTrophies('claimable')" class="ac-trophy-filter-btn px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1" data-filter="claimable">Ready <span id="ac-claimable-badge" class="hidden px-1 rounded-full bg-amber-400 text-zinc-950 text-[7px] font-black">0</span></button>
+                    <button type="button" onclick="filterRewardsTrophies('in-progress')" class="ac-trophy-filter-btn px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer" data-filter="in-progress">In Progress</button>
+                    <button type="button" onclick="filterRewardsTrophies('claimed')" class="ac-trophy-filter-btn px-2 py-0.5 rounded-full text-[8px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer" data-filter="claimed">Claimed</button>
+                </div>
+
+                <!-- Horizontal Scrollable Container -->
+                <div id="ac-trophies-row" class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-thin snap-x">
+                    <!-- Dynamic 21-level horizontal trophies rendered by renderRewardsHub() -->
+                </div>
+            </div>
+
+            <!-- ── 5. COLLECTOR STICKERS (HORIZONTAL DIE-CUT ROW) ─────────────── -->
+            <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <p class="text-[9px] font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-certificate text-[10px]"></i>
                         <span>Collector Stickers</span>
                     </p>
+                    <span id="ac-equipped-sticker-tag" class="text-[8px] text-gray-400 font-bold">Tap to equip</span>
                 </div>
-                <div id="ac-stickers-grid" class="grid grid-cols-3 gap-2">
+                <!-- Horizontal Row of Die-cut Stickers with outline and dynamic tilt -->
+                <div id="ac-stickers-row" class="flex items-center gap-3 overflow-x-auto py-2 px-1 scrollbar-none snap-x">
                     <!-- Dynamic Stickers rendered by renderRewardsHub() -->
                 </div>
             </div>
 
-            <!-- Cosmetic Titles & Themes Shop -->
-            <div class="pb-2">
-                <div class="flex items-center justify-between mb-2">
-                    <p class="text-[10px] font-extrabold text-purple-400 uppercase tracking-widest flex items-center gap-1.5">
-                        <i class="fa-solid fa-store text-xs"></i>
-                        <span>Cosmetic Unlock Vault</span>
-                    </p>
+            <!-- ── 6. COSMICS (CUSTOMIZATION MARKETPLACE) ──────────────────────── -->
+            <div class="bg-slate-950/50 border border-white/5 rounded-2xl p-3 space-y-2">
+                <div class="flex items-center justify-between cursor-pointer" onclick="toggleRewardsCollapsible('cosmics')">
+                    <div class="flex items-center gap-1.5">
+                        <p class="text-[9px] font-black uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
+                            <span>COSMICS</span>
+                        </p>
+                        <span class="text-[8px] font-black px-1.5 py-0.2 rounded-full bg-purple-500/20 text-purple-300">Customization</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[8px] text-gray-500 font-bold">Configure in Hub</span>
+                        <button type="button" id="ac-btn-toggle-cosmics" class="text-[9px] text-gray-400 hover:text-white transition">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
                 </div>
-                <div id="ac-cosmetics-grid" class="space-y-1.5">
-                    <!-- Dynamic Cosmetics rendered by renderRewardsHub() -->
+                <div id="ac-cosmics-container" class="hidden space-y-1.5 transition-all duration-200">
+                    <!-- Dynamic Cosmics rendered by renderRewardsHub() -->
+                </div>
+            </div>
+
+            <!-- ── 7. POWERS (STRATEGIC ASSISTANCE) ──────────────────────────── -->
+            <div class="bg-slate-950/50 border border-white/5 rounded-2xl p-3 space-y-2">
+                <div class="flex items-center justify-between cursor-pointer" onclick="toggleRewardsCollapsible('powers')">
+                    <div class="flex items-center gap-1.5">
+                        <p class="text-[9px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt-lightning text-[10px]"></i>
+                            <span>POWERS</span>
+                        </p>
+                        <span class="text-[8px] font-black px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300">Assistance</span>
+                    </div>
+                    <button type="button" id="ac-btn-toggle-powers" class="text-[9px] text-gray-400 hover:text-white transition">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div id="ac-powers-container" class="hidden space-y-1.5 transition-all duration-200">
+                    <!-- Dynamic Powers rendered by renderRewardsHub() -->
+                </div>
+            </div>
+
+            <!-- ── 8. SYSTEM INTEGRITY & PENALTIES (DISCREET AUDIT) ───────────── -->
+            <div id="ac-penalties-section" class="hidden bg-rose-950/20 border border-rose-500/20 rounded-2xl p-2.5 space-y-1.5 text-[9px]">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-rose-300 flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved text-[9px]"></i>
+                        <span>System Integrity Note</span>
+                    </span>
+                    <span id="ac-penalties-count" class="text-rose-400 font-mono">1 Notice</span>
+                </div>
+                <div id="ac-penalties-list" class="space-y-1 text-gray-400">
+                    <!-- Penalties log rendered if present -->
                 </div>
             </div>
         </div>
@@ -2319,7 +2508,7 @@
         </div>
 
     <!-- Exam Target Edit Modal Popup -->
-    <div id="exam-target-modal" class="fixed inset-0 z-[300] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+    <div id="exam-target-modal" class="fixed inset-0 z-[300] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
         <div class="bg-slate-900 border border-white/20 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 transform scale-95 transition-transform duration-200">
             <div class="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
@@ -2372,7 +2561,7 @@
     </div>
 
     <!-- Native App Reusable Dialog / Modal Popup -->
-    <div id="app-custom-dialog-modal" class="fixed inset-0 z-[999999] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200">
+    <div id="app-custom-dialog-modal" class="fixed inset-0 z-[999999] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-200 hidden">
         <div class="bg-slate-900 border border-white/20 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-center transform scale-95 transition-all duration-200">
             <div id="custom-dialog-icon-bg" class="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/10">
                 <i id="custom-dialog-icon" class="fa-solid fa-bolt"></i>
@@ -2393,6 +2582,51 @@
             </div>
         </div>
     </div>
+
+    <!-- Factory Reset & Wipe Confirmation Modal -->
+    <div id="modal-wipe-confirm" role="dialog" aria-modal="true" aria-label="Wipe All Data Confirmation" class="fixed inset-0 z-[99999999] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
+        <div id="modal-wipe-card" class="bg-slate-900 border border-white/20 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 transform scale-95 transition-all duration-200 relative">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-heading font-extrabold text-sm text-white uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Factory Reset &amp; Wipe
+                </h3>
+                <button type="button" id="btn-close-wipe-modal" onclick="closeWipeConfirmModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white flex items-center justify-center text-xs transition cursor-pointer" title="Cancel (Esc)">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Warning Icon -->
+            <div class="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl bg-rose-500/15 text-rose-400 border border-rose-500/30 shadow-lg shadow-rose-500/10">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <!-- Warning Message -->
+            <div class="space-y-1.5 text-center">
+                <p class="text-xs text-rose-200/90 leading-relaxed font-medium">
+                    This permanently erases syllabus progress, mocks, notes, rituals, streaks, and gamification rewards. This cannot be undone.
+                </p>
+            </div>
+            <!-- Confirmation Input Box (Strict Case-Sensitive: RESET ALL) -->
+            <div class="space-y-2 text-left bg-rose-950/30 border border-rose-500/20 rounded-2xl p-3.5">
+                <label for="input-wipe-confirmation" class="block text-[10px] font-extrabold uppercase tracking-wider text-rose-300">
+                    Type <span class="text-white bg-rose-500/30 px-1.5 py-0.5 rounded font-mono font-black select-all">RESET ALL</span> to confirm:
+                </label>
+                <input id="input-wipe-confirmation" type="text" placeholder="RESET ALL" autocomplete="off" spellcheck="false"
+                    class="w-full bg-slate-950/80 border border-rose-500/30 focus:border-rose-400 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white placeholder-gray-600 outline-none transition">
+                <p id="wipe-input-error-msg" class="hidden text-[10px] font-semibold text-rose-400 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-exclamation text-[9px]"></i> Case-sensitive: exactly type "RESET ALL" in capital letters
+                </p>
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 pt-1">
+                <button type="button" id="btn-cancel-wipe" onclick="closeWipeConfirmModal()" class="flex-1 py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-xs font-bold border border-white/10 transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" id="btn-execute-wipe" onclick="executeFactoryResetWipe()" disabled class="flex-1 py-2.5 px-3 rounded-xl bg-gray-700/50 text-gray-500 text-xs font-black uppercase tracking-wider border border-white/5 transition cursor-not-allowed">
+                    <i class="fa-solid fa-trash-can mr-1"></i> Wipe All
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- App Scripts -->
     <script src="study/subjects.js?v=11"></script>
     <!-- GSAP 3 Animation Engine -->

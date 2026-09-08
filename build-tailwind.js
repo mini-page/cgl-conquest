@@ -90,7 +90,9 @@ body {
 .light #modal-shortcuts-help, .light-theme #modal-shortcuts-help,
 .light #modal-day-detail > div, .light-theme #modal-day-detail > div,
 .light #modal-study-viewer > div, .light-theme #modal-study-viewer > div,
-.light #modal-qr-sync > div, .light-theme #modal-qr-sync > div {
+.light #modal-qr-sync > div, .light-theme #modal-qr-sync > div,
+.light #modal-wipe-confirm > div, .light-theme #modal-wipe-confirm > div,
+.light #modal-wipe-card, .light-theme #modal-wipe-card {
   background-color: rgba(255, 255, 255, 0.98) !important;
   color: #0f172a !important;
   border-color: rgba(0, 0, 0, 0.1) !important;
@@ -378,11 +380,33 @@ body {
   transform: scale(0.4) !important;
 }
 
-/* Shrunk State: Symmetrical Center Circular Pill for All Screen Sizes */
-#mobile-floating-nav.nav-shrunk {
+/* Shrunk State: Symmetrical Center Circular Pill for All Screen Sizes (Center default, Left, Right) */
+#mobile-floating-nav.nav-shrunk,
+#mobile-floating-nav.nav-shrunk.nav-hand-center {
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) translateY(0) scale(1) !important;
+}
+
+#mobile-floating-nav.nav-shrunk.nav-hand-left {
+  left: 1.25rem !important;
+  right: auto !important;
+  transform: translateX(0) translateY(0) scale(1) !important;
+}
+
+#mobile-floating-nav.nav-shrunk.nav-hand-right {
+  left: auto !important;
+  right: 1.25rem !important;
+  transform: translateX(0) translateY(0) scale(1) !important;
+}
+
+@keyframes modalShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.modal-shake {
+  animation: modalShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
 }
 
 #mobile-floating-nav.nav-shrunk #floating-nav-trigger {
@@ -440,6 +464,17 @@ body {
   background-color: rgba(244, 63, 94, 0.15);
   border-color: rgba(244, 63, 94, 0.4);
   color: #f43f5e;
+}
+
+/* Die-cut sticker styling: crisp white border outline, realistic resting tilt, and dynamic tilt on arrow hover */
+.sticker-die-cut {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.9));
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.22s ease;
+  will-change: transform;
+}
+.sticker-die-cut:hover {
+  transform: scale(1.15) rotate(6deg) translateY(-2px);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 3px rgba(255, 255, 255, 1));
 }
 
 /* Page Entrance Slide-In Animation */
