@@ -4,7 +4,7 @@
  * scale-in animations, keyboard Escape support, and scroll lock.
  */
 
-export class ModalDialog {
+class ModalDialog {
     /**
      * @param {Object} options
      * @param {string} [options.id] - Modal container element ID
@@ -169,4 +169,7 @@ export class ModalDialog {
 
 if (typeof window !== 'undefined') {
     window.ModalDialog = ModalDialog;
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { ModalDialog };
 }

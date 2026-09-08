@@ -699,20 +699,75 @@ function updateMasterTimerUI() {
         capsuleToggleBtn.innerHTML = isActive ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
     }
 
-    // 3. Popover Drawer UI (#pomo-time-display, #pomo-status-label, #btn-pomo-start, #btn-pomo-pause)
+    // 3. Popover Drawer UI (#pomo-time-display, #pomo-status-label, #btn-pomo-start, #btn-pomo-pause, #btn-pomo-reset)
     const popoverTimeEl = document.getElementById("pomo-time-display");
     if (popoverTimeEl) popoverTimeEl.innerText = formattedText;
     const popoverStatusEl = document.getElementById("pomo-status-label");
     if (popoverStatusEl) {
-        popoverStatusEl.innerText = isStopwatch 
-            ? "STOPWATCH SESSION" 
-            : (appState.timerMode === "short-break" ? "REST BREAK" : "POMODORO FOCUS");
+        if (isStopwatch) {
+            popoverStatusEl.innerText = "STOPWATCH SESSION";
+        } else if (appState.timerMode === "short-break") {
+            popoverStatusEl.innerText = "REST BREAK (5M)";
+        } else if (appState.timerMode === "long-break") {
+            popoverStatusEl.innerText = "LONG REST (15M)";
+        } else if (appState.timerMode === "sprint") {
+            popoverStatusEl.innerText = "FOCUS SPRINT (15M)";
+        } else if (appState.timerMode === "deep") {
+            popoverStatusEl.innerText = "DEEP WORK (50M)";
+        } else {
+            popoverStatusEl.innerText = "POMODORO FOCUS (25M)";
+        }
     }
 
+    const dailyCountEl = document.getElementById("pomo-daily-count");
+    if (dailyCountEl) {
+        const todayCount = appState.pomoSessionsToday || 0;
+        dailyCountEl.innerText = `${todayCount} 🍅`;
+    }
+
+    // Dynamic Context-Aware Button Morphing (Idle -> Running -> Paused)
     const popoverStartBtn = document.getElementById("btn-pomo-start");
     const popoverPauseBtn = document.getElementById("btn-pomo-pause");
-    if (popoverStartBtn) popoverStartBtn.disabled = isActive;
-    if (popoverPauseBtn) popoverPauseBtn.disabled = !isActive;
+    const popoverResetBtn = document.getElementById("btn-pomo-reset");
+    const startBtnText = document.getElementById("btn-pomo-start-text");
+
+    const isRunning = Boolean(appState.timerActive);
+    const isPaused = !isRunning && (isStopwatch ? ((appState.sessionTime || 0) > 0) : ((appState.pomoTime || 0) < (appState.pomoInitialTime || 1500)));
+
+    if (popoverStartBtn && popoverPauseBtn) {
+        if (isRunning) {
+            // Running: Morph into Pause button (amber pulse), hide start
+            popoverStartBtn.classList.add("hidden");
+            popoverPauseBtn.classList.remove("hidden");
+            popoverPauseBtn.disabled = false;
+            if (popoverResetBtn) {
+                popoverResetBtn.classList.remove("opacity-40", "pointer-events-none");
+                popoverResetBtn.title = "Stop & Reset Session";
+            }
+        } else if (isPaused) {
+            // Paused: Morph into Resume button (emerald/teal), hide pause
+            popoverPauseBtn.classList.add("hidden");
+            popoverStartBtn.classList.remove("hidden");
+            popoverStartBtn.disabled = false;
+            popoverStartBtn.className = "flex-grow bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white py-2 px-3 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-lg shadow-emerald-500/20 transition cursor-pointer flex items-center justify-center gap-1.5";
+            if (startBtnText) startBtnText.innerText = "Resume Session";
+            if (popoverResetBtn) {
+                popoverResetBtn.classList.remove("opacity-40", "pointer-events-none");
+                popoverResetBtn.title = "Reset Session";
+            }
+        } else {
+            // Idle / Stopped: Start session (cyan/blue), hide pause
+            popoverPauseBtn.classList.add("hidden");
+            popoverStartBtn.classList.remove("hidden");
+            popoverStartBtn.disabled = false;
+            popoverStartBtn.className = "flex-grow bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white py-2 px-3 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-lg shadow-cyan-500/20 transition cursor-pointer flex items-center justify-center gap-1.5";
+            if (startBtnText) startBtnText.innerText = isStopwatch ? "Start Stopwatch" : "Start Session";
+            if (popoverResetBtn) {
+                popoverResetBtn.classList.add("opacity-40");
+                popoverResetBtn.title = "Reset Session";
+            }
+        }
+    }
 
     // Progress Ring Calculation
     const ringFill = document.getElementById("pomo-progress");
@@ -735,7 +790,7 @@ function updateMasterTimerUI() {
             } else {
                 ringFill.style.strokeDashoffset = offset;
             }
-            ringFill.style.stroke = appState.timerMode === "short-break" ? "#10b981" : "#f43f5e";
+            ringFill.style.stroke = (appState.timerMode === "short-break" || appState.timerMode === "long-break") ? "#10b981" : "#f43f5e";
         }
     }
 }
@@ -765,12 +820,34 @@ function startMasterTimer() {
                 appState.pomoTime--;
             } else {
                 pauseMasterTimer();
-                const msg = "Focus session completed! Great job soldier, take a short rest.";
-                if (typeof window.playSound === "function") {
-                    window.playSound('timer.complete');
+                const isBreak = appState.timerMode === "short-break" || appState.timerMode === "long-break";
+                if (!isBreak) {
+                    // Award Pomodoro completion reward (+15 Coins, +30 Points)
+                    appState.pomoSessionsToday = (appState.pomoSessionsToday || 0) + 1;
+                    if (!appState.rewards) {
+                        appState.rewards = { coins: 0, points: 0, unlocked: [], claimedTrophies: [] };
+                    }
+                    appState.rewards.coins = (appState.rewards.coins || 0) + 15;
+                    appState.rewards.points = (appState.rewards.points || 0) + 30;
+                    saveStateToStorage();
+
+                    if (typeof window.triggerConfetti === "function") {
+                        try { window.triggerConfetti('medium'); } catch (e) {}
+                    }
+                    if (typeof window.playSound === "function") {
+                        window.playSound('achievement');
+                        setTimeout(() => window.playSound('reward'), 250);
+                    }
+                    const taskLabel = appState.pomoCurrentTask ? ` on "${appState.pomoCurrentTask}"` : '';
+                    const msg = `🎉 Focus session completed${taskLabel}! +15 Coins & +30 XP awarded.`;
+                    if (typeof speakText === "function") speakText("Focus session completed. Excellent discipline soldier!");
+                    if (window.showToast) window.showToast(msg, "success");
+                } else {
+                    if (typeof window.playSound === "function") window.playSound('bell');
+                    const msg = "Rest break completed! Ready for the next sprint soldier?";
+                    if (typeof speakText === "function") speakText(msg);
+                    if (window.showToast) window.showToast(msg, "info");
                 }
-                if (typeof speakText === "function") speakText(msg);
-                if (window.showToast) window.showToast(msg, "success");
                 appState.pomoTime = appState.pomoInitialTime || 1500;
             }
         }
@@ -906,6 +983,20 @@ function initPomoTimer() {
         });
     }
 
+    // Session Focus Intent Input Binding
+    const inputPomoTask = document.getElementById("input-pomo-task");
+    if (inputPomoTask) {
+        if (appState.pomoCurrentTask) inputPomoTask.value = appState.pomoCurrentTask;
+        inputPomoTask.addEventListener("input", (e) => {
+            appState.pomoCurrentTask = e.target.value.trim();
+            saveStateToStorage();
+        });
+    }
+
+    window.showPomoPopover = showPomoPopover;
+    window.hidePomoPopover = hidePomoPopover;
+    window.togglePomoPopover = togglePomoPopover;
+
     updateMasterTimerUI();
 }
 
@@ -971,6 +1062,17 @@ function closeExamTargetModal() {
     modal.classList.remove("opacity-100", "pointer-events-auto");
     modal.classList.add("opacity-0", "pointer-events-none");
 }
+
+// Attach backdrop click for exam target modal on load
+document.addEventListener("DOMContentLoaded", () => {
+    const examModal = document.getElementById("exam-target-modal");
+    if (examModal) {
+        examModal.addEventListener("click", (e) => {
+            if (e.target === examModal) closeExamTargetModal();
+        });
+    }
+});
+
 window.openExamTargetModal = openExamTargetModal;
 window.closeExamTargetModal = closeExamTargetModal;
 

@@ -1193,7 +1193,7 @@ function initCustomTooltips() {
     if (!tooltipEl) {
         tooltipEl = document.createElement("div");
         tooltipEl.id = "custom-tooltip";
-        tooltipEl.className = "fixed pointer-events-none z-[9999]";
+        tooltipEl.className = "fixed pointer-events-none z-[100000000]";
         document.body.appendChild(tooltipEl);
     }
     
@@ -1233,9 +1233,14 @@ function initCustomTooltips() {
             }
         }
         
+        // Ensure tooltip stays strictly within viewport boundaries
         if (left < 10) left = 10;
         if (left + tooltipRect.width > window.innerWidth - 10) {
             left = window.innerWidth - tooltipRect.width - 10;
+        }
+        if (top < 10) top = 10;
+        if (top + tooltipRect.height > window.innerHeight - 10) {
+            top = Math.max(10, rect.top - tooltipRect.height - 8);
         }
         
         tooltipEl.style.left = `${left}px`;

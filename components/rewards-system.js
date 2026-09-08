@@ -367,21 +367,127 @@ class RewardsSystem {
     }
 
     /**
-     * Check which trophies are unlocked, claimable, or locked
+     * Compute player level and rank based on total points
+     */
+    getLevelData(points = 0) {
+        const tiers = [
+            { level: 1, title: 'Novice Aspirant', min: 0, max: 100, icon: 'fa-seedling', color: 'text-gray-300' },
+            { level: 2, title: 'Disciplined Cadet', min: 100, max: 250, icon: 'fa-shield', color: 'text-amber-500' },
+            { level: 3, title: 'Tactical Strategist', min: 250, max: 550, icon: 'fa-compass', color: 'text-slate-300' },
+            { level: 4, title: 'Elite Combatant', min: 550, max: 1100, icon: 'fa-bolt', color: 'text-yellow-400' },
+            { level: 5, title: 'Vanguard Commander', min: 1100, max: 2000, icon: 'fa-medal', color: 'text-cyan-300' },
+            { level: 6, title: 'Executive Marshal', min: 2000, max: 3500, icon: 'fa-chess-king', color: 'text-purple-300' },
+            { level: 7, title: 'Apex Conqueror', min: 3500, max: 7000, icon: 'fa-crown', color: 'text-amber-400' }
+        ];
+
+        let curTier = tiers[0];
+        for (let i = tiers.length - 1; i >= 0; i--) {
+            if (points >= tiers[i].min) {
+                curTier = tiers[i];
+                break;
+            }
+        }
+
+        const levelSpan = curTier.max - curTier.min;
+        const ptsInLevel = Math.max(0, points - curTier.min);
+        const progressPct = Math.min(100, Math.round((ptsInLevel / levelSpan) * 100));
+
+        return {
+            level: curTier.level,
+            rankTitle: curTier.title,
+            icon: curTier.icon,
+            color: curTier.color,
+            currentPoints: points,
+            currentLevelMin: curTier.min,
+            nextLevelMax: curTier.max,
+            pointsNeeded: Math.max(0, curTier.max - points),
+            progressPct
+        };
+    }
+
+    /**
+     * Check which trophies are unlocked, claimable, or locked with progress
      */
     evaluateTrophies() {
         const r = this._ensureState();
         const state = window.appState || {};
         const meta = this.getTelemetry();
 
+        const targetsMap = {
+            'trophy_bronze_first_step': { target: 1, current: meta.masteredCount, label: 'Topics' },
+            'trophy_bronze_ritual': { target: 1, current: meta.ritualsCompleted, label: 'Ritual' },
+            'trophy_bronze_mock': { target: 1, current: meta.mocksCount, label: 'Mock' },
+            'trophy_silver_explorer': { target: 10, current: meta.masteredCount, label: 'Topics' },
+            'trophy_silver_streak': { target: 3, current: meta.streak, label: 'Days' },
+            'trophy_silver_rituals_all': { target: 4, current: meta.ritualsCompleted, label: 'Rituals' },
+            'trophy_gold_adept': { target: 30, current: meta.masteredCount, label: 'Topics' },
+            'trophy_gold_scorer': { target: 130, current: Math.round(meta.maxMockScore), label: 'Marks' },
+            'trophy_gold_streak': { target: 7, current: meta.streak, label: 'Days' },
+            'trophy_plat_veteran': { target: 60, current: meta.masteredCount, label: 'Topics' },
+            'trophy_plat_centurion': { target: 150, current: Math.round(meta.maxMockScore), label: 'Marks' },
+            'trophy_master_commander': { target: 100, current: meta.masteredCount, label: 'Topics' },
+            'trophy_master_elite': { target: 165, current: Math.round(meta.maxMockScore), label: 'Marks' },
+            'trophy_legend_conqueror': { target: 140, current: meta.masteredCount, label: 'Topics' }
+        };
+
         return this.catalog.trophies.map(t => {
             const isEligible = t.check(state, meta);
             const isClaimed = r ? r.claimedTrophies.includes(t.id) : false;
+            const targetInfo = targetsMap[t.id] || { target: 1, current: isEligible ? 1 : 0, label: '' };
+            const currentVal = Math.min(targetInfo.target, targetInfo.current || 0);
+            const progressPct = Math.min(100, Math.round((currentVal / targetInfo.target) * 100));
+
             return {
                 ...t,
                 isEligible,
                 isClaimed,
-                canClaim: isEligible && !isClaimed
+                canClaim: isEligible && !isClaimed,
+                progress: {
+                    current: currentVal,
+                    target: targetInfo.target,
+                    label: targetInfo.label,
+                    pct: progressPct
+                }
+            };
+        });
+    }
+
+    /**
+     * Evaluate collectible stickers unlock eligibility
+     */
+    evaluateStickers() {
+        const state = window.appState || {};
+        const meta = this.getTelemetry();
+
+        return (this.catalog.stickers || []).map(s => {
+            let isUnlocked = false;
+            let conditionHint = '';
+
+            if (s.id === 'sticker_speed') {
+                isUnlocked = Boolean(state.speedDrillsCount && state.speedDrillsCount >= 3) || (meta.masteredCount >= 5);
+                conditionHint = 'Complete 3+ Speed Drills';
+            } else if (s.id === 'sticker_focus') {
+                isUnlocked = Boolean(state.pomoSessionsToday && state.pomoSessionsToday >= 1) || (state.sessionTime && state.sessionTime >= 1500);
+                conditionHint = 'Complete a Pomodoro Focus session';
+            } else if (s.id === 'sticker_srs') {
+                isUnlocked = meta.learnedCount >= 5 || meta.masteredCount >= 5;
+                conditionHint = 'Learn or master 5+ subtopics';
+            } else if (s.id === 'sticker_shield') {
+                isUnlocked = Boolean(state.focusModeActive) || (meta.weakAlertCount === 0 && meta.masteredCount >= 3);
+                conditionHint = 'Enable Focus Shield or clear weak alerts';
+            } else if (s.id === 'sticker_owl') {
+                const hour = new Date().getHours();
+                isUnlocked = hour < 10 && meta.streak >= 1;
+                conditionHint = 'Study during morning hours (< 10 AM)';
+            } else if (s.id === 'sticker_phoenix') {
+                isUnlocked = (meta.maxMockScore >= 100) || (state.mocks && state.mocks.length >= 2);
+                conditionHint = 'Score 100+ in any mock test';
+            }
+
+            return {
+                ...s,
+                isUnlocked,
+                conditionHint
             };
         });
     }

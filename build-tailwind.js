@@ -155,10 +155,10 @@ body {
 }
 
 .light #custom-tooltip, .light-theme #custom-tooltip {
-  background: rgba(255, 255, 255, 0.96) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
   color: #0f172a !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.06) !important;
 }
 
 .light .dropdown-panel, .light-theme .dropdown-panel,
@@ -462,19 +462,23 @@ body {
 #custom-tooltip {
   position: fixed !important;
   pointer-events: none !important;
-  z-index: 99999 !important;
-  padding: 5px 11px !important;
-  background: rgba(15, 23, 42, 0.94) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border-radius: 8px !important;
+  z-index: 100000000 !important;
+  padding: 6px 12px !important;
+  background: rgba(15, 23, 42, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-radius: 10px !important;
   color: #f8fafc !important;
   font-size: 11px !important;
   font-weight: 600 !important;
-  letter-spacing: 0.02em !important;
-  white-space: nowrap !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 12px rgba(6, 182, 212, 0.15) !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0.015em !important;
+  max-width: 280px !important;
+  text-align: center !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.7), 0 0 16px rgba(6, 182, 212, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
   opacity: 0 !important;
   transform: translateY(4px) scale(0.95) !important;
   transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
@@ -486,7 +490,7 @@ body {
 }
 
 #modal-shortcuts-help {
-  z-index: 99999 !important;
+  z-index: 9999999 !important;
 }
 
 #modal-shortcuts-help.active {
@@ -494,6 +498,12 @@ body {
   pointer-events: auto !important;
   transform: translateY(0) !important;
   display: flex !important;
+}
+
+#modal-shortcuts-help > div {
+  transform: none !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
 }
 
 #sync-island-pill.island-visible {

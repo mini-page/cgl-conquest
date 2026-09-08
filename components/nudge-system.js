@@ -177,11 +177,9 @@ class NudgeSystem {
             if (btnPomo) btnPomo.click();
         }
 
-        // Close action center if open
-        const acModal = document.getElementById('modal-shortcuts-help');
-        if (acModal && !acModal.classList.contains('hidden')) {
-            const closeBtn = document.getElementById('btn-shortcuts-close');
-            if (closeBtn) closeBtn.click();
+        // Play audio feedback for executing nudge
+        if (typeof window.playSound === 'function') {
+            window.playSound('nudge');
         }
     }
 

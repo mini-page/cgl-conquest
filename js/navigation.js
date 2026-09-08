@@ -55,6 +55,9 @@ function openShortcutsHelpModal() {
 function closeShortcutsHelpModal() {
     const modal = document.getElementById("modal-shortcuts-help");
     if (modal) {
+        if (typeof window.playSound === 'function') {
+            window.playSound('click', { pitch: 0.85 });
+        }
         modal.classList.remove("active", "opacity-100", "pointer-events-auto", "translate-y-0");
         modal.classList.add("opacity-0", "pointer-events-none", "-translate-y-2");
         modal.style.display = "";
@@ -140,67 +143,106 @@ function filterShortcuts(q) {
 
 // Handle clickable action rows in the Action Center modal
 function handleShortcutAction(action) {
-    closeShortcutsHelpModal();
-    setTimeout(() => {
-        switch (action) {
-            // ── Navigation ──
-            case 'nav:page-dashboard':
-            case 'nav:page-syllabus':
-            case 'nav:page-speed':
-            case 'nav:page-plan':
-            case 'nav:page-mocks':
-            case 'nav:page-toolkit': {
-                const pageId = action.split(':')[1];
-                const navBtn = document.querySelector(`.nav-item[data-target="${pageId}"]`);
-                if (navBtn) navBtn.click();
-                break;
-            }
-            case 'scroll-top':
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                break;
-            // ── Toggles ──
-            case 'toggle-theme': {
-                const btn = document.getElementById('theme-toggle');
-                if (btn) btn.click();
-                break;
-            }
-            case 'toggle-voice': {
-                const btn = document.getElementById('speech-toggle');
-                if (btn) btn.click();
-                break;
-            }
-            case 'toggle-notifications': {
-                const btn = document.getElementById('toast-toggle');
-                if (btn) btn.click();
-                break;
-            }
-            case 'toggle-pomodoro': {
-                const btn = document.getElementById('pomo-capsule');
-                if (btn) btn.click();
-                break;
-            }
-            case 'toggle-conquest': {
-                const btn = document.getElementById('btn-conquest-capsule');
-                if (btn) btn.click();
-                break;
-            }
-            // ── Device Sync ──
-            case 'qr:show': {
-                if (typeof window.openQrSyncModal === 'function') {
-                    window.openQrSyncModal('show');
-                }
-                break;
-            }
-            case 'qr:scan': {
-                if (typeof window.openQrSyncModal === 'function') {
-                    window.openQrSyncModal('scan');
-                }
-                break;
-            }
+    if (typeof window.playSound === 'function') {
+        window.playSound('click');
+    }
+    switch (action) {
+        // ── Navigation ──
+        case 'nav:page-dashboard':
+        case 'nav:page-syllabus':
+        case 'nav:page-speed':
+        case 'nav:page-plan':
+        case 'nav:page-mocks':
+        case 'nav:page-toolkit': {
+            const pageId = action.split(':')[1];
+            const navBtn = document.querySelector(`.nav-item[data-target="${pageId}"]`);
+            if (navBtn) navBtn.click();
+            break;
         }
-    }, 120); // slight delay so modal fade-out plays first
+        case 'scroll-top':
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            break;
+
+        // ── Toggles ──
+        case 'toggle-theme': {
+            if (typeof window.toggleThemeMode === 'function') window.toggleThemeMode();
+            break;
+        }
+        case 'toggle-voice': {
+            if (typeof window.toggleSpeechMode === 'function') window.toggleSpeechMode();
+            break;
+        }
+        case 'toggle-notifications': {
+            if (typeof window.toggleToastMode === 'function') window.toggleToastMode();
+            break;
+        }
+        case 'toggle-audio': {
+            if (typeof window.toggleSoundMode === 'function') window.toggleSoundMode();
+            break;
+        }
+        case 'toggle-focus': {
+            if (typeof window.toggleFocusMode === 'function') window.toggleFocusMode();
+            break;
+        }
+        case 'toggle-pomodoro': {
+            const btn = document.getElementById('pomo-capsule');
+            if (btn) btn.click();
+            break;
+        }
+        case 'toggle-conquest': {
+            const btn = document.getElementById('btn-conquest-capsule');
+            if (btn) btn.click();
+            break;
+        }
+
+        // ── Quick Command Triggers ──
+        case 'cmd-palette': {
+            if (typeof window.openCommandPalette === 'function') {
+                window.openCommandPalette();
+            }
+            break;
+        }
+        case 'exam-target': {
+            if (typeof window.openExamTargetModal === 'function') {
+                window.openExamTargetModal();
+            }
+            break;
+        }
+
+        // ── Device Sync ──
+        case 'qr:show': {
+            if (typeof window.openQrSyncModal === 'function') {
+                window.openQrSyncModal('show');
+            }
+            break;
+        }
+        case 'qr:scan': {
+            if (typeof window.openQrSyncModal === 'function') {
+                window.openQrSyncModal('scan');
+            }
+            break;
+        }
+    }
 }
 window.handleShortcutAction = handleShortcutAction;
+
+function testSoundPreview(type = 'reward') {
+    if (typeof window.playSound === 'function') {
+        window.playSound(type);
+    }
+    if (typeof window.showToast === 'function') {
+        const soundNames = {
+            'click': 'Tactile Button Click 🎵',
+            'reward': 'Reward Coin Chime 🪙',
+            'achievement': 'Harmonic Achievement Fanfare 🏆',
+            'bell': 'Mindful Meditation Bell 🔔',
+            'notification': 'Contextual Nudge Alert 🔔',
+            'success.soft': 'Soft Confirmation Chord ✨'
+        };
+        window.showToast(`Sound Preview: ${soundNames[type] || type}`, 'info');
+    }
+}
+window.testSoundPreview = testSoundPreview;
 
 let currentNavAnimStyle = "magnetic"; // Permanent Animation Preset: Type 3 (Magnetic Drop)
 
@@ -268,6 +310,7 @@ function setMobileNavHand(hand) {
         window.appState.mobileNavHand = hand;
     }
     if (typeof saveStateToStorage === "function") saveStateToStorage();
+    if (typeof window.playSound === "function") window.playSound("click");
     
     const nav = document.getElementById("mobile-floating-nav");
     if (nav && nav.classList.contains("nav-shrunk")) {
@@ -554,7 +597,7 @@ function initNavigation() {
                 return;
             }
             const now = Date.now();
-            if (now - lastShiftTime < 450 && now - lastShiftTime > 40) {
+            if (now - lastShiftTime < 500 && now - lastShiftTime > 40) {
                 // Double Shift confirmed!
                 lastShiftTime = 0;
                 toggleShortcutsHelpModal();
@@ -568,10 +611,125 @@ function initNavigation() {
             lastShiftTime = 0;
         }
 
+        // ── UNIVERSAL MODAL / DIALOG ESCAPE KEY DISMISSAL ─────────
+        if (e.key === "Escape" || e.key === "Esc") {
+            let dismissed = false;
+
+            // 1. App Custom Alert Dialog
+            const alertModal = document.getElementById("app-custom-dialog-modal");
+            if (alertModal && !alertModal.classList.contains("opacity-0") && !alertModal.classList.contains("hidden")) {
+                const confirmBtn = document.getElementById("custom-dialog-confirm-btn");
+                if (confirmBtn) confirmBtn.click();
+                else {
+                    alertModal.classList.add("opacity-0", "pointer-events-none");
+                    alertModal.classList.remove("opacity-100", "pointer-events-auto");
+                }
+                dismissed = true;
+            }
+
+            // 2. Exam Target Modal
+            const examModal = document.getElementById("exam-target-modal");
+            if (!dismissed && examModal && !examModal.classList.contains("opacity-0") && !examModal.classList.contains("pointer-events-none")) {
+                if (typeof window.closeExamTargetModal === "function") window.closeExamTargetModal();
+                dismissed = true;
+            }
+
+            // 3. Mock Test Inspector Detail Modal
+            const mockModal = document.getElementById("modal-mock-detail");
+            if (!dismissed && mockModal && !mockModal.classList.contains("hidden") && !mockModal.classList.contains("opacity-0")) {
+                if (typeof window.closeMockDetailModal === "function") window.closeMockDetailModal();
+                dismissed = true;
+            }
+
+            // 4. Study Day Detail Modal
+            const dayModal = document.getElementById("modal-day-detail");
+            if (!dismissed && dayModal && !dayModal.classList.contains("opacity-0") && !dayModal.classList.contains("pointer-events-none")) {
+                dayModal.classList.add("opacity-0", "pointer-events-none");
+                dayModal.classList.remove("active", "opacity-100", "pointer-events-auto");
+                dismissed = true;
+            }
+
+            // 5. Study Content Viewer
+            const studyViewer = document.getElementById("modal-study-viewer");
+            if (!dismissed && studyViewer && !studyViewer.classList.contains("opacity-0") && !studyViewer.classList.contains("pointer-events-none")) {
+                if (typeof window.closeStudyViewer === "function") window.closeStudyViewer();
+                dismissed = true;
+            }
+
+            // 6. Action Center Popover
+            const scModal = document.getElementById("modal-shortcuts-help");
+            if (!dismissed && scModal && !scModal.classList.contains("opacity-0") && !scModal.classList.contains("pointer-events-none")) {
+                closeShortcutsHelpModal();
+                dismissed = true;
+            }
+
+            // 7. Pomodoro Drawer Popover
+            const pomoDrawer = document.getElementById("pomo-drawer");
+            if (!dismissed && pomoDrawer && !pomoDrawer.classList.contains("opacity-0") && !pomoDrawer.classList.contains("pointer-events-none")) {
+                if (typeof window.hidePomoPopover === "function") window.hidePomoPopover();
+                dismissed = true;
+            }
+
+            // 8. Fullscreen Page Frame
+            const fsPage = document.getElementById("fullscreen-page");
+            if (!dismissed && fsPage && !fsPage.classList.contains("hidden") && !fsPage.classList.contains("opacity-0")) {
+                fsPage.classList.add("opacity-0", "pointer-events-none", "hidden");
+                dismissed = true;
+            }
+
+            // 9. QR Sync Modal
+            if (!dismissed && window._qrSyncModalInstance && window._qrSyncModalInstance.isOpen) {
+                window._qrSyncModalInstance.close();
+                dismissed = true;
+            }
+
+            // 10. Any other active modal
+            if (!dismissed) {
+                const anyModal = document.querySelector(".modal.active, .modal:not(.opacity-0):not(.pointer-events-none), [role='dialog']:not(.opacity-0):not(.pointer-events-none)");
+                if (anyModal && anyModal.id !== "mobile-floating-nav") {
+                    anyModal.classList.add("opacity-0", "pointer-events-none");
+                    anyModal.classList.remove("active", "opacity-100", "pointer-events-auto");
+                    dismissed = true;
+                }
+            }
+
+            if (dismissed) {
+                if (document.activeElement && typeof document.activeElement.blur === "function") {
+                    document.activeElement.blur();
+                }
+                document.body.classList.remove("overflow-hidden");
+                e.preventDefault();
+                return;
+            }
+        }
+
         // Skip shortcuts if user is typing in form inputs/textarea/select
         const tag = document.activeElement ? document.activeElement.tagName : "";
         if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (document.activeElement && document.activeElement.isContentEditable)) {
             return;
+        }
+
+        // Close modals on 'X' or 'x' when not in inputs
+        if ((e.key === "x" || e.key === "X") && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            const scModal = document.getElementById("modal-shortcuts-help");
+            const examModal = document.getElementById("exam-target-modal");
+            const pomoDrawer = document.getElementById("pomo-drawer");
+
+            if (examModal && !examModal.classList.contains("opacity-0") && !examModal.classList.contains("pointer-events-none")) {
+                if (typeof window.closeExamTargetModal === "function") window.closeExamTargetModal();
+                e.preventDefault();
+                return;
+            }
+            if (scModal && !scModal.classList.contains("opacity-0") && !scModal.classList.contains("pointer-events-none")) {
+                closeShortcutsHelpModal();
+                e.preventDefault();
+                return;
+            }
+            if (pomoDrawer && !pomoDrawer.classList.contains("opacity-0") && !pomoDrawer.classList.contains("pointer-events-none")) {
+                if (typeof window.hidePomoPopover === "function") window.hidePomoPopover();
+                e.preventDefault();
+                return;
+            }
         }
 
         // Close QR Sync modal if open on Escape or X
@@ -882,6 +1040,9 @@ function updateToastToggleUI() {
 
 function toggleThemeMode() {
     appState.theme = appState.theme === "dark" ? "light" : "dark";
+    if (typeof window.playSound === 'function') {
+        window.playSound('click', { pitch: 1.15 });
+    }
     updateMetaThemeColor(appState.theme);
     if (appState.theme === "light") {
         document.body.classList.add("light", "light-theme");
@@ -910,6 +1071,9 @@ function toggleThemeMode() {
 
 function toggleSpeechMode() {
     appState.speechEnabled = !appState.speechEnabled;
+    if (typeof window.playSound === 'function') {
+        window.playSound('notification');
+    }
     saveStateToStorage();
     updateSpeechToggleUI();
     if (appState.speechEnabled) {
@@ -922,6 +1086,9 @@ function toggleSpeechMode() {
 
 function toggleToastMode() {
     appState.toastEnabled = !appState.toastEnabled;
+    if (typeof window.playSound === 'function') {
+        window.playSound('click');
+    }
     saveStateToStorage();
     updateToastToggleUI();
     if (window.showToast) {
@@ -982,6 +1149,9 @@ function toggleFocusMode() {
         focusBtnText.textContent = appState.focusModeActive ? 'Deactivate Focus' : 'Start Focus Sprint';
     }
     if (appState.focusModeActive) {
+        if (typeof window.playSound === 'function') {
+            window.playSound('bell');
+        }
         if (typeof window.showToast === 'function') {
             window.showToast("🎯 Deep Focus Mode Active — sounds and distractions silenced", "info");
         }
@@ -1068,6 +1238,22 @@ function switchActionCenterHub(tab) {
     }
 }
 
+let currentTrophyFilter = 'all';
+
+function filterRewardsTrophies(filter) {
+    currentTrophyFilter = filter || 'all';
+    const filterButtons = document.querySelectorAll('.ac-trophy-filter-btn');
+    filterButtons.forEach(btn => {
+        if (btn.getAttribute('data-filter') === currentTrophyFilter) {
+            btn.className = 'ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-blue-600 text-white cursor-pointer';
+        } else {
+            btn.className = 'ac-trophy-filter-btn px-2.5 py-0.5 rounded-full text-[9px] font-extrabold bg-white/5 text-gray-400 hover:text-white transition cursor-pointer flex items-center gap-1';
+        }
+    });
+    renderRewardsHub();
+}
+window.filterRewardsTrophies = filterRewardsTrophies;
+
 function renderRewardsHub() {
     const rewards = (window.appState && window.appState.rewards) ? window.appState.rewards : { coins: 0, points: 0, unlocked: [], equipped: { title: 'Aspirant' } };
     
@@ -1079,50 +1265,120 @@ function renderRewardsHub() {
     if (coinsEl) coinsEl.textContent = rewards.coins || 0;
     if (pointsEl) pointsEl.textContent = rewards.points || 0;
 
+    // Update player level and XP progression
+    if (window.rewardsSystem && typeof window.rewardsSystem.getLevelData === 'function') {
+        const lvlData = window.rewardsSystem.getLevelData(rewards.points || 0);
+        const levelTextEl = document.getElementById('ac-rewards-level-text');
+        const xpTextEl = document.getElementById('ac-rewards-xp-text');
+        const xpBarEl = document.getElementById('ac-rewards-xp-bar');
+        if (levelTextEl) levelTextEl.innerHTML = `<i class="fa-solid ${lvlData.icon} text-[8px] mr-1"></i> Level ${lvlData.level} • ${lvlData.rankTitle}`;
+        if (xpTextEl) xpTextEl.textContent = `${lvlData.currentPoints} / ${lvlData.nextLevelMax} XP`;
+        if (xpBarEl) xpBarEl.style.width = `${lvlData.progressPct}%`;
+    }
+
     // Render Trophies in 9-dot launcher style (3-col grid)
     const trophiesContainer = document.getElementById('ac-trophies-grid');
     if (trophiesContainer && window.rewardsSystem) {
         const list = window.rewardsSystem.evaluateTrophies();
-        trophiesContainer.innerHTML = list.map(t => {
-            const isClaimed = t.isClaimed;
-            const canClaim = t.canClaim;
-            const cardBg = isClaimed 
-                ? 'bg-slate-950/70 border-emerald-500/30' 
-                : (canClaim ? 'bg-blue-950/40 border-amber-400/60 ring-1 ring-amber-400/40' : 'bg-slate-950/50 border-white/10 opacity-70');
 
+        // Compute counts
+        const claimableCount = list.filter(t => t.canClaim).length;
+        const claimedCount = list.filter(t => t.isClaimed).length;
+        const totalCount = list.length;
+
+        const ratioEl = document.getElementById('ac-trophy-ratio');
+        if (ratioEl) ratioEl.textContent = `${claimedCount} / ${totalCount} Claimed`;
+
+        const badgeEl = document.getElementById('ac-claimable-badge');
+        if (badgeEl) {
+            if (claimableCount > 0) {
+                badgeEl.textContent = claimableCount;
+                badgeEl.classList.remove('hidden');
+            } else {
+                badgeEl.classList.add('hidden');
+            }
+        }
+
+        // Filter list
+        let filteredList = list;
+        if (currentTrophyFilter === 'claimable') {
+            filteredList = list.filter(t => t.canClaim);
+        } else if (currentTrophyFilter === 'in-progress') {
+            filteredList = list.filter(t => !t.isClaimed && !t.canClaim);
+        } else if (currentTrophyFilter === 'claimed') {
+            filteredList = list.filter(t => t.isClaimed);
+        }
+
+        if (filteredList.length === 0) {
+            trophiesContainer.innerHTML = `
+                <div class="col-span-3 py-6 text-center text-gray-500 text-[10px]">
+                    <i class="fa-solid fa-filter text-base mb-1 block text-gray-600"></i>
+                    No trophies matching "${currentTrophyFilter}".
+                </div>
+            `;
+        } else {
+            trophiesContainer.innerHTML = filteredList.map(t => {
+                const isClaimed = t.isClaimed;
+                const canClaim = t.canClaim;
+                const progress = t.progress || { current: isClaimed ? 1 : 0, target: 1, pct: isClaimed ? 100 : 0 };
+                const cardBg = isClaimed 
+                    ? 'bg-slate-950/70 border-emerald-500/30' 
+                    : (canClaim ? 'bg-blue-950/40 border-amber-400/60 ring-1 ring-amber-400/40' : 'bg-slate-950/50 border-white/10 opacity-75');
+
+                const tooltipContent = `${t.title} [${t.tier}] — ${t.desc} (Goal: ${progress.current}/${progress.target} ${progress.label || ''} • Reward: +${t.coins}🪙, +${t.points}⭐)`;
+
+                return `
+                    <div class="relative group p-2.5 rounded-2xl border ${cardBg} transition-all duration-200 hover:scale-[1.02] flex flex-col items-center text-center justify-between min-h-[118px] cursor-pointer" data-tooltip="${window.escapeHTML ? window.escapeHTML(tooltipContent) : tooltipContent}" data-tooltip-pos="top">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br ${t.tierColor} flex items-center justify-center text-white text-xs shadow-md mb-1">
+                            <i class="fa-solid ${t.icon}"></i>
+                        </div>
+                        <div class="space-y-0.5 w-full pointer-events-none">
+                            <span class="text-[9px] font-black uppercase tracking-wider ${t.tierText} block">${t.tier}</span>
+                            <h5 class="text-[11px] font-bold text-white truncate w-full">${window.escapeHTML ? window.escapeHTML(t.title) : t.title}</h5>
+                        </div>
+
+                        <!-- Visual Progress Bar for Locked / In Progress -->
+                        ${(!isClaimed && !canClaim) ? `
+                            <div class="w-full pt-1 pointer-events-none">
+                                <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                                    <div class="bg-cyan-400 h-full rounded-full transition-all duration-300" style="width: ${progress.pct}%;"></div>
+                                </div>
+                                <span class="text-[8px] text-gray-400 font-bold block mt-0.5">${progress.current}/${progress.target}</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="mt-1.5 w-full">
+                            ${isClaimed 
+                                ? `<span class="text-[9px] font-bold text-emerald-400 flex items-center justify-center gap-1"><i class="fa-solid fa-check text-[8px]"></i> Claimed</span>`
+                                : (canClaim 
+                                    ? `<button type="button" onclick="claimTrophyReward('${t.id}')" class="w-full py-1 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[9px] font-black uppercase shadow-md transition cursor-pointer animate-pulse">Claim +${t.coins}🪙</button>`
+                                    : `<span class="text-[8px] text-gray-500 font-semibold"><i class="fa-solid fa-lock text-[8px] mr-0.5"></i> Locked</span>`
+                                  )
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+
+    // Render Collectible Stickers with dynamic unlock state
+    const stickersContainer = document.getElementById('ac-stickers-grid');
+    if (stickersContainer && window.rewardsSystem) {
+        const stickers = typeof window.rewardsSystem.evaluateStickers === 'function' 
+            ? window.rewardsSystem.evaluateStickers() 
+            : (window.rewardsSystem.catalog.stickers || []);
+        stickersContainer.innerHTML = stickers.map(s => {
+            const isUnlocked = Boolean(s.isUnlocked);
+            const stickerTip = `${s.name} Sticker — ${s.desc} [${isUnlocked ? 'Unlocked ✨' : (s.conditionHint || 'Locked')}]`;
             return `
-                <div class="relative group p-2.5 rounded-2xl border ${cardBg} transition-all duration-200 hover:scale-[1.02] flex flex-col items-center text-center justify-between min-h-[110px]" title="${window.escapeHTML ? window.escapeHTML(t.desc) : t.desc}">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br ${t.tierColor} flex items-center justify-center text-white text-xs shadow-md mb-1.5">
-                        <i class="fa-solid ${t.icon}"></i>
-                    </div>
-                    <div class="space-y-0.5 w-full">
-                        <span class="text-[9px] font-black uppercase tracking-wider ${t.tierText} block">${t.tier}</span>
-                        <h5 class="text-[11px] font-bold text-white truncate w-full" title="${window.escapeHTML ? window.escapeHTML(t.title) : t.title}">${window.escapeHTML ? window.escapeHTML(t.title) : t.title}</h5>
-                    </div>
-                    <div class="mt-2 w-full">
-                        ${isClaimed 
-                            ? `<span class="text-[9px] font-bold text-emerald-400 flex items-center justify-center gap-1"><i class="fa-solid fa-check text-[8px]"></i> Claimed</span>`
-                            : (canClaim 
-                                ? `<button type="button" onclick="claimTrophyReward('${t.id}')" class="w-full py-1 px-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 text-[9px] font-black uppercase shadow-md transition cursor-pointer animate-pulse">Claim +${t.coins}🪙</button>`
-                                : `<span class="text-[9px] text-gray-500 font-semibold"><i class="fa-solid fa-lock text-[8px] mr-0.5"></i> Locked</span>`
-                              )
-                        }
-                    </div>
+                <div class="p-2 rounded-2xl ${isUnlocked ? 'bg-cyan-950/30 border-cyan-500/30 shadow-inner' : 'bg-slate-950/60 border-white/5 opacity-55 grayscale'} flex flex-col items-center text-center gap-1 hover:border-cyan-400/40 transition group cursor-pointer" data-tooltip="${window.escapeHTML ? window.escapeHTML(stickerTip) : stickerTip}" data-tooltip-pos="top">
+                    <span class="text-xl group-hover:scale-110 transition transform pointer-events-none">${s.emoji}</span>
+                    <span class="text-[9px] font-bold ${isUnlocked ? 'text-cyan-300' : 'text-gray-400'} truncate w-full pointer-events-none">${window.escapeHTML ? window.escapeHTML(s.name) : s.name}</span>
+                    <span class="text-[7px] font-black uppercase tracking-wider ${isUnlocked ? 'text-emerald-400' : 'text-gray-500'} pointer-events-none">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
                 </div>
             `;
         }).join('');
-    }
-
-    // Render Collectible Stickers
-    const stickersContainer = document.getElementById('ac-stickers-grid');
-    if (stickersContainer && window.rewardsSystem) {
-        const stickers = window.rewardsSystem.catalog.stickers || [];
-        stickersContainer.innerHTML = stickers.map(s => `
-            <div class="p-2 rounded-2xl bg-slate-950/60 border border-white/10 flex flex-col items-center text-center gap-1 hover:border-cyan-400/40 transition group" title="${window.escapeHTML ? window.escapeHTML(s.desc) : s.desc}">
-                <span class="text-xl group-hover:scale-110 transition transform">${s.emoji}</span>
-                <span class="text-[10px] font-bold text-gray-300 truncate w-full">${window.escapeHTML ? window.escapeHTML(s.name) : s.name}</span>
-            </div>
-        `).join('');
     }
 
     // Render Cosmetic Shop
@@ -1136,10 +1392,11 @@ function renderRewardsHub() {
         cosmeticsContainer.innerHTML = cosmetics.map(c => {
             const isUnlocked = unlockedList.includes(c.id) || c.unlockedByDefault;
             const isEquipped = (c.type === 'title' && equippedTitle === c.name) || (c.type === 'accent' && equippedAccent === c.id);
+            const cosmeticTip = `${c.name} [${c.type.toUpperCase()}] — ${c.desc} (${c.cost > 0 ? c.cost + '🪙' : 'Default'})`;
 
             return `
-                <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/10 flex items-center justify-between gap-2">
-                    <div class="space-y-0.5">
+                <div class="p-2.5 rounded-xl bg-slate-950/60 border border-white/10 flex items-center justify-between gap-2 cursor-pointer hover:border-white/20 transition" data-tooltip="${window.escapeHTML ? window.escapeHTML(cosmeticTip) : cosmeticTip}" data-tooltip-pos="top">
+                    <div class="space-y-0.5 pointer-events-none">
                         <div class="flex items-center gap-1.5">
                             <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded ${c.type === 'title' ? 'bg-purple-500/20 text-purple-300' : 'bg-blue-500/20 text-blue-300'}">${c.type}</span>
                             <span class="text-xs font-bold text-white">${window.escapeHTML ? window.escapeHTML(c.name) : c.name}</span>
@@ -1343,13 +1600,20 @@ function initTheme() {
 
         // Close Action Center popover & Sync Island when clicking outside
         document.addEventListener("click", (e) => {
-            if (!syncIslandPill.contains(e.target) && !actionCenterWrap.contains(e.target)) {
+            const path = e.composedPath ? e.composedPath() : [];
+            const clickedInsideIsland = syncIslandPill.contains(e.target) || path.includes(syncIslandPill);
+            const clickedInsideWrap = actionCenterWrap.contains(e.target) || path.includes(actionCenterWrap);
+
+            if (!clickedInsideIsland && !clickedInsideWrap) {
                 syncIslandPill.classList.remove("island-visible");
                 if (syncIslandTimer) clearTimeout(syncIslandTimer);
             }
+
             const modal = document.getElementById("modal-shortcuts-help");
             if (modal && modal.classList.contains("active")) {
-                if (!modal.contains(e.target) && !btnShortcutsTrigger.contains(e.target)) {
+                const clickedInsideModal = modal.contains(e.target) || path.includes(modal);
+                const clickedTrigger = btnShortcutsTrigger.contains(e.target) || path.includes(btnShortcutsTrigger);
+                if (!clickedInsideModal && !clickedTrigger) {
                     closeShortcutsHelpModal();
                 }
             }
@@ -1598,3 +1862,56 @@ function openQrSyncModal(initialTab = 'scan') {
 }
 window.openQrSyncModal = openQrSyncModal;
 window.closeQrSyncModal = () => { if (qrModalInstance) qrModalInstance.close(); };
+
+// Universal Modal Dismissal on Backdrop Click & Close Buttons
+function initUniversalModalDismissal() {
+    document.addEventListener("click", (e) => {
+        // 1. Any close button with .modal-close-btn, [data-modal-close], or #btn-fullscreen-close
+        const closeBtn = e.target.closest(".modal-close-btn, [data-modal-close], #btn-fullscreen-close");
+        if (closeBtn) {
+            const modal = closeBtn.closest(".modal, [role='dialog'], .fixed.inset-0, #fullscreen-page");
+            if (modal) {
+                modal.classList.add("opacity-0", "pointer-events-none");
+                modal.classList.remove("opacity-100", "pointer-events-auto", "active");
+                if (modal.id === "fullscreen-page" || modal.id === "modal-mock-detail") {
+                    modal.classList.add("hidden");
+                }
+                const card = modal.querySelector(".scale-100");
+                if (card) {
+                    card.classList.remove("scale-100");
+                    card.classList.add("scale-95");
+                }
+                document.body.classList.remove("overflow-hidden");
+            }
+        }
+
+        // 2. Direct backdrop clicks on full-screen fixed overlays
+        const targetModal = e.target;
+        if (targetModal && targetModal.classList && targetModal.classList.contains("fixed") && targetModal.classList.contains("inset-0")) {
+            if (targetModal.id === "exam-target-modal") {
+                if (typeof window.closeExamTargetModal === "function") window.closeExamTargetModal();
+            } else if (targetModal.id === "modal-day-detail") {
+                targetModal.classList.add("opacity-0", "pointer-events-none");
+                targetModal.classList.remove("active", "opacity-100", "pointer-events-auto");
+                const card = targetModal.firstElementChild;
+                if (card) { card.classList.remove("scale-100"); card.classList.add("scale-95"); }
+                document.body.classList.remove("overflow-hidden");
+            } else if (targetModal.id === "modal-study-viewer") {
+                if (typeof window.closeStudyViewer === "function") window.closeStudyViewer();
+            } else if (targetModal.id === "modal-mock-detail") {
+                if (typeof window.closeMockDetailModal === "function") window.closeMockDetailModal();
+            } else if (targetModal.id === "fullscreen-page") {
+                targetModal.classList.add("opacity-0", "pointer-events-none", "hidden");
+                targetModal.classList.remove("opacity-100", "pointer-events-auto");
+            }
+        }
+    });
+}
+
+if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initUniversalModalDismissal);
+    } else {
+        initUniversalModalDismissal();
+    }
+}
