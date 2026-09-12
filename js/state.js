@@ -3308,7 +3308,10 @@ let appState = {
         unlocked: ['title_aspirant', 'accent_blue'],
         claimedTrophies: [],
         equipped: { title: 'Aspirant', themeAccent: 'accent_blue' }
-    }
+    },
+    drillHeatmap: { date: new Date().toISOString().split('T')[0], records: {} },
+    factMaturation: {},
+    speedPersonalBests: { blitz: 0, suddenDeath: 0 }
 };
 window.appState = appState;
 
@@ -3384,6 +3387,18 @@ function loadStateFromStorage() {
                     claimedTrophies: [],
                     equipped: { title: 'Aspirant', themeAccent: 'accent_blue' }
                 };
+            }
+            if (!appState.drillHeatmap) {
+                appState.drillHeatmap = { date: new Date().toISOString().split('T')[0], records: {} };
+            }
+            if (!appState.factMaturation) appState.factMaturation = {};
+            if (!appState.speedPersonalBests) {
+                let b = 0, s = 0;
+                try {
+                    b = parseInt(localStorage.getItem('speed_blitz_pb') || '0', 10);
+                    s = parseInt(localStorage.getItem('speed_sudden_death_pb') || '0', 10);
+                } catch (e) {}
+                appState.speedPersonalBests = { blitz: b, suddenDeath: s };
             }
 
             // Hydrate any new syllabus entries not yet in saved state

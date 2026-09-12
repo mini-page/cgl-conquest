@@ -1891,15 +1891,15 @@ function renderSectionalBenchmarks() {
         let statusBadge = "";
 
         if (avg === 0) {
-            statusBadge = `<span class="text-[9px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">No Data</span>`;
+            statusBadge = `<span class="text-[9px] font-bold text-gray-500 bg-white/5 px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">No Data</span>`;
         } else if (targetGap >= 0) {
             colorClass = "text-emerald-400";
             barBgClass = "bg-gradient-to-r from-teal-500 to-emerald-400";
-            statusBadge = `<span class="text-[9px] font-extrabold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-check"></i> +${targetGap.toFixed(1)} Ahead</span>`;
+            statusBadge = `<span class="text-[9px] font-extrabold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1 whitespace-nowrap shrink-0"><i class="fa-solid fa-check"></i> +${targetGap.toFixed(1)} Ahead</span>`;
         } else {
             colorClass = pct >= 60 ? "text-amber-400" : "text-rose-400";
             barBgClass = pct >= 60 ? "bg-gradient-to-r from-amber-500 to-yellow-400" : "bg-gradient-to-r from-rose-600 to-rose-400";
-            statusBadge = `<span class="text-[9px] font-extrabold ${pct >= 60 ? 'text-amber-400 bg-amber-500/15 border-amber-500/30' : 'text-rose-400 bg-rose-500/15 border-rose-500/30'} border px-2 py-0.5 rounded-full">${Math.abs(targetGap).toFixed(1)} pts to Target</span>`;
+            statusBadge = `<span class="text-[9px] font-extrabold ${pct >= 60 ? 'text-amber-400 bg-amber-500/15 border-amber-500/30' : 'text-rose-400 bg-rose-500/15 border-rose-500/30'} border px-2 py-0.5 rounded-full whitespace-nowrap shrink-0">${Math.abs(targetGap).toFixed(1)} pts to Target</span>`;
         }
 
         let attemptsDetail = `${sec.count} tests`;
@@ -1913,16 +1913,16 @@ function renderSectionalBenchmarks() {
 
         html += `
             <div class="space-y-1.5 p-3 rounded-xl bg-slate-950/60 border border-white/5 hover:border-white/10 transition">
-                <div class="flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center text-[10px] text-gray-400">
+                <div class="flex items-center justify-between text-xs gap-2 flex-wrap">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center text-[10px] text-gray-400 shrink-0">
                             <i class="fa-solid ${sec.icon}"></i>
                         </div>
-                        <span class="text-white font-bold">${sec.name}</span>
+                        <span class="text-white font-bold truncate">${sec.name}</span>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 shrink-0 ml-auto sm:ml-0">
                         ${statusBadge}
-                        <span class="font-heading font-black ${colorClass}">${avg.toFixed(1)} <span class="text-gray-500 font-bold text-[10px]">/ ${sec.maxSec}</span></span>
+                        <span class="font-heading font-black whitespace-nowrap ${colorClass}">${avg.toFixed(1)} <span class="text-gray-500 font-bold text-[10px]">/ ${sec.maxSec}</span></span>
                     </div>
                 </div>
                 <div class="relative w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-white/5 shadow-inner">
@@ -2008,28 +2008,28 @@ function renderRevisionRadar() {
 
             let syllabusPill = '';
             if (isMastered) {
-                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-crown text-[8px]"></i> Mastered</span>`;
+                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-crown text-[8px]"></i> Mastered</span>`;
             } else if (isPracticed) {
-                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-blue-400 bg-blue-500/15 border border-blue-500/30 px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-dumbbell text-[8px]"></i> Practiced</span>`;
+                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-blue-400 bg-blue-500/15 border border-blue-500/30 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-dumbbell text-[8px]"></i> Practiced</span>`;
             } else if (isLearned) {
-                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-book-open-reader text-[8px]"></i> Learned</span>`;
+                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-amber-400 bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-book-open-reader text-[8px]"></i> Learned</span>`;
             } else {
-                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-gray-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-regular fa-circle text-[8px]"></i> Untracked</span>`;
+                syllabusPill = `<span class="text-[9px] font-black uppercase tracking-wider text-gray-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap"><i class="fa-regular fa-circle text-[8px]"></i> Untracked</span>`;
             }
 
             html += `
-                <div class="bg-slate-950/80 border border-white/10 hover:border-cyan-500/30 rounded-xl p-3 flex items-center justify-between gap-3 transition shadow-inner">
-                    <div class="min-w-0 flex-1">
-                        <div class="flex items-center gap-1.5 flex-wrap mb-1">
-                            <span class="text-[9px] font-black uppercase tracking-wider text-cyan-300 bg-cyan-950/50 border border-cyan-500/30 px-2 py-0.5 rounded-md">${escapeHTML(details.subject)}</span>
-                            <span class="text-[9px] font-black uppercase tracking-wider text-rose-400 bg-rose-500/15 border border-rose-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                <div class="bg-slate-950/80 border border-white/10 hover:border-cyan-500/30 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 transition shadow-inner">
+                    <div class="min-w-0 flex-1 space-y-1">
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[9px] font-black uppercase tracking-wider text-cyan-300 bg-cyan-950/50 border border-cyan-500/30 px-2 py-0.5 rounded-md whitespace-nowrap">${escapeHTML(details.subject)}</span>
+                            <span class="text-[9px] font-black uppercase tracking-wider text-rose-400 bg-rose-500/15 border border-rose-500/30 px-2 py-0.5 rounded-md flex items-center gap-1 whitespace-nowrap">
                                 <i class="fa-solid fa-flag text-[8px]"></i> Flagged ${count}x
                             </span>
                             ${syllabusPill}
                         </div>
-                        <h4 class="text-xs font-bold text-white truncate">${escapeHTML(details.name)}</h4>
+                        <h4 class="text-xs font-bold text-white leading-snug break-words">${escapeHTML(details.name)}</h4>
                     </div>
-                    <div class="flex items-center gap-1.5 shrink-0">
+                    <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-center pt-1.5 sm:pt-0 border-t border-white/5 sm:border-0 w-full sm:w-auto justify-end">
                         <button type="button" onclick="window.jumpToSyllabusTopic('${id}')" class="px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 hover:border-purple-400 transition cursor-pointer flex items-center gap-1" title="Jump to Syllabus Topic">
                             <i class="fa-solid fa-list-check"></i>
                             <span class="hidden sm:inline">Syllabus</span>

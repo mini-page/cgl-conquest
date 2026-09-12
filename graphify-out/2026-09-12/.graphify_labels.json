@@ -125,12 +125,5 @@
   "123": "Responsive Design & Mobile Ergonomics Audit Guide",
   "124": "Conquest Web Suite Architecture Rules",
   "125": "Modern UI/UX Design System Guide",
-  "126": "Web Performance Audit & Optimization Guide",
-  "127": "MicroFrequencyHeatmap",
-  "128": "initSpeedDrillsPage",
-  "129": "DrillIntelligenceEngine",
-  "130": "showDrillHudFeedback",
-  "131": "generateDrillQuestion",
-  "132": "generateChallengeQuestion",
-  "133": "initCustomTooltips"
+  "126": "Web Performance Audit & Optimization Guide"
 }

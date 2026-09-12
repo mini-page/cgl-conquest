@@ -1,11 +1,11 @@
-# Graph Report - CGL-conquest  (2026-09-09)
+# Graph Report - CGL-conquest  (2026-09-11)
 
 ## Corpus Check
-- 133 files · ~358,270 words
+- 133 files · ~362,697 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 985 nodes · 1463 edges · 127 communities (56 shown, 19 thin omitted)
+- 1005 nodes · 1531 edges · 126 communities (55 shown, 19 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -58,7 +58,6 @@
 - 3. GLOBAL STATE & DATA FLOW
 - 10. SYLLABUS DATA STRUCTURE
 - 15. COUPLING & COHESION ANALYSIS
-- 13. STUDY TOOLKIT VIEWS
 - index.js
 - rules/graphify.md
 - workflows/graphify.md
@@ -96,12 +95,12 @@
 2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
 3. `QrSyncModal` - 24 edges
 4. `initTheme()` - 24 edges
-5. `SoundManager` - 21 edges
-6. `renderStudyTrackerAll()` - 21 edges
-7. `initSpeedDrillsPage()` - 19 edges
+5. `initSpeedDrillsPage()` - 24 edges
+6. `SoundManager` - 21 edges
+7. `renderStudyTrackerAll()` - 21 edges
 8. `RewardsSystem` - 18 edges
-9. `renderMockAnalytics()` - 15 edges
-10. `CalendarPicker` - 14 edges
+9. `resetDrillSession()` - 16 edges
+10. `renderMockAnalytics()` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
@@ -118,7 +117,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (127 total, 19 thin omitted)
+## Communities (126 total, 19 thin omitted)
 
 ### Community 0 - "syllabus.js"
 Cohesion: 0.10
@@ -145,8 +144,8 @@ Cohesion: 0.09
 Nodes (47): claimMissionReward(), claimTrophyReward(), closeShortcutsHelpModal(), closeWipeConfirmModal(), createSparseBackupPayload(), elevatedElementsMap, elevateModalOnTop(), executeFactoryResetWipe() (+39 more)
 
 ### Community 7 - "speed.js"
-Cohesion: 0.07
-Nodes (45): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), currentSessionMistakes, DRILL_MODE_LABELS, DrillIntelligenceEngine, endChallengeRun(), finishBlitzSession() (+37 more)
+Cohesion: 0.06
+Nodes (62): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), currentSessionMistakes, cycleDrillDifficulty(), cycleDrillInputMethod(), cycleSpeedGameMode(), DRILL_DIFFICULTIES (+54 more)
 
 ### Community 8 - "mocks.js"
 Cohesion: 0.12
@@ -189,8 +188,8 @@ Cohesion: 0.06
 Nodes (17): assert, colors, cp, fs, localStorageMock, logTestFail(), logTestPass(), mockBody (+9 more)
 
 ### Community 73 - "PROJECT MEMORIFY — SSC CGL Conquest Dashboard"
-Cohesion: 0.14
-Nodes (13): 11. 40-DAY PLAN STRUCTURE, 12. SPEED DRILL MODES (11 Total), 17. ANTI-PATTERNS & TECHNICAL DEBT, 18. FILE MOVEMENT GUIDELINES, 19. DEPENDENCY GRAPH (Simplified), 1. PROJECT IDENTITY, 2. FILE STRUCTURE & OWNERSHIP, 7. HTML PAGE SECTIONS (index.html) (+5 more)
+Cohesion: 0.12
+Nodes (16): 11. 40-DAY PLAN STRUCTURE, 12. SPEED DRILL MODES (11 Total), 13.1 Syllabus Console Views (6), 13.2 Study Notes Views (6), 13. STUDY TOOLKIT VIEWS, 17. ANTI-PATTERNS & TECHNICAL DEBT, 18. FILE MOVEMENT GUIDELINES, 19. DEPENDENCY GRAPH (Simplified) (+8 more)
 
 ### Community 74 - "20. QUICK REFERENCE CARD"
 Cohesion: 0.14
@@ -272,10 +271,6 @@ Nodes (4): 10.1 Subject Weightage (Exam), 10.2 Topic Hierarchy, 10.3 Topic Count
 Cohesion: 0.50
 Nodes (4): 15.1 Cohesion Scores (from GitNexus Clusters), 15.2 Highest Blast Radius Functions, 15.3 Highest Risk Changes, 15. COUPLING & COHESION ANALYSIS
 
-### Community 94 - "13. STUDY TOOLKIT VIEWS"
-Cohesion: 0.67
-Nodes (3): 13.1 Syllabus Console Views (6), 13.2 Study Notes Views (6), 13. STUDY TOOLKIT VIEWS
-
 ### Community 95 - "index.js"
 Cohesion: 0.23
 Nodes (3): HeroHeader, REWARDS_CATALOG, toast
@@ -345,23 +340,23 @@ Cohesion: 0.50
 Nodes (3): Breakpoint Matrix, Mobile Ergonomics Checklist, Responsive Design & Mobile Ergonomics Audit Guide
 
 ## Knowledge Gaps
-- **319 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+314 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 475 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **322 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+317 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 478 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `triggerMathTypesetting()` connect `toolkit.js` to `plan.js`, `state.js`, `dashboard.js`, `navigation.js`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Why does `navigateToPage()` connect `navigation.js` to `toolkit.js`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+- **Why does `renderAll()` connect `dashboard.js` to `toolkit.js`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `23. UI/UX DESIGN SYSTEM, THEME HARMONIZATION & COMPONENT CONSOLIDATION (2026-09-07)`, `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)`, `4. MODULE DEPENDENCY MAP`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`?**
+- **Why does `QrSyncModal` connect `QrSyncModal` to `index.js`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `initTheme()` (e.g. with `toggleFocusMode()` and `toggleSoundMode()`) actually correct?**
   _`initTheme()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
-  _319 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _322 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `syllabus.js` be split into smaller, more focused modules?**
   _Cohesion score 0.10042347247428918 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**

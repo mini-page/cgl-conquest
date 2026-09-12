@@ -604,6 +604,22 @@ body {
   transition-duration: 150ms;
 }
 
+/* Speed Drill Game Mode Dropdown Trigger Button (Distinct styling from category tabs) */
+#btn-drill-mode-dropdown {
+  background: rgba(6, 182, 212, 0.12) !important;
+  border: 1.5px solid rgba(6, 182, 212, 0.5) !important;
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.18), inset 0 0 10px rgba(6, 182, 212, 0.08) !important;
+  color: #ffffff !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+#btn-drill-mode-dropdown:hover,
+#btn-drill-mode-dropdown[aria-expanded="true"] {
+  background: rgba(6, 182, 212, 0.22) !important;
+  border-color: #22d3ee !important;
+  box-shadow: 0 0 22px rgba(6, 182, 212, 0.35), inset 0 0 14px rgba(6, 182, 212, 0.15) !important;
+  transform: translateY(-1px);
+}
+
 /* Active Speed Drill Focus & Dimming Mode */
 html.quiz-focus-active,
 body.quiz-focus-active,
@@ -617,19 +633,41 @@ body.drill-active {
 body.quiz-focus-active #app-header,
 body.quiz-focus-active #mobile-floating-nav,
 body.quiz-focus-active .drill-header-group,
+body.quiz-focus-active #drill-left-rail,
+body.quiz-focus-active #drill-right-rail,
+body.quiz-focus-active #drill-heatmap-container,
+body.quiz-focus-active #drill-timeline-container,
+body.quiz-focus-active #drill-bottom-deck,
+body.quiz-focus-active #drill-microtricks-card,
+body.quiz-focus-active #drill-cheat-sheet-card,
+body.quiz-focus-active #sync-island-pill,
+body.quiz-focus-active #action-center-island-wrap,
 body.drill-active #app-header,
 body.drill-active #mobile-floating-nav,
-body.drill-active .drill-header-group {
-  filter: blur(8px) opacity(0.25) !important;
+body.drill-active .drill-header-group,
+body.drill-active #drill-left-rail,
+body.drill-active #drill-right-rail,
+body.drill-active #drill-heatmap-container,
+body.drill-active #drill-timeline-container,
+body.drill-active #drill-bottom-deck,
+body.drill-active #drill-microtricks-card,
+body.drill-active #drill-cheat-sheet-card,
+body.drill-active #sync-island-pill,
+body.drill-active #action-center-island-wrap {
+  filter: blur(14px) opacity(0.04) !important;
   pointer-events: none !important;
-  transition: filter 0.35s ease, opacity 0.35s ease !important;
+  user-select: none !important;
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 body.quiz-focus-active #unified-drill-card,
 body.drill-active #unified-drill-card {
-  box-shadow: 0 0 50px rgba(6, 182, 212, 0.25), 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
-  border-color: rgba(6, 182, 212, 0.3) !important;
-  transition: box-shadow 0.35s ease, border-color 0.35s ease !important;
+  position: relative !important;
+  z-index: 50 !important;
+  box-shadow: 0 0 75px rgba(6, 182, 212, 0.35), 0 30px 60px -10px rgba(0, 0, 0, 0.95) !important;
+  border-color: rgba(6, 182, 212, 0.45) !important;
+  transform: scale(1.015) !important;
+  transition: box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* Custom Calendar Component Styles */

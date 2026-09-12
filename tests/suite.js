@@ -779,12 +779,20 @@ runTest("Comprehensive State Coverage in Sparse Backup, Restore & QR Sync", () =
   assert.strictEqual(sparsePayload.state.streak, 8, "Backup must preserve streak");
   assert.strictEqual(sparsePayload.state.examTier, 2, "Backup must preserve examTier");
   assert.strictEqual(sparsePayload.state.rewards.coins, 450, "Backup must preserve rewards coins");
+  assert(sparsePayload.state.drillHeatmap, "Backup must preserve drillHeatmap");
+  assert(sparsePayload.state.factMaturation, "Backup must preserve factMaturation");
+  assert(sparsePayload.state.speedPersonalBests, "Backup must preserve speedPersonalBests");
 
-  // Verify QR Sync compact extraction and expansion covers all states
+  // Verify QR Sync compact extraction and expansion covers all states including speed drills
   const qrJs = fs.readFileSync(path.join(rootDir, 'components', 'qr-sync-modal.js'), 'utf8');
   assert(qrJs.includes("foc: Boolean(state.focusModeActive)"), "QR sync must encode focusModeActive");
   assert(qrJs.includes("dc: Number(state.dayCounter)"), "QR sync must encode dayCounter");
   assert(qrJs.includes("mh: state.mobileNavHand || 'center'"), "QR sync must default mh to center");
+  assert(qrJs.includes("dh: state.drillHeatmap"), "QR sync must encode drillHeatmap (dh)");
+  assert(qrJs.includes("fm: state.factMaturation"), "QR sync must encode factMaturation (fm)");
+  assert(qrJs.includes("spb: state.speedPersonalBests"), "QR sync must encode speedPersonalBests (spb)");
+  assert(qrJs.includes("drillHeatmap: raw.dh"), "QR expansion must restore drillHeatmap");
+  assert(qrJs.includes("speedPersonalBests: raw.spb"), "QR expansion must restore speedPersonalBests");
 });
 
 // ====================================================
@@ -877,6 +885,239 @@ runTest("Clean Speed Drill Layout, Synthesized Audio Engine & Dynamic Custom-Sty
   assert(dashJs.includes("btn-edit-exam-target"), "dashboard.js updateCountdown must update btn-edit-exam-target");
   assert(dashJs.includes("updateActiveCustomTooltip"), "dashboard.js must update live custom tooltip per second");
   assert(dashJs.includes('examBtn.removeAttribute("title")'), "dashboard.js must suppress native tooltip in favor of custom styled tooltip");
+});
+
+runTest("Adaptive MicroFrequencyHeatmap & Telemetry Data Engine (Phase 1 & 2)", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('id="drill-heatmap-container"'), "index.html must include #drill-heatmap-container");
+  assert(html.includes('id="telemetry-avg-speed"'), "index.html must include #telemetry-avg-speed");
+  assert(html.includes('id="unified-drill-card"'), "unified-drill-card must remain preserved");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("class MicroFrequencyHeatmap"), "speed.js must define MicroFrequencyHeatmap");
+  assert(speedJs.includes("MicroFrequencyHeatmap.recordAttempt"), "speed.js must record attempt telemetry");
+  assert(speedJs.includes("selectAdaptiveValue"), "speed.js must implement selectAdaptiveValue");
+  assert(speedJs.includes("window.activeSpeedHeatmap"), "speed.js must instantiate activeSpeedHeatmap");
+});
+
+runTest("Split-Time Attempt Feed & Contextual Mental Math Shortcuts (Clean Removal & Engine Logic)", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(!html.includes('id="drill-microtricks-card"'), "index.html must not contain #drill-microtricks-card");
+  assert(!html.includes('id="drill-attempt-feed"'), "index.html must not contain #drill-attempt-feed");
+  assert(!html.includes('id="btn-toggle-microtricks"'), "index.html must not contain #btn-toggle-microtricks");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("getMicroTrickForQuestion"), "speed.js must implement getMicroTrickForQuestion");
+  assert(speedJs.includes("recordSplitTimeAttempt"), "speed.js must implement recordSplitTimeAttempt");
+  assert(speedJs.includes("updateContextualMicroTrick"), "speed.js must implement updateContextualMicroTrick");
+
+  // Create isolated VM context to execute and test heuristic logic
+  const sandbox = { window: {}, document: {}, console: console, localStorage: localStorageMock };
+  vm.createContext(sandbox);
+  vm.runInContext(speedJs, sandbox);
+
+  // Validate mental math trick rules
+  const squareTrick = sandbox.getMicroTrickForQuestion('squares', '25');
+  assert(squareTrick && squareTrick.badge.includes("Ends in 5"), "Squares ending in 5 must trigger Ends in 5 heuristic");
+
+  const cubeTrick = sandbox.getMicroTrickForQuestion('cubes', '7');
+  assert(cubeTrick && cubeTrick.badge.includes("Unit Digit"), "Cubes must trigger Unit Digit reflection heuristic");
+});
+
+runTest("Gamified Speed Modes Engine & Personal Bests Telemetry (Phase 5)", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('id="drill-game-mode-bar"'), "index.html must include #drill-game-mode-bar");
+  assert(html.includes('data-game-mode="classic"'), "index.html must have classic mode pill");
+  assert(html.includes('data-game-mode="blitz"'), "index.html must have blitz mode pill");
+  assert(html.includes('data-game-mode="sudden_death"'), "index.html must have sudden_death mode pill");
+  assert(html.includes('data-game-mode="ladder"'), "index.html must have ladder mode pill");
+  assert(html.includes('data-game-mode="mix"'), "index.html must have mix mode pill");
+  assert(html.includes('id="badge-mode-status"'), "index.html must have #badge-mode-status");
+  assert(html.includes('id="telemetry-blitz-pb"'), "index.html must have #telemetry-blitz-pb");
+  assert(html.includes('id="telemetry-survival-pb"'), "index.html must have #telemetry-survival-pb");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("SPEED_MODES"), "speed.js must define SPEED_MODES");
+  assert(speedJs.includes("setSpeedGameMode"), "speed.js must implement setSpeedGameMode");
+  assert(speedJs.includes("finishBlitzSession"), "speed.js must implement finishBlitzSession");
+  assert(speedJs.includes("finishSuddenDeathSession"), "speed.js must implement finishSuddenDeathSession");
+  assert(speedJs.includes("updateSpeedPersonalBestsHUD"), "speed.js must implement updateSpeedPersonalBestsHUD");
+});
+
+runTest("Phonetic Number Normalizer, Voice Reflex Engine & ML/AI Layer (Phase 6 & 7)", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('id="btn-drill-voice"'), "index.html must include #btn-drill-voice");
+  assert(html.includes('id="drill-voice-status"'), "index.html must include #drill-voice-status");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("parseSpokenNumberToDigits"), "speed.js must implement parseSpokenNumberToDigits");
+  assert(speedJs.includes("normalizeVoiceNumber"), "speed.js must implement normalizeVoiceNumber");
+  assert(speedJs.includes("toggleVoiceReflexMode"), "speed.js must implement toggleVoiceReflexMode");
+  assert(speedJs.includes("class DrillIntelligenceEngine"), "speed.js must define DrillIntelligenceEngine");
+
+  // Create isolated VM context to execute and test normalization engine
+  const sandbox = { window: {}, document: {}, console: console, localStorage: localStorageMock };
+  vm.createContext(sandbox);
+  vm.runInContext(speedJs, sandbox);
+
+  // 1. Spoken number parsing checks
+  assert.strictEqual(sandbox.parseSpokenNumberToDigits("five hundred seventy six"), "576");
+  assert.strictEqual(sandbox.parseSpokenNumberToDigits("five seventy six"), "576");
+  assert.strictEqual(sandbox.parseSpokenNumberToDigits("two eighty nine"), "289");
+  assert.strictEqual(sandbox.parseSpokenNumberToDigits("twenty four"), "24");
+  assert.strictEqual(sandbox.parseSpokenNumberToDigits("fourteen point two eight"), "14.28");
+
+  // 2. Full voice transcript normalization checks
+  const res1 = sandbox.normalizeVoiceNumber("five seventy six", "576");
+  assert.strictEqual(res1.status, "CORRECT");
+  assert.strictEqual(res1.normalized, "576");
+
+  const res2 = sandbox.normalizeVoiceNumber("the answer is two eighty nine", "289");
+  assert.strictEqual(res2.status, "CORRECT");
+  assert.strictEqual(res2.normalized, "289");
+
+  const res3 = sandbox.normalizeVoiceNumber("fourteen point two eight percent", "14.28%");
+  assert.strictEqual(res3.status, "CORRECT");
+  assert.strictEqual(res3.normalized, "14.28%");
+
+  const res4 = sandbox.normalizeVoiceNumber("one third", "1/3");
+  assert.strictEqual(res4.status, "CORRECT");
+  assert.strictEqual(res4.normalized, "1/3");
+
+  const res5 = sandbox.normalizeVoiceNumber("root three by two", "√3/2");
+  assert.strictEqual(res5.status, "CORRECT");
+  assert.strictEqual(res5.normalized, "√3/2");
+
+  const res6 = sandbox.normalizeVoiceNumber("gibberish blurp cough", "576");
+  assert.strictEqual(res6.status, "RECOGNITION_ERROR");
+
+  const res7 = sandbox.normalizeVoiceNumber("one forty four", "576");
+  assert.strictEqual(res7.status, "WRONG");
+
+  // 3. DrillIntelligenceEngine ML/AI extension interface
+  const engine = sandbox.window.DrillIntelligenceEngine;
+  assert(engine, "DrillIntelligenceEngine must be exposed on window");
+  assert(typeof engine.selectWeightedCandidate === 'function', "engine must have selectWeightedCandidate");
+  assert(typeof engine.normalizeVoiceInput === 'function', "engine must have normalizeVoiceInput");
+  assert(!engine.isAiEnabled(), "AI should be disabled by default (local heuristic fallback)");
+  engine.setAiApiKey("test-key-12345", "gemini");
+  assert(engine.isAiEnabled(), "AI should be enabled when API key is configured");
+});
+
+runTest("Speed Drilling Advancements: Modes Dropdown, Weak Practice, Ranges & Clean Layout", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  assert(html.includes('id="btn-drill-mode-dropdown"'), "index.html must include #btn-drill-mode-dropdown");
+  assert(html.includes('id="drill-mode-dropdown"'), "index.html must include #drill-mode-dropdown");
+  assert(html.includes('data-game-mode="weak_practice"'), "index.html must include weak_practice mode option");
+
+  // Mental math shortcuts and history timeline decks must be cleanly removed from Speed page
+  assert(!html.includes('id="drill-microtricks-card"'), "drill-microtricks-card must be cleanly removed from index.html");
+  assert(!html.includes('id="drill-timeline-container"'), "drill-timeline-container must be cleanly removed from index.html");
+  assert(!html.includes('id="drill-timeline-track"'), "drill-timeline-track must be cleanly removed from index.html");
+
+  // Conquest elements should be cleanly removed from Speed page
+  assert(!html.includes('id="btn-conquest-capsule"'), "index.html must not contain #btn-conquest-capsule");
+  assert(!html.includes('id="conquest-popover"'), "index.html must not contain #conquest-popover");
+
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  assert(speedJs.includes("WEAK_PRACTICE: 'weak_practice'"), "SPEED_MODES must include WEAK_PRACTICE");
+  assert(speedJs.includes("renderSplitTimeTimeline"), "speed.js must implement renderSplitTimeTimeline");
+  assert(speedJs.includes("renderPostSessionMistakeReview"), "speed.js must implement renderPostSessionMistakeReview");
+  assert(speedJs.includes("MicroFrequencyHeatmap.getWeakKeys"), "speed.js must implement MicroFrequencyHeatmap.getWeakKeys");
+  assert(speedJs.includes("btnToggleAttemptFeed"), "speed.js must wire btnToggleAttemptFeed");
+
+  // Test question generator ranges and formats in isolated VM
+  const sandbox = { window: {}, document: {}, console: console, localStorage: localStorageMock };
+  vm.createContext(sandbox);
+  vm.runInContext(speedJs, sandbox);
+
+  // 1. Squares range check (11 to 40)
+  for (let i = 0; i < 20; i++) {
+    const qEasy = sandbox.generateQuestionTextAndAnswer("squares", "easy");
+    const numEasy = parseInt(qEasy.targetKey, 10);
+    assert(numEasy >= 11 && numEasy <= 20, `Squares easy must be 11-20, got ${numEasy}`);
+
+    const qAdv = sandbox.generateQuestionTextAndAnswer("squares", "advance");
+    const numAdv = parseInt(qAdv.targetKey, 10);
+    assert(numAdv >= 31 && numAdv <= 40, `Squares advance must be 31-40, got ${numAdv}`);
+  }
+
+  // 2. Cubes range check (5 to 30)
+  for (let i = 0; i < 20; i++) {
+    const qEasy = sandbox.generateQuestionTextAndAnswer("cubes", "easy");
+    const numEasy = parseInt(qEasy.targetKey, 10);
+    assert(numEasy >= 5 && numEasy <= 12, `Cubes easy must be 5-12, got ${numEasy}`);
+
+    const qAdv = sandbox.generateQuestionTextAndAnswer("cubes", "advance");
+    const numAdv = parseInt(qAdv.targetKey, 10);
+    assert(numAdv >= 21 && numAdv <= 30, `Cubes advance must be 21-30, got ${numAdv}`);
+  }
+
+  // 3. Tables range check (11 to 50)
+  for (let i = 0; i < 20; i++) {
+    const qEasy = sandbox.generateQuestionTextAndAnswer("tables", "easy");
+    const numEasy = parseInt(qEasy.targetKey, 10);
+    assert(numEasy >= 11 && numEasy <= 20, `Tables easy base must be 11-20, got ${numEasy}`);
+
+    const qAdv = sandbox.generateQuestionTextAndAnswer("tables", "advance");
+    const numAdv = parseInt(qAdv.targetKey, 10);
+    assert(numAdv >= 36 && numAdv <= 50, `Tables advance base must be 36-50, got ${numAdv}`);
+  }
+
+  // 4. Fractions & Percentages matrix from 1000015976.png
+  const qFrac = sandbox.generateQuestionTextAndAnswer("fracPerc", "medium");
+  assert(qFrac.q.includes(" = ?"), "Fractions must use short punchy question format");
+
+  // 5. Advanced fractions phonetic normalizer checks
+  const resFrac1 = sandbox.normalizeVoiceNumber("one by seven", "1/7");
+  assert.strictEqual(resFrac1.status, "CORRECT");
+  assert.strictEqual(resFrac1.normalized, "1/7");
+
+  const resFrac2 = sandbox.normalizeVoiceNumber("one by forty", "1/40");
+  assert.strictEqual(resFrac2.status, "CORRECT");
+  assert.strictEqual(resFrac2.normalized, "1/40");
+
+  const resFrac3 = sandbox.normalizeVoiceNumber("14.28", "14.28%");
+  assert.strictEqual(resFrac3.status, "CORRECT");
+  assert.strictEqual(resFrac3.normalized, "14.28%");
+});
+
+runTest("Speed Drill Ergonomics: Direct Numeric Input Filter, Shortcuts Hub & Voice Waveform", () => {
+  const html = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
+  const speedJs = fs.readFileSync(path.join(rootDir, 'js', 'speed.js'), 'utf8');
+  const navJs = fs.readFileSync(path.join(rootDir, 'js', 'navigation.js'), 'utf8');
+
+  // 1. WhatsApp-inspired voice bar elements
+  assert(html.includes('id="voice-timer-display"'), "index.html must include #voice-timer-display");
+  assert(html.includes('id="voice-waveform-bars"'), "index.html must include #voice-waveform-bars");
+  assert(html.includes('id="btn-drill-voice"'), "index.html must include #btn-drill-voice");
+  assert(html.includes('id="drill-voice-status"'), "index.html must include #drill-voice-status");
+
+  // 2. Direct numeric input strict filter & key shortcuts
+  assert(speedJs.includes("replace(/[^0-9/.%]/g, '')"), "speed.js must sanitize direct input to numeric values only");
+  assert(speedJs.includes('e.key === " " || e.key === "Spacebar"'), "Direct input must intercept Space for pause");
+  assert(speedJs.includes('e.key === "x" || e.key === "X"'), "Direct input must intercept X for close");
+  assert(speedJs.includes('e.key === "r" || e.key === "R"'), "Direct input must intercept R for restart");
+  assert(speedJs.includes('e.key === "m" || e.key === "M"'), "Direct input must intercept M for mode cycle");
+  assert(speedJs.includes('e.key === "i" || e.key === "I"'), "Direct input must intercept I for input method toggle");
+  assert(speedJs.includes('e.key === "v" || e.key === "V"'), "Direct input must intercept V for voice reflex toggle");
+
+  // 3. Game mode cycle across all 6 modes + HUD feedback
+  assert(speedJs.includes("const DRILL_MODES_CYCLE = ['classic', 'blitz', 'sudden_death', 'ladder', 'mix', 'weak_practice']"), "DRILL_MODES_CYCLE must contain all 6 modes");
+  assert(speedJs.includes("showDrillHudFeedback(`MODE →"), "cycleSpeedGameMode must trigger HUD toast feedback");
+
+  // 4. Navigation JS voice shortcut & action handling
+  assert(navJs.includes('e.key === "v" || e.key === "V"'), "navigation.js must support V shortcut for voice reflex toggle");
+  assert(navJs.includes("case 'speed:mode-cycle':"), "navigation.js must handle speed:mode-cycle action");
+  assert(navJs.includes("case 'speed:input-toggle':"), "navigation.js must handle speed:input-toggle action");
+  assert(navJs.includes("case 'speed:voice-toggle':"), "navigation.js must handle speed:voice-toggle action");
+  assert(navJs.includes("case 'speed:restart':"), "navigation.js must handle speed:restart action");
+
+  // 5. Action Center Shortcuts Hub updated with read-only reference rows
+  assert(html.includes("Cycle Game Mode (All 6 Modes)"), "Shortcuts Hub must reference game mode cycle");
+  assert(html.includes("Toggle Input (Options ⇄ Direct)"), "Shortcuts Hub must reference input toggle");
+  assert(html.includes("Voice Reflex Mode (Hands-free)"), "Shortcuts Hub must reference voice reflex mode");
+  assert(html.includes("Direct Numeric (Auto-Match &amp; Pure Number)"), "Shortcuts Hub must reference direct numeric input");
 });
 
 // ── FINAL SUMMARY ──────────────────────────────────────────────

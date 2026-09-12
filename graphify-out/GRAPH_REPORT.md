@@ -1,16 +1,16 @@
-# Graph Report - CGL-conquest  (2026-09-09)
+# Graph Report - CGL-conquest  (2026-09-12)
 
 ## Corpus Check
-- 133 files · ~347,320 words
+- 133 files · ~371,168 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 942 nodes · 1357 edges · 127 communities (56 shown, 19 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.85)
+- 1015 nodes · 1545 edges · 134 communities (62 shown, 20 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `624ef1ca`
+- Built from commit: `53f0e6de`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -90,18 +90,25 @@
 - Conquest Web Suite Architecture Rules
 - Modern UI/UX Design System Guide
 - Web Performance Audit & Optimization Guide
+- MicroFrequencyHeatmap
+- initSpeedDrillsPage
+- DrillIntelligenceEngine
+- showDrillHudFeedback
+- generateDrillQuestion
+- generateChallengeQuestion
+- initCustomTooltips
 
 ## God Nodes (most connected - your core abstractions)
-1. `renderAll()` - 25 edges
-2. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
-3. `QrSyncModal` - 24 edges
-4. `initTheme()` - 24 edges
-5. `SoundManager` - 21 edges
-6. `renderStudyTrackerAll()` - 21 edges
-7. `RewardsSystem` - 18 edges
-8. `renderMockAnalytics()` - 15 edges
-9. `CalendarPicker` - 14 edges
-10. `20. QUICK REFERENCE CARD` - 14 edges
+1. `initSpeedDrillsPage()` - 26 edges
+2. `renderAll()` - 25 edges
+3. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
+4. `QrSyncModal` - 24 edges
+5. `initTheme()` - 24 edges
+6. `SoundManager` - 21 edges
+7. `renderStudyTrackerAll()` - 21 edges
+8. `RewardsSystem` - 18 edges
+9. `generateDrillQuestion()` - 16 edges
+10. `resetDrillSession()` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `renderAll()` --indirect_call--> `triggerMathTypesetting()`  [INFERRED]
@@ -118,7 +125,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (127 total, 19 thin omitted)
+## Communities (134 total, 20 thin omitted)
 
 ### Community 0 - "syllabus.js"
 Cohesion: 0.10
@@ -137,16 +144,16 @@ Cohesion: 0.13
 Nodes (12): appState, COMPUTER_TARGET_MAP, EMBEDDED_QUIZZES, escapeHTML(), FLASHCARDS, GK_STATIC_DATA, loadStateFromStorage(), parseMarkdown() (+4 more)
 
 ### Community 5 - "dashboard.js"
-Cohesion: 0.12
+Cohesion: 0.13
 Nodes (28): calculateOverallStats(), closeExamTargetModal(), formatTimeSeconds(), getSrsDueTopics(), initExamTargetEditor(), initPomoTimer(), hidePomoPopover(), showPomoPopover() (+20 more)
 
 ### Community 6 - "navigation.js"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (47): claimMissionReward(), claimTrophyReward(), closeShortcutsHelpModal(), closeWipeConfirmModal(), createSparseBackupPayload(), elevatedElementsMap, elevateModalOnTop(), executeFactoryResetWipe() (+39 more)
 
 ### Community 7 - "speed.js"
-Cohesion: 0.16
-Nodes (19): challengeQuestionTelemetry, checkDrillAnswer(), clearIdleTimer(), DRILL_MODE_LABELS, endChallengeRun(), generateChallengeQuestion(), generateDrillQuestion(), generateMathOptions() (+11 more)
+Cohesion: 0.10
+Nodes (22): challengeQuestionTelemetry, currentSessionMistakes, DRILL_CHEAT_DATA, DRILL_DIFFICULTIES, DRILL_MODE_LABELS, DRILL_MODES_CYCLE, ghostRecoveryQueue, initDrillCheatSheet() (+14 more)
 
 ### Community 8 - "mocks.js"
 Cohesion: 0.12
@@ -344,24 +351,48 @@ Nodes (5): 23.1 Design System & CSS Custom Properties, 23.2 Complete Light & Dar
 Cohesion: 0.50
 Nodes (3): Breakpoint Matrix, Mobile Ergonomics Checklist, Responsive Design & Mobile Ergonomics Audit Guide
 
+### Community 127 - "MicroFrequencyHeatmap"
+Cohesion: 0.27
+Nodes (5): generateQuestionTextAndAnswer(), MicroFrequencyHeatmap, resolveCheatTelemetryAndTarget(), selectAdaptiveValue(), updateReflexTelemetryHUD()
+
+### Community 128 - "initSpeedDrillsPage"
+Cohesion: 0.26
+Nodes (13): clearIdleTimer(), endChallengeRun(), initSpeedDrillsPage(), initSpeedKeyboardShortcuts(), initVoiceReflexEngine(), renderPostSessionMistakeReview(), resetDrillSession(), setSpeedGameMode() (+5 more)
+
+### Community 129 - "DrillIntelligenceEngine"
+Cohesion: 0.18
+Nodes (5): DrillIntelligenceEngine, getMicroTrickForQuestion(), normalizeVoiceNumber(), parseSpokenNumberToDigits(), updateContextualMicroTrick()
+
+### Community 130 - "showDrillHudFeedback"
+Cohesion: 0.27
+Nodes (11): cycleDrillDifficulty(), cycleDrillInputMethod(), cycleSpeedGameMode(), restartDrillSession(), setDrillDifficulty(), setInputMethod(), showDrillHudFeedback(), toggleHesitantFactTargeting() (+3 more)
+
+### Community 131 - "generateDrillQuestion"
+Cohesion: 0.36
+Nodes (8): checkDrillAnswer(), finishBlitzSession(), finishSuddenDeathSession(), generateDrillQuestion(), listenForVoiceAnswer(), startBlitzCountdown(), updateSpeedPersonalBestsHUD(), updateStreakAura()
+
+### Community 132 - "generateChallengeQuestion"
+Cohesion: 0.40
+Nodes (6): generateChallengeQuestion(), generateMathOptions(), generateProceduralMathQuestion(), startChallengeRun(), submitChallengeAnswer(), updateChallengeUI()
+
 ## Knowledge Gaps
-- **315 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+310 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 465 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **323 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+318 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 480 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `triggerMathTypesetting()` connect `toolkit.js` to `plan.js`, `state.js`, `dashboard.js`, `navigation.js`?**
-  _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **Why does `navigateToPage()` connect `navigation.js` to `toolkit.js`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
-- **Why does `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` connect `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` to `23. UI/UX DESIGN SYSTEM, THEME HARMONIZATION & COMPONENT CONSOLIDATION (2026-09-07)`, `20. QUICK REFERENCE CARD`, `21. PERFORMANCE OPTIMIZATIONS (Applied 2026-07-13)`, `16. BLAST RADIUS MAP`, `5. ALL FUNCTIONS BY MODULE`, `22. SECURITY & ACCESSIBILITY AUDIT HARDENING GUIDELINES (2026-08-17)`, `4. MODULE DEPENDENCY MAP`, `6. ALL GLOBAL VARIABLES`, `9. EXECUTION FLOWS (33 Total from GitNexus)`, `14. STYLING & THEMING`, `3. GLOBAL STATE & DATA FLOW`, `10. SYLLABUS DATA STRUCTURE`, `15. COUPLING & COHESION ANALYSIS`, `13. STUDY TOOLKIT VIEWS`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+- **Why does `renderAll()` connect `dashboard.js` to `toolkit.js`?**
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `QrSyncModal` connect `QrSyncModal` to `index.js`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `initTheme()` (e.g. with `toggleFocusMode()` and `toggleSoundMode()`) actually correct?**
   _`initTheme()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**
-  _315 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _323 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `syllabus.js` be split into smaller, more focused modules?**
   _Cohesion score 0.10042347247428918 - nodes in this community are weakly interconnected._
 - **Should `toolkit.js` be split into smaller, more focused modules?**

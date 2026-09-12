@@ -93,7 +93,6 @@
   "91": "3. GLOBAL STATE & DATA FLOW",
   "92": "10. SYLLABUS DATA STRUCTURE",
   "93": "15. COUPLING & COHESION ANALYSIS",
-  "94": "13. STUDY TOOLKIT VIEWS",
   "95": "index.js",
   "96": "rules/graphify.md",
   "97": "workflows/graphify.md",
@@ -125,12 +124,5 @@
   "123": "Responsive Design & Mobile Ergonomics Audit Guide",
   "124": "Conquest Web Suite Architecture Rules",
   "125": "Modern UI/UX Design System Guide",
-  "126": "Web Performance Audit & Optimization Guide",
-  "127": "MicroFrequencyHeatmap",
-  "128": "initSpeedDrillsPage",
-  "129": "DrillIntelligenceEngine",
-  "130": "showDrillHudFeedback",
-  "131": "generateDrillQuestion",
-  "132": "generateChallengeQuestion",
-  "133": "initCustomTooltips"
+  "126": "Web Performance Audit & Optimization Guide"
 }

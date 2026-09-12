@@ -291,6 +291,7 @@ function renderDashboardOverview() {
 
     // Load Today's tasks (Missions)
     renderTodayMissions();
+    renderSubjectProgressBars();
     
     // Load daily rituals checkbox states
     loadRituals();
@@ -381,29 +382,29 @@ function renderTodayMissions() {
     const badgeEl = document.getElementById("mission-phase-badge");
     if (dayData.phase === 1) {
         badgeEl.innerText = "Phase 1: Foundations";
-        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentPurple/20 border border-accentPurple/30 text-purple-300 uppercase";
+        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentPurple/20 border border-accentPurple/30 text-purple-300 uppercase shrink-0 whitespace-nowrap ml-auto sm:ml-0";
     } else if (dayData.phase === 2) {
         badgeEl.innerText = "Phase 2: Application";
-        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentAmber/20 border border-accentAmber/30 text-amber-300 uppercase";
+        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentAmber/20 border border-accentAmber/30 text-amber-300 uppercase shrink-0 whitespace-nowrap ml-auto sm:ml-0";
     } else if (dayData.phase === 3) {
         badgeEl.innerText = "Phase 3: Advanced Math";
-        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentCyan/20 border border-accentCyan/30 text-cyan-300 uppercase";
+        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentCyan/20 border border-accentCyan/30 text-cyan-300 uppercase shrink-0 whitespace-nowrap ml-auto sm:ml-0";
     } else {
         badgeEl.innerText = "Phase 4: Revision";
-        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentRose/20 border border-accentRose/30 text-rose-300 uppercase";
+        badgeEl.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-accentRose/20 border border-accentRose/30 text-rose-300 uppercase shrink-0 whitespace-nowrap ml-auto sm:ml-0";
     }
 
     if (dayData.targets.length === 0) {
         // Revision / Mock Day
         container.innerHTML = `
-            <div class="bg-bgCard border-l-4 border-accentRose border-t border-r border-b border-white/5 rounded-xl p-4 shadow">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-[10px] font-bold uppercase text-accentRose"><i class="fa-solid fa-trophy mr-1"></i> Simulation Mock Challenge</span>
+            <div class="bg-bgCard border-l-4 border-accentRose border-t border-r border-b border-white/5 rounded-xl p-3.5 sm:p-4 shadow">
+                <div class="flex justify-between items-center mb-2 flex-wrap gap-2">
+                    <span class="text-[10px] font-bold uppercase text-accentRose flex items-center"><i class="fa-solid fa-trophy mr-1"></i> Simulation Mock Challenge</span>
                     <span class="px-2 py-0.5 bg-accentRose/15 text-accentRose rounded text-[9px] font-bold uppercase">High Weight</span>
                 </div>
-                <h4 class="text-xs font-bold text-white">${dayData.name}</h4>
+                <h4 class="text-xs sm:text-sm font-bold text-white">${dayData.name}</h4>
                 <p class="text-xs text-gray-400 mt-1 leading-relaxed">${dayData.desc}</p>
-                <div class="mt-3 p-2 bg-rose-950/20 border border-rose-900/30 rounded text-xs text-rose-300">
+                <div class="mt-3 p-2.5 bg-rose-950/20 border border-rose-900/30 rounded-lg text-xs text-rose-300">
                     <strong>Assignment:</strong> ${dayData.test}
                 </div>
             </div>
@@ -440,33 +441,33 @@ function renderTodayMissions() {
                                    "bg-accentRose/10 border-accentRose/20 text-accentRose";
 
             html += `
-                <div class="bg-bgCard/90 border border-white/10 rounded-2xl p-4 shadow-lg hover:border-white/20 ${subTheme.glow} transition duration-200" data-subtopic-id="${subFound.id}">
+                <div class="bg-bgCard/90 border border-white/10 rounded-xl sm:rounded-2xl p-3.5 sm:p-4 shadow-lg hover:border-white/20 ${subTheme.glow} transition duration-200" data-subtopic-id="${subFound.id}">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <!-- Left Side: Topic Info & Badges -->
                         <div class="space-y-1.5 flex-1 min-w-0">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-[10px] font-bold uppercase ${subTheme.text} flex items-center gap-1"><i class="fa-solid fa-folder-open"></i> ${topicFound.subject} &bull; ${topicFound.topic}</span>
-                                <span class="border px-2 py-0.5 rounded text-[9px] font-bold uppercase ${badgeDiffClass}">${subFound.difficulty}</span>
-                                <span class="bg-white/5 border border-white/5 px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 uppercase">${subFound.weightage} Weight</span>
+                            <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                <span class="text-[10px] font-bold uppercase ${subTheme.text} flex items-center gap-1 leading-tight"><i class="fa-solid fa-folder-open text-[9px]"></i> ${topicFound.subject} &bull; ${topicFound.topic}</span>
+                                <span class="border px-1.5 sm:px-2 py-0.5 rounded text-[9px] font-bold uppercase ${badgeDiffClass}">${subFound.difficulty}</span>
+                                <span class="bg-white/5 border border-white/5 px-1.5 sm:px-2 py-0.5 rounded text-[9px] font-bold text-gray-400 uppercase">${subFound.weightage} Weight</span>
                             </div>
-                            <h4 class="text-xs font-extrabold text-white leading-snug">${subFound.name}${appState.weakAlerts && appState.weakAlerts[subFound.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1.5 animate-pulse">🚨 Weak</span>' : ''}</h4>
+                            <h4 class="text-xs sm:text-sm font-extrabold text-white leading-snug break-words">${subFound.name}${appState.weakAlerts && appState.weakAlerts[subFound.id] ? ' <span class="inline-flex items-center text-[9px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded font-bold ml-1 animate-pulse">🚨 Weak</span>' : ''}</h4>
                         </div>
                         
-                        <!-- Right Side (Desktop/Laptop): Clean Checkbox Pill Controls Matching Syllabus -->
-                        <div class="flex items-center gap-3 shrink-0 bg-[#0a1128]/95 border border-blue-900/60 shadow-inner px-3.5 py-2 rounded-xl">
-                            <div data-dash-tri="${subFound.id}" data-flag="learned" class="flex items-center gap-2 cursor-pointer select-none group/tb">
-                                <span class="tri-box learned ${prog.learned ? 'on' : ''}">${prog.learned ? '✓' : ''}</span>
-                                <span class="text-xs font-medium ${prog.learned ? 'text-teal-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Learned</span>
+                        <!-- Right Side: Responsive Clean Checkbox Pill Controls Matching Syllabus -->
+                        <div class="flex items-center justify-between sm:justify-start gap-1 sm:gap-2.5 w-full md:w-auto bg-[#0a1128]/95 border border-blue-900/60 shadow-inner px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl shrink-0">
+                            <div data-dash-tri="${subFound.id}" data-flag="learned" class="flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none group/tb py-1 px-1 rounded hover:bg-white/5 active:scale-95 transition" title="Mark as Learned">
+                                <span class="tri-box learned shrink-0 ${prog.learned ? 'on' : ''}">${prog.learned ? '✓' : ''}</span>
+                                <span class="text-[11px] sm:text-xs font-medium ${prog.learned ? 'text-teal-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition whitespace-nowrap">Learned</span>
                             </div>
-                            <span class="text-blue-900/80 select-none">|</span>
-                            <div data-dash-tri="${subFound.id}" data-flag="practiced" class="flex items-center gap-2 cursor-pointer select-none group/tb">
-                                <span class="tri-box practiced p ${prog.practiced ? 'on p' : ''}">${prog.practiced ? '✓' : ''}</span>
-                                <span class="text-xs font-medium ${prog.practiced ? 'text-violet-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Practiced</span>
+                            <span class="text-blue-900/80 select-none text-xs">|</span>
+                            <div data-dash-tri="${subFound.id}" data-flag="practiced" class="flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none group/tb py-1 px-1 rounded hover:bg-white/5 active:scale-95 transition" title="Mark as Practiced">
+                                <span class="tri-box practiced p shrink-0 ${prog.practiced ? 'on p' : ''}">${prog.practiced ? '✓' : ''}</span>
+                                <span class="text-[11px] sm:text-xs font-medium ${prog.practiced ? 'text-violet-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition whitespace-nowrap">Practiced</span>
                             </div>
-                            <span class="text-blue-900/80 select-none">|</span>
-                            <div data-dash-tri="${subFound.id}" data-flag="mastered" class="flex items-center gap-2 cursor-pointer select-none group/tb">
-                                <span class="tri-box mastered m ${prog.mastered ? 'on m' : ''}">${prog.mastered ? '✓' : ''}</span>
-                                <span class="text-xs font-medium ${prog.mastered ? 'text-amber-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Mastered</span>
+                            <span class="text-blue-900/80 select-none text-xs">|</span>
+                            <div data-dash-tri="${subFound.id}" data-flag="mastered" class="flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none group/tb py-1 px-1 rounded hover:bg-white/5 active:scale-95 transition" title="Mark as Mastered">
+                                <span class="tri-box mastered m shrink-0 ${prog.mastered ? 'on m' : ''}">${prog.mastered ? '✓' : ''}</span>
+                                <span class="text-[11px] sm:text-xs font-medium ${prog.mastered ? 'text-amber-400 font-semibold' : 'text-zinc-400 group-hover/tb:text-zinc-200'} transition whitespace-nowrap">Mastered</span>
                             </div>
                         </div>
                     </div>

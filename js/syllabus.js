@@ -456,11 +456,11 @@ try {
   function dropdownMarkup(d) {
     const open = syllabusState.openDropdown === d.id;
     return `
-    <div class="relative" data-dd-wrap="${d.id}">
-      <button data-dd-btn="${d.id}" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border transition cursor-pointer ${d.active ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-sm' : 'bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5'}">
-        <span>${d.icon}</span><span class="font-medium max-w-[130px] truncate">${d.label}</span><span class="text-[9px] opacity-60">▾</span>
+    <div class="relative shrink-0" data-dd-wrap="${d.id}">
+      <button data-dd-btn="${d.id}" class="flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm border transition cursor-pointer shrink-0 whitespace-nowrap ${d.active ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-300 shadow-sm' : 'bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5'}">
+        <span>${d.icon}</span><span class="font-medium max-w-[110px] sm:max-w-[130px] truncate">${d.label}</span><span class="text-[9px] opacity-60">▾</span>
       </button>
-      <div data-dd-panel="${d.id}" class="${open?'':'hidden'} dropdown-panel absolute left-0 mt-2 w-64 bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
+      <div data-dd-panel="${d.id}" class="${open?'':'hidden'} dropdown-panel absolute left-0 mt-2 w-64 max-w-[calc(100vw-32px)] bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
         ${d.panelHTML}
       </div>
     </div>`;
@@ -473,12 +473,12 @@ try {
     const weakCount = Object.keys(appState.weakAlerts || {}).filter(k => appState.weakAlerts[k]).length;
     let weakMarkup = '';
     if (weakCount > 0) {
-      weakMarkup = `<button data-toggle-weak class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border transition cursor-pointer ${syllabusState.weakOnly ? 'bg-rose-500/25 border-rose-500/50 text-rose-300 shadow-md shadow-rose-500/20' : 'bg-rose-500/10 border-rose-500/25 text-rose-400 hover:bg-rose-500/20'}"><i class="fa-solid fa-triangle-exclamation text-rose-400 text-[10px] animate-pulse"></i><span class="font-bold">${weakCount} Mock Weak</span></button>`;
+      weakMarkup = `<button data-toggle-weak class="flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs border transition cursor-pointer shrink-0 whitespace-nowrap ${syllabusState.weakOnly ? 'bg-rose-500/25 border-rose-500/50 text-rose-300 shadow-md shadow-rose-500/20' : 'bg-rose-500/10 border-rose-500/25 text-rose-400 hover:bg-rose-500/20'}"><i class="fa-solid fa-triangle-exclamation text-rose-400 text-[10px] animate-pulse"></i><span class="font-bold">${weakCount} Mock Weak</span></button>`;
     }
     wrap.innerHTML = defs.map(dropdownMarkup).join('')
-      + `<button data-toggle-high class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border transition cursor-pointer ${syllabusState.highOnly ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 shadow-sm' : 'bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5'}">⭐ <span class="font-medium">High-weight only</span></button>`
+      + `<button data-toggle-high class="flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs border transition cursor-pointer shrink-0 whitespace-nowrap ${syllabusState.highOnly ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 shadow-sm' : 'bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5'}">⭐ <span class="font-medium">High-weight only</span></button>`
       + weakMarkup
-      + (anyFilterActive() ? `<button data-clear-filters class="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 transition cursor-pointer">✕ Clear filters</button>` : '');
+      + (anyFilterActive() ? `<button data-clear-filters class="flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs border border-rose-500/30 bg-rose-500/10 text-rose-300 hover:bg-rose-500/20 transition cursor-pointer shrink-0 whitespace-nowrap">✕ Clear filters</button>` : '');
     bindFilterRow();
   }
 
@@ -604,10 +604,10 @@ try {
     if (sortWrap) {
       sortWrap.innerHTML = `
       <div class="relative" data-dd-wrap="sort">
-        <button data-dd-btn="sort" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5 transition cursor-pointer">
-          <span>↕️</span><span class="font-medium">Sort Order</span><span class="text-[9px] opacity-60">▾</span>
+        <button data-dd-btn="sort" class="w-full sm:w-auto justify-between sm:justify-start flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3.5 py-2 text-xs sm:text-sm border bg-panel2 border-line text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5 transition cursor-pointer">
+          <span class="flex items-center gap-1.5"><span>↕️</span><span class="font-medium">Sort Order</span></span><span class="text-[9px] opacity-60">▾</span>
         </button>
-        <div data-dd-panel="sort" class="hidden dropdown-panel absolute right-0 mt-2 w-56 bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
+        <div data-dd-panel="sort" class="hidden dropdown-panel absolute left-0 sm:left-auto sm:right-0 mt-2 w-56 max-w-[calc(100vw-32px)] bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
           ${sortPanelHTML()}
         </div>
       </div>`;
@@ -619,10 +619,10 @@ try {
       const activeViewDef = VIEW_GROUPS.flatMap(g=>g.views).find(v=>v.id===syllabusState.view) || {icon:'🌲', name:'Tree Hierarchy'};
       viewWrap.innerHTML = `
       <div class="relative" data-dd-wrap="view">
-        <button data-dd-btn="view" class="flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm border bg-cyan-500/15 border-cyan-500/40 text-cyan-300 hover:border-cyan-400/60 transition cursor-pointer">
-          <span>${activeViewDef.icon}</span><span class="font-medium">${activeViewDef.name}</span><span class="text-[9px] opacity-60">▾</span>
+        <button data-dd-btn="view" class="w-full sm:w-auto justify-between sm:justify-start flex items-center gap-1.5 rounded-xl px-2.5 sm:px-3.5 py-2 text-xs sm:text-sm border bg-cyan-500/15 border-cyan-500/40 text-cyan-300 hover:border-cyan-400/60 transition cursor-pointer">
+          <span class="flex items-center gap-1.5"><span>${activeViewDef.icon}</span><span class="font-medium">${activeViewDef.name}</span></span><span class="text-[9px] opacity-60">▾</span>
         </button>
-        <div data-dd-panel="view" class="hidden dropdown-panel absolute right-0 mt-2 w-64 bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
+        <div data-dd-panel="view" class="hidden dropdown-panel absolute right-0 mt-2 w-64 max-w-[calc(100vw-32px)] bg-slate-900/95 border border-white/15 rounded-2xl shadow-2xl p-2 z-50 max-h-80 overflow-y-auto scrollbar-thin backdrop-blur-xl">
           ${viewPanelHTML()}
         </div>
       </div>`;
@@ -795,32 +795,32 @@ try {
   function triStateRow(it) {
     const f = flags(it.id);
     return `
-    <div class="px-4 py-3.5 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div class="px-2.5 sm:px-4 py-2.5 sm:py-3.5 border-b border-line/60 last:border-0 hover:bg-white/[0.02] transition flex flex-col md:flex-row md:items-center justify-between gap-2.5 sm:gap-3">
       <div class="flex-1 min-w-0">
-        <h4 class="text-xs sm:text-sm font-medium text-zinc-200 dark:text-zinc-200 text-zinc-800 mb-2 flex items-center flex-wrap gap-2">
+        <h4 class="text-xs sm:text-sm font-medium text-zinc-200 dark:text-zinc-200 text-zinc-800 mb-1.5 sm:mb-2 flex items-center flex-wrap gap-1.5 sm:gap-2">
           <span>${it.name}</span>
           ${mockWeakPill(it.id)}
         </h4>
-        <div class="flex items-center flex-wrap gap-2">
+        <div class="flex items-center flex-wrap gap-1.5 sm:gap-2">
           ${diffPill(it.difficulty)}
           ${weightPill(it.weight)}
           ${effortLabel(it.effort)}
         </div>
       </div>
-      <div class="flex items-center gap-3 bg-[#0a1128]/95 border border-blue-900/60 shadow-inner rounded-xl px-3.5 py-2 shrink-0 self-start md:self-center">
-        <div data-tri="${it.id}" data-flag="learned" class="flex items-center gap-2 cursor-pointer select-none group/tb">
-          <span class="tri-box learned ${f.learned?'on':''}">${f.learned?'✓':''}</span>
-          <span class="text-xs font-medium ${f.learned?'text-teal-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Learned</span>
+      <div class="flex items-center justify-between sm:justify-start gap-1 sm:gap-2.5 w-full md:w-auto bg-[#0a1128]/95 border border-blue-900/60 shadow-inner rounded-xl px-2 sm:px-3.5 py-1.5 sm:py-2 shrink-0 self-stretch md:self-center">
+        <div data-tri="${it.id}" data-flag="learned" class="flex items-center gap-1 sm:gap-2 cursor-pointer select-none group/tb py-1 px-0.5 rounded hover:bg-white/5 active:scale-95 transition" title="Mark as Learned">
+          <span class="tri-box learned shrink-0 ${f.learned?'on':''}">${f.learned?'✓':''}</span>
+          <span class="text-[10.5px] sm:text-xs font-medium ${f.learned?'text-teal-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition whitespace-nowrap">Learned</span>
         </div>
-        <span class="text-blue-900/80 select-none">|</span>
-        <div data-tri="${it.id}" data-flag="practiced" class="flex items-center gap-2 cursor-pointer select-none group/tb">
-          <span class="tri-box practiced p ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span>
-          <span class="text-xs font-medium ${f.practiced?'text-violet-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Practiced</span>
+        <span class="text-blue-900/80 select-none text-[10px] sm:text-xs">|</span>
+        <div data-tri="${it.id}" data-flag="practiced" class="flex items-center gap-1 sm:gap-2 cursor-pointer select-none group/tb py-1 px-0.5 rounded hover:bg-white/5 active:scale-95 transition" title="Mark as Practiced">
+          <span class="tri-box practiced p shrink-0 ${f.practiced?'on p':''}">${f.practiced?'✓':''}</span>
+          <span class="text-[10.5px] sm:text-xs font-medium ${f.practiced?'text-violet-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition whitespace-nowrap">Practiced</span>
         </div>
-        <span class="text-blue-900/80 select-none">|</span>
-        <div data-tri="${it.id}" data-flag="mastered" class="flex items-center gap-2 cursor-pointer select-none group/tb">
-          <span class="tri-box mastered m ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span>
-          <span class="text-xs font-medium ${f.mastered?'text-amber-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition">Mastered</span>
+        <span class="text-blue-900/80 select-none text-[10px] sm:text-xs">|</span>
+        <div data-tri="${it.id}" data-flag="mastered" class="flex items-center gap-1 sm:gap-2 cursor-pointer select-none group/tb py-1 px-0.5 rounded hover:bg-white/5 active:scale-95 transition" title="Mark as Mastered">
+          <span class="tri-box mastered m shrink-0 ${f.mastered?'on m':''}">${f.mastered?'✓':''}</span>
+          <span class="text-[10.5px] sm:text-xs font-medium ${f.mastered?'text-amber-400 font-semibold':'text-zinc-400 group-hover/tb:text-zinc-200'} transition whitespace-nowrap">Mastered</span>
         </div>
       </div>
     </div>`;
@@ -859,7 +859,7 @@ try {
         </div>` : ''}
 
         <div data-subj-body="${s.id}" class="collapsible-content ${subjOpen?'open':''}">
-          <div class="collapsible-inner p-4 space-y-5">
+          <div class="collapsible-inner p-2.5 sm:p-4 space-y-3 sm:space-y-5">
             ${s.chapters.map(ch => `
               <div>
                 <p class="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 mb-2">${ch.name}</p>
@@ -870,7 +870,7 @@ try {
                     const gOpen = syllabusState.expandedGroups.has(key);
                     return `
                     <div class="bg-panel2/60 border border-line rounded-xl overflow-hidden">
-                      <button data-toggle-group="${key}" class="w-full flex items-center gap-2.5 px-4 py-3 text-left hover:bg-white/[0.02] transition">
+                      <button data-toggle-group="${key}" class="w-full flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3 text-left hover:bg-white/[0.02] transition">
                         <span class="text-amber-400 text-base">📁</span>
                         ${g.high ? '<span class="text-amber text-xs">⭐</span>' : ''}
                         <span class="text-sm sm:text-base font-semibold text-zinc-100 flex-1">${g.name}</span>

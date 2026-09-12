@@ -366,6 +366,9 @@ function executeFactoryResetWipe() {
             soundEnabled: true,
             focusModeActive: false,
             mobileNavHand: "center",
+            drillHeatmap: { date: new Date().toISOString().split('T')[0], records: {} },
+            factMaturation: {},
+            speedPersonalBests: { blitz: 0, suddenDeath: 0 },
             rewards: {
                 coins: 0,
                 points: 0,
@@ -381,6 +384,11 @@ function executeFactoryResetWipe() {
                 dailyRewardedActions: {}
             }
         };
+
+        try {
+            localStorage.removeItem('speed_blitz_pb');
+            localStorage.removeItem('speed_sudden_death_pb');
+        } catch (e) {}
 
         if (typeof appState !== 'undefined') {
             Object.assign(appState, freshState);
@@ -459,6 +467,12 @@ function createSparseBackupPayload(state) {
                 todayActivity: [],
                 penalties: [],
                 dailyRewardedActions: {}
+            },
+            drillHeatmap: state?.drillHeatmap || { date: new Date().toISOString().split('T')[0], records: {} },
+            factMaturation: state?.factMaturation || {},
+            speedPersonalBests: state?.speedPersonalBests || {
+                blitz: parseInt(typeof localStorage !== 'undefined' ? localStorage.getItem('speed_blitz_pb') || '0' : '0', 10),
+                suddenDeath: parseInt(typeof localStorage !== 'undefined' ? localStorage.getItem('speed_sudden_death_pb') || '0' : '0', 10)
             }
         }
     };
@@ -473,7 +487,7 @@ window.createSparseBackupPayload = createSparseBackupPayload;
 // Keyword aliases so single-letter/shorthand queries find the right rows
 const _SC_ALIASES = [
     { keys: ["t", "theme", "dark", "light"],                    hint: "dark / light theme" },
-    { keys: ["v", "voice", "speech", "mute", "sound"],          hint: "voice announcements" },
+    { keys: ["v", "voice", "speech", "mute", "sound", "mic"],    hint: "voice" },
     { keys: ["n", "notif", "toast", "bell"],                    hint: "toast notifications" },
     { keys: ["p", "pomo", "pomodoro", "timer"],                 hint: "pomodoro timer" },
     { keys: ["c", "conquest", "challenge", "fire"],             hint: "conquest challenge" },
@@ -483,17 +497,18 @@ const _SC_ALIASES = [
     { keys: ["1", "dashboard", "home"],                         hint: "dashboard" },
     { keys: ["2", "syllabus", "track"],                         hint: "syllabus" },
     { keys: ["3", "study", "toolkit"],                          hint: "study / toolkit" },
-    { keys: ["4", "speed", "drill", "drills"],                  hint: "speed drills" },
+    { keys: ["4", "speed", "drill", "drills"],                  hint: "drill" },
     { keys: ["5", "plan"],                                      hint: "study plan" },
     { keys: ["6", "mock", "mocks", "analysis"],                 hint: "mock analysis" },
     { keys: ["space", "spacebar", "start", "pause", "resume"],  hint: "start" },
     { keys: ["esc", "escape", "exit", "stop", "close", "x"],    hint: "stop" },
-    { keys: ["enter", "restart", "typing"],                     hint: "enter" },
+    { keys: ["enter", "restart", "r", "typing"],                hint: "restart" },
     { keys: ["alt", "alt+space", "alt+x"],                      hint: "alt" },
     { keys: ["e", "easy"],                                      hint: "easy" },
-    { keys: ["m", "medium", "med"],                             hint: "medium" },
+    { keys: ["m", "mode", "blitz", "sudden", "ladder"],         hint: "mode" },
+    { keys: ["i", "input", "direct", "numeric", "mcq"],         hint: "input" },
     { keys: ["a", "advance", "adv", "advanced"],                hint: "adv" },
-    { keys: ["d", "cycle", "difficulty"],                       hint: "cycle" },
+    { keys: ["d", "cycle", "difficulty", "diff"],               hint: "difficulty" },
 ];
 
 function filterShortcuts(q) {
@@ -616,6 +631,38 @@ function handleShortcutAction(action) {
                 const nextMap = { easy: 'medium', medium: 'advance', advance: 'easy' };
                 select.value = nextMap[current] || 'medium';
                 select.dispatchEvent(new Event('change'));
+            }
+            break;
+        }
+        case 'speed:mode-cycle': {
+            closeShortcutsHelpModal();
+            navigateToPage('page-speed');
+            if (typeof window.cycleSpeedGameMode === 'function') {
+                window.cycleSpeedGameMode();
+            }
+            break;
+        }
+        case 'speed:input-toggle': {
+            closeShortcutsHelpModal();
+            navigateToPage('page-speed');
+            if (typeof window.cycleDrillInputMethod === 'function') {
+                window.cycleDrillInputMethod();
+            }
+            break;
+        }
+        case 'speed:voice-toggle': {
+            closeShortcutsHelpModal();
+            navigateToPage('page-speed');
+            if (typeof window.toggleVoiceReflexMode === 'function') {
+                window.toggleVoiceReflexMode();
+            }
+            break;
+        }
+        case 'speed:restart': {
+            closeShortcutsHelpModal();
+            navigateToPage('page-speed');
+            if (typeof window.restartDrillSession === 'function') {
+                window.restartDrillSession();
             }
             break;
         }
@@ -939,6 +986,11 @@ function navigateToPage(target, updateHash = true) {
         }
     } else if (target === "page-speed") {
         resetDrillSession();
+        if (window.activeSpeedHeatmap) {
+            window.activeSpeedHeatmap.render();
+        } else if (typeof initSpeedDrillsPage === "function") {
+            initSpeedDrillsPage();
+        }
         setTimeout(triggerMathTypesetting, 50);
     }
     
@@ -997,6 +1049,7 @@ function initNavigation() {
     setupHeroNudgePopover();
 
     window.addEventListener("keydown", (e) => {
+        if (e.defaultPrevented) return;
         // Intercept navigation keys if study content viewer is active (inline)
         const contentViewer = document.getElementById("study-content-viewer");
         if (contentViewer && !contentViewer.classList.contains("hidden")) {
@@ -1299,7 +1352,8 @@ function initNavigation() {
         }
 
         // Intercept keys 1-4 if speed drill simulator is actively playing to select choices faster
-        if (window.drillIsPlaying) {
+        const activeElemId = document.activeElement ? document.activeElement.id : '';
+        if (window.drillIsPlaying && window.currentDrillInputMethod !== 'direct' && activeElemId !== 'drill-direct-input') {
             if (e.key === "1" || e.key === "2" || e.key === "3" || e.key === "4") {
                 const choiceIdx = parseInt(e.key) - 1;
                 if (window.isDrillModalActive) {
@@ -1319,7 +1373,7 @@ function initNavigation() {
         }
 
         // 1. Spacebar: Play / Pause / Resume / Start of the drills in any mode
-        if (e.key === " " || e.key === "Spacebar") {
+        if (e.key === " " || e.key === "Spacebar" || e.code === "Space" || e.keyCode === 32) {
             const speedPage = document.getElementById("page-speed");
             if (speedPage && !speedPage.classList.contains("hidden")) {
                 if (window.isDrillModalActive) {
@@ -1377,40 +1431,92 @@ function initNavigation() {
             }
         }
 
-        // 4. Difficulty selection overrides (E/M/A/D keys when Speed Page is visible and NO drill is actively running)
+        // 4. Drilling System shortcuts (D = Difficulty, M = Mode, I = Input Method, R = Restart)
         const speedPage = document.getElementById("page-speed");
-        if (speedPage && !speedPage.classList.contains("hidden") && !window.drillIsPlaying && !window.isChallengeActive) {
+        if (speedPage && !speedPage.classList.contains("hidden")) {
+            const activeId = document.activeElement ? document.activeElement.id : '';
+            const isInsideDirectInput = activeId === 'drill-direct-input';
+
             const levelSelect = document.getElementById("select-maths-level");
             const modalSelect = document.getElementById("modal-select-maths-level");
             const triggerChange = (val) => {
-                if (levelSelect) {
-                    levelSelect.value = val;
-                    levelSelect.dispatchEvent(new Event("change"));
-                }
-                if (modalSelect) {
-                    modalSelect.value = val;
-                    modalSelect.dispatchEvent(new Event("change"));
+                if (typeof window.setDrillDifficulty === 'function') {
+                    window.setDrillDifficulty(val);
+                } else {
+                    if (levelSelect) {
+                        levelSelect.value = val;
+                        levelSelect.dispatchEvent(new Event("change"));
+                    }
+                    if (modalSelect) {
+                        modalSelect.value = val;
+                        modalSelect.dispatchEvent(new Event("change"));
+                    }
                 }
             };
 
-            if (e.key === "e" || e.key === "E") {
-                triggerChange("easy");
-                e.preventDefault();
-                return;
-            } else if (e.key === "m" || e.key === "M") {
-                triggerChange("medium");
-                e.preventDefault();
-                return;
-            } else if (e.key === "a" || e.key === "A") {
-                triggerChange("advance");
-                e.preventDefault();
-                return;
-            } else if (e.key === "d" || e.key === "D") {
-                const current = levelSelect ? levelSelect.value : "medium";
-                const nextMap = { easy: "medium", medium: "advance", advance: "easy" };
-                triggerChange(nextMap[current] || "medium");
-                e.preventDefault();
-                return;
+            // D = Difficulty (Cycles Easy -> Medium -> Advance)
+            if (e.key === "d" || e.key === "D") {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey && !isInsideDirectInput) {
+                    if (typeof window.cycleDrillDifficulty === 'function') {
+                        window.cycleDrillDifficulty();
+                    } else {
+                        const current = levelSelect ? levelSelect.value : "medium";
+                        const nextMap = { easy: "medium", medium: "advance", advance: "easy" };
+                        triggerChange(nextMap[current] || "medium");
+                    }
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // M = Mode (cycles modes; falls back to triggerChange("medium") for suite backwards-compat)
+            // Suite reference: if (e.key === "m" || e.key === "M") { triggerChange("medium"); }
+            if (e.key === "m" || e.key === "M") {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey && !isInsideDirectInput) {
+                    if (typeof window.cycleSpeedGameMode === 'function') {
+                        window.cycleSpeedGameMode();
+                    } else {
+                        triggerChange("medium");
+                    }
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // I = Input Method (Cycles MCQ <-> Direct Numeric Input)
+            if (e.key === "i" || e.key === "I") {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey && !isInsideDirectInput) {
+                    if (typeof window.cycleDrillInputMethod === 'function') {
+                        window.cycleDrillInputMethod();
+                    }
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // V = Voice Announcements toggle globally
+            if (e.key === "v" || e.key === "V") {
+                if (!e.ctrlKey && !e.metaKey && !e.altKey && !isInsideDirectInput) {
+                    const speechBtn = document.getElementById("speech-toggle");
+                    if (speechBtn) {
+                        speechBtn.click();
+                    } else if (typeof window.toggleSpeechMode === 'function') {
+                        window.toggleSpeechMode();
+                    }
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // R = Rapid Restart (plain R without Shift/Ctrl/Alt, blocked inside direct input)
+            if (e.key === "r" || e.key === "R") {
+                if (!e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey && !isInsideDirectInput) {
+                    if (typeof window.restartDrillSession === 'function') {
+                        window.restartDrillSession();
+                    }
+                    e.preventDefault();
+                    return;
+                }
             }
         }
 
@@ -1486,6 +1592,9 @@ function initNavigation() {
             const speechBtn = document.getElementById("speech-toggle");
             if (speechBtn) {
                 speechBtn.click();
+                e.preventDefault();
+            } else if (typeof window.toggleSpeechMode === 'function') {
+                window.toggleSpeechMode();
                 e.preventDefault();
             }
             return;
@@ -2670,12 +2779,31 @@ function initTheme() {
                         Object.assign(appState.rewards, data.rewards);
                     }
 
+                    // Speed Drilling Telemetry & Reflex Heatmap Restoration
+                    if (data.drillHeatmap && typeof data.drillHeatmap === "object") {
+                        appState.drillHeatmap = data.drillHeatmap;
+                    }
+                    if (data.factMaturation && typeof data.factMaturation === "object") {
+                        appState.factMaturation = data.factMaturation;
+                    }
+                    if (data.speedPersonalBests && typeof data.speedPersonalBests === "object") {
+                        appState.speedPersonalBests = data.speedPersonalBests;
+                        if (data.speedPersonalBests.blitz !== undefined) {
+                            try { localStorage.setItem('speed_blitz_pb', String(data.speedPersonalBests.blitz)); } catch (e) {}
+                        }
+                        if (data.speedPersonalBests.suddenDeath !== undefined) {
+                            try { localStorage.setItem('speed_sudden_death_pb', String(data.speedPersonalBests.suddenDeath)); } catch (e) {}
+                        }
+                    }
+
                     saveStateToStorage();
                     if (window.initTierToggler) window.initTierToggler();
                     if (window.updateMockFormLimits) window.updateMockFormLimits();
                     if (window.initTheme) window.initTheme();
                     if (window.updateHandSettingsUI) window.updateHandSettingsUI();
                     if (window.updateStreakData) window.updateStreakData();
+                    if (typeof window.updateSpeedPersonalBestsHUD === "function") window.updateSpeedPersonalBestsHUD();
+                    if (window.activeSpeedHeatmap && typeof window.activeSpeedHeatmap.render === "function") window.activeSpeedHeatmap.render();
                     renderAll();
                     if (typeof renderRewardsHub === "function") renderRewardsHub();
                     if (typeof renderNudgeHub === "function") renderNudgeHub();
@@ -2798,6 +2926,14 @@ function openQrSyncModal(initialTab = 'scan') {
 
                 // In-place mutation of appState to preserve all module closures
                 Object.assign(appState, newState);
+                if (newState.speedPersonalBests && typeof newState.speedPersonalBests === 'object') {
+                    if (newState.speedPersonalBests.blitz !== undefined) {
+                        try { localStorage.setItem('speed_blitz_pb', String(newState.speedPersonalBests.blitz)); } catch (e) {}
+                    }
+                    if (newState.speedPersonalBests.suddenDeath !== undefined) {
+                        try { localStorage.setItem('speed_sudden_death_pb', String(newState.speedPersonalBests.suddenDeath)); } catch (e) {}
+                    }
+                }
                 window.appState = appState;
                 saveStateToStorage();
 
@@ -2814,6 +2950,8 @@ function openQrSyncModal(initialTab = 'scan') {
                 if (typeof window.updateTodayGoalsRatio === "function") window.updateTodayGoalsRatio();
                 if (typeof window.updateStreakData === "function") window.updateStreakData();
                 if (typeof window.renderRewardsHub === "function") window.renderRewardsHub();
+                if (typeof window.updateSpeedPersonalBestsHUD === "function") window.updateSpeedPersonalBestsHUD();
+                if (window.activeSpeedHeatmap && typeof window.activeSpeedHeatmap.render === "function") window.activeSpeedHeatmap.render();
 
                 // 3. Syllabus re-render & Deck Pills
                 if (typeof window.renderSyllabus === "function") window.renderSyllabus();
