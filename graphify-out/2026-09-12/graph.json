@@ -134,6 +134,32 @@
       "source_location": "L134"
     },
     {
+      "id": "js_speed_microfrequencyheatmap",
+      "label": "MicroFrequencyHeatmap",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": "microfrequencyheatmap",
+      "source_file": "js/speed.js",
+      "source_location": "L96"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine",
+      "label": "DrillIntelligenceEngine",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": "drillintelligenceengine",
+      "source_file": "js/speed.js",
+      "source_location": "L2326"
+    },
+    {
       "id": "js_components_tooltip_customtooltip",
       "label": "CustomTooltip",
       "_callable": true,
@@ -184,32 +210,6 @@
       "norm_label": "rewardssystem",
       "source_file": "components/rewards-system.js",
       "source_location": "L664"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine",
-      "label": "DrillIntelligenceEngine",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "drillintelligenceengine",
-      "source_file": "js/speed.js",
-      "source_location": "L1338"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap",
-      "label": "MicroFrequencyHeatmap",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "microfrequencyheatmap",
-      "source_file": "js/speed.js",
-      "source_location": "L96"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal",
@@ -2579,6 +2579,858 @@
       "source_location": "L97"
     },
     {
+      "id": "js_speed_generatequestiontextandanswer",
+      "label": "generateQuestionTextAndAnswer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": "generatequestiontextandanswer()",
+      "source_file": "js/speed.js",
+      "source_location": "L2844"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "js/speed.js",
+      "source_location": "L97"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_getdailystore",
+      "label": ".getDailyStore()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".getdailystore()",
+      "source_file": "js/speed.js",
+      "source_location": "L430"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_getdomainspec",
+      "label": ".getDomainSpec()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".getdomainspec()",
+      "source_file": "js/speed.js",
+      "source_location": "L109"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_getfactmaturation",
+      "label": ".getFactMaturation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".getfactmaturation()",
+      "source_file": "js/speed.js",
+      "source_location": "L386"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_gethesitantkeys",
+      "label": ".getHesitantKeys()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".gethesitantkeys()",
+      "source_file": "js/speed.js",
+      "source_location": "L366"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_getstats",
+      "label": ".getStats()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".getstats()",
+      "source_file": "js/speed.js",
+      "source_location": "L490"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_getweakkeys",
+      "label": ".getWeakKeys()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".getweakkeys()",
+      "source_file": "js/speed.js",
+      "source_location": "L349"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_recordattempt",
+      "label": ".recordAttempt()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".recordattempt()",
+      "source_file": "js/speed.js",
+      "source_location": "L443"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_render",
+      "label": ".render()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".render()",
+      "source_file": "js/speed.js",
+      "source_location": "L546"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_setcategory",
+      "label": ".setCategory()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".setcategory()",
+      "source_file": "js/speed.js",
+      "source_location": "L539"
+    },
+    {
+      "id": "js_speed_microfrequencyheatmap_updatefactmaturation",
+      "label": ".updateFactMaturation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": ".updatefactmaturation()",
+      "source_file": "js/speed.js",
+      "source_location": "L394"
+    },
+    {
+      "id": "js_speed_resolvecheattelemetryandtarget",
+      "label": "resolveCheatTelemetryAndTarget()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": "resolvecheattelemetryandtarget()",
+      "source_file": "js/speed.js",
+      "source_location": "L1782"
+    },
+    {
+      "id": "js_speed_selectadaptivevalue",
+      "label": "selectAdaptiveValue()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": "selectadaptivevalue()",
+      "source_file": "js/speed.js",
+      "source_location": "L2790"
+    },
+    {
+      "id": "js_speed_updatereflextelemetryhud",
+      "label": "updateReflexTelemetryHUD()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 127,
+      "community_name": "MicroFrequencyHeatmap",
+      "file_type": "code",
+      "norm_label": "updatereflextelemetryhud()",
+      "source_file": "js/speed.js",
+      "source_location": "L3902"
+    },
+    {
+      "id": "js_speed_clearidletimer",
+      "label": "clearIdleTimer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "clearidletimer()",
+      "source_file": "js/speed.js",
+      "source_location": "L87"
+    },
+    {
+      "id": "js_speed_endchallengerun",
+      "label": "endChallengeRun()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "endchallengerun()",
+      "source_file": "js/speed.js",
+      "source_location": "L4274"
+    },
+    {
+      "id": "js_speed_initspeeddrillspage",
+      "label": "initSpeedDrillsPage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "initspeeddrillspage()",
+      "source_file": "js/speed.js",
+      "source_location": "L4441"
+    },
+    {
+      "id": "js_speed_initspeeddrillspage_closemodedropdown",
+      "label": "closeModeDropdown()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "closemodedropdown()",
+      "source_file": "js/speed.js",
+      "source_location": "L4636"
+    },
+    {
+      "id": "js_speed_initspeeddrillspage_openmodedropdown",
+      "label": "openModeDropdown()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "openmodedropdown()",
+      "source_file": "js/speed.js",
+      "source_location": "L4624"
+    },
+    {
+      "id": "js_speed_initspeedkeyboardshortcuts",
+      "label": "initSpeedKeyboardShortcuts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "initspeedkeyboardshortcuts()",
+      "source_file": "js/speed.js",
+      "source_location": "L5449"
+    },
+    {
+      "id": "js_speed_initvoicereflexengine",
+      "label": "initVoiceReflexEngine()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "initvoicereflexengine()",
+      "source_file": "js/speed.js",
+      "source_location": "L994"
+    },
+    {
+      "id": "js_speed_renderpostsessionmistakereview",
+      "label": "renderPostSessionMistakeReview()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "renderpostsessionmistakereview()",
+      "source_file": "js/speed.js",
+      "source_location": "L3841"
+    },
+    {
+      "id": "js_speed_resetdrillsession",
+      "label": "resetDrillSession()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "resetdrillsession()",
+      "source_file": "js/speed.js",
+      "source_location": "L3981"
+    },
+    {
+      "id": "js_speed_setspeedgamemode",
+      "label": "setSpeedGameMode()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "setspeedgamemode()",
+      "source_file": "js/speed.js",
+      "source_location": "L2377"
+    },
+    {
+      "id": "js_speed_startidletimer",
+      "label": "startIdleTimer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "startidletimer()",
+      "source_file": "js/speed.js",
+      "source_location": "L72"
+    },
+    {
+      "id": "js_speed_togglevoicereflexmode",
+      "label": "toggleVoiceReflexMode()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "togglevoicereflexmode()",
+      "source_file": "js/speed.js",
+      "source_location": "L2317"
+    },
+    {
+      "id": "js_speed_updatedrillidledisplay",
+      "label": "updateDrillIdleDisplay()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "updatedrillidledisplay()",
+      "source_file": "js/speed.js",
+      "source_location": "L3964"
+    },
+    {
+      "id": "js_speed_updatemodebadgeui",
+      "label": "updateModeBadgeUI()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "updatemodebadgeui()",
+      "source_file": "js/speed.js",
+      "source_location": "L2459"
+    },
+    {
+      "id": "js_speed_updatevoicestatusui",
+      "label": "updateVoiceStatusUI()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 128,
+      "community_name": "initSpeedDrillsPage",
+      "file_type": "code",
+      "norm_label": "updatevoicestatusui()",
+      "source_file": "js/speed.js",
+      "source_location": "L2321"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "js/speed.js",
+      "source_location": "L2327"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_explainmistake",
+      "label": ".explainMistake()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".explainmistake()",
+      "source_file": "js/speed.js",
+      "source_location": "L2344"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_isaienabled",
+      "label": ".isAiEnabled()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".isaienabled()",
+      "source_file": "js/speed.js",
+      "source_location": "L2353"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_normalizevoiceinput",
+      "label": ".normalizeVoiceInput()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".normalizevoiceinput()",
+      "source_file": "js/speed.js",
+      "source_location": "L2336"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_parsespokennumbertodigits",
+      "label": ".parseSpokenNumberToDigits()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".parsespokennumbertodigits()",
+      "source_file": "js/speed.js",
+      "source_location": "L2340"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_selectweightedcandidate",
+      "label": ".selectWeightedCandidate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".selectweightedcandidate()",
+      "source_file": "js/speed.js",
+      "source_location": "L2332"
+    },
+    {
+      "id": "js_speed_drillintelligenceengine_setaiapikey",
+      "label": ".setAiApiKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": ".setaiapikey()",
+      "source_file": "js/speed.js",
+      "source_location": "L2348"
+    },
+    {
+      "id": "js_speed_getmicrotrickforquestion",
+      "label": "getMicroTrickForQuestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": "getmicrotrickforquestion()",
+      "source_file": "js/speed.js",
+      "source_location": "L3755"
+    },
+    {
+      "id": "js_speed_normalizevoicenumber",
+      "label": "normalizeVoiceNumber()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": "normalizevoicenumber()",
+      "source_file": "js/speed.js",
+      "source_location": "L793"
+    },
+    {
+      "id": "js_speed_parsespokennumbertodigits",
+      "label": "parseSpokenNumberToDigits()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": "parsespokennumbertodigits()",
+      "source_file": "js/speed.js",
+      "source_location": "L698"
+    },
+    {
+      "id": "js_speed_updatecontextualmicrotrick",
+      "label": "updateContextualMicroTrick()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 129,
+      "community_name": "DrillIntelligenceEngine",
+      "file_type": "code",
+      "norm_label": "updatecontextualmicrotrick()",
+      "source_file": "js/speed.js",
+      "source_location": "L3821"
+    },
+    {
+      "id": "js_speed_cycledrilldifficulty",
+      "label": "cycleDrillDifficulty()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "cycledrilldifficulty()",
+      "source_file": "js/speed.js",
+      "source_location": "L5058"
+    },
+    {
+      "id": "js_speed_cycledrillinputmethod",
+      "label": "cycleDrillInputMethod()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "cycledrillinputmethod()",
+      "source_file": "js/speed.js",
+      "source_location": "L5144"
+    },
+    {
+      "id": "js_speed_cyclespeedgamemode",
+      "label": "cycleSpeedGameMode()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "cyclespeedgamemode()",
+      "source_file": "js/speed.js",
+      "source_location": "L5324"
+    },
+    {
+      "id": "js_speed_restartdrillsession",
+      "label": "restartDrillSession()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "restartdrillsession()",
+      "source_file": "js/speed.js",
+      "source_location": "L5351"
+    },
+    {
+      "id": "js_speed_setdrilldifficulty",
+      "label": "setDrillDifficulty()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "setdrilldifficulty()",
+      "source_file": "js/speed.js",
+      "source_location": "L5028"
+    },
+    {
+      "id": "js_speed_setinputmethod",
+      "label": "setInputMethod()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "setinputmethod()",
+      "source_file": "js/speed.js",
+      "source_location": "L5087"
+    },
+    {
+      "id": "js_speed_showdrillhudfeedback",
+      "label": "showDrillHudFeedback()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "showdrillhudfeedback()",
+      "source_file": "js/speed.js",
+      "source_location": "L5397"
+    },
+    {
+      "id": "js_speed_togglehesitantfacttargeting",
+      "label": "toggleHesitantFactTargeting()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "togglehesitantfacttargeting()",
+      "source_file": "js/speed.js",
+      "source_location": "L5429"
+    },
+    {
+      "id": "js_speed_wiredifficultypills",
+      "label": "wireDifficultyPills()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "wiredifficultypills()",
+      "source_file": "js/speed.js",
+      "source_location": "L5069"
+    },
+    {
+      "id": "js_speed_wiredirectnumericinput",
+      "label": "wireDirectNumericInput()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "wiredirectnumericinput()",
+      "source_file": "js/speed.js",
+      "source_location": "L5180"
+    },
+    {
+      "id": "js_speed_wireinputmethodtoggle",
+      "label": "wireInputMethodToggle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 130,
+      "community_name": "showDrillHudFeedback",
+      "file_type": "code",
+      "norm_label": "wireinputmethodtoggle()",
+      "source_file": "js/speed.js",
+      "source_location": "L5152"
+    },
+    {
+      "id": "js_speed_checkdrillanswer",
+      "label": "checkDrillAnswer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "checkdrillanswer()",
+      "source_file": "js/speed.js",
+      "source_location": "L3447"
+    },
+    {
+      "id": "js_speed_finishblitzsession",
+      "label": "finishBlitzSession()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "finishblitzsession()",
+      "source_file": "js/speed.js",
+      "source_location": "L2515"
+    },
+    {
+      "id": "js_speed_finishsuddendeathsession",
+      "label": "finishSuddenDeathSession()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "finishsuddendeathsession()",
+      "source_file": "js/speed.js",
+      "source_location": "L2604"
+    },
+    {
+      "id": "js_speed_generatedrillquestion",
+      "label": "generateDrillQuestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "generatedrillquestion()",
+      "source_file": "js/speed.js",
+      "source_location": "L3192"
+    },
+    {
+      "id": "js_speed_listenforvoiceanswer",
+      "label": "listenForVoiceAnswer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "listenforvoiceanswer()",
+      "source_file": "js/speed.js",
+      "source_location": "L2319"
+    },
+    {
+      "id": "js_speed_startblitzcountdown",
+      "label": "startBlitzCountdown()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "startblitzcountdown()",
+      "source_file": "js/speed.js",
+      "source_location": "L2499"
+    },
+    {
+      "id": "js_speed_updatespeedpersonalbestshud",
+      "label": "updateSpeedPersonalBestsHUD()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "updatespeedpersonalbestshud()",
+      "source_file": "js/speed.js",
+      "source_location": "L2682"
+    },
+    {
+      "id": "js_speed_updatestreakaura",
+      "label": "updateStreakAura()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 131,
+      "community_name": "generateDrillQuestion",
+      "file_type": "code",
+      "norm_label": "updatestreakaura()",
+      "source_file": "js/speed.js",
+      "source_location": "L5373"
+    },
+    {
+      "id": "js_speed_generatechallengequestion",
+      "label": "generateChallengeQuestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 132,
+      "community_name": "generateChallengeQuestion",
+      "file_type": "code",
+      "norm_label": "generatechallengequestion()",
+      "source_file": "js/speed.js",
+      "source_location": "L4193"
+    },
+    {
+      "id": "js_speed_generatemathoptions",
+      "label": "generateMathOptions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 132,
+      "community_name": "generateChallengeQuestion",
+      "file_type": "code",
+      "norm_label": "generatemathoptions()",
+      "source_file": "js/speed.js",
+      "source_location": "L2706"
+    },
+    {
+      "id": "js_speed_generateproceduralmathquestion",
+      "label": "generateProceduralMathQuestion()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 132,
+      "community_name": "generateChallengeQuestion",
+      "file_type": "code",
+      "norm_label": "generateproceduralmathquestion()",
+      "source_file": "js/speed.js",
+      "source_location": "L4185"
+    },
+    {
+      "id": "js_speed_startchallengerun",
+      "label": "startChallengeRun()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 132,
+      "community_name": "generateChallengeQuestion",
+      "file_type": "code",
+      "norm_label": "startchallengerun()",
+      "source_file": "js/speed.js",
+      "source_location": "L4060"
+    },
+    {
+      "id": "js_speed_submitchallengeanswer",
+      "label": "submitChallengeAnswer()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 132,
+      "community_name": "generateChallengeQuestion",
+      "file_type": "code",
+      "norm_label": "submitchallengeanswer()",
+      "source_file": "js/speed.js",
+      "source_location": "L4236"
+    },
+    {
+      "id": "js_speed_updatechallengeui",
+      "label": "updateChallengeUI()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 132,
+      "community_name": "generateChallengeQuestion",
+      "file_type": "code",
+      "norm_label": "updatechallengeui()",
+      "source_file": "js/speed.js",
+      "source_location": "L4147"
+    },
+    {
+      "id": "js_speed_initcustomtooltips",
+      "label": "initCustomTooltips()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 133,
+      "community_name": "initCustomTooltips",
+      "file_type": "code",
+      "norm_label": "initcustomtooltips()",
+      "source_file": "js/speed.js",
+      "source_location": "L4801"
+    },
+    {
+      "id": "js_speed_initcustomtooltips_handletitleattributes",
+      "label": "handleTitleAttributes()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 133,
+      "community_name": "initCustomTooltips",
+      "file_type": "code",
+      "norm_label": "handletitleattributes()",
+      "source_file": "js/speed.js",
+      "source_location": "L4879"
+    },
+    {
+      "id": "js_speed_initcustomtooltips_hidetooltip",
+      "label": "hideTooltip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 133,
+      "community_name": "initCustomTooltips",
+      "file_type": "code",
+      "norm_label": "hidetooltip()",
+      "source_file": "js/speed.js",
+      "source_location": "L4810"
+    },
+    {
+      "id": "js_speed_initcustomtooltips_showtooltip",
+      "label": "showTooltip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 133,
+      "community_name": "initCustomTooltips",
+      "file_type": "code",
+      "norm_label": "showtooltip()",
+      "source_file": "js/speed.js",
+      "source_location": "L4827"
+    },
+    {
+      "id": "js_speed_initcustomtooltips_updateactivecustomtooltip",
+      "label": "updateActiveCustomTooltip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 133,
+      "community_name": "initCustomTooltips",
+      "file_type": "code",
+      "norm_label": "updateactivecustomtooltip()",
+      "source_file": "js/speed.js",
+      "source_location": "L4819"
+    },
+    {
       "id": "js_components_tooltip_customtooltip_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -3320,7 +4172,7 @@
       "file_type": "code",
       "norm_label": "animate()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1250"
+      "source_location": "L1251"
     },
     {
       "id": "js_dashboard_calculateoverallstats",
@@ -3344,7 +4196,7 @@
       "file_type": "code",
       "norm_label": "closeexamtargetmodal()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1170"
+      "source_location": "L1171"
     },
     {
       "id": "js_dashboard_formattimeseconds",
@@ -3356,7 +4208,7 @@
       "file_type": "code",
       "norm_label": "formattimeseconds()",
       "source_file": "js/dashboard.js",
-      "source_location": "L991"
+      "source_location": "L992"
     },
     {
       "id": "js_dashboard_getsrsduetopics",
@@ -3368,7 +4220,7 @@
       "file_type": "code",
       "norm_label": "getsrsduetopics()",
       "source_file": "js/dashboard.js",
-      "source_location": "L310"
+      "source_location": "L311"
     },
     {
       "id": "js_dashboard_initexamtargeteditor",
@@ -3404,7 +4256,7 @@
       "file_type": "code",
       "norm_label": "initpomotimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L998"
+      "source_location": "L999"
     },
     {
       "id": "js_dashboard_initpomotimer_hidepomopopover",
@@ -3416,7 +4268,7 @@
       "file_type": "code",
       "norm_label": "hidepomopopover()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1051"
+      "source_location": "L1052"
     },
     {
       "id": "js_dashboard_initpomotimer_showpomopopover",
@@ -3428,7 +4280,7 @@
       "file_type": "code",
       "norm_label": "showpomopopover()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1042"
+      "source_location": "L1043"
     },
     {
       "id": "js_dashboard_initpomotimer_togglepomopopover",
@@ -3440,7 +4292,7 @@
       "file_type": "code",
       "norm_label": "togglepomopopover()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1057"
+      "source_location": "L1058"
     },
     {
       "id": "js_dashboard_initsessiontimer",
@@ -3452,7 +4304,7 @@
       "file_type": "code",
       "norm_label": "initsessiontimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L978"
+      "source_location": "L979"
     },
     {
       "id": "js_dashboard_inittiertoggler",
@@ -3500,7 +4352,7 @@
       "file_type": "code",
       "norm_label": "loadrituals()",
       "source_file": "js/dashboard.js",
-      "source_location": "L532"
+      "source_location": "L533"
     },
     {
       "id": "js_dashboard_openexamtargetmodal",
@@ -3512,7 +4364,7 @@
       "file_type": "code",
       "norm_label": "openexamtargetmodal()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1136"
+      "source_location": "L1137"
     },
     {
       "id": "js_dashboard_pausemastertimer",
@@ -3524,7 +4376,7 @@
       "file_type": "code",
       "norm_label": "pausemastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L956"
+      "source_location": "L957"
     },
     {
       "id": "js_dashboard_renderall",
@@ -3560,7 +4412,7 @@
       "file_type": "code",
       "norm_label": "rendersrsbanner()",
       "source_file": "js/dashboard.js",
-      "source_location": "L330"
+      "source_location": "L331"
     },
     {
       "id": "js_dashboard_rendersubjectprogressbars",
@@ -3572,7 +4424,7 @@
       "file_type": "code",
       "norm_label": "rendersubjectprogressbars()",
       "source_file": "js/dashboard.js",
-      "source_location": "L616"
+      "source_location": "L617"
     },
     {
       "id": "js_dashboard_rendertodaymissions",
@@ -3584,7 +4436,7 @@
       "file_type": "code",
       "norm_label": "rendertodaymissions()",
       "source_file": "js/dashboard.js",
-      "source_location": "L371"
+      "source_location": "L372"
     },
     {
       "id": "js_dashboard_resetmastertimer",
@@ -3596,7 +4448,7 @@
       "file_type": "code",
       "norm_label": "resetmastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L965"
+      "source_location": "L966"
     },
     {
       "id": "js_dashboard_startexamcountdown",
@@ -3608,7 +4460,7 @@
       "file_type": "code",
       "norm_label": "startexamcountdown()",
       "source_file": "js/dashboard.js",
-      "source_location": "L712"
+      "source_location": "L713"
     },
     {
       "id": "js_dashboard_startmastertimer",
@@ -3620,7 +4472,7 @@
       "file_type": "code",
       "norm_label": "startmastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L862"
+      "source_location": "L863"
     },
     {
       "id": "js_dashboard_syncritualvisual",
@@ -3632,7 +4484,7 @@
       "file_type": "code",
       "norm_label": "syncritualvisual()",
       "source_file": "js/dashboard.js",
-      "source_location": "L589"
+      "source_location": "L590"
     },
     {
       "id": "js_dashboard_togglemastertimer",
@@ -3644,7 +4496,7 @@
       "file_type": "code",
       "norm_label": "togglemastertimer()",
       "source_file": "js/dashboard.js",
-      "source_location": "L854"
+      "source_location": "L855"
     },
     {
       "id": "js_dashboard_updatecountdown",
@@ -3656,7 +4508,7 @@
       "file_type": "code",
       "norm_label": "updatecountdown()",
       "source_file": "js/dashboard.js",
-      "source_location": "L667"
+      "source_location": "L668"
     },
     {
       "id": "js_dashboard_updatemastertimerui",
@@ -3668,7 +4520,7 @@
       "file_type": "code",
       "norm_label": "updatemastertimerui()",
       "source_file": "js/dashboard.js",
-      "source_location": "L724"
+      "source_location": "L725"
     },
     {
       "id": "js_dashboard_updateritualprogress",
@@ -3680,7 +4532,7 @@
       "file_type": "code",
       "norm_label": "updateritualprogress()",
       "source_file": "js/dashboard.js",
-      "source_location": "L610"
+      "source_location": "L611"
     },
     {
       "id": "js_dashboard_updatestreakdata",
@@ -3692,7 +4544,7 @@
       "file_type": "code",
       "norm_label": "updatestreakdata()",
       "source_file": "js/dashboard.js",
-      "source_location": "L1108"
+      "source_location": "L1109"
     },
     {
       "id": "js_dashboard_updatetodaygoalsratio",
@@ -3704,7 +4556,7 @@
       "file_type": "code",
       "norm_label": "updatetodaygoalsratio()",
       "source_file": "js/dashboard.js",
-      "source_location": "L346"
+      "source_location": "L347"
     },
     {
       "id": "js_navigation_claimmissionreward",
@@ -3716,7 +4568,7 @@
       "file_type": "code",
       "norm_label": "claimmissionreward()",
       "source_file": "js/navigation.js",
-      "source_location": "L2315"
+      "source_location": "L2312"
     },
     {
       "id": "js_navigation_claimtrophyreward",
@@ -3728,7 +4580,7 @@
       "file_type": "code",
       "norm_label": "claimtrophyreward()",
       "source_file": "js/navigation.js",
-      "source_location": "L2308"
+      "source_location": "L2305"
     },
     {
       "id": "js_navigation_closeshortcutshelpmodal",
@@ -3812,7 +4664,7 @@
       "file_type": "code",
       "norm_label": "filterrewardstrophies()",
       "source_file": "js/navigation.js",
-      "source_location": "L1950"
+      "source_location": "L1947"
     },
     {
       "id": "js_navigation_filtershortcuts",
@@ -3884,7 +4736,7 @@
       "file_type": "code",
       "norm_label": "inittheme()",
       "source_file": "js/navigation.js",
-      "source_location": "L2492"
+      "source_location": "L2489"
     },
     {
       "id": "js_navigation_inittheme_schedulehidesyncisland",
@@ -3896,7 +4748,7 @@
       "file_type": "code",
       "norm_label": "schedulehidesyncisland()",
       "source_file": "js/navigation.js",
-      "source_location": "L2523"
+      "source_location": "L2520"
     },
     {
       "id": "js_navigation_inittheme_showsyncisland",
@@ -3908,7 +4760,7 @@
       "file_type": "code",
       "norm_label": "showsyncisland()",
       "source_file": "js/navigation.js",
-      "source_location": "L2515"
+      "source_location": "L2512"
     },
     {
       "id": "js_navigation_inituniversalmodaldismissal",
@@ -3920,7 +4772,7 @@
       "file_type": "code",
       "norm_label": "inituniversalmodaldismissal()",
       "source_file": "js/navigation.js",
-      "source_location": "L3004"
+      "source_location": "L3001"
     },
     {
       "id": "js_navigation_navigatetopage",
@@ -3956,7 +4808,7 @@
       "file_type": "code",
       "norm_label": "openqrsyncmodal()",
       "source_file": "js/navigation.js",
-      "source_location": "L2900"
+      "source_location": "L2897"
     },
     {
       "id": "js_navigation_openshortcutshelpmodal",
@@ -3992,7 +4844,7 @@
       "file_type": "code",
       "norm_label": "purchasecosmicreward()",
       "source_file": "js/navigation.js",
-      "source_location": "L2322"
+      "source_location": "L2319"
     },
     {
       "id": "js_navigation_purchasepowerreward",
@@ -4004,7 +4856,7 @@
       "file_type": "code",
       "norm_label": "purchasepowerreward()",
       "source_file": "js/navigation.js",
-      "source_location": "L2329"
+      "source_location": "L2326"
     },
     {
       "id": "js_navigation_rendernudgehub",
@@ -4016,7 +4868,7 @@
       "file_type": "code",
       "norm_label": "rendernudgehub()",
       "source_file": "js/navigation.js",
-      "source_location": "L2343"
+      "source_location": "L2340"
     },
     {
       "id": "js_navigation_renderrewardshub",
@@ -4028,7 +4880,7 @@
       "file_type": "code",
       "norm_label": "renderrewardshub()",
       "source_file": "js/navigation.js",
-      "source_location": "L1964"
+      "source_location": "L1961"
     },
     {
       "id": "js_navigation_restoreelevatedelements",
@@ -4076,7 +4928,7 @@
       "file_type": "code",
       "norm_label": "setupheronudgepopover()",
       "source_file": "js/navigation.js",
-      "source_location": "L2448"
+      "source_location": "L2445"
     },
     {
       "id": "js_navigation_shrinknav",
@@ -4100,7 +4952,7 @@
       "file_type": "code",
       "norm_label": "switchactioncenterhub()",
       "source_file": "js/navigation.js",
-      "source_location": "L1879"
+      "source_location": "L1876"
     },
     {
       "id": "js_navigation_testsoundpreview",
@@ -4124,7 +4976,7 @@
       "file_type": "code",
       "norm_label": "togglefocusmode()",
       "source_file": "js/navigation.js",
-      "source_location": "L1822"
+      "source_location": "L1819"
     },
     {
       "id": "js_navigation_togglerewardscollapsible",
@@ -4136,7 +4988,7 @@
       "file_type": "code",
       "norm_label": "togglerewardscollapsible()",
       "source_file": "js/navigation.js",
-      "source_location": "L1922"
+      "source_location": "L1919"
     },
     {
       "id": "js_navigation_toggleshortcutshelpmodal",
@@ -4160,7 +5012,7 @@
       "file_type": "code",
       "norm_label": "togglesoundmode()",
       "source_file": "js/navigation.js",
-      "source_location": "L1778"
+      "source_location": "L1775"
     },
     {
       "id": "js_navigation_togglespeechmode",
@@ -4172,7 +5024,7 @@
       "file_type": "code",
       "norm_label": "togglespeechmode()",
       "source_file": "js/navigation.js",
-      "source_location": "L1751"
+      "source_location": "L1748"
     },
     {
       "id": "js_navigation_togglestickerequip",
@@ -4184,7 +5036,7 @@
       "file_type": "code",
       "norm_label": "togglestickerequip()",
       "source_file": "js/navigation.js",
-      "source_location": "L2336"
+      "source_location": "L2333"
     },
     {
       "id": "js_navigation_togglethememode",
@@ -4196,7 +5048,7 @@
       "file_type": "code",
       "norm_label": "togglethememode()",
       "source_file": "js/navigation.js",
-      "source_location": "L1720"
+      "source_location": "L1717"
     },
     {
       "id": "js_navigation_toggletoastmode",
@@ -4208,7 +5060,7 @@
       "file_type": "code",
       "norm_label": "toggletoastmode()",
       "source_file": "js/navigation.js",
-      "source_location": "L1766"
+      "source_location": "L1763"
     },
     {
       "id": "js_navigation_triggerwipeerrorshake",
@@ -4232,7 +5084,7 @@
       "file_type": "code",
       "norm_label": "updatefocusmodeui()",
       "source_file": "js/navigation.js",
-      "source_location": "L1847"
+      "source_location": "L1844"
     },
     {
       "id": "js_navigation_updatehandsettingsui",
@@ -4256,7 +5108,7 @@
       "file_type": "code",
       "norm_label": "updatemetathemecolor()",
       "source_file": "js/navigation.js",
-      "source_location": "L2867"
+      "source_location": "L2864"
     },
     {
       "id": "js_navigation_updatesoundtoggleui",
@@ -4268,7 +5120,7 @@
       "file_type": "code",
       "norm_label": "updatesoundtoggleui()",
       "source_file": "js/navigation.js",
-      "source_location": "L1790"
+      "source_location": "L1787"
     },
     {
       "id": "js_navigation_updatespeechtoggleui",
@@ -4280,7 +5132,7 @@
       "file_type": "code",
       "norm_label": "updatespeechtoggleui()",
       "source_file": "js/navigation.js",
-      "source_location": "L1656"
+      "source_location": "L1653"
     },
     {
       "id": "js_navigation_updatethemetoggleui",
@@ -4292,7 +5144,7 @@
       "file_type": "code",
       "norm_label": "updatethemetoggleui()",
       "source_file": "js/navigation.js",
-      "source_location": "L1624"
+      "source_location": "L1621"
     },
     {
       "id": "js_navigation_updatetoasttoggleui",
@@ -4304,55 +5156,7 @@
       "file_type": "code",
       "norm_label": "updatetoasttoggleui()",
       "source_file": "js/navigation.js",
-      "source_location": "L1688"
-    },
-    {
-      "id": "js_speed_checkdrillanswer",
-      "label": "checkDrillAnswer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "checkdrillanswer()",
-      "source_file": "js/speed.js",
-      "source_location": "L2425"
-    },
-    {
-      "id": "js_speed_clearidletimer",
-      "label": "clearIdleTimer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "clearidletimer()",
-      "source_file": "js/speed.js",
-      "source_location": "L87"
-    },
-    {
-      "id": "js_speed_cycledrilldifficulty",
-      "label": "cycleDrillDifficulty()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "cycledrilldifficulty()",
-      "source_file": "js/speed.js",
-      "source_location": "L4023"
-    },
-    {
-      "id": "js_speed_cycledrillinputmethod",
-      "label": "cycleDrillInputMethod()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "cycledrillinputmethod()",
-      "source_file": "js/speed.js",
-      "source_location": "L4106"
+      "source_location": "L1685"
     },
     {
       "id": "js_speed_cycledrillmode",
@@ -4364,355 +5168,31 @@
       "file_type": "code",
       "norm_label": "cycledrillmode()",
       "source_file": "js/speed.js",
-      "source_location": "L3958"
+      "source_location": "L4993"
     },
     {
-      "id": "js_speed_cyclespeedgamemode",
-      "label": "cycleSpeedGameMode()",
+      "id": "js_speed_generatetablescheatgroups",
+      "label": "generateTablesCheatGroups()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
       "community_name": "speed.js",
       "file_type": "code",
-      "norm_label": "cyclespeedgamemode()",
+      "norm_label": "generatetablescheatgroups()",
       "source_file": "js/speed.js",
-      "source_location": "L4278"
+      "source_location": "L1134"
     },
     {
-      "id": "js_speed_drillintelligenceengine_constructor",
-      "label": ".constructor()",
+      "id": "js_speed_initdrillcheatsheet",
+      "label": "initDrillCheatSheet()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
       "community_name": "speed.js",
       "file_type": "code",
-      "norm_label": ".constructor()",
+      "norm_label": "initdrillcheatsheet()",
       "source_file": "js/speed.js",
-      "source_location": "L1339"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine_explainmistake",
-      "label": ".explainMistake()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".explainmistake()",
-      "source_file": "js/speed.js",
-      "source_location": "L1356"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine_isaienabled",
-      "label": ".isAiEnabled()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".isaienabled()",
-      "source_file": "js/speed.js",
-      "source_location": "L1365"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine_normalizevoiceinput",
-      "label": ".normalizeVoiceInput()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".normalizevoiceinput()",
-      "source_file": "js/speed.js",
-      "source_location": "L1348"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine_parsespokennumbertodigits",
-      "label": ".parseSpokenNumberToDigits()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".parsespokennumbertodigits()",
-      "source_file": "js/speed.js",
-      "source_location": "L1352"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine_selectweightedcandidate",
-      "label": ".selectWeightedCandidate()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".selectweightedcandidate()",
-      "source_file": "js/speed.js",
-      "source_location": "L1344"
-    },
-    {
-      "id": "js_speed_drillintelligenceengine_setaiapikey",
-      "label": ".setAiApiKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".setaiapikey()",
-      "source_file": "js/speed.js",
-      "source_location": "L1360"
-    },
-    {
-      "id": "js_speed_endchallengerun",
-      "label": "endChallengeRun()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "endchallengerun()",
-      "source_file": "js/speed.js",
-      "source_location": "L3249"
-    },
-    {
-      "id": "js_speed_finishblitzsession",
-      "label": "finishBlitzSession()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "finishblitzsession()",
-      "source_file": "js/speed.js",
-      "source_location": "L1525"
-    },
-    {
-      "id": "js_speed_finishsuddendeathsession",
-      "label": "finishSuddenDeathSession()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "finishsuddendeathsession()",
-      "source_file": "js/speed.js",
-      "source_location": "L1614"
-    },
-    {
-      "id": "js_speed_generatechallengequestion",
-      "label": "generateChallengeQuestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "generatechallengequestion()",
-      "source_file": "js/speed.js",
-      "source_location": "L3168"
-    },
-    {
-      "id": "js_speed_generatedrillquestion",
-      "label": "generateDrillQuestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "generatedrillquestion()",
-      "source_file": "js/speed.js",
-      "source_location": "L2184"
-    },
-    {
-      "id": "js_speed_generatemathoptions",
-      "label": "generateMathOptions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "generatemathoptions()",
-      "source_file": "js/speed.js",
-      "source_location": "L1716"
-    },
-    {
-      "id": "js_speed_generateproceduralmathquestion",
-      "label": "generateProceduralMathQuestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "generateproceduralmathquestion()",
-      "source_file": "js/speed.js",
-      "source_location": "L3160"
-    },
-    {
-      "id": "js_speed_generatequestiontextandanswer",
-      "label": "generateQuestionTextAndAnswer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "generatequestiontextandanswer()",
-      "source_file": "js/speed.js",
-      "source_location": "L1854"
-    },
-    {
-      "id": "js_speed_getmicrotrickforquestion",
-      "label": "getMicroTrickForQuestion()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "getmicrotrickforquestion()",
-      "source_file": "js/speed.js",
-      "source_location": "L2733"
-    },
-    {
-      "id": "js_speed_initcustomtooltips",
-      "label": "initCustomTooltips()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "initcustomtooltips()",
-      "source_file": "js/speed.js",
-      "source_location": "L3766"
-    },
-    {
-      "id": "js_speed_initcustomtooltips_handletitleattributes",
-      "label": "handleTitleAttributes()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "handletitleattributes()",
-      "source_file": "js/speed.js",
-      "source_location": "L3844"
-    },
-    {
-      "id": "js_speed_initcustomtooltips_hidetooltip",
-      "label": "hideTooltip()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "hidetooltip()",
-      "source_file": "js/speed.js",
-      "source_location": "L3775"
-    },
-    {
-      "id": "js_speed_initcustomtooltips_showtooltip",
-      "label": "showTooltip()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "showtooltip()",
-      "source_file": "js/speed.js",
-      "source_location": "L3792"
-    },
-    {
-      "id": "js_speed_initcustomtooltips_updateactivecustomtooltip",
-      "label": "updateActiveCustomTooltip()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updateactivecustomtooltip()",
-      "source_file": "js/speed.js",
-      "source_location": "L3784"
-    },
-    {
-      "id": "js_speed_initrealaudiovisualizer",
-      "label": "initRealAudioVisualizer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "initrealaudiovisualizer()",
-      "source_file": "js/speed.js",
-      "source_location": "L1129"
-    },
-    {
-      "id": "js_speed_initrealaudiovisualizer_renderaudioframe",
-      "label": "renderAudioFrame()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "renderaudioframe()",
-      "source_file": "js/speed.js",
-      "source_location": "L1155"
-    },
-    {
-      "id": "js_speed_initspeeddrillspage",
-      "label": "initSpeedDrillsPage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "initspeeddrillspage()",
-      "source_file": "js/speed.js",
-      "source_location": "L3416"
-    },
-    {
-      "id": "js_speed_initspeeddrillspage_closemodedropdown",
-      "label": "closeModeDropdown()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "closemodedropdown()",
-      "source_file": "js/speed.js",
-      "source_location": "L3604"
-    },
-    {
-      "id": "js_speed_initspeeddrillspage_openmodedropdown",
-      "label": "openModeDropdown()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "openmodedropdown()",
-      "source_file": "js/speed.js",
-      "source_location": "L3592"
-    },
-    {
-      "id": "js_speed_initspeedkeyboardshortcuts",
-      "label": "initSpeedKeyboardShortcuts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "initspeedkeyboardshortcuts()",
-      "source_file": "js/speed.js",
-      "source_location": "L4403"
-    },
-    {
-      "id": "js_speed_initvoicereflexengine",
-      "label": "initVoiceReflexEngine()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "initvoicereflexengine()",
-      "source_file": "js/speed.js",
-      "source_location": "L994"
+      "source_location": "L2272"
     },
     {
       "id": "js_speed_ishighweighttopic",
@@ -4724,175 +5204,19 @@
       "file_type": "code",
       "norm_label": "ishighweighttopic()",
       "source_file": "js/speed.js",
-      "source_location": "L3743"
+      "source_location": "L4778"
     },
     {
-      "id": "js_speed_listenforvoiceanswer",
-      "label": "listenForVoiceAnswer()",
+      "id": "js_speed_launchtargetedmicrodrill",
+      "label": "launchTargetedMicroDrill()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
       "community_name": "speed.js",
       "file_type": "code",
-      "norm_label": "listenforvoiceanswer()",
+      "norm_label": "launchtargetedmicrodrill()",
       "source_file": "js/speed.js",
-      "source_location": "L1271"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "js/speed.js",
-      "source_location": "L97"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_getdailystore",
-      "label": ".getDailyStore()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".getdailystore()",
-      "source_file": "js/speed.js",
-      "source_location": "L430"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_getdomainspec",
-      "label": ".getDomainSpec()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".getdomainspec()",
-      "source_file": "js/speed.js",
-      "source_location": "L109"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_getfactmaturation",
-      "label": ".getFactMaturation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".getfactmaturation()",
-      "source_file": "js/speed.js",
-      "source_location": "L386"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_gethesitantkeys",
-      "label": ".getHesitantKeys()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".gethesitantkeys()",
-      "source_file": "js/speed.js",
-      "source_location": "L366"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_getstats",
-      "label": ".getStats()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".getstats()",
-      "source_file": "js/speed.js",
-      "source_location": "L490"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_getweakkeys",
-      "label": ".getWeakKeys()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".getweakkeys()",
-      "source_file": "js/speed.js",
-      "source_location": "L349"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_recordattempt",
-      "label": ".recordAttempt()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".recordattempt()",
-      "source_file": "js/speed.js",
-      "source_location": "L443"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_render",
-      "label": ".render()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".render()",
-      "source_file": "js/speed.js",
-      "source_location": "L546"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_setcategory",
-      "label": ".setCategory()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".setcategory()",
-      "source_file": "js/speed.js",
-      "source_location": "L539"
-    },
-    {
-      "id": "js_speed_microfrequencyheatmap_updatefactmaturation",
-      "label": ".updateFactMaturation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": ".updatefactmaturation()",
-      "source_file": "js/speed.js",
-      "source_location": "L394"
-    },
-    {
-      "id": "js_speed_normalizevoicenumber",
-      "label": "normalizeVoiceNumber()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "normalizevoicenumber()",
-      "source_file": "js/speed.js",
-      "source_location": "L793"
-    },
-    {
-      "id": "js_speed_parsespokennumbertodigits",
-      "label": "parseSpokenNumberToDigits()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "parsespokennumbertodigits()",
-      "source_file": "js/speed.js",
-      "source_location": "L698"
+      "source_location": "L1905"
     },
     {
       "id": "js_speed_recordsplittimeattempt",
@@ -4904,19 +5228,43 @@
       "file_type": "code",
       "norm_label": "recordsplittimeattempt()",
       "source_file": "js/speed.js",
-      "source_location": "L2593"
+      "source_location": "L3615"
     },
     {
-      "id": "js_speed_renderpostsessionmistakereview",
-      "label": "renderPostSessionMistakeReview()",
+      "id": "js_speed_renderdrillcheatsheet",
+      "label": "renderDrillCheatSheet()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
       "community_name": "speed.js",
       "file_type": "code",
-      "norm_label": "renderpostsessionmistakereview()",
+      "norm_label": "renderdrillcheatsheet()",
       "source_file": "js/speed.js",
-      "source_location": "L2819"
+      "source_location": "L1973"
+    },
+    {
+      "id": "js_speed_rendermasterypiphtml",
+      "label": "renderMasteryPipHtml()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "speed.js",
+      "file_type": "code",
+      "norm_label": "rendermasterypiphtml()",
+      "source_file": "js/speed.js",
+      "source_location": "L1875"
+    },
+    {
+      "id": "js_speed_renderquickdrillbuttonhtml",
+      "label": "renderQuickDrillButtonHtml()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "speed.js",
+      "file_type": "code",
+      "norm_label": "renderquickdrillbuttonhtml()",
+      "source_file": "js/speed.js",
+      "source_location": "L1889"
     },
     {
       "id": "js_speed_rendersplittimefeed",
@@ -4928,7 +5276,7 @@
       "file_type": "code",
       "norm_label": "rendersplittimefeed()",
       "source_file": "js/speed.js",
-      "source_location": "L2605"
+      "source_location": "L3627"
     },
     {
       "id": "js_speed_rendersplittimetimeline",
@@ -4940,43 +5288,7 @@
       "file_type": "code",
       "norm_label": "rendersplittimetimeline()",
       "source_file": "js/speed.js",
-      "source_location": "L2663"
-    },
-    {
-      "id": "js_speed_resetdrillsession",
-      "label": "resetDrillSession()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "resetdrillsession()",
-      "source_file": "js/speed.js",
-      "source_location": "L2959"
-    },
-    {
-      "id": "js_speed_restartdrillsession",
-      "label": "restartDrillSession()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "restartdrillsession()",
-      "source_file": "js/speed.js",
-      "source_location": "L4305"
-    },
-    {
-      "id": "js_speed_selectadaptivevalue",
-      "label": "selectAdaptiveValue()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "selectadaptivevalue()",
-      "source_file": "js/speed.js",
-      "source_location": "L1800"
+      "source_location": "L3685"
     },
     {
       "id": "js_speed_selectdrillcategory",
@@ -4988,91 +5300,19 @@
       "file_type": "code",
       "norm_label": "selectdrillcategory()",
       "source_file": "js/speed.js",
-      "source_location": "L3974"
+      "source_location": "L5009"
     },
     {
-      "id": "js_speed_setdrilldifficulty",
-      "label": "setDrillDifficulty()",
+      "id": "js_speed_setcheatsheetcollapsestate",
+      "label": "setCheatSheetCollapseState()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
       "community_name": "speed.js",
       "file_type": "code",
-      "norm_label": "setdrilldifficulty()",
+      "norm_label": "setcheatsheetcollapsestate()",
       "source_file": "js/speed.js",
-      "source_location": "L3993"
-    },
-    {
-      "id": "js_speed_setinputmethod",
-      "label": "setInputMethod()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "setinputmethod()",
-      "source_file": "js/speed.js",
-      "source_location": "L4049"
-    },
-    {
-      "id": "js_speed_setspeedgamemode",
-      "label": "setSpeedGameMode()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "setspeedgamemode()",
-      "source_file": "js/speed.js",
-      "source_location": "L1389"
-    },
-    {
-      "id": "js_speed_showdrillhudfeedback",
-      "label": "showDrillHudFeedback()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "showdrillhudfeedback()",
-      "source_file": "js/speed.js",
-      "source_location": "L4351"
-    },
-    {
-      "id": "js_speed_startblitzcountdown",
-      "label": "startBlitzCountdown()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "startblitzcountdown()",
-      "source_file": "js/speed.js",
-      "source_location": "L1509"
-    },
-    {
-      "id": "js_speed_startchallengerun",
-      "label": "startChallengeRun()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "startchallengerun()",
-      "source_file": "js/speed.js",
-      "source_location": "L3035"
-    },
-    {
-      "id": "js_speed_startidletimer",
-      "label": "startIdleTimer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "startidletimer()",
-      "source_file": "js/speed.js",
-      "source_location": "L72"
+      "source_location": "L2205"
     },
     {
       "id": "js_speed_startvoicetimer",
@@ -5087,18 +5327,6 @@
       "source_location": "L1100"
     },
     {
-      "id": "js_speed_stoprealaudiovisualizer",
-      "label": "stopRealAudioVisualizer()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "stoprealaudiovisualizer()",
-      "source_file": "js/speed.js",
-      "source_location": "L1189"
-    },
-    {
       "id": "js_speed_stopvoicetimer",
       "label": "stopVoiceTimer()",
       "_callable": true,
@@ -5111,172 +5339,16 @@
       "source_location": "L1115"
     },
     {
-      "id": "js_speed_submitchallengeanswer",
-      "label": "submitChallengeAnswer()",
+      "id": "js_speed_togglecheatsheetcollapse",
+      "label": "toggleCheatSheetCollapse()",
       "_callable": true,
       "_origin": "ast",
       "community": 7,
       "community_name": "speed.js",
       "file_type": "code",
-      "norm_label": "submitchallengeanswer()",
+      "norm_label": "togglecheatsheetcollapse()",
       "source_file": "js/speed.js",
-      "source_location": "L3211"
-    },
-    {
-      "id": "js_speed_togglehesitantfacttargeting",
-      "label": "toggleHesitantFactTargeting()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "togglehesitantfacttargeting()",
-      "source_file": "js/speed.js",
-      "source_location": "L4383"
-    },
-    {
-      "id": "js_speed_togglevoicereflexmode",
-      "label": "toggleVoiceReflexMode()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "togglevoicereflexmode()",
-      "source_file": "js/speed.js",
-      "source_location": "L1219"
-    },
-    {
-      "id": "js_speed_updatechallengeui",
-      "label": "updateChallengeUI()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatechallengeui()",
-      "source_file": "js/speed.js",
-      "source_location": "L3122"
-    },
-    {
-      "id": "js_speed_updatecontextualmicrotrick",
-      "label": "updateContextualMicroTrick()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatecontextualmicrotrick()",
-      "source_file": "js/speed.js",
-      "source_location": "L2799"
-    },
-    {
-      "id": "js_speed_updatedrillidledisplay",
-      "label": "updateDrillIdleDisplay()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatedrillidledisplay()",
-      "source_file": "js/speed.js",
-      "source_location": "L2942"
-    },
-    {
-      "id": "js_speed_updatemodebadgeui",
-      "label": "updateModeBadgeUI()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatemodebadgeui()",
-      "source_file": "js/speed.js",
-      "source_location": "L1471"
-    },
-    {
-      "id": "js_speed_updatereflextelemetryhud",
-      "label": "updateReflexTelemetryHUD()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatereflextelemetryhud()",
-      "source_file": "js/speed.js",
-      "source_location": "L2880"
-    },
-    {
-      "id": "js_speed_updatespeedpersonalbestshud",
-      "label": "updateSpeedPersonalBestsHUD()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatespeedpersonalbestshud()",
-      "source_file": "js/speed.js",
-      "source_location": "L1692"
-    },
-    {
-      "id": "js_speed_updatestreakaura",
-      "label": "updateStreakAura()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatestreakaura()",
-      "source_file": "js/speed.js",
-      "source_location": "L4327"
-    },
-    {
-      "id": "js_speed_updatevoicestatusui",
-      "label": "updateVoiceStatusUI()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "updatevoicestatusui()",
-      "source_file": "js/speed.js",
-      "source_location": "L1287"
-    },
-    {
-      "id": "js_speed_wiredifficultypills",
-      "label": "wireDifficultyPills()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "wiredifficultypills()",
-      "source_file": "js/speed.js",
-      "source_location": "L4034"
-    },
-    {
-      "id": "js_speed_wiredirectnumericinput",
-      "label": "wireDirectNumericInput()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "wiredirectnumericinput()",
-      "source_file": "js/speed.js",
-      "source_location": "L4140"
-    },
-    {
-      "id": "js_speed_wireinputmethodtoggle",
-      "label": "wireInputMethodToggle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 7,
-      "community_name": "speed.js",
-      "file_type": "code",
-      "norm_label": "wireinputmethodtoggle()",
-      "source_file": "js/speed.js",
-      "source_location": "L4114"
+      "source_location": "L2266"
     },
     {
       "id": "js_mocks_cancelmockedit",
@@ -7268,6 +7340,17 @@
       "source_location": "L1"
     },
     {
+      "id": "components_tri_state_checkbox",
+      "label": "tri-state-checkbox.js",
+      "_origin": "ast",
+      "community": 113,
+      "community_name": "TriStateCheckbox",
+      "file_type": "code",
+      "norm_label": "tri-state-checkbox.js",
+      "source_file": "components/tri-state-checkbox.js",
+      "source_location": "L1"
+    },
+    {
       "id": "agents_skills_repomix_skill",
       "label": "repomix/SKILL.md",
       "_origin": "ast",
@@ -7908,7 +7991,7 @@
       "file_type": "code",
       "norm_label": "inputpath",
       "source_file": "build-tailwind.js",
-      "source_location": "L776"
+      "source_location": "L794"
     },
     {
       "id": "build_tailwind_iswatch",
@@ -7930,7 +8013,7 @@
       "file_type": "code",
       "norm_label": "outputpath",
       "source_file": "build-tailwind.js",
-      "source_location": "L777"
+      "source_location": "L795"
     },
     {
       "id": "build_tailwind_path",
@@ -9348,7 +9431,7 @@
       "file_type": "code",
       "norm_label": "challengequestiontelemetry",
       "source_file": "js/speed.js",
-      "source_location": "L3033"
+      "source_location": "L4058"
     },
     {
       "id": "js_speed_currentsessionmistakes",
@@ -9359,7 +9442,18 @@
       "file_type": "code",
       "norm_label": "currentsessionmistakes",
       "source_file": "js/speed.js",
-      "source_location": "L2591"
+      "source_location": "L3613"
+    },
+    {
+      "id": "js_speed_drill_cheat_data",
+      "label": "DRILL_CHEAT_DATA",
+      "_origin": "ast",
+      "community": 7,
+      "community_name": "speed.js",
+      "file_type": "code",
+      "norm_label": "drill_cheat_data",
+      "source_file": "js/speed.js",
+      "source_location": "L1161"
     },
     {
       "id": "js_speed_drill_difficulties",
@@ -9370,7 +9464,7 @@
       "file_type": "code",
       "norm_label": "drill_difficulties",
       "source_file": "js/speed.js",
-      "source_location": "L3991"
+      "source_location": "L5026"
     },
     {
       "id": "js_speed_drill_mode_labels",
@@ -9392,7 +9486,7 @@
       "file_type": "code",
       "norm_label": "drill_modes_cycle",
       "source_file": "js/speed.js",
-      "source_location": "L4276"
+      "source_location": "L5322"
     },
     {
       "id": "js_speed_ghostrecoveryqueue",
@@ -9414,7 +9508,7 @@
       "file_type": "code",
       "norm_label": "mix_categories",
       "source_file": "js/speed.js",
-      "source_location": "L1386"
+      "source_location": "L2374"
     },
     {
       "id": "js_speed_recentdrillattempts",
@@ -9425,7 +9519,7 @@
       "file_type": "code",
       "norm_label": "recentdrillattempts",
       "source_file": "js/speed.js",
-      "source_location": "L2590"
+      "source_location": "L3612"
     },
     {
       "id": "js_speed_speed_modes",
@@ -9436,7 +9530,7 @@
       "file_type": "code",
       "norm_label": "speed_modes",
       "source_file": "js/speed.js",
-      "source_location": "L1372"
+      "source_location": "L2360"
     },
     {
       "id": "study_reasoning_syllogism_truth_matrix",
@@ -11929,17 +12023,6 @@
       "source_location": "L100"
     },
     {
-      "id": "components_tri_state_checkbox",
-      "label": "tri-state-checkbox.js",
-      "_origin": "ast",
-      "community": 95,
-      "community_name": "index.js",
-      "file_type": "code",
-      "norm_label": "tri-state-checkbox.js",
-      "source_file": "components/tri-state-checkbox.js",
-      "source_location": "L1"
-    },
-    {
       "id": "agents_rules_graphify",
       "label": "rules/graphify.md",
       "_origin": "ast",
@@ -12039,7 +12122,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2311",
+      "source_location": "L3319",
       "weight": 1.0
     },
     {
@@ -13863,7 +13946,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1009",
+      "source_location": "L1010",
       "weight": 1.0
     },
     {
@@ -13875,7 +13958,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1010",
+      "source_location": "L1011",
       "weight": 1.0
     },
     {
@@ -13887,7 +13970,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1011",
+      "source_location": "L1012",
       "weight": 1.0
     },
     {
@@ -13899,7 +13982,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1067",
+      "source_location": "L1068",
       "weight": 1.0
     },
     {
@@ -13911,7 +13994,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1099",
+      "source_location": "L1100",
       "weight": 1.0
     },
     {
@@ -13923,7 +14006,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1060",
+      "source_location": "L1061",
       "weight": 1.0
     },
     {
@@ -13935,7 +14018,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1061",
+      "source_location": "L1062",
       "weight": 1.0
     },
     {
@@ -13947,7 +14030,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L982",
+      "source_location": "L983",
       "weight": 1.0
     },
     {
@@ -13959,7 +14042,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L985",
+      "source_location": "L986",
       "weight": 1.0
     },
     {
@@ -13971,7 +14054,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L988",
+      "source_location": "L989",
       "weight": 1.0
     },
     {
@@ -13995,7 +14078,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L546",
+      "source_location": "L547",
       "weight": 1.0
     },
     {
@@ -14007,7 +14090,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L553",
+      "source_location": "L554",
       "weight": 1.0
     },
     {
@@ -14019,7 +14102,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L554",
+      "source_location": "L555",
       "weight": 1.0
     },
     {
@@ -14031,7 +14114,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L962",
+      "source_location": "L963",
       "weight": 1.0
     },
     {
@@ -14108,6 +14191,18 @@
     },
     {
       "source": "js_dashboard_renderdashboardoverview",
+      "target": "js_dashboard_rendersubjectprogressbars",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/dashboard.js",
+      "source_location": "L294",
+      "weight": 1.0
+    },
+    {
+      "source": "js_dashboard_renderdashboardoverview",
       "target": "js_dashboard_loadrituals",
       "relation": "calls",
       "_origin": "ast",
@@ -14115,7 +14210,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L296",
+      "source_location": "L297",
       "weight": 1.0
     },
     {
@@ -14127,7 +14222,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L299",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -14139,7 +14234,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L335",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -14151,7 +14246,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L617",
+      "source_location": "L618",
       "weight": 1.0
     },
     {
@@ -14163,7 +14258,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L527",
+      "source_location": "L528",
       "weight": 1.0
     },
     {
@@ -14175,7 +14270,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L966",
+      "source_location": "L967",
       "weight": 1.0
     },
     {
@@ -14187,7 +14282,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L975",
+      "source_location": "L976",
       "weight": 1.0
     },
     {
@@ -14199,7 +14294,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L713",
+      "source_location": "L714",
       "weight": 1.0
     },
     {
@@ -14211,7 +14306,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L870",
+      "source_location": "L871",
       "weight": 1.0
     },
     {
@@ -14223,7 +14318,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L882",
+      "source_location": "L883",
       "weight": 1.0
     },
     {
@@ -14235,7 +14330,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L856",
+      "source_location": "L857",
       "weight": 1.0
     },
     {
@@ -14247,7 +14342,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L858",
+      "source_location": "L859",
       "weight": 1.0
     },
     {
@@ -14259,7 +14354,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L731",
+      "source_location": "L732",
       "weight": 1.0
     },
     {
@@ -14763,7 +14858,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2318",
+      "source_location": "L2315",
       "weight": 1.0
     },
     {
@@ -14775,7 +14870,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2311",
+      "source_location": "L2308",
       "weight": 1.0
     },
     {
@@ -14847,7 +14942,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1960",
+      "source_location": "L1957",
       "weight": 1.0
     },
     {
@@ -15080,6 +15175,18 @@
     },
     {
       "source": "js_navigation_initnavigation",
+      "target": "js_navigation_togglespeechmode",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/navigation.js",
+      "source_location": "L1504",
+      "weight": 1.0
+    },
+    {
+      "source": "js_navigation_initnavigation",
       "target": "js_navigation_focusactioncentersearch",
       "relation": "calls",
       "_origin": "ast",
@@ -15111,7 +15218,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2502",
+      "source_location": "L2499",
       "weight": 1.0
     },
     {
@@ -15123,7 +15230,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2584",
+      "source_location": "L2581",
       "weight": 1.0
     },
     {
@@ -15135,7 +15242,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2614",
+      "source_location": "L2611",
       "weight": 1.0
     },
     {
@@ -15147,7 +15254,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2624",
+      "source_location": "L2621",
       "weight": 1.0
     },
     {
@@ -15159,7 +15266,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2625",
+      "source_location": "L2622",
       "weight": 1.0
     },
     {
@@ -15171,7 +15278,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2626",
+      "source_location": "L2623",
       "weight": 1.0
     },
     {
@@ -15183,7 +15290,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2627",
+      "source_location": "L2624",
       "weight": 1.0
     },
     {
@@ -15195,7 +15302,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2628",
+      "source_location": "L2625",
       "weight": 1.0
     },
     {
@@ -15207,7 +15314,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2629",
+      "source_location": "L2626",
       "weight": 1.0
     },
     {
@@ -15219,7 +15326,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2673",
+      "source_location": "L2670",
       "weight": 1.0
     },
     {
@@ -15231,7 +15338,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2811",
+      "source_location": "L2808",
       "weight": 1.0
     },
     {
@@ -15243,7 +15350,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2812",
+      "source_location": "L2809",
       "weight": 1.0
     },
     {
@@ -15255,7 +15362,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2849",
+      "source_location": "L2846",
       "weight": 1.0
     },
     {
@@ -15267,7 +15374,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2851",
+      "source_location": "L2848",
       "weight": 1.0
     },
     {
@@ -15279,7 +15386,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2860",
+      "source_location": "L2857",
       "weight": 1.0
     },
     {
@@ -15291,7 +15398,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L3012",
+      "source_location": "L3009",
       "weight": 1.0
     },
     {
@@ -15303,7 +15410,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L3020",
+      "source_location": "L3017",
       "weight": 1.0
     },
     {
@@ -15339,7 +15446,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2924",
+      "source_location": "L2921",
       "weight": 1.0
     },
     {
@@ -15351,7 +15458,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2982",
+      "source_location": "L2979",
       "weight": 1.0
     },
     {
@@ -15363,7 +15470,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2983",
+      "source_location": "L2980",
       "weight": 1.0
     },
     {
@@ -15375,7 +15482,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2984",
+      "source_location": "L2981",
       "weight": 1.0
     },
     {
@@ -15471,7 +15578,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2325",
+      "source_location": "L2322",
       "weight": 1.0
     },
     {
@@ -15483,7 +15590,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2332",
+      "source_location": "L2329",
       "weight": 1.0
     },
     {
@@ -15507,7 +15614,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1897",
+      "source_location": "L1894",
       "weight": 1.0
     },
     {
@@ -15519,7 +15626,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1905",
+      "source_location": "L1902",
       "weight": 1.0
     },
     {
@@ -15531,7 +15638,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1825",
+      "source_location": "L1822",
       "weight": 1.0
     },
     {
@@ -15567,7 +15674,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1781",
+      "source_location": "L1778",
       "weight": 1.0
     },
     {
@@ -15579,7 +15686,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1757",
+      "source_location": "L1754",
       "weight": 1.0
     },
     {
@@ -15591,7 +15698,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2339",
+      "source_location": "L2336",
       "weight": 1.0
     },
     {
@@ -15603,7 +15710,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1725",
+      "source_location": "L1722",
       "weight": 1.0
     },
     {
@@ -15615,7 +15722,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1735",
+      "source_location": "L1732",
       "weight": 1.0
     },
     {
@@ -15627,7 +15734,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L1772",
+      "source_location": "L1769",
       "weight": 1.0
     },
     {
@@ -15687,7 +15794,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2435",
+      "source_location": "L3457",
       "weight": 1.0
     },
     {
@@ -15699,7 +15806,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2463",
+      "source_location": "L3485",
       "weight": 1.0
     },
     {
@@ -15711,7 +15818,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2471",
+      "source_location": "L3493",
       "weight": 1.0
     },
     {
@@ -15723,7 +15830,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2499",
+      "source_location": "L3521",
       "weight": 1.0
     },
     {
@@ -15735,7 +15842,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2527",
+      "source_location": "L3549",
       "weight": 1.0
     },
     {
@@ -15747,7 +15854,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2563",
+      "source_location": "L3585",
       "weight": 1.0
     },
     {
@@ -15759,7 +15866,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2568",
+      "source_location": "L3590",
       "weight": 1.0
     },
     {
@@ -15771,7 +15878,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2580",
+      "source_location": "L3602",
       "weight": 1.0
     },
     {
@@ -15783,7 +15890,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4028",
+      "source_location": "L5063",
       "weight": 1.0
     },
     {
@@ -15795,7 +15902,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4029",
+      "source_location": "L5064",
       "weight": 1.0
     },
     {
@@ -15807,7 +15914,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4108",
+      "source_location": "L5146",
       "weight": 1.0
     },
     {
@@ -15819,7 +15926,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4109",
+      "source_location": "L5147",
       "weight": 1.0
     },
     {
@@ -15831,7 +15938,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4282",
+      "source_location": "L5328",
       "weight": 1.0
     },
     {
@@ -15843,7 +15950,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4300",
+      "source_location": "L5346",
       "weight": 1.0
     },
     {
@@ -15855,7 +15962,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1357",
+      "source_location": "L2345",
       "weight": 1.0
     },
     {
@@ -15867,7 +15974,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1349",
+      "source_location": "L2337",
       "weight": 1.0
     },
     {
@@ -15879,7 +15986,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1345",
+      "source_location": "L2333",
       "weight": 1.0
     },
     {
@@ -15891,7 +15998,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3409",
+      "source_location": "L4434",
       "weight": 1.0
     },
     {
@@ -15903,7 +16010,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3410",
+      "source_location": "L4435",
       "weight": 1.0
     },
     {
@@ -15915,7 +16022,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3411",
+      "source_location": "L4436",
       "weight": 1.0
     },
     {
@@ -15927,7 +16034,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3412",
+      "source_location": "L4437",
       "weight": 1.0
     },
     {
@@ -15939,7 +16046,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1551",
+      "source_location": "L2541",
       "weight": 1.0
     },
     {
@@ -15951,7 +16058,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1611",
+      "source_location": "L2601",
       "weight": 1.0
     },
     {
@@ -15963,7 +16070,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1635",
+      "source_location": "L2625",
       "weight": 1.0
     },
     {
@@ -15975,7 +16082,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1689",
+      "source_location": "L2679",
       "weight": 1.0
     },
     {
@@ -15987,7 +16094,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3170",
+      "source_location": "L4195",
       "weight": 1.0
     },
     {
@@ -15999,7 +16106,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3185",
+      "source_location": "L4210",
       "weight": 1.0
     },
     {
@@ -16011,7 +16118,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3205",
+      "source_location": "L4230",
       "weight": 1.0
     },
     {
@@ -16023,7 +16130,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2186",
+      "source_location": "L3194",
       "weight": 1.0
     },
     {
@@ -16035,7 +16142,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2207",
+      "source_location": "L3215",
       "weight": 1.0
     },
     {
@@ -16047,7 +16154,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2230",
+      "source_location": "L3238",
       "weight": 1.0
     },
     {
@@ -16059,7 +16166,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2245",
+      "source_location": "L3253",
       "weight": 1.0
     },
     {
@@ -16071,7 +16178,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2295",
+      "source_location": "L3303",
       "weight": 1.0
     },
     {
@@ -16083,7 +16190,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2319",
+      "source_location": "L3327",
       "weight": 1.0
     },
     {
@@ -16095,7 +16202,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2339",
+      "source_location": "L3361",
       "weight": 1.0
     },
     {
@@ -16107,7 +16214,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2344",
+      "source_location": "L3366",
       "weight": 1.0
     },
     {
@@ -16119,7 +16226,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2362",
+      "source_location": "L3384",
       "weight": 1.0
     },
     {
@@ -16131,7 +16238,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2409",
+      "source_location": "L3431",
       "weight": 1.0
     },
     {
@@ -16143,7 +16250,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3163",
+      "source_location": "L4188",
       "weight": 1.0
     },
     {
@@ -16155,7 +16262,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3164",
+      "source_location": "L4189",
       "weight": 1.0
     },
     {
@@ -16167,7 +16274,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1860",
+      "source_location": "L2850",
       "weight": 1.0
     },
     {
@@ -16179,7 +16286,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1873",
+      "source_location": "L2865",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_initdrillcheatsheet",
+      "target": "js_speed_renderdrillcheatsheet",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L2278",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_initdrillcheatsheet",
+      "target": "js_speed_setcheatsheetcollapsestate",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L2308",
       "weight": 1.0
     },
     {
@@ -16191,7 +16322,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3440",
+      "source_location": "L4465",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_initspeeddrillspage",
+      "target": "js_speed_renderdrillcheatsheet",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L4469",
       "weight": 1.0
     },
     {
@@ -16203,7 +16346,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3445",
+      "source_location": "L4473",
       "weight": 1.0
     },
     {
@@ -16215,7 +16358,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3447",
+      "source_location": "L4475",
       "weight": 1.0
     },
     {
@@ -16227,7 +16370,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3450",
+      "source_location": "L4478",
       "weight": 1.0
     },
     {
@@ -16239,7 +16382,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3476",
+      "source_location": "L4504",
       "weight": 1.0
     },
     {
@@ -16251,7 +16394,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3477",
+      "source_location": "L4505",
       "weight": 1.0
     },
     {
@@ -16263,7 +16406,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3501",
+      "source_location": "L4529",
       "weight": 1.0
     },
     {
@@ -16275,7 +16418,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3523",
+      "source_location": "L4551",
       "weight": 1.0
     },
     {
@@ -16287,7 +16430,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3568",
+      "source_location": "L4599",
       "weight": 1.0
     },
     {
@@ -16299,7 +16442,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3573",
+      "source_location": "L4605",
       "weight": 1.0
     },
     {
@@ -16311,7 +16454,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3578",
+      "source_location": "L4610",
       "weight": 1.0
     },
     {
@@ -16323,7 +16466,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3584",
+      "source_location": "L4616",
       "weight": 1.0
     },
     {
@@ -16335,7 +16478,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3646",
+      "source_location": "L4678",
       "weight": 1.0
     },
     {
@@ -16347,7 +16490,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3712",
+      "source_location": "L4744",
       "weight": 1.0
     },
     {
@@ -16359,7 +16502,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3718",
+      "source_location": "L4750",
       "weight": 1.0
     },
     {
@@ -16371,7 +16514,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3719",
+      "source_location": "L4751",
       "weight": 1.0
     },
     {
@@ -16383,7 +16526,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3723",
+      "source_location": "L4755",
       "weight": 1.0
     },
     {
@@ -16395,7 +16538,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3724",
+      "source_location": "L4756",
       "weight": 1.0
     },
     {
@@ -16407,7 +16550,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3725",
+      "source_location": "L4757",
       "weight": 1.0
     },
     {
@@ -16419,7 +16562,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3726",
+      "source_location": "L4758",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_initspeeddrillspage",
+      "target": "js_speed_initdrillcheatsheet",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L4761",
       "weight": 1.0
     },
     {
@@ -16431,7 +16586,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3731",
+      "source_location": "L4766",
       "weight": 1.0
     },
     {
@@ -16483,27 +16638,87 @@
       "weight": 1.0
     },
     {
-      "source": "js_speed_listenforvoiceanswer",
-      "target": "js_speed_initvoicereflexengine",
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_microfrequencyheatmap_setcategory",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1273",
+      "source_location": "L1932",
       "weight": 1.0
     },
     {
-      "source": "js_speed_listenforvoiceanswer",
-      "target": "js_speed_updatevoicestatusui",
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_renderdrillcheatsheet",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1284",
+      "source_location": "L1934",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_microfrequencyheatmap_render",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1941",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_updatemodebadgeui",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1947",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_restartdrillsession",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1950",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_generatedrillquestion",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1956",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_launchtargetedmicrodrill",
+      "target": "js_speed_showdrillhudfeedback",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1969",
       "weight": 1.0
     },
     {
@@ -16695,7 +16910,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2601",
+      "source_location": "L3623",
       "weight": 1.0
     },
     {
@@ -16707,7 +16922,43 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2602",
+      "source_location": "L3624",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_renderdrillcheatsheet",
+      "target": "js_speed_resolvecheattelemetryandtarget",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L2068",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_renderdrillcheatsheet",
+      "target": "js_speed_rendermasterypiphtml",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L2069",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_renderdrillcheatsheet",
+      "target": "js_speed_renderquickdrillbuttonhtml",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L2070",
       "weight": 1.0
     },
     {
@@ -16719,7 +16970,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2859",
+      "source_location": "L3881",
       "weight": 1.0
     },
     {
@@ -16731,7 +16982,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2971",
+      "source_location": "L3993",
       "weight": 1.0
     },
     {
@@ -16743,7 +16994,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3004",
+      "source_location": "L4026",
       "weight": 1.0
     },
     {
@@ -16755,7 +17006,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3014",
+      "source_location": "L4039",
       "weight": 1.0
     },
     {
@@ -16767,7 +17018,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3026",
+      "source_location": "L4051",
       "weight": 1.0
     },
     {
@@ -16779,7 +17030,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3027",
+      "source_location": "L4052",
       "weight": 1.0
     },
     {
@@ -16791,7 +17042,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3028",
+      "source_location": "L4053",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_resolvecheattelemetryandtarget",
+      "target": "js_speed_microfrequencyheatmap_getdailystore",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1858",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_resolvecheattelemetryandtarget",
+      "target": "js_speed_microfrequencyheatmap_getfactmaturation",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L1861",
       "weight": 1.0
     },
     {
@@ -16803,7 +17078,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4306",
+      "source_location": "L5352",
       "weight": 1.0
     },
     {
@@ -16815,7 +17090,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4321",
+      "source_location": "L5367",
       "weight": 1.0
     },
     {
@@ -16827,7 +17102,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4323",
+      "source_location": "L5369",
       "weight": 1.0
     },
     {
@@ -16839,7 +17114,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1811",
+      "source_location": "L2801",
       "weight": 1.0
     },
     {
@@ -16851,7 +17126,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1821",
+      "source_location": "L2811",
       "weight": 1.0
     },
     {
@@ -16863,7 +17138,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4015",
+      "source_location": "L5050",
       "weight": 1.0
     },
     {
@@ -16875,7 +17150,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4016",
+      "source_location": "L5051",
       "weight": 1.0
     },
     {
@@ -16887,7 +17162,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1462",
+      "source_location": "L2450",
       "weight": 1.0
     },
     {
@@ -16899,7 +17174,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1465",
+      "source_location": "L2453",
       "weight": 1.0
     },
     {
@@ -16911,7 +17186,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1512",
+      "source_location": "L2502",
       "weight": 1.0
     },
     {
@@ -16923,7 +17198,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L1520",
+      "source_location": "L2510",
       "weight": 1.0
     },
     {
@@ -16935,7 +17210,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3074",
+      "source_location": "L4099",
       "weight": 1.0
     },
     {
@@ -16947,7 +17222,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3115",
+      "source_location": "L4140",
       "weight": 1.0
     },
     {
@@ -16959,7 +17234,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3119",
+      "source_location": "L4144",
       "weight": 1.0
     },
     {
@@ -17007,7 +17282,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3241",
+      "source_location": "L4266",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed_togglecheatsheetcollapse",
+      "target": "js_speed_setcheatsheetcollapsestate",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/speed.js",
+      "source_location": "L2267",
       "weight": 1.0
     },
     {
@@ -17019,79 +17306,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4395",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_togglevoicereflexmode",
-      "target": "js_speed_startvoicetimer",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1235",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_togglevoicereflexmode",
-      "target": "js_speed_initrealaudiovisualizer",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1236",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_togglevoicereflexmode",
-      "target": "js_speed_listenforvoiceanswer",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1248",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_togglevoicereflexmode",
-      "target": "js_speed_updatevoicestatusui",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1250",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_togglevoicereflexmode",
-      "target": "js_speed_stopvoicetimer",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1253",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_togglevoicereflexmode",
-      "target": "js_speed_stoprealaudiovisualizer",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1254",
+      "source_location": "L5441",
       "weight": 1.0
     },
     {
@@ -17103,7 +17318,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2804",
+      "source_location": "L3826",
       "weight": 1.0
     },
     {
@@ -17115,7 +17330,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2886",
+      "source_location": "L3908",
       "weight": 1.0
     },
     {
@@ -17127,7 +17342,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2925",
+      "source_location": "L3947",
       "weight": 1.0
     },
     {
@@ -17139,7 +17354,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2929",
+      "source_location": "L3951",
       "weight": 1.0
     },
     {
@@ -17151,19 +17366,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L2938",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_updatevoicestatusui",
-      "target": "js_speed_stopvoicetimer",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1298",
+      "source_location": "L3960",
       "weight": 1.0
     },
     {
@@ -17175,7 +17378,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4044",
+      "source_location": "L5082",
       "weight": 1.0
     },
     {
@@ -17187,7 +17390,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4168",
+      "source_location": "L5210",
       "weight": 1.0
     },
     {
@@ -17199,7 +17402,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4175",
+      "source_location": "L5217",
       "weight": 1.0
     },
     {
@@ -17211,7 +17414,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4182",
+      "source_location": "L5224",
       "weight": 1.0
     },
     {
@@ -17223,31 +17426,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4189",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_wiredirectnumericinput",
-      "target": "js_speed_togglevoicereflexmode",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L4196",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_wiredirectnumericinput",
-      "target": "js_speed_showdrillhudfeedback",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L4197",
+      "source_location": "L5231",
       "weight": 1.0
     },
     {
@@ -17259,7 +17438,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4218",
+      "source_location": "L5264",
       "weight": 1.0
     },
     {
@@ -17271,7 +17450,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4119",
+      "source_location": "L5159",
       "weight": 1.0
     },
     {
@@ -17283,7 +17462,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4125",
+      "source_location": "L5165",
       "weight": 1.0
     },
     {
@@ -17295,7 +17474,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L4126",
+      "source_location": "L5166",
       "weight": 1.0
     },
     {
@@ -19167,7 +19346,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1051",
+      "source_location": "L1052",
       "weight": 1.0
     },
     {
@@ -19179,7 +19358,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/dashboard.js",
-      "source_location": "L1057",
+      "source_location": "L1058",
       "weight": 1.0
     },
     {
@@ -19203,7 +19382,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2515",
+      "source_location": "L2512",
       "weight": 1.0
     },
     {
@@ -19215,7 +19394,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/navigation.js",
-      "source_location": "L2523",
+      "source_location": "L2520",
       "weight": 1.0
     },
     {
@@ -19227,7 +19406,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3775",
+      "source_location": "L4810",
       "weight": 1.0
     },
     {
@@ -19239,7 +19418,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3792",
+      "source_location": "L4827",
       "weight": 1.0
     },
     {
@@ -19251,19 +19430,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3844",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed_initrealaudiovisualizer",
-      "target": "js_speed_initrealaudiovisualizer_renderaudioframe",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "js/speed.js",
-      "source_location": "L1155",
+      "source_location": "L4879",
       "weight": 1.0
     },
     {
@@ -19275,7 +19442,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3592",
+      "source_location": "L4624",
       "weight": 1.0
     },
     {
@@ -19287,7 +19454,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "js/speed.js",
-      "source_location": "L3604",
+      "source_location": "L4636",
       "weight": 1.0
     },
     {
@@ -20955,7 +21122,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "build-tailwind.js",
-      "source_location": "L776",
+      "source_location": "L794",
       "weight": 1.0
     },
     {
@@ -20966,7 +21133,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "build-tailwind.js",
-      "source_location": "L777",
+      "source_location": "L795",
       "weight": 1.0
     },
     {
@@ -22264,7 +22431,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1108",
+      "source_location": "L1109",
       "weight": 1.0
     },
     {
@@ -22275,7 +22442,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1136",
+      "source_location": "L1137",
       "weight": 1.0
     },
     {
@@ -22286,7 +22453,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1170",
+      "source_location": "L1171",
       "weight": 1.0
     },
     {
@@ -22297,7 +22464,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1250",
+      "source_location": "L1251",
       "weight": 1.0
     },
     {
@@ -22363,7 +22530,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L310",
+      "source_location": "L311",
       "weight": 1.0
     },
     {
@@ -22374,7 +22541,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L330",
+      "source_location": "L331",
       "weight": 1.0
     },
     {
@@ -22385,7 +22552,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L346",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -22396,7 +22563,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L371",
+      "source_location": "L372",
       "weight": 1.0
     },
     {
@@ -22407,7 +22574,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L532",
+      "source_location": "L533",
       "weight": 1.0
     },
     {
@@ -22418,7 +22585,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L589",
+      "source_location": "L590",
       "weight": 1.0
     },
     {
@@ -22429,7 +22596,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L610",
+      "source_location": "L611",
       "weight": 1.0
     },
     {
@@ -22440,7 +22607,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L616",
+      "source_location": "L617",
       "weight": 1.0
     },
     {
@@ -22451,7 +22618,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L667",
+      "source_location": "L668",
       "weight": 1.0
     },
     {
@@ -22462,7 +22629,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L712",
+      "source_location": "L713",
       "weight": 1.0
     },
     {
@@ -22473,7 +22640,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L724",
+      "source_location": "L725",
       "weight": 1.0
     },
     {
@@ -22495,7 +22662,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L854",
+      "source_location": "L855",
       "weight": 1.0
     },
     {
@@ -22506,7 +22673,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L862",
+      "source_location": "L863",
       "weight": 1.0
     },
     {
@@ -22517,7 +22684,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L956",
+      "source_location": "L957",
       "weight": 1.0
     },
     {
@@ -22528,7 +22695,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L965",
+      "source_location": "L966",
       "weight": 1.0
     },
     {
@@ -22539,7 +22706,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L978",
+      "source_location": "L979",
       "weight": 1.0
     },
     {
@@ -22550,7 +22717,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L991",
+      "source_location": "L992",
       "weight": 1.0
     },
     {
@@ -22561,7 +22728,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L998",
+      "source_location": "L999",
       "weight": 1.0
     },
     {
@@ -22572,7 +22739,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/dashboard.js",
-      "source_location": "L1042",
+      "source_location": "L1043",
       "weight": 1.0
     },
     {
@@ -23023,7 +23190,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1624",
+      "source_location": "L1621",
       "weight": 1.0
     },
     {
@@ -23034,7 +23201,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1656",
+      "source_location": "L1653",
       "weight": 1.0
     },
     {
@@ -23045,7 +23212,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1688",
+      "source_location": "L1685",
       "weight": 1.0
     },
     {
@@ -23056,7 +23223,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1720",
+      "source_location": "L1717",
       "weight": 1.0
     },
     {
@@ -23067,7 +23234,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1751",
+      "source_location": "L1748",
       "weight": 1.0
     },
     {
@@ -23078,7 +23245,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1766",
+      "source_location": "L1763",
       "weight": 1.0
     },
     {
@@ -23089,7 +23256,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1778",
+      "source_location": "L1775",
       "weight": 1.0
     },
     {
@@ -23100,7 +23267,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1790",
+      "source_location": "L1787",
       "weight": 1.0
     },
     {
@@ -23122,7 +23289,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1822",
+      "source_location": "L1819",
       "weight": 1.0
     },
     {
@@ -23133,7 +23300,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1847",
+      "source_location": "L1844",
       "weight": 1.0
     },
     {
@@ -23144,7 +23311,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1879",
+      "source_location": "L1876",
       "weight": 1.0
     },
     {
@@ -23155,7 +23322,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1922",
+      "source_location": "L1919",
       "weight": 1.0
     },
     {
@@ -23166,7 +23333,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1950",
+      "source_location": "L1947",
       "weight": 1.0
     },
     {
@@ -23177,7 +23344,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L1964",
+      "source_location": "L1961",
       "weight": 1.0
     },
     {
@@ -23188,7 +23355,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2308",
+      "source_location": "L2305",
       "weight": 1.0
     },
     {
@@ -23199,7 +23366,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2315",
+      "source_location": "L2312",
+      "weight": 1.0
+    },
+    {
+      "source": "js_navigation",
+      "target": "js_navigation_purchasecosmicreward",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/navigation.js",
+      "source_location": "L2319",
       "weight": 1.0
     },
     {
@@ -23215,24 +23393,13 @@
     },
     {
       "source": "js_navigation",
-      "target": "js_navigation_purchasecosmicreward",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/navigation.js",
-      "source_location": "L2322",
-      "weight": 1.0
-    },
-    {
-      "source": "js_navigation",
       "target": "js_navigation_purchasepowerreward",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2329",
+      "source_location": "L2326",
       "weight": 1.0
     },
     {
@@ -23243,7 +23410,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2336",
+      "source_location": "L2333",
       "weight": 1.0
     },
     {
@@ -23254,7 +23421,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2343",
+      "source_location": "L2340",
       "weight": 1.0
     },
     {
@@ -23265,7 +23432,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2448",
+      "source_location": "L2445",
       "weight": 1.0
     },
     {
@@ -23276,7 +23443,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2492",
+      "source_location": "L2489",
       "weight": 1.0
     },
     {
@@ -23298,7 +23465,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2867",
+      "source_location": "L2864",
       "weight": 1.0
     },
     {
@@ -23309,7 +23476,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/navigation.js",
-      "source_location": "L2900",
+      "source_location": "L2897",
       "weight": 1.0
     },
     {
@@ -23600,189 +23767,79 @@
     },
     {
       "source": "js_speed",
-      "target": "js_speed_initrealaudiovisualizer",
+      "target": "js_speed_generatetablescheatgroups",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1129",
+      "source_location": "L1134",
       "weight": 1.0
     },
     {
       "source": "js_speed",
-      "target": "js_speed_stoprealaudiovisualizer",
+      "target": "js_speed_drill_cheat_data",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1189",
+      "source_location": "L1161",
       "weight": 1.0
     },
     {
       "source": "js_speed",
-      "target": "js_speed_togglevoicereflexmode",
+      "target": "js_speed_resolvecheattelemetryandtarget",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1219",
+      "source_location": "L1782",
       "weight": 1.0
     },
     {
       "source": "js_speed",
-      "target": "js_speed_listenforvoiceanswer",
+      "target": "js_speed_rendermasterypiphtml",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1271",
+      "source_location": "L1875",
       "weight": 1.0
     },
     {
       "source": "js_speed",
-      "target": "js_speed_updatevoicestatusui",
+      "target": "js_speed_renderquickdrillbuttonhtml",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1287",
+      "source_location": "L1889",
       "weight": 1.0
     },
     {
       "source": "js_speed",
-      "target": "js_speed_drillintelligenceengine",
+      "target": "js_speed_launchtargetedmicrodrill",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1338",
+      "source_location": "L1905",
       "weight": 1.0
     },
     {
       "source": "js_speed",
-      "target": "js_speed_speed_modes",
+      "target": "js_speed_renderdrillcheatsheet",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1372",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_mix_categories",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1386",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_setspeedgamemode",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1389",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_updatemodebadgeui",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1471",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_startblitzcountdown",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1509",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_finishblitzsession",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1525",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_finishsuddendeathsession",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1614",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_updatespeedpersonalbestshud",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1692",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_generatemathoptions",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1716",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_selectadaptivevalue",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1800",
-      "weight": 1.0
-    },
-    {
-      "source": "js_speed",
-      "target": "js_speed_generatequestiontextandanswer",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "js/speed.js",
-      "source_location": "L1854",
+      "source_location": "L1973",
       "weight": 1.0
     },
     {
@@ -23798,13 +23855,211 @@
     },
     {
       "source": "js_speed",
+      "target": "js_speed_setcheatsheetcollapsestate",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2205",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_togglecheatsheetcollapse",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2266",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_initdrillcheatsheet",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2272",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_togglevoicereflexmode",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2317",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_listenforvoiceanswer",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2319",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_updatevoicestatusui",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2321",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_drillintelligenceengine",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2326",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_speed_modes",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2360",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_mix_categories",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2374",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_setspeedgamemode",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2377",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_updatemodebadgeui",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2459",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_startblitzcountdown",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2499",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_finishblitzsession",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2515",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_finishsuddendeathsession",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2604",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_updatespeedpersonalbestshud",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2682",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_generatemathoptions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2706",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_selectadaptivevalue",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2790",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
+      "target": "js_speed_generatequestiontextandanswer",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/speed.js",
+      "source_location": "L2844",
+      "weight": 1.0
+    },
+    {
+      "source": "js_speed",
       "target": "js_speed_generatedrillquestion",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2184",
+      "source_location": "L3192",
       "weight": 1.0
     },
     {
@@ -23815,7 +24070,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2425",
+      "source_location": "L3447",
       "weight": 1.0
     },
     {
@@ -23826,7 +24081,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2590",
+      "source_location": "L3612",
       "weight": 1.0
     },
     {
@@ -23837,7 +24092,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2591",
+      "source_location": "L3613",
       "weight": 1.0
     },
     {
@@ -23848,7 +24103,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2593",
+      "source_location": "L3615",
       "weight": 1.0
     },
     {
@@ -23859,7 +24114,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2605",
+      "source_location": "L3627",
       "weight": 1.0
     },
     {
@@ -23870,7 +24125,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2663",
+      "source_location": "L3685",
       "weight": 1.0
     },
     {
@@ -23881,7 +24136,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2733",
+      "source_location": "L3755",
       "weight": 1.0
     },
     {
@@ -23892,7 +24147,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2799",
+      "source_location": "L3821",
       "weight": 1.0
     },
     {
@@ -23903,7 +24158,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2819",
+      "source_location": "L3841",
       "weight": 1.0
     },
     {
@@ -23914,7 +24169,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2880",
+      "source_location": "L3902",
       "weight": 1.0
     },
     {
@@ -23925,7 +24180,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2942",
+      "source_location": "L3964",
       "weight": 1.0
     },
     {
@@ -23936,7 +24191,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L2959",
+      "source_location": "L3981",
       "weight": 1.0
     },
     {
@@ -23947,7 +24202,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3033",
+      "source_location": "L4058",
       "weight": 1.0
     },
     {
@@ -23958,7 +24213,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3035",
+      "source_location": "L4060",
       "weight": 1.0
     },
     {
@@ -23969,7 +24224,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3122",
+      "source_location": "L4147",
       "weight": 1.0
     },
     {
@@ -23980,7 +24235,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3160",
+      "source_location": "L4185",
       "weight": 1.0
     },
     {
@@ -23991,7 +24246,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3168",
+      "source_location": "L4193",
       "weight": 1.0
     },
     {
@@ -24002,7 +24257,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3211",
+      "source_location": "L4236",
       "weight": 1.0
     },
     {
@@ -24013,7 +24268,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3249",
+      "source_location": "L4274",
       "weight": 1.0
     },
     {
@@ -24024,7 +24279,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3416",
+      "source_location": "L4441",
       "weight": 1.0
     },
     {
@@ -24035,7 +24290,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3743",
+      "source_location": "L4778",
       "weight": 1.0
     },
     {
@@ -24046,7 +24301,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3766",
+      "source_location": "L4801",
       "weight": 1.0
     },
     {
@@ -24057,7 +24312,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3958",
+      "source_location": "L4993",
       "weight": 1.0
     },
     {
@@ -24068,7 +24323,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3974",
+      "source_location": "L5009",
       "weight": 1.0
     },
     {
@@ -24079,7 +24334,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3991",
+      "source_location": "L5026",
       "weight": 1.0
     },
     {
@@ -24090,7 +24345,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3993",
+      "source_location": "L5028",
       "weight": 1.0
     },
     {
@@ -24101,7 +24356,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4023",
+      "source_location": "L5058",
       "weight": 1.0
     },
     {
@@ -24112,7 +24367,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4034",
+      "source_location": "L5069",
       "weight": 1.0
     },
     {
@@ -24123,7 +24378,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4049",
+      "source_location": "L5087",
       "weight": 1.0
     },
     {
@@ -24134,7 +24389,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4106",
+      "source_location": "L5144",
       "weight": 1.0
     },
     {
@@ -24145,7 +24400,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4114",
+      "source_location": "L5152",
       "weight": 1.0
     },
     {
@@ -24156,7 +24411,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4140",
+      "source_location": "L5180",
       "weight": 1.0
     },
     {
@@ -24167,7 +24422,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4276",
+      "source_location": "L5322",
       "weight": 1.0
     },
     {
@@ -24178,7 +24433,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4278",
+      "source_location": "L5324",
       "weight": 1.0
     },
     {
@@ -24189,7 +24444,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4305",
+      "source_location": "L5351",
       "weight": 1.0
     },
     {
@@ -24200,7 +24455,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4327",
+      "source_location": "L5373",
       "weight": 1.0
     },
     {
@@ -24211,7 +24466,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4351",
+      "source_location": "L5397",
       "weight": 1.0
     },
     {
@@ -24222,7 +24477,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4383",
+      "source_location": "L5429",
       "weight": 1.0
     },
     {
@@ -24233,7 +24488,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L4403",
+      "source_location": "L5449",
       "weight": 1.0
     },
     {
@@ -24321,7 +24576,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L3784",
+      "source_location": "L4819",
       "weight": 1.0
     },
     {
@@ -28864,7 +29119,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1339",
+      "source_location": "L2327",
       "weight": 1.0
     },
     {
@@ -28875,7 +29130,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1344",
+      "source_location": "L2332",
       "weight": 1.0
     },
     {
@@ -28886,7 +29141,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1348",
+      "source_location": "L2336",
       "weight": 1.0
     },
     {
@@ -28897,7 +29152,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1352",
+      "source_location": "L2340",
       "weight": 1.0
     },
     {
@@ -28908,7 +29163,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1356",
+      "source_location": "L2344",
       "weight": 1.0
     },
     {
@@ -28919,7 +29174,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1360",
+      "source_location": "L2348",
       "weight": 1.0
     },
     {
@@ -28930,7 +29185,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "js/speed.js",
-      "source_location": "L1365",
+      "source_location": "L2353",
       "weight": 1.0
     },
     {
@@ -29298,7 +29553,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "js/navigation.js",
-      "source_location": "L3057",
+      "source_location": "L3054",
       "weight": 1.0
     },
     {
@@ -29310,7 +29565,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "js/navigation.js",
-      "source_location": "L2644",
+      "source_location": "L2641",
       "weight": 1.0
     },
     {
@@ -29322,7 +29577,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "js/navigation.js",
-      "source_location": "L2645",
+      "source_location": "L2642",
       "weight": 1.0
     },
     {
@@ -29334,7 +29589,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "js/navigation.js",
-      "source_location": "L2646",
+      "source_location": "L2643",
       "weight": 1.0
     },
     {
@@ -29346,7 +29601,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "js/navigation.js",
-      "source_location": "L2647",
+      "source_location": "L2644",
       "weight": 1.0
     },
     {
@@ -29358,7 +29613,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "js/navigation.js",
-      "source_location": "L2648",
+      "source_location": "L2645",
       "weight": 1.0
     },
     {

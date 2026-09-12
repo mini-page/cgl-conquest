@@ -1,16 +1,16 @@
 # Graph Report - CGL-conquest  (2026-09-12)
 
 ## Corpus Check
-- 133 files · ~371,168 words
+- 135 files · ~377,064 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1015 nodes · 1545 edges · 134 communities (62 shown, 20 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.85)
+- 1037 nodes · 1586 edges · 136 communities (63 shown, 20 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `53f0e6de`
+- Built from commit: `cee3b6b6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -97,12 +97,13 @@
 - generateDrillQuestion
 - generateChallengeQuestion
 - initCustomTooltips
+- jsqr.min.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `initSpeedDrillsPage()` - 26 edges
-2. `renderAll()` - 25 edges
-3. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
-4. `QrSyncModal` - 24 edges
+2. `QrSyncModal` - 25 edges
+3. `renderAll()` - 25 edges
+4. `PROJECT MEMORIFY — SSC CGL Conquest Dashboard` - 25 edges
 5. `initTheme()` - 24 edges
 6. `SoundManager` - 21 edges
 7. `renderStudyTrackerAll()` - 21 edges
@@ -125,7 +126,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (134 total, 20 thin omitted)
+## Communities (136 total, 20 thin omitted)
 
 ### Community 0 - "syllabus.js"
 Cohesion: 0.10
@@ -248,8 +249,8 @@ Cohesion: 0.25
 Nodes (7): Always Do, CLI, Design System & UI Architecture, GitNexus — Code Intelligence, graphify, Never Do, Resources
 
 ### Community 86 - "QrSyncModal"
-Cohesion: 0.17
-Nodes (3): expandCompactPayload(), extractCompactPayload(), QrSyncModal
+Cohesion: 0.12
+Nodes (8): detectSyncChanges(), expandCompactPayload(), extractCompactPayload(), generateProgressReport(), getLevelFromPoints(), mergeSyncState(), QrSyncModal, validateSyncPayload()
 
 ### Community 87 - "SSC CGL 40-Day Rank-Maker Dashboard 🏆"
 Cohesion: 0.29
@@ -284,7 +285,7 @@ Cohesion: 0.67
 Nodes (3): 13.1 Syllabus Console Views (6), 13.2 Study Notes Views (6), 13. STUDY TOOLKIT VIEWS
 
 ### Community 95 - "index.js"
-Cohesion: 0.23
+Cohesion: 0.21
 Nodes (3): HeroHeader, REWARDS_CATALOG, toast
 
 ### Community 101 - "Impact Analysis with GitNexus"
@@ -375,20 +376,24 @@ Nodes (8): checkDrillAnswer(), finishBlitzSession(), finishSuddenDeathSession(),
 Cohesion: 0.40
 Nodes (6): generateChallengeQuestion(), generateMathOptions(), generateProceduralMathQuestion(), startChallengeRun(), submitChallengeAnswer(), updateChallengeUI()
 
+### Community 134 - "jsqr.min.js"
+Cohesion: 0.38
+Nodes (9): a(), B(), c(), d(), i(), k(), l(), n() (+1 more)
+
 ## Knowledge Gaps
 - **323 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `fs`, `path`, `{ execSync }` (+318 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 480 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 486 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `triggerMathTypesetting()` connect `toolkit.js` to `plan.js`, `state.js`, `dashboard.js`, `navigation.js`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
-- **Why does `renderAll()` connect `dashboard.js` to `toolkit.js`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `navigateToPage()` connect `navigation.js` to `toolkit.js`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Why does `QrSyncModal` connect `QrSyncModal` to `index.js`?**
-  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Are the 5 inferred relationships involving `initTheme()` (e.g. with `toggleFocusMode()` and `toggleSoundMode()`) actually correct?**
   _`initTheme()` has 5 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `fs` to the rest of the system?**

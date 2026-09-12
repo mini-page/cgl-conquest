@@ -132,5 +132,7 @@
   "130": "showDrillHudFeedback",
   "131": "generateDrillQuestion",
   "132": "generateChallengeQuestion",
-  "133": "initCustomTooltips"
+  "133": "initCustomTooltips",
+  "134": "jsqr.min.js",
+  "135": "qrcode.min.js"
 }

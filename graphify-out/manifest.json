@@ -558,9 +558,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1789218385.8255572,
-    "seen": 1789219063.013422,
-    "ast_hash": "ddfe7ab0aba1f751af1c682a8b90de4b",
+    "mtime": 1789223781.2028494,
+    "seen": 1789224407.4644933,
+    "ast_hash": "634f00afa81b301c42582cb0d3489ada",
     "semantic_hash": ""
   },
   "icon.svg": {
@@ -672,9 +672,9 @@
     "semantic_hash": ""
   },
   "components/qr-sync-modal.js": {
-    "mtime": 1789135546.1544282,
-    "seen": 1789136638.1539252,
-    "ast_hash": "8926e432460c508d9498ee0550d58da0",
+    "mtime": 1789223765.5939205,
+    "seen": 1789224407.4629817,
+    "ast_hash": "4871da83884c3a86c8c2669f56f45e9a",
     "semantic_hash": ""
   },
   "components/search-bar.js": {
@@ -861,6 +861,18 @@
     "mtime": 1788855360.7932138,
     "seen": 1788855593.9433308,
     "ast_hash": "6bb78f7f4054b4166f3df6df5fe96c52",
+    "semantic_hash": ""
+  },
+  "js/vendor/jsqr.min.js": {
+    "mtime": 1789220670.2836502,
+    "seen": 1789224407.4629817,
+    "ast_hash": "eb173922770d8367569d7d531f76f78d",
+    "semantic_hash": ""
+  },
+  "js/vendor/qrcode.min.js": {
+    "mtime": 1789222287.5297053,
+    "seen": 1789224407.4629817,
+    "ast_hash": "3d4bea5db142d8eceb27a0e8802ecf8c",
     "semantic_hash": ""
   }
 }

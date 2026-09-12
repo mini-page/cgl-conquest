@@ -222,7 +222,7 @@
       "file_type": "code",
       "norm_label": "qrsyncmodal",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L197"
+      "source_location": "L693"
     },
     {
       "id": "components_hero_header_heroheader",
@@ -3431,6 +3431,150 @@
       "source_location": "L4819"
     },
     {
+      "id": "js_vendor_jsqr_min_a",
+      "label": "a()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "a()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_b",
+      "label": "B()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "b()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_c",
+      "label": "c()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "c()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_d",
+      "label": "d()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "d()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_i",
+      "label": "i()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "i()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_k",
+      "label": "k()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "k()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_l",
+      "label": "l()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "l()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_n",
+      "label": "n()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "n()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_o",
+      "label": "o()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "o()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_r",
+      "label": "r()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "r()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_jsqr_min_s",
+      "label": "s()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "s()",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7"
+    },
+    {
+      "id": "js_vendor_qrcode_min_k",
+      "label": "k()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "qrcode.min.js",
+      "file_type": "code",
+      "norm_label": "k()",
+      "source_file": "js/vendor/qrcode.min.js",
+      "source_location": "L7"
+    },
+    {
       "id": "js_components_tooltip_customtooltip_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -5759,6 +5903,30 @@
       "source_location": "L468"
     },
     {
+      "id": "components_qr_sync_modal_detectsyncchanges",
+      "label": "detectSyncChanges()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "detectsyncchanges()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L462"
+    },
+    {
+      "id": "components_qr_sync_modal_detectsyncchanges_getlevelfrompoints",
+      "label": "getLevelFromPoints()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "getlevelfrompoints()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L482"
+    },
+    {
       "id": "components_qr_sync_modal_expandcompactpayload",
       "label": "expandCompactPayload()",
       "_callable": true,
@@ -5768,7 +5936,7 @@
       "file_type": "code",
       "norm_label": "expandcompactpayload()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L89"
+      "source_location": "L171"
     },
     {
       "id": "components_qr_sync_modal_extractcompactpayload",
@@ -5780,7 +5948,7 @@
       "file_type": "code",
       "norm_label": "extractcompactpayload()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L9"
+      "source_location": "L30"
     },
     {
       "id": "components_qr_sync_modal_extractrewardsonlypayload",
@@ -5792,7 +5960,55 @@
       "file_type": "code",
       "norm_label": "extractrewardsonlypayload()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L69"
+      "source_location": "L104"
+    },
+    {
+      "id": "components_qr_sync_modal_generateprogressreport",
+      "label": "generateProgressReport()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "generateprogressreport()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L582"
+    },
+    {
+      "id": "components_qr_sync_modal_generateprogressreport_getlevelfrompoints",
+      "label": "getLevelFromPoints()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "getlevelfrompoints()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L611"
+    },
+    {
+      "id": "components_qr_sync_modal_k",
+      "label": "k()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "k()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L19"
+    },
+    {
+      "id": "components_qr_sync_modal_mergesyncstate",
+      "label": "mergeSyncState()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "mergesyncstate()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L280"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_bindevents",
@@ -5804,7 +6020,7 @@
       "file_type": "code",
       "norm_label": "._bindevents()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L438"
+      "source_location": "L1054"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_builddom",
@@ -5816,7 +6032,7 @@
       "file_type": "code",
       "norm_label": "._builddom()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L295"
+      "source_location": "L843"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_close",
@@ -5828,7 +6044,7 @@
       "file_type": "code",
       "norm_label": ".close()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1099"
+      "source_location": "L2095"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_compress",
@@ -5840,7 +6056,7 @@
       "file_type": "code",
       "norm_label": "._compress()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L232"
+      "source_location": "L742"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_constructor",
@@ -5852,7 +6068,7 @@
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L198"
+      "source_location": "L694"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_copyqrimagetoclipboard",
@@ -5864,7 +6080,7 @@
       "file_type": "code",
       "norm_label": "._copyqrimagetoclipboard()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L743"
+      "source_location": "L1534"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_decompress",
@@ -5876,7 +6092,7 @@
       "file_type": "code",
       "norm_label": "._decompress()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L257"
+      "source_location": "L793"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_downloadqrimage",
@@ -5888,7 +6104,7 @@
       "file_type": "code",
       "norm_label": "._downloadqrimage()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L807"
+      "source_location": "L1616"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_ensuredependencies",
@@ -5900,7 +6116,7 @@
       "file_type": "code",
       "norm_label": "._ensuredependencies()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L215"
+      "source_location": "L713"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_handleimageupload",
@@ -5912,7 +6128,7 @@
       "file_type": "code",
       "norm_label": "._handleimageupload()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L960"
+      "source_location": "L1787"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_oncodedetected",
@@ -5924,7 +6140,7 @@
       "file_type": "code",
       "norm_label": "._oncodedetected()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L997"
+      "source_location": "L1824"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_open",
@@ -5936,7 +6152,7 @@
       "file_type": "code",
       "norm_label": ".open()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1088"
+      "source_location": "L2080"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_refreshqr",
@@ -5948,7 +6164,7 @@
       "file_type": "code",
       "norm_label": "._refreshqr()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L879"
+      "source_location": "L1708"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_renderqr",
@@ -5960,7 +6176,7 @@
       "file_type": "code",
       "norm_label": "._renderqr()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L685"
+      "source_location": "L1408"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_scanvideoloop",
@@ -5972,7 +6188,7 @@
       "file_type": "code",
       "norm_label": "._scanvideoloop()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L921"
+      "source_location": "L1750"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_settab",
@@ -5984,7 +6200,7 @@
       "file_type": "code",
       "norm_label": ".settab()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L658"
+      "source_location": "L1381"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_shareqr",
@@ -5996,7 +6212,7 @@
       "file_type": "code",
       "norm_label": "._shareqr()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L853"
+      "source_location": "L1683"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_showconfirmation",
@@ -6008,7 +6224,19 @@
       "file_type": "code",
       "norm_label": "._showconfirmation()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1017"
+      "source_location": "L1850"
+    },
+    {
+      "id": "components_qr_sync_modal_qrsyncmodal_showprogressreport",
+      "label": "._showProgressReport()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "._showprogressreport()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1922"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_startcamera",
@@ -6020,7 +6248,7 @@
       "file_type": "code",
       "norm_label": "._startcamera()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L885"
+      "source_location": "L1714"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_stopcamera",
@@ -6032,7 +6260,7 @@
       "file_type": "code",
       "norm_label": "._stopcamera()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L910"
+      "source_location": "L1739"
     },
     {
       "id": "components_qr_sync_modal_qrsyncmodal_togglefullscreen",
@@ -6044,7 +6272,19 @@
       "file_type": "code",
       "norm_label": ".togglefullscreen()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L593"
+      "source_location": "L1316"
+    },
+    {
+      "id": "components_qr_sync_modal_validatesyncpayload",
+      "label": "validateSyncPayload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 86,
+      "community_name": "QrSyncModal",
+      "file_type": "code",
+      "norm_label": "validatesyncpayload()",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L125"
     },
     {
       "id": "components_hero_header_heroheader_constructor",
@@ -7340,17 +7580,6 @@
       "source_location": "L1"
     },
     {
-      "id": "components_tri_state_checkbox",
-      "label": "tri-state-checkbox.js",
-      "_origin": "ast",
-      "community": 113,
-      "community_name": "TriStateCheckbox",
-      "file_type": "code",
-      "norm_label": "tri-state-checkbox.js",
-      "source_file": "components/tri-state-checkbox.js",
-      "source_location": "L1"
-    },
-    {
       "id": "agents_skills_repomix_skill",
       "label": "repomix/SKILL.md",
       "_origin": "ast",
@@ -8025,6 +8254,28 @@
       "norm_label": "path",
       "source_file": "build-tailwind.js",
       "source_location": "L8"
+    },
+    {
+      "id": "js_vendor_jsqr_min",
+      "label": "jsqr.min.js",
+      "_origin": "ast",
+      "community": 134,
+      "community_name": "jsqr.min.js",
+      "file_type": "code",
+      "norm_label": "jsqr.min.js",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "js_vendor_qrcode_min",
+      "label": "qrcode.min.js",
+      "_origin": "ast",
+      "community": 135,
+      "community_name": "qrcode.min.js",
+      "file_type": "code",
+      "norm_label": "qrcode.min.js",
+      "source_file": "js/vendor/qrcode.min.js",
+      "source_location": "L1"
     },
     {
       "id": "js_components_tooltip",
@@ -11298,7 +11549,7 @@
       "file_type": "code",
       "norm_label": "._keyhandler()",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L450"
+      "source_location": "L1066"
     },
     {
       "id": "readme",
@@ -12023,6 +12274,17 @@
       "source_location": "L100"
     },
     {
+      "id": "components_tri_state_checkbox",
+      "label": "tri-state-checkbox.js",
+      "_origin": "ast",
+      "community": 95,
+      "community_name": "index.js",
+      "file_type": "code",
+      "norm_label": "tri-state-checkbox.js",
+      "source_file": "components/tri-state-checkbox.js",
+      "source_location": "L1"
+    },
+    {
       "id": "agents_rules_graphify",
       "label": "rules/graphify.md",
       "_origin": "ast",
@@ -12426,32 +12688,8 @@
       "weight": 1.0
     },
     {
-      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
-      "target": "components_qr_sync_modal_qrsyncmodal_close",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L439",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
-      "target": "components_qr_sync_modal_qrsyncmodal_togglefullscreen",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L442",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
-      "target": "components_qr_sync_modal_qrsyncmodal_settab",
+      "source": "components_qr_sync_modal_detectsyncchanges",
+      "target": "components_qr_sync_modal_generateprogressreport_getlevelfrompoints",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -12463,6 +12701,42 @@
     },
     {
       "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_qrsyncmodal_close",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1055",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_qrsyncmodal_togglefullscreen",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1058",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_qrsyncmodal_settab",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1107",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
       "target": "components_qr_sync_modal_qrsyncmodal_startcamera",
       "relation": "calls",
       "_origin": "ast",
@@ -12470,7 +12744,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L494",
+      "source_location": "L1110",
       "weight": 1.0
     },
     {
@@ -12482,7 +12756,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L498",
+      "source_location": "L1114",
       "weight": 1.0
     },
     {
@@ -12494,7 +12768,55 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L504",
+      "source_location": "L1120",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_detectsyncchanges",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1131",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_generateprogressreport",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1132",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_qrsyncmodal_showprogressreport",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1135",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_qrsyncmodal_renderqr",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1160",
       "weight": 1.0
     },
     {
@@ -12506,7 +12828,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L534",
+      "source_location": "L1191",
       "weight": 1.0
     },
     {
@@ -12518,7 +12840,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L543",
+      "source_location": "L1200",
       "weight": 1.0
     },
     {
@@ -12530,7 +12852,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L552",
+      "source_location": "L1209",
       "weight": 1.0
     },
     {
@@ -12542,7 +12864,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L561",
+      "source_location": "L1218",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_bindevents",
+      "target": "components_qr_sync_modal_mergesyncstate",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1226",
       "weight": 1.0
     },
     {
@@ -12554,7 +12888,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L435",
+      "source_location": "L1051",
       "weight": 1.0
     },
     {
@@ -12566,7 +12900,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1101",
+      "source_location": "L2097",
       "weight": 1.0
     },
     {
@@ -12578,7 +12912,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1104",
+      "source_location": "L2100",
       "weight": 1.0
     },
     {
@@ -12590,7 +12924,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L211",
+      "source_location": "L709",
       "weight": 1.0
     },
     {
@@ -12602,7 +12936,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L212",
+      "source_location": "L710",
       "weight": 1.0
     },
     {
@@ -12614,7 +12948,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L978",
+      "source_location": "L1805",
       "weight": 1.0
     },
     {
@@ -12626,7 +12960,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L457",
+      "source_location": "L1073",
       "weight": 1.0
     },
     {
@@ -12638,7 +12972,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L459",
+      "source_location": "L1075",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_oncodedetected",
+      "target": "components_qr_sync_modal_qrsyncmodal_stopcamera",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1825",
       "weight": 1.0
     },
     {
@@ -12650,7 +12996,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1000",
+      "source_location": "L1827",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal_oncodedetected",
+      "target": "components_qr_sync_modal_validatesyncpayload",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1831",
       "weight": 1.0
     },
     {
@@ -12662,7 +13020,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1002",
+      "source_location": "L1836",
       "weight": 1.0
     },
     {
@@ -12674,7 +13032,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1009",
+      "source_location": "L1842",
       "weight": 1.0
     },
     {
@@ -12686,19 +13044,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1013",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal_oncodedetected",
-      "target": "components_qr_sync_modal_qrsyncmodal_stopcamera",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L998",
+      "source_location": "L1846",
       "weight": 1.0
     },
     {
@@ -12710,7 +13056,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1096",
+      "source_location": "L2092",
       "weight": 1.0
     },
     {
@@ -12722,7 +13068,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L881",
+      "source_location": "L1710",
       "weight": 1.0
     },
     {
@@ -12734,7 +13080,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L690",
+      "source_location": "L1421",
       "weight": 1.0
     },
     {
@@ -12746,7 +13092,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L692",
+      "source_location": "L1425",
       "weight": 1.0
     },
     {
@@ -12758,7 +13104,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L936",
+      "source_location": "L1764",
       "weight": 1.0
     },
     {
@@ -12770,7 +13116,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L674",
+      "source_location": "L1397",
       "weight": 1.0
     },
     {
@@ -12782,7 +13128,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L680",
+      "source_location": "L1403",
       "weight": 1.0
     },
     {
@@ -12794,7 +13140,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L681",
+      "source_location": "L1404",
       "weight": 1.0
     },
     {
@@ -12806,7 +13152,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L903",
+      "source_location": "L1732",
       "weight": 1.0
     },
     {
@@ -19230,6 +19576,126 @@
       "weight": 1.0
     },
     {
+      "source": "js_vendor_jsqr_min_a",
+      "target": "js_vendor_jsqr_min_s",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_b",
+      "target": "js_vendor_jsqr_min_d",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_d",
+      "target": "js_vendor_jsqr_min_a",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_d",
+      "target": "js_vendor_jsqr_min_n",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_i",
+      "target": "js_vendor_jsqr_min_a",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_i",
+      "target": "js_vendor_jsqr_min_d",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_k",
+      "target": "js_vendor_jsqr_min_b",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_k",
+      "target": "js_vendor_jsqr_min_d",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_k",
+      "target": "js_vendor_jsqr_min_n",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_l",
+      "target": "js_vendor_jsqr_min_n",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
       "source": "tests_suite_mockclasslist_toggle",
       "target": "tests_suite_mockclasslist_add",
       "relation": "calls",
@@ -19323,6 +19789,18 @@
       "context": "call",
       "source_file": "tests/suite.js",
       "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_generateprogressreport",
+      "target": "components_qr_sync_modal_generateprogressreport_getlevelfrompoints",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L611",
       "weight": 1.0
     },
     {
@@ -22139,24 +22617,24 @@
     },
     {
       "source": "components_qr_sync_modal",
-      "target": "components_qr_sync_modal_qrsyncmodal",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L197",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal",
       "target": "components_qr_sync_modal_extractrewardsonlypayload",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L69",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal",
+      "target": "components_qr_sync_modal_validatesyncpayload",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -22167,7 +22645,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L89",
+      "source_location": "L171",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal",
+      "target": "components_qr_sync_modal_k",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal",
+      "target": "components_qr_sync_modal_mergesyncstate",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -22178,7 +22678,51 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L9",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal",
+      "target": "components_qr_sync_modal_detectsyncchanges",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L462",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal",
+      "target": "components_qr_sync_modal_generateprogressreport",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L582",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal",
+      "target": "components_qr_sync_modal_qrsyncmodal",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L693",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_detectsyncchanges",
+      "target": "components_qr_sync_modal_detectsyncchanges_getlevelfrompoints",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L482",
       "weight": 1.0
     },
     {
@@ -25966,6 +26510,138 @@
       "weight": 1.0
     },
     {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_a",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_b",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_c",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_d",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_i",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_k",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_l",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_n",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_o",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_r",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min",
+      "target": "js_vendor_jsqr_min_s",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_qrcode_min",
+      "target": "js_vendor_qrcode_min_k",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "js/vendor/qrcode.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
       "source": "manifest",
       "target": "manifest_name",
       "relation": "contains",
@@ -28002,101 +28678,13 @@
     },
     {
       "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_showconfirmation",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1017",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_open",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1088",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_close",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L1099",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_constructor",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L198",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_ensuredependencies",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L215",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_compress",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L232",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_decompress",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L257",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
-      "target": "components_qr_sync_modal_qrsyncmodal_builddom",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "components/qr-sync-modal.js",
-      "source_location": "L295",
-      "weight": 1.0
-    },
-    {
-      "source": "components_qr_sync_modal_qrsyncmodal",
       "target": "components_qr_sync_modal_qrsyncmodal_bindevents",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L438",
+      "source_location": "L1054",
       "weight": 1.0
     },
     {
@@ -28107,7 +28695,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L450",
+      "source_location": "L1066",
       "weight": 1.0
     },
     {
@@ -28118,7 +28706,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L593",
+      "source_location": "L1316",
       "weight": 1.0
     },
     {
@@ -28129,7 +28717,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L658",
+      "source_location": "L1381",
       "weight": 1.0
     },
     {
@@ -28140,7 +28728,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L685",
+      "source_location": "L1408",
       "weight": 1.0
     },
     {
@@ -28151,7 +28739,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L743",
+      "source_location": "L1534",
       "weight": 1.0
     },
     {
@@ -28162,7 +28750,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L807",
+      "source_location": "L1616",
       "weight": 1.0
     },
     {
@@ -28173,7 +28761,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L853",
+      "source_location": "L1683",
       "weight": 1.0
     },
     {
@@ -28184,7 +28772,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L879",
+      "source_location": "L1708",
       "weight": 1.0
     },
     {
@@ -28195,7 +28783,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L885",
+      "source_location": "L1714",
       "weight": 1.0
     },
     {
@@ -28206,7 +28794,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L910",
+      "source_location": "L1739",
       "weight": 1.0
     },
     {
@@ -28217,7 +28805,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L921",
+      "source_location": "L1750",
       "weight": 1.0
     },
     {
@@ -28228,7 +28816,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L960",
+      "source_location": "L1787",
       "weight": 1.0
     },
     {
@@ -28239,7 +28827,106 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "components/qr-sync-modal.js",
-      "source_location": "L997",
+      "source_location": "L1824",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_showconfirmation",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1850",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_showprogressreport",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L1922",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_open",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L2080",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_close",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L2095",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_constructor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L694",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_ensuredependencies",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L713",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_compress",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L742",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_decompress",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L793",
+      "weight": 1.0
+    },
+    {
+      "source": "components_qr_sync_modal_qrsyncmodal",
+      "target": "components_qr_sync_modal_qrsyncmodal_builddom",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "components/qr-sync-modal.js",
+      "source_location": "L843",
       "weight": 1.0
     },
     {
@@ -29771,8 +30458,56 @@
       "source_file": "js/toolkit.js",
       "source_location": "L1325",
       "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_i",
+      "target": "js_vendor_jsqr_min_c",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "argument",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_n",
+      "target": "js_vendor_jsqr_min_c",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "argument",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_c",
+      "target": "js_vendor_jsqr_min_b",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "js_vendor_jsqr_min_c",
+      "target": "js_vendor_jsqr_min_k",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "js/vendor/jsqr.min.js",
+      "source_location": "L7",
+      "weight": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "53f0e6de4e54c73fc97e49a655e1f404481a06a9"
+  "built_at_commit": "cee3b6b65dd477458a0d6bd7cd25c39d204a20cd"
 }
